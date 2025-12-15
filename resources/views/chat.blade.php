@@ -1534,6 +1534,9 @@
         
         async function loadSession(sessionId) {
             try {
+                // Limpa mensagens anteriores antes de carregar
+                messagesContainer.innerHTML = '';
+                
                 const data = await api(`/chat/sessions/${sessionId}`);
                 currentSession = data.data.session;
                 renderSessions();
@@ -1646,14 +1649,45 @@
                 header.className = 'code-block-header';
                 header.innerHTML = `
                     <span class="code-block-lang">${lang}</span>
-                    <button class="code-copy-btn" onclick="copyCodeBlock(this)">
+                    <button class="code-copy-btn" type="button">
                         <i class="fas fa-copy"></i>
                         <span>Copiar</span>
                     </button>
                 `;
                 
                 // Armazena o código no botão para copiar
-                header.querySelector('.code-copy-btn').dataset.code = codeText;
+                const copyBtn = header.querySelector('.code-copy-btn');
+                copyBtn.dataset.code = codeText;
+                
+                // Adiciona evento de clique diretamente
+                copyBtn.addEventListener('click', function() {
+                    const codeContent = this.dataset.code;
+                    navigator.clipboard.writeText(codeContent).then(() => {
+                        this.classList.add('copied');
+                        this.innerHTML = '<i class="fas fa-check"></i><span>Copiado!</span>';
+                        
+                        setTimeout(() => {
+                            this.classList.remove('copied');
+                            this.innerHTML = '<i class="fas fa-copy"></i><span>Copiar</span>';
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Erro ao copiar:', err);
+                        // Fallback para navegadores antigos
+                        const textarea = document.createElement('textarea');
+                        textarea.value = codeContent;
+                        document.body.appendChild(textarea);
+                        textarea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textarea);
+                        
+                        this.classList.add('copied');
+                        this.innerHTML = '<i class="fas fa-check"></i><span>Copiado!</span>';
+                        setTimeout(() => {
+                            this.classList.remove('copied');
+                            this.innerHTML = '<i class="fas fa-copy"></i><span>Copiar</span>';
+                        }, 2000);
+                    });
+                });
                 
                 // Insere wrapper antes do pre
                 pre.parentNode.insertBefore(wrapper, pre);
@@ -1662,8 +1696,8 @@
             });
         }
         
-        // Função para copiar código
-        function copyCodeBlock(btn) {
+        // Função global para copiar código (fallback)
+        window.copyCodeBlock = function(btn) {
             const code = btn.dataset.code;
             navigator.clipboard.writeText(code).then(() => {
                 btn.classList.add('copied');
@@ -1676,7 +1710,7 @@
             }).catch(err => {
                 console.error('Erro ao copiar:', err);
             });
-        }
+        };
         
         function createMessageHTML(message) {
             const isUser = message.role === 'user';
@@ -1883,12 +1917,14 @@
                                     }
                                     scrollToBottom();
                                 } else if (data.done) {
-                                    // Streaming completo - remove cursor
+                                    // Streaming completo - remove cursor e remove ID
                                     streamingSuccess = true;
                                     const contentDiv = streamingDiv.querySelector('.message-content');
                                     if (contentDiv) {
                                         contentDiv.innerHTML = marked.parse(fullContent);
                                     }
+                                    // Remove o ID para evitar duplicação
+                                    streamingDiv.removeAttribute('id');
                                     // Processa blocos de código para adicionar botão copiar
                                     processCodeBlocks();
                                 } else if (data.error) {

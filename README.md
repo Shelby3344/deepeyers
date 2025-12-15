@@ -1,11 +1,44 @@
-# SentinelAI - Sistema de IA para Pentest
+#  DeepEyes - IA para Pentest & Red Team
 
-Sistema profissional de IA especializada em Pentest e Red Team, construído com Laravel 11 e integração com DeepSeek API.
+<p align="center">
+  <img src="public/logo.png" alt="DeepEyes Logo" width="200">
+</p>
 
-## 🔐 Características de Segurança
+Sistema profissional de IA especializada em **Pentest** e **Red Team**, construído com Laravel 11 e integração com DeepSeek API via OpenRouter.
+
+## 🚀 Demo
+
+**URL:** http://3.134.81.123
+
+## ✨ Funcionalidades
+
+### 💬 Chat com IA Especializada
+- Respostas em tempo real com **streaming**
+- Contexto de memória por sessão
+- Múltiplas sessões organizadas por alvo/domínio
+- Formatação de código com syntax highlighting
+- Botão de **copiar código** em blocos de código
+- Suporte a Markdown completo
+
+### 👥 Sistema de Usuários
+- Registro e login com autenticação segura
+- Upload de avatar personalizado
+- Perfil editável (nome, email, senha)
+- Sistema de planos com limites de requisições
+
+
+### 🛡️ Painel Admin
+- **Dashboard** com estatísticas
+- **Gerenciamento de usuários**: criar, editar, banir, deletar
+- **Visualização de sessões**: ver conversas dos usuários
+- **Gerenciamento de planos**: editar preços e limites
+- Atribuir planos aos usuários
+- Preview de avatares
+
+## 🔐 Segurança
 
 - **Prompt System protegido**: Nunca exposto ao frontend
-- **Rate limiting**: Por minuto, hora e dia
+- **Rate limiting**: Por plano do usuário
 - **Content moderation**: Bloqueio de padrões maliciosos
 - **Prompt injection protection**: Detecção de tentativas de bypass
 - **User banning**: Sistema de banimento por abuso
@@ -15,272 +48,139 @@ Sistema profissional de IA especializada em Pentest e Red Team, construído com 
 
 ```
 app/
-├── Actions/
-│   └── DeepSeek/
-│       ├── CreateSessionAction.php
-│       ├── SendMessageAction.php
-│       └── GetSessionHistoryAction.php
-├── DTO/
-│   ├── ChatMessageDTO.php
-│   ├── CreateSessionDTO.php
-│   └── DeepSeekResponseDTO.php
-├── Exceptions/
-│   └── DeepSeekException.php
+├── Actions/DeepSeek/          # Actions para chat
+├── DTO/                       # Data Transfer Objects
 ├── Http/
-│   ├── Controllers/
-│   │   └── Api/
-│   │       ├── AuthController.php
-│   │       └── ChatController.php
-│   ├── Middleware/
-│   │   ├── EnsureUserNotBanned.php
-│   │   └── RateLimitAI.php
-│   └── Requests/
-│       └── Api/
-│           ├── CreateSessionRequest.php
-│           ├── SendMessageRequest.php
-│           └── UpdateSessionRequest.php
-├── Jobs/
-│   ├── CleanupOldSessionsJob.php
-│   └── ProcessDeepSeekMessageJob.php
+│   ├── Controllers/Api/       # Controllers da API
+│   │   ├── AuthController     # Login/Registro
+│   │   ├── ChatController     # Chat/Sessões
+│   │   └── AdminController    # Painel Admin
+│   └── Middleware/
+│       ├── EnsureUserIsAdmin  # Proteção admin
+│       ├── EnsureUserNotBanned
+│       └── RateLimitAI        # Limite por plano
 ├── Models/
-│   ├── AbuseLog.php
-│   ├── ChatMessage.php
-│   ├── ChatSession.php
-│   └── User.php
-├── Policies/
-│   └── ChatSessionPolicy.php
+│   ├── User                   # Usuários
+│   ├── ChatSession            # Sessões de chat
+│   ├── ChatMessage            # Mensagens
+│   └── Plan                   # Planos
 └── Services/
-    ├── ContentModerationService.php
-    └── DeepSeekService.php
+    └── DeepSeekService        # Integração com IA
 ```
 
-## ⚙️ Requisitos
+## 🛠️ Tecnologias
 
-- PHP 8.3+
-- Composer
-- MySQL 8.0+ ou PostgreSQL 14+
-- Redis
-- Laravel 11
+- **Backend:** Laravel 11, PHP 8.2+
+- **Database:** SQLite (ou MySQL)
+- **Frontend:** Blade, TailwindCSS, Alpine.js
+- **IA:** DeepSeek via OpenRouter API
+- **Auth:** Laravel Sanctum
+- **Icons:** Font Awesome 6
 
-## 🚀 Instalação
+## 📦 Instalação Local
 
-1. **Clone o repositório**
 ```bash
-git clone https://github.com/seu-usuario/sentinelai.git
-cd sentinelai
-```
+# Clone o repositório
+git clone https://github.com/Shelby3344/deepeyers.git
+cd deepeyers
 
-2. **Instale as dependências**
-```bash
+# Instale dependências
 composer install
-```
 
-3. **Configure o ambiente**
-```bash
+# Configure ambiente
 cp .env.example .env
 php artisan key:generate
-```
 
-4. **Configure as variáveis de ambiente**
-```env
-# Database
-DB_CONNECTION=mysql
-DB_DATABASE=sentinelai
+# Configure o .env
+# DB_CONNECTION=sqlite
+# DEEPSEEK_API_KEY=sua_chave_openrouter
+# DEEPSEEK_ENDPOINT=https://openrouter.ai/api/v1/chat/completions
+# DEEPSEEK_MODEL=deepseek/deepseek-chat
 
-# Redis
-REDIS_HOST=127.0.0.1
-
-# DeepSeek API
-DEEPSEEK_API_KEY=sk-your-api-key
-DEEPSEEK_ENDPOINT=https://api.deepseek.com/chat/completions
-DEEPSEEK_MODEL=deepseek-chat
-```
-
-5. **Execute as migrations**
-```bash
+# Crie o banco
+touch database/database.sqlite
 php artisan migrate
-```
+php artisan db:seed
 
-6. **Inicie o servidor de queue**
-```bash
-php artisan queue:work redis --queue=default
-```
-
-7. **Inicie o servidor**
-```bash
+# Inicie o servidor
 php artisan serve
 ```
 
-## 📡 API Endpoints
+## 🌐 Deploy em Produção
 
-### Autenticação
+Veja o guia completo em [DEPLOY_HOSTINGER.md](DEPLOY_HOSTINGER.md)
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| POST | `/api/auth/register` | Registrar novo usuário |
-| POST | `/api/auth/login` | Login |
-| POST | `/api/auth/logout` | Logout |
-| GET | `/api/auth/me` | Dados do usuário atual |
-
-### Chat
-
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/api/chat/sessions` | Listar sessões |
-| POST | `/api/chat/sessions` | Criar sessão |
-| GET | `/api/chat/sessions/{id}` | Ver sessão com mensagens |
-| PUT | `/api/chat/sessions/{id}` | Atualizar sessão |
-| DELETE | `/api/chat/sessions/{id}` | Deletar sessão |
-| POST | `/api/chat/sessions/{id}/messages` | Enviar mensagem (sync) |
-| POST | `/api/chat/sessions/{id}/messages/async` | Enviar mensagem (async) |
-| GET | `/api/chat/sessions/{id}/status` | Status da mensagem async |
-| GET | `/api/chat/profiles` | Perfis disponíveis |
-
-## 📋 Exemplos de Request/Response
-
-### Criar Sessão
-
-**Request:**
+### Resumo:
 ```bash
-curl -X POST http://localhost:8000/api/chat/sessions \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"title": "Auditoria de Segurança", "profile": "pentest"}'
+# No servidor Ubuntu
+apt install php8.2 php8.2-fpm nginx composer git
+
+# Clone e configure
+cd /var/www
+git clone https://github.com/Shelby3344/deepeyers.git deepeyes
+cd deepeyes
+composer install --no-dev --optimize-autoloader
+cp .env.example .env
+# Configure o .env com suas credenciais
+
+# Banco e migrações
+touch database/database.sqlite
+php artisan key:generate
+php artisan migrate --force
+php artisan db:seed --force
+php artisan storage:link
+
+# Permissões
+chown -R www-data:www-data .
+chmod -R 775 storage bootstrap/cache
+
+# Configure Nginx e reinicie
 ```
 
-**Response:**
-```json
-{
-  "message": "Session created successfully",
-  "data": {
-    "id": "9c7f8e6d-5a4b-3c2d-1e0f-123456789abc",
-    "title": "Auditoria de Segurança",
-    "profile": "pentest",
-    "is_active": true,
-    "created_at": "2024-01-15T10:30:00Z"
-  }
-}
+## 🔑 Configuração OpenRouter
+
+1. Crie uma conta em [openrouter.ai](https://openrouter.ai)
+2. Gere uma API Key em [openrouter.ai/keys](https://openrouter.ai/keys)
+3. Configure no `.env`:
+
+```env
+DEEPSEEK_API_KEY=sk-or-v1-sua_chave_aqui
+DEEPSEEK_ENDPOINT=https://openrouter.ai/api/v1/chat/completions
+DEEPSEEK_MODEL=deepseek/deepseek-chat
 ```
 
-### Enviar Mensagem
+## 📱 Screenshots
 
-**Request:**
-```bash
-curl -X POST http://localhost:8000/api/chat/sessions/{session_id}/messages \
-  -H "Authorization: Bearer YOUR_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"message": "Explique as vulnerabilidades do OWASP Top 10"}'
-```
+### Tela de Chat
+- Interface dark mode profissional
+- Sidebar com sessões organizadas
+- Streaming de respostas em tempo real
+- Blocos de código com botão de copiar
 
-**Response:**
-```json
-{
-  "data": {
-    "message": {
-      "id": "abc123-def456",
-      "role": "assistant",
-      "content": "📌 Vulnerabilidade: A01:2021 – Broken Access Control\n📍 Vetor de ataque (conceitual): ...",
-      "created_at": "2024-01-15T10:31:00Z"
-    },
-    "usage": {
-      "prompt_tokens": 150,
-      "completion_tokens": 500,
-      "total_tokens": 650
-    }
-  }
-}
-```
+### Painel Admin
+- Gerenciamento completo de usuários
+- Edição de planos inline
+- Visualização de todas as sessões
+- Estatísticas do sistema
 
-## 🎭 Perfis de IA
+## 🤝 Contribuição
 
-### SentinelAI (pentest)
-- Modo defensivo
-- Foco em identificação e mitigação
-- Padrão OWASP
-- Tom profissional
-
-### BlackSentinel (redteam)
-- Mentalidade adversarial
-- Análise de superfície de ataque
-- Threat modeling
-- Apenas para usuários `redteam` ou `admin`
-
-## 👥 Roles de Usuário
-
-| Role | Perfis Disponíveis |
-|------|-------------------|
-| `user` | pentest |
-| `analyst` | pentest |
-| `redteam` | pentest, redteam |
-| `admin` | pentest, redteam |
-
-## 🔒 Rate Limiting
-
-| Período | Limite Padrão |
-|---------|---------------|
-| Por minuto | 20 requests |
-| Por hora | 100 requests |
-| Por dia | 500 requests |
-
-Headers de resposta:
-- `X-RateLimit-Limit`
-- `X-RateLimit-Remaining`
-- `X-RateLimit-Daily-Remaining`
-
-## 🧪 Testes
-
-```bash
-# Rodar todos os testes
-php artisan test
-
-# Testes unitários
-php artisan test --testsuite=Unit
-
-# Testes de feature
-php artisan test --testsuite=Feature
-
-# Com coverage
-php artisan test --coverage
-```
-
-## 🔧 Comandos Úteis
-
-```bash
-# Limpar sessões antigas
-php artisan schedule:run
-
-# Processar queue
-php artisan queue:work redis
-
-# Monitorar queue
-php artisan queue:listen
-```
-
-## 📦 Deploy Checklist
-
-- [ ] `APP_ENV=production`
-- [ ] `APP_DEBUG=false`
-- [ ] API Key configurada
-- [ ] Redis configurado
-- [ ] Queue worker rodando
-- [ ] SSL/HTTPS habilitado
-- [ ] Rate limiting ativo
-- [ ] Logs configurados
-- [ ] Backup de banco configurado
-
-## 🛡️ Segurança
-
-### Nunca expor:
-- `DEEPSEEK_API_KEY`
-- System prompts
-- Logs de abuso
-
-### Sempre validar:
-- Input do usuário
-- Tamanho de mensagens
-- Padrões maliciosos
-- Tentativas de prompt injection
+1. Fork o projeto
+2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request
 
 ## 📄 Licença
 
-Proprietary - Todos os direitos reservados.
+Este projeto é privado e de uso restrito.
+
+## 👨‍💻 Autor
+
+**Zuckszinho** - Desenvolvido para profissionais de segurança.
+
+---
+
+<p align="center">
+  <strong>🔴 DeepEyes - O olho que tudo vê 👁️</strong>
+</p>

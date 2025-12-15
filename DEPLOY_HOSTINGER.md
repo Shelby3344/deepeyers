@@ -35,8 +35,12 @@ apt install -y php8.2 php8.2-fpm php8.2-cli php8.2-common \
 # Instala Nginx
 apt install -y nginx
 
-# Instala MySQL (ou use SQLite)
+# Instala MySQL
 apt install -y mysql-server
+
+# Inicia o MySQL
+systemctl start mysql
+systemctl enable mysql
 
 # Instala Composer
 curl -sS https://getcomposer.org/installer | php
@@ -52,34 +56,31 @@ apt install -y redis-server
 
 ---
 
-## 3️⃣ Configurar MySQL
-
-```bash
-# Acessa MySQL
-mysql -u root
-
-# Cria banco e usuário
-CREATE DATABASE deepeyes CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'deepeyes'@'localhost' IDENTIFIED BY 'SUA_SENHA_FORTE_AQUI';
-GRANT ALL PRIVILEGES ON deepeyes.* TO 'deepeyes'@'localhost';
-FLUSH PRIVILEGES;
-EXIT;
-```
-
----
-
-## 4️⃣ Clonar o Projeto
+## 3️⃣ Clonar o Projeto
 
 ```bash
 # Cria diretório do projeto
 mkdir -p /var/www
 cd /var/www
 
-# Clona o repositório (ou transfere via SFTP)
-git clone https://github.com/SEU_USUARIO/deepeyes.git
-# OU se não tiver Git, use SFTP para enviar os arquivos
+# Clona o repositório
+git clone https://github.com/Shelby3344/deepeyers.git deepeyes
 
 cd deepeyes
+```
+
+---
+
+## 4️⃣ Configurar SQLite
+
+```bash
+# Cria arquivo do banco de dados
+touch /var/www/deepeyes/database/database.sqlite
+
+# Ajusta permissões
+chmod 664 /var/www/deepeyes/database/database.sqlite
+chown www-data:www-data /var/www/deepeyes/database/database.sqlite
+chown www-data:www-data /var/www/deepeyes/database
 ```
 
 ---
@@ -94,36 +95,31 @@ cp .env.example .env
 nano .env
 ```
 
-### Configurações do .env para produção:
+### Configurações do .env para produção (com SQLite e OpenRouter):
 
 ```env
 APP_NAME=DeepEyes
 APP_ENV=production
 APP_DEBUG=false
-APP_URL=https://seudominio.com
+APP_URL=http://SEU_IP_OU_DOMINIO
 
-# Banco de dados MySQL
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=deepeyes
-DB_USERNAME=deepeyes
-DB_PASSWORD=SUA_SENHA_FORTE_AQUI
+DB_CONNECTION=sqlite
 
-# OU se quiser usar SQLite (mais simples):
-# DB_CONNECTION=sqlite
-# (e crie o arquivo: touch database/database.sqlite)
-
-# Session e Cache
 SESSION_DRIVER=file
 CACHE_STORE=file
 QUEUE_CONNECTION=sync
 
-# DeepSeek API
-DEEPSEEK_API_KEY=sua_api_key_aqui
-DEEPSEEK_ENDPOINT=https://api.deepseek.com/chat/completions
-DEEPSEEK_MODEL=deepseek-chat
+# OpenRouter (não DeepSeek direto)
+DEEPSEEK_API_KEY=sk-or-v1-SUA_CHAVE_OPENROUTER
+DEEPSEEK_ENDPOINT=https://openrouter.ai/api/v1/chat/completions
+DEEPSEEK_MODEL=deepseek/deepseek-chat
 ```
+
+> ⚠️ **SQLite não precisa de usuário/senha!** É um banco em arquivo.
+> 
+> 🔑 Pegue sua API Key em: https://openrouter.ai/keys
+> 
+> Para salvar no nano: `Ctrl+O`, Enter, depois `Ctrl+X` para sair.
 
 ### Instalar dependências e configurar:
 
