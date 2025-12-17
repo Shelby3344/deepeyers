@@ -59,15 +59,22 @@ class AuthController extends Controller
 
         $user = User::where('email', $validated['email'])->first();
 
+        // ✅ Resposta genérica - não indica se email existe ou senha está errada
         if (!$user || !Hash::check($validated['password'], $user->password)) {
+            // Delay anti-bruteforce para dificultar ataques
+            usleep(random_int(100000, 300000));
+            
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'credentials' => ['Authentication failed.'],
             ]);
         }
 
         if ($user->is_banned) {
+            // Mesma mensagem genérica para não revelar status do usuário
+            usleep(random_int(100000, 300000));
+            
             throw ValidationException::withMessages([
-                'email' => ['Your account has been suspended.'],
+                'credentials' => ['Authentication failed.'],
             ]);
         }
 

@@ -30,7 +30,8 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'expiration' => env('SANCTUM_TOKEN_EXPIRATION', null),
+    // ✅ Tokens expiram em 24 horas para segurança
+    'expiration' => env('SANCTUM_TOKEN_EXPIRATION', 60 * 24),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +39,8 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'token_prefix' => env('SANCTUM_TOKEN_PREFIX', ''),
+    // ✅ Prefixo ofuscado para tokens
+    'token_prefix' => env('SANCTUM_TOKEN_PREFIX', 'dey_'),
 
     /*
     |--------------------------------------------------------------------------

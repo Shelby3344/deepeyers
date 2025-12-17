@@ -69,9 +69,13 @@
         
         .code-block-lang {
             font-size: 12px;
-            color: #94a3b8;
-            font-weight: 500;
+            color: #22d3ee;
+            font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(34, 211, 238, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
         }
         
         .code-copy-btn {
@@ -557,21 +561,21 @@
                 <input type="hidden" id="profileSelector" value="pentest">
                 <div class="profile-dropdown" id="profileDropdown">
                     <div class="profile-selected" onclick="toggleProfileDropdown()">
-                        <i class="fas fa-shield-halved text-red-400 profile-icon" id="selectedProfileIcon"></i>
+                        <i class="fas fa-skull-crossbones text-red-400 profile-icon" id="selectedProfileIcon"></i>
                         <span id="selectedProfileText">DeepEyes - Ofensivo</span>
                         <i class="fas fa-chevron-down text-gray-400 chevron"></i>
                     </div>
                     <div class="profile-options">
-                        <div class="profile-option selected" data-value="pentest" data-icon="fa-shield-halved" data-color="text-red-400" onclick="selectProfile(this)">
-                            <i class="fas fa-shield-halved text-red-400"></i>
+                        <div class="profile-option selected" data-value="pentest" data-icon="fa-skull-crossbones" data-color="text-red-400" onclick="selectProfile(this)">
+                            <i class="fas fa-skull-crossbones text-red-400"></i>
                             <span>DeepEyes - Ofensivo</span>
                         </div>
                         <div class="profile-option" data-value="redteam" data-icon="fa-crosshairs" data-color="text-orange-400" onclick="selectProfile(this)">
                             <i class="fas fa-crosshairs text-orange-400"></i>
                             <span>BlackSentinel - Red Team</span>
                         </div>
-                        <div class="profile-option" data-value="offensive" data-icon="fa-skull" data-color="text-purple-400" onclick="selectProfile(this)">
-                            <i class="fas fa-skull text-purple-400"></i>
+                        <div class="profile-option" data-value="offensive" data-icon="fa-biohazard" data-color="text-purple-400" onclick="selectProfile(this)">
+                            <i class="fas fa-biohazard text-purple-400"></i>
                             <span>GhostOps - Full Attack</span>
                         </div>
                     </div>
@@ -756,7 +760,7 @@
                         <div class="feature-card card-red">
                             <div class="feature-card-inner">
                                 <div class="feature-card-content text-left">
-                                    <i class="fas fa-syringe text-red-400 card-icon"></i>
+                                    <i class="fas fa-database text-red-400 card-icon text-xl"></i>
                                     <h4 class="font-semibold mb-1 text-white">SQL Injection</h4>
                                     <p class="text-xs text-gray-400">Payloads, bypasses, tecnicas</p>
                                 </div>
@@ -765,7 +769,7 @@
                         <div class="feature-card card-purple">
                             <div class="feature-card-inner">
                                 <div class="feature-card-content text-left">
-                                    <i class="fas fa-terminal text-purple-400 card-icon"></i>
+                                    <i class="fas fa-terminal text-purple-400 card-icon text-xl"></i>
                                     <h4 class="font-semibold mb-1 text-white">Reverse Shells</h4>
                                     <p class="text-xs text-gray-400">One-liners, stagers, implants</p>
                                 </div>
@@ -774,7 +778,7 @@
                         <div class="feature-card card-green">
                             <div class="feature-card-inner">
                                 <div class="feature-card-content text-left">
-                                    <i class="fas fa-user-secret text-green-400 card-icon"></i>
+                                    <i class="fas fa-user-secret text-green-400 card-icon text-xl"></i>
                                     <h4 class="font-semibold mb-1 text-white">Privilege Escalation</h4>
                                     <p class="text-xs text-gray-400">Linux, Windows, AD attacks</p>
                                 </div>
@@ -783,7 +787,7 @@
                         <div class="feature-card card-blue">
                             <div class="feature-card-inner">
                                 <div class="feature-card-content text-left">
-                                    <i class="fas fa-ghost text-blue-400 card-icon"></i>
+                                    <i class="fas fa-mask text-blue-400 card-icon text-xl"></i>
                                     <h4 class="font-semibold mb-1 text-white">Evasion</h4>
                                     <p class="text-xs text-gray-400">AMSI, EDR, WAF bypass</p>
                                 </div>
@@ -801,15 +805,21 @@
                 
                 <!-- Welcome para Sessao (sem mensagens ainda) -->
                 <div id="sessionWelcome" class="flex flex-col items-center justify-center h-full text-center hidden">
-                    <div class="flex items-center gap-3 mb-4">
-                        <img src="/logo.png" alt="DeepEyes" class="h-10">
-                        <h3 class="text-xl font-bold text-white">Sessao Iniciada</h3>
+                    <div class="flex items-center gap-3 mb-6">
+                        <img src="/logo.png" alt="DeepEyes" class="h-14">
                     </div>
+                    
+                    <h3 class="text-2xl font-bold text-white mb-2">Pronto para começar!</h3>
+                    <p class="text-gray-400 max-w-md mb-6">
+                        Faça sua primeira pergunta e eu vou te ajudar com técnicas de 
+                        <span class="text-red-400 font-semibold">Pentest</span> e 
+                        <span class="text-purple-400 font-semibold">Red Team</span>.
+                    </p>
                     
                     <!-- Perfil Atual -->
                     <div id="currentProfileCard" class="w-full max-w-md bg-slate-800/60 border border-slate-700 rounded-xl p-4 mb-4">
                         <div class="flex items-center gap-3 mb-2">
-                            <i id="welcomeProfileIcon" class="fas fa-shield-halved text-red-400 text-2xl"></i>
+                            <i id="welcomeProfileIcon" class="fas fa-skull-crossbones text-red-400 text-2xl"></i>
                             <div class="text-left flex-1">
                                 <p class="text-[10px] text-gray-500 uppercase tracking-wider">Perfil Ativo</p>
                                 <h4 id="welcomeProfileName" class="text-sm font-bold text-white">DeepEyes - Ofensivo</h4>
@@ -838,7 +848,7 @@
                         </div>
                         <p id="welcomeProfileRestriction" class="text-[10px] text-gray-500 text-left border-t border-slate-700 pt-2">
                             <i class="fas fa-shield-check mr-1 text-blue-400"></i>
-                            IA com diretrizes de seguranca - respostas tecnicas para profissionais autorizados
+                            IA com diretrizes de segurança - respostas técnicas para profissionais autorizados
                         </p>
                     </div>
                     
@@ -879,16 +889,8 @@
                     </div>
                     <div class="bg-slate-800/80 backdrop-blur-sm rounded-2xl rounded-tl-none px-5 py-4 border border-slate-700/50">
                         <div class="ai-thinking">
-                            <div class="flex flex-col gap-2">
-                                <div class="flex items-center gap-3">
-                                    <span class="thinking-text text-sm font-medium">DeepEyes processando</span>
-                                    <div class="thinking-dots">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </div>
-                                </div>
-                                <div class="neural-line w-32"></div>
+                            <div class="flex items-center gap-3">
+                                <span class="thinking-text text-sm font-medium text-gray-300">DeepEyes pensando...</span>
                             </div>
                         </div>
                     </div>
@@ -928,7 +930,7 @@
                         
                         <form id="messageForm" class="flex items-end gap-2 p-3">
                             <!-- Input de arquivo oculto -->
-                            <input type="file" id="fileInput" class="hidden" accept=".txt,.py,.js,.php,.html,.css,.json,.xml,.sh,.bat,.ps1,.sql,.md,.c,.cpp,.h,.java,.rb,.go,.rs,.ts,.vue,.jsx,.tsx,image/*">
+                            <input type="file" id="fileInput" class="hidden" accept=".txt,.py,.js,.php,.html,.css,.json,.xml,.sh,.bat,.ps1,.sql,.md,.c,.cpp,.h,.java,.rb,.go,.rs,.ts,.vue,.jsx,.tsx,.yaml,.yml,.toml,.ini,.cfg,.conf,.env,.log,.csv,.dockerfile,.makefile,.gitignore,.htaccess,.nginx,.apache,.reg,.vbs,.asm,.lua,.perl,.pl,.r,.scala,.kt,.swift,.dart,.ex,.exs,.elm,.hs,.clj,.lisp,.scm,.ml,.fs,.pas,.vb,.m,.mm,.groovy,.gradle,.cmake,.proto,.graphql,.prisma,.tf,.hcl,image/*">
                             
                             <!-- Botao de anexo -->
                             <button 
@@ -963,6 +965,16 @@
                             >
                                 <i class="fas fa-arrow-up text-sm"></i>
                             </button>
+                            
+                            <!-- Botao de cancelar (oculto por padrao) -->
+                            <button 
+                                type="button" 
+                                id="cancelBtn"
+                                class="hidden w-10 h-10 rounded-xl bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-white transition-all flex-shrink-0 flex items-center justify-center shadow-lg shadow-red-500/30 hover:shadow-red-500/50 hover:scale-105 active:scale-95 animate-pulse"
+                                title="Cancelar resposta"
+                            >
+                                <i class="fas fa-stop text-sm"></i>
+                            </button>
                         </form>
                         
                         <!-- Barra inferior com info -->
@@ -973,7 +985,7 @@
                                     Ambiente autorizado
                                 </span>
                                 <span class="flex items-center gap-1.5" id="currentProfileBadge">
-                                    <i class="fas fa-crosshairs text-red-500/70"></i>
+                                    <i class="fas fa-skull-crossbones text-red-500/70"></i>
                                     <span id="currentProfileText">Pentest</span>
                                 </span>
                             </div>
@@ -997,6 +1009,7 @@
         let sessions = [];
         let userAvatarUrl = null;
         let currentAttachment = null; // Para armazenar o anexo atual
+        let currentAbortController = null; // Para cancelar requisições
         
         // DOM Elements
         const authModal = document.getElementById('authModal');
@@ -1007,6 +1020,7 @@
         const messageForm = document.getElementById('messageForm');
         const messageInput = document.getElementById('messageInput');
         const sendBtn = document.getElementById('sendBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
         const messagesContainer = document.getElementById('messagesContainer');
         const homeWelcome = document.getElementById('homeWelcome');
         const sessionWelcome = document.getElementById('sessionWelcome');
@@ -1090,22 +1104,62 @@
                 imagePreviewContainer.classList.remove('hidden');
             } else {
                 const iconMap = {
-                    'py': 'fa-python text-yellow-400',
-                    'js': 'fa-js text-yellow-300',
-                    'php': 'fa-php text-purple-400',
-                    'html': 'fa-html5 text-orange-400',
-                    'css': 'fa-css3 text-blue-400',
-                    'json': 'fa-code text-green-400',
-                    'sql': 'fa-database text-blue-300',
-                    'sh': 'fa-terminal text-green-300',
-                    'bat': 'fa-terminal text-gray-400',
-                    'ps1': 'fa-terminal text-blue-400',
-                    'md': 'fa-markdown text-white',
-                    'txt': 'fa-file-alt text-gray-300'
+                    'py': { icon: 'fab fa-python', color: 'text-yellow-400' },
+                    'js': { icon: 'fab fa-js', color: 'text-yellow-300' },
+                    'ts': { icon: 'fab fa-js', color: 'text-blue-400' },
+                    'jsx': { icon: 'fab fa-react', color: 'text-cyan-400' },
+                    'tsx': { icon: 'fab fa-react', color: 'text-cyan-400' },
+                    'vue': { icon: 'fab fa-vuejs', color: 'text-green-400' },
+                    'php': { icon: 'fab fa-php', color: 'text-purple-400' },
+                    'html': { icon: 'fab fa-html5', color: 'text-orange-400' },
+                    'css': { icon: 'fab fa-css3', color: 'text-blue-400' },
+                    'scss': { icon: 'fab fa-sass', color: 'text-pink-400' },
+                    'sass': { icon: 'fab fa-sass', color: 'text-pink-400' },
+                    'json': { icon: 'fas fa-brackets-curly', color: 'text-yellow-300' },
+                    'xml': { icon: 'fas fa-code', color: 'text-orange-300' },
+                    'yaml': { icon: 'fas fa-file-code', color: 'text-red-300' },
+                    'yml': { icon: 'fas fa-file-code', color: 'text-red-300' },
+                    'toml': { icon: 'fas fa-file-code', color: 'text-gray-300' },
+                    'ini': { icon: 'fas fa-cog', color: 'text-gray-400' },
+                    'cfg': { icon: 'fas fa-cog', color: 'text-gray-400' },
+                    'conf': { icon: 'fas fa-cog', color: 'text-gray-400' },
+                    'env': { icon: 'fas fa-key', color: 'text-yellow-500' },
+                    'sql': { icon: 'fas fa-database', color: 'text-blue-300' },
+                    'sh': { icon: 'fas fa-terminal', color: 'text-green-300' },
+                    'bash': { icon: 'fas fa-terminal', color: 'text-green-300' },
+                    'zsh': { icon: 'fas fa-terminal', color: 'text-green-300' },
+                    'bat': { icon: 'fas fa-terminal', color: 'text-gray-400' },
+                    'ps1': { icon: 'fas fa-terminal', color: 'text-blue-400' },
+                    'cmd': { icon: 'fas fa-terminal', color: 'text-gray-400' },
+                    'md': { icon: 'fab fa-markdown', color: 'text-white' },
+                    'txt': { icon: 'fas fa-file-alt', color: 'text-gray-300' },
+                    'log': { icon: 'fas fa-file-alt', color: 'text-gray-400' },
+                    'csv': { icon: 'fas fa-file-csv', color: 'text-green-300' },
+                    'c': { icon: 'fas fa-code', color: 'text-blue-400' },
+                    'cpp': { icon: 'fas fa-code', color: 'text-blue-500' },
+                    'h': { icon: 'fas fa-code', color: 'text-blue-300' },
+                    'java': { icon: 'fab fa-java', color: 'text-red-400' },
+                    'kt': { icon: 'fas fa-code', color: 'text-purple-400' },
+                    'swift': { icon: 'fab fa-swift', color: 'text-orange-400' },
+                    'go': { icon: 'fab fa-golang', color: 'text-cyan-400' },
+                    'rs': { icon: 'fas fa-code', color: 'text-orange-500' },
+                    'rb': { icon: 'fas fa-gem', color: 'text-red-400' },
+                    'lua': { icon: 'fas fa-moon', color: 'text-blue-400' },
+                    'r': { icon: 'fas fa-chart-line', color: 'text-blue-400' },
+                    'dart': { icon: 'fas fa-code', color: 'text-cyan-400' },
+                    'dockerfile': { icon: 'fab fa-docker', color: 'text-blue-400' },
+                    'makefile': { icon: 'fas fa-cogs', color: 'text-gray-400' },
+                    'gitignore': { icon: 'fab fa-git-alt', color: 'text-orange-400' },
+                    'htaccess': { icon: 'fas fa-server', color: 'text-red-400' },
+                    'nginx': { icon: 'fas fa-server', color: 'text-green-400' },
+                    'graphql': { icon: 'fas fa-project-diagram', color: 'text-pink-400' },
+                    'prisma': { icon: 'fas fa-database', color: 'text-indigo-400' },
+                    'tf': { icon: 'fas fa-cloud', color: 'text-purple-400' },
+                    'hcl': { icon: 'fas fa-cloud', color: 'text-purple-400' }
                 };
                 const ext = file.name.split('.').pop().toLowerCase();
-                const iconClass = iconMap[ext] || 'fa-file-code text-purple-400';
-                attachmentIcon.innerHTML = `<i class="fab ${iconClass}"></i>`;
+                const iconInfo = iconMap[ext] || { icon: 'fas fa-file-code', color: 'text-purple-400' };
+                attachmentIcon.innerHTML = `<i class="${iconInfo.icon} ${iconInfo.color}"></i>`;
                 imagePreviewContainer.classList.add('hidden');
             }
             
@@ -1259,7 +1313,7 @@
         const profileInfo = {
             'pentest': {
                 name: 'DeepEyes - Ofensivo',
-                icon: 'fa-shield-halved',
+                icon: 'fa-skull-crossbones',
                 color: 'from-red-600 to-red-800',
                 iconColor: 'text-red-400',
                 badge: { text: 'RESTRITO', class: 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30', icon: 'fa-lock' },
@@ -1275,7 +1329,7 @@
             },
             'offensive': {
                 name: 'DarkMind - Irrestrito',
-                icon: 'fa-skull',
+                icon: 'fa-biohazard',
                 color: 'from-purple-600 to-purple-800',
                 iconColor: 'text-purple-400',
                 badge: { text: 'LIVRE', class: 'bg-green-600/20 text-green-400 border-green-600/30', icon: 'fa-unlock' },
@@ -1392,9 +1446,9 @@
         }
         
         const profileIcons = {
-            'pentest': { icon: 'fa-shield-halved', color: 'text-red-400', bg: 'from-red-500/20 to-orange-500/20' },
+            'pentest': { icon: 'fa-skull-crossbones', color: 'text-red-400', bg: 'from-red-500/20 to-orange-500/20' },
             'redteam': { icon: 'fa-crosshairs', color: 'text-orange-400', bg: 'from-orange-500/20 to-yellow-500/20' },
-            'offensive': { icon: 'fa-skull', color: 'text-purple-400', bg: 'from-purple-500/20 to-pink-500/20' }
+            'offensive': { icon: 'fa-biohazard', color: 'text-purple-400', bg: 'from-purple-500/20 to-pink-500/20' }
         };
         
         function renderSessions() {
@@ -1534,8 +1588,12 @@
         
         async function loadSession(sessionId) {
             try {
-                // Limpa mensagens anteriores antes de carregar
+                // Limpa completamente mensagens anteriores
                 messagesContainer.innerHTML = '';
+                
+                // Remove qualquer div de streaming residual
+                const streamingDiv = document.getElementById('streamingResponse');
+                if (streamingDiv) streamingDiv.remove();
                 
                 const data = await api(`/chat/sessions/${sessionId}`);
                 currentSession = data.data.session;
@@ -1570,24 +1628,17 @@
             
             // Atualiza o perfil na barra inferior
             if (currentSession && currentSession.profile) {
-                const profileInfo = getProfileInfo(currentSession.profile);
-                currentProfileText.textContent = profileInfo.name;
-                currentProfileBadge.querySelector('i').className = `fas ${profileInfo.icon} ${profileInfo.color}`;
+                const pInfo = getProfileInfo(currentSession.profile);
+                currentProfileText.textContent = pInfo.name;
+                currentProfileBadge.querySelector('i').className = `fas ${pInfo.icon} ${pInfo.color}`;
             }
         }
         
         function getProfileInfo(profile) {
             const profiles = {
-                'pentest': { name: 'Pentest', icon: 'fa-crosshairs', color: 'text-red-500/70' },
-                'recon': { name: 'Recon & OSINT', icon: 'fa-binoculars', color: 'text-blue-500/70' },
-                'web': { name: 'Web Hacking', icon: 'fa-globe', color: 'text-purple-500/70' },
-                'network': { name: 'Network', icon: 'fa-network-wired', color: 'text-green-500/70' },
-                'mobile': { name: 'Mobile', icon: 'fa-mobile-alt', color: 'text-yellow-500/70' },
-                'malware': { name: 'Malware', icon: 'fa-bug', color: 'text-orange-500/70' },
-                'social': { name: 'Social Eng.', icon: 'fa-users', color: 'text-pink-500/70' },
-                'cloud': { name: 'Cloud', icon: 'fa-cloud', color: 'text-cyan-500/70' },
-                'forensics': { name: 'Forensics', icon: 'fa-microscope', color: 'text-indigo-500/70' },
-                'exploit': { name: 'Exploit Dev', icon: 'fa-bomb', color: 'text-rose-500/70' }
+                'pentest': { name: 'Pentest', icon: 'fa-skull-crossbones', color: 'text-red-500/70' },
+                'redteam': { name: 'Red Team', icon: 'fa-crosshairs', color: 'text-orange-500/70' },
+                'offensive': { name: 'Full Attack', icon: 'fa-biohazard', color: 'text-purple-500/70' }
             };
             return profiles[profile] || { name: profile, icon: 'fa-terminal', color: 'text-gray-500/70' };
         }
@@ -1619,9 +1670,45 @@
         }
         
         function renderMessages(messages) {
-            messagesContainer.innerHTML = messages.map(msg => createMessageHTML(msg)).join('');
+            // Limpa completamente o container
+            messagesContainer.innerHTML = '';
+            
+            // Remove duplicatas baseado no conteúdo (mantém última ocorrência)
+            const uniqueMessages = [];
+            const seen = new Set();
+            
+            for (let i = messages.length - 1; i >= 0; i--) {
+                const msg = messages[i];
+                const key = `${msg.role}-${(msg.content || '').substring(0, 100)}`;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    uniqueMessages.unshift(msg);
+                }
+            }
+            
+            messagesContainer.innerHTML = uniqueMessages.map(msg => createMessageHTML(msg)).join('');
             processCodeBlocks();
             scrollToBottom();
+        }
+        
+        // Função fallback para copiar texto em navegadores antigos ou HTTP
+        function fallbackCopy(text, onSuccess) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            
+            try {
+                const success = document.execCommand('copy');
+                if (success && onSuccess) onSuccess();
+            } catch (e) {
+                console.error('Fallback copy failed:', e);
+                alert('Não foi possível copiar. Selecione o código manualmente.');
+            }
+            
+            document.body.removeChild(textarea);
         }
         
         // Processa blocos de código e adiciona botão de copiar
@@ -1631,13 +1718,54 @@
                 if (pre.parentElement.classList.contains('code-block-wrapper')) return;
                 
                 const code = pre.querySelector('code');
+                
+                // Pega o texto puro do código (textContent já decodifica entidades HTML)
                 const codeText = code ? code.textContent : pre.textContent;
                 
-                // Detecta a linguagem da classe (ex: language-python)
+                // Detecta a linguagem da classe (ex: language-python, language-javascript)
                 let lang = 'código';
                 if (code && code.className) {
                     const match = code.className.match(/language-(\w+)/);
-                    if (match) lang = match[1];
+                    if (match) {
+                        // Mapeia linguagens comuns para nomes mais legíveis
+                        const langMap = {
+                            'js': 'JavaScript',
+                            'javascript': 'JavaScript',
+                            'ts': 'TypeScript',
+                            'typescript': 'TypeScript',
+                            'py': 'Python',
+                            'python': 'Python',
+                            'php': 'PHP',
+                            'html': 'HTML',
+                            'css': 'CSS',
+                            'bash': 'Bash',
+                            'sh': 'Shell',
+                            'shell': 'Shell',
+                            'sql': 'SQL',
+                            'json': 'JSON',
+                            'xml': 'XML',
+                            'yaml': 'YAML',
+                            'yml': 'YAML',
+                            'java': 'Java',
+                            'c': 'C',
+                            'cpp': 'C++',
+                            'csharp': 'C#',
+                            'cs': 'C#',
+                            'go': 'Go',
+                            'rust': 'Rust',
+                            'ruby': 'Ruby',
+                            'rb': 'Ruby',
+                            'swift': 'Swift',
+                            'kotlin': 'Kotlin',
+                            'powershell': 'PowerShell',
+                            'ps1': 'PowerShell',
+                            'dockerfile': 'Dockerfile',
+                            'markdown': 'Markdown',
+                            'md': 'Markdown'
+                        };
+                        const detected = match[1].toLowerCase();
+                        lang = langMap[detected] || match[1].toUpperCase();
+                    }
                 }
                 
                 // Cria wrapper
@@ -1657,37 +1785,41 @@
                 
                 // Armazena o código no botão para copiar
                 const copyBtn = header.querySelector('.code-copy-btn');
-                copyBtn.dataset.code = codeText;
                 
-                // Adiciona evento de clique diretamente
-                copyBtn.addEventListener('click', function() {
-                    const codeContent = this.dataset.code;
-                    navigator.clipboard.writeText(codeContent).then(() => {
-                        this.classList.add('copied');
-                        this.innerHTML = '<i class="fas fa-check"></i><span>Copiado!</span>';
-                        
+                // Salva o texto diretamente no dataset (puro, sem HTML entities)
+                copyBtn.setAttribute('data-code', codeText);
+                
+                // Adiciona evento de clique
+                copyBtn.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const textToCopy = this.getAttribute('data-code');
+                    const btn = this;
+                    
+                    // Função para mostrar sucesso
+                    const showSuccess = () => {
+                        btn.classList.add('copied');
+                        btn.innerHTML = '<i class="fas fa-check"></i><span>Copiado!</span>';
                         setTimeout(() => {
-                            this.classList.remove('copied');
-                            this.innerHTML = '<i class="fas fa-copy"></i><span>Copiar</span>';
+                            btn.classList.remove('copied');
+                            btn.innerHTML = '<i class="fas fa-copy"></i><span>Copiar</span>';
                         }, 2000);
-                    }).catch(err => {
-                        console.error('Erro ao copiar:', err);
+                    };
+                    
+                    // Método 1: Clipboard API (moderno)
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(textToCopy)
+                            .then(showSuccess)
+                            .catch(() => {
+                                // Fallback se clipboard falhar
+                                fallbackCopy(textToCopy, showSuccess);
+                            });
+                    } else {
                         // Fallback para navegadores antigos
-                        const textarea = document.createElement('textarea');
-                        textarea.value = codeContent;
-                        document.body.appendChild(textarea);
-                        textarea.select();
-                        document.execCommand('copy');
-                        document.body.removeChild(textarea);
-                        
-                        this.classList.add('copied');
-                        this.innerHTML = '<i class="fas fa-check"></i><span>Copiado!</span>';
-                        setTimeout(() => {
-                            this.classList.remove('copied');
-                            this.innerHTML = '<i class="fas fa-copy"></i><span>Copiar</span>';
-                        }, 2000);
-                    });
-                });
+                        fallbackCopy(textToCopy, showSuccess);
+                    }
+                };
                 
                 // Insere wrapper antes do pre
                 pre.parentNode.insertBefore(wrapper, pre);
@@ -1696,25 +1828,37 @@
             });
         }
         
-        // Função global para copiar código (fallback)
-        window.copyCodeBlock = function(btn) {
-            const code = btn.dataset.code;
-            navigator.clipboard.writeText(code).then(() => {
-                btn.classList.add('copied');
-                btn.innerHTML = '<i class="fas fa-check"></i><span>Copiado!</span>';
-                
-                setTimeout(() => {
-                    btn.classList.remove('copied');
-                    btn.innerHTML = '<i class="fas fa-copy"></i><span>Copiar</span>';
-                }, 2000);
-            }).catch(err => {
-                console.error('Erro ao copiar:', err);
-            });
-        };
-        
         function createMessageHTML(message) {
             const isUser = message.role === 'user';
-            const content = message.content ? marked.parse(message.content) : '';
+            let displayText = message.content || '';
+            let attachmentData = message.attachment || null;
+            
+            // Para mensagens do usuário, detecta se há arquivo anexado no conteúdo
+            if (isUser && !attachmentData && message.content) {
+                // Padrão: **Arquivo: nome.ext** (X linhas) seguido de bloco de código
+                const filePattern = /\*\*Arquivo:\s*([^\*]+)\*\*\s*\((\d+)\s*linhas\)\s*\n\n```(\w*)\n[\s\S]*```$/;
+                const match = message.content.match(filePattern);
+                
+                if (match) {
+                    const fileName = match[1].trim();
+                    const lines = match[2];
+                    const ext = match[3] || fileName.split('.').pop() || 'txt';
+                    
+                    // Remove o bloco de arquivo/código do texto exibido
+                    displayText = message.content.replace(filePattern, '').trim();
+                    
+                    // Cria attachment data dinamicamente
+                    attachmentData = {
+                        type: 'code',
+                        name: fileName,
+                        extension: ext,
+                        lines: lines,
+                        size: 'arquivo'
+                    };
+                }
+            }
+            
+            const content = displayText ? marked.parse(displayText) : '';
             
             if (isUser) {
                 const avatarHtml = userAvatarUrl 
@@ -1723,44 +1867,65 @@
                 
                 // Renderiza card de anexo se houver
                 let attachmentHtml = '';
-                if (message.attachment) {
-                    if (message.attachment.type === 'code') {
+                if (attachmentData) {
+                    if (attachmentData.type === 'code') {
                         const iconMap = {
                             'py': { icon: 'fab fa-python', color: 'text-yellow-400' },
                             'js': { icon: 'fab fa-js', color: 'text-yellow-300' },
+                            'ts': { icon: 'fab fa-js', color: 'text-blue-400' },
+                            'jsx': { icon: 'fab fa-react', color: 'text-cyan-400' },
+                            'tsx': { icon: 'fab fa-react', color: 'text-cyan-400' },
+                            'vue': { icon: 'fab fa-vuejs', color: 'text-green-400' },
                             'php': { icon: 'fab fa-php', color: 'text-purple-400' },
                             'html': { icon: 'fab fa-html5', color: 'text-orange-400' },
                             'css': { icon: 'fab fa-css3', color: 'text-blue-400' },
-                            'json': { icon: 'fas fa-code', color: 'text-green-400' },
+                            'scss': { icon: 'fab fa-sass', color: 'text-pink-400' },
+                            'json': { icon: 'fas fa-brackets-curly', color: 'text-yellow-300' },
+                            'xml': { icon: 'fas fa-code', color: 'text-orange-300' },
+                            'yaml': { icon: 'fas fa-file-code', color: 'text-red-300' },
+                            'yml': { icon: 'fas fa-file-code', color: 'text-red-300' },
+                            'env': { icon: 'fas fa-key', color: 'text-yellow-500' },
                             'sql': { icon: 'fas fa-database', color: 'text-blue-300' },
                             'sh': { icon: 'fas fa-terminal', color: 'text-green-300' },
+                            'bash': { icon: 'fas fa-terminal', color: 'text-green-300' },
                             'bat': { icon: 'fas fa-terminal', color: 'text-gray-400' },
                             'ps1': { icon: 'fas fa-terminal', color: 'text-blue-400' },
+                            'cmd': { icon: 'fas fa-terminal', color: 'text-gray-400' },
                             'md': { icon: 'fab fa-markdown', color: 'text-white' },
-                            'txt': { icon: 'fas fa-file-alt', color: 'text-gray-300' }
+                            'txt': { icon: 'fas fa-file-alt', color: 'text-gray-300' },
+                            'log': { icon: 'fas fa-file-alt', color: 'text-gray-400' },
+                            'csv': { icon: 'fas fa-file-csv', color: 'text-green-300' },
+                            'c': { icon: 'fas fa-code', color: 'text-blue-400' },
+                            'cpp': { icon: 'fas fa-code', color: 'text-blue-500' },
+                            'java': { icon: 'fab fa-java', color: 'text-red-400' },
+                            'go': { icon: 'fab fa-golang', color: 'text-cyan-400' },
+                            'rs': { icon: 'fas fa-code', color: 'text-orange-500' },
+                            'rb': { icon: 'fas fa-gem', color: 'text-red-400' },
+                            'dockerfile': { icon: 'fab fa-docker', color: 'text-blue-400' },
+                            'graphql': { icon: 'fas fa-project-diagram', color: 'text-pink-400' }
                         };
-                        const ext = message.attachment.extension;
+                        const ext = attachmentData.extension;
                         const iconInfo = iconMap[ext] || { icon: 'fas fa-file-code', color: 'text-purple-400' };
                         
                         attachmentHtml = `
-                            <div class="mt-2 bg-slate-800/50 rounded-lg p-3 border border-slate-600">
+                            <div class="mt-2 bg-slate-900/80 rounded-lg p-3 border border-slate-700/50">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-lg bg-slate-700 flex items-center justify-center">
+                                    <div class="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center">
                                         <i class="${iconInfo.icon} ${iconInfo.color} text-lg"></i>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-white font-medium text-sm truncate">${message.attachment.name}</p>
-                                        <p class="text-gray-400 text-xs">${message.attachment.lines} linhas • ${message.attachment.size}</p>
+                                        <p class="text-white font-medium text-sm truncate">${attachmentData.name}</p>
+                                        <p class="text-gray-400 text-xs">${attachmentData.lines} linhas • ${attachmentData.size}</p>
                                     </div>
-                                    <i class="fas fa-file-code text-gray-500"></i>
+                                    <i class="fas fa-file-code text-gray-600"></i>
                                 </div>
                             </div>
                         `;
-                    } else if (message.attachment.type === 'image') {
+                    } else if (attachmentData.type === 'image') {
                         attachmentHtml = `
-                            <div class="mt-2 bg-slate-800/50 rounded-lg p-2 border border-slate-600">
-                                <img src="${message.attachment.preview}" alt="${message.attachment.name}" class="max-h-48 rounded-lg object-contain mx-auto">
-                                <p class="text-gray-400 text-xs text-center mt-1">${message.attachment.name} • ${message.attachment.size}</p>
+                            <div class="mt-2 bg-slate-900/80 rounded-lg p-2 border border-slate-700/50">
+                                <img src="${attachmentData.preview}" alt="${attachmentData.name}" class="max-h-48 rounded-lg object-contain mx-auto">
+                                <p class="text-gray-400 text-xs text-center mt-1">${attachmentData.name} • ${attachmentData.size}</p>
                             </div>
                         `;
                     }
@@ -1818,10 +1983,11 @@
                 if (currentAttachment.type === 'code') {
                     // Para codigo/scripts, inclui o conteudo completo para a IA
                     const codeBlock = '```' + (currentAttachment.extension || '') + '\n' + currentAttachment.content + '\n```';
+                    const userText = content; // Guarda texto original do usuario
                     const prefix = content ? content + '\n\n' : '';
                     content = prefix + `**Arquivo: ${currentAttachment.name}** (${countLines(currentAttachment.content)} linhas)\n\n${codeBlock}`;
-                    // Display mostra apenas card do arquivo
-                    displayContent = content ? content : '';
+                    // Display mostra APENAS o texto do usuario (sem codigo)
+                    displayContent = userText;
                     attachmentData = {
                         type: 'code',
                         name: currentAttachment.name,
@@ -1831,9 +1997,11 @@
                     };
                 } else if (currentAttachment.type === 'image') {
                     // Para imagens, envia como base64
+                    const userText = content; // Guarda texto original do usuario
                     const prefix = content ? content + '\n\n' : '';
                     content = prefix + `[IMAGEM ANEXADA: ${currentAttachment.name}]\n${currentAttachment.content}`;
-                    displayContent = content ? content : '';
+                    // Display mostra APENAS o texto do usuario (sem dados da imagem)
+                    displayContent = userText;
                     attachmentData = {
                         type: 'image',
                         name: currentAttachment.name,
@@ -1852,10 +2020,14 @@
             
             addMessage({ role: 'user', content: displayContent, attachment: attachmentData });
             
-            // Mostra loading animado
+            // Mostra loading animado e botão de cancelar
             typingIndicator.classList.remove('hidden');
             scrollToBottom();
-            sendBtn.disabled = true;
+            sendBtn.classList.add('hidden');
+            cancelBtn.classList.remove('hidden');
+            
+            // Cria AbortController para permitir cancelamento
+            currentAbortController = new AbortController();
             
             // Tenta streaming primeiro, fallback para normal
             let streamingSuccess = false;
@@ -1870,14 +2042,17 @@
                         'Accept': 'text/event-stream',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ message: content })
+                    body: JSON.stringify({ message: content }),
+                    signal: currentAbortController.signal
                 });
                 
                 // Verifica se atingiu limite diário (429)
                 if (response.status === 429) {
                     typingIndicator.classList.add('hidden');
-                    showLimitReachedModal();
+                    sendBtn.classList.remove('hidden');
+                    cancelBtn.classList.add('hidden');
                     sendBtn.disabled = false;
+                    showLimitReachedModal();
                     return;
                 }
                 
@@ -1938,43 +2113,53 @@
                 }
                 
             } catch (streamError) {
-                console.log('Streaming failed, trying normal method:', streamError.message);
-                
-                // Remove div de streaming se existir
-                if (streamingDiv) {
-                    streamingDiv.remove();
-                }
-                
-                // Mostra loading novamente
-                typingIndicator.classList.remove('hidden');
-                scrollToBottom();
-                
-                // Fallback para metodo normal
-                try {
-                    const data = await api(`/chat/sessions/${currentSession.id}/messages`, {
-                        method: 'POST',
-                        body: JSON.stringify({ message: content })
-                    });
+                // Verifica se foi cancelado pelo usuário
+                if (streamError.name === 'AbortError') {
+                    console.log('Requisição cancelada pelo usuário');
                     
-                    typingIndicator.classList.add('hidden');
-                    addMessage(data.data.message);
-                    processCodeBlocks();
-                    streamingSuccess = true;
-                    
-                } catch (normalError) {
-                    typingIndicator.classList.add('hidden');
-                    
-                    // Verifica se é erro de limite diário
-                    if (normalError.message && normalError.message.includes('daily')) {
-                        showLimitReachedModal();
-                    } else {
-                        addMessage({ role: 'assistant', content: `❌ **Erro:** ${normalError.message}` });
+                    // Remove div de streaming se existir
+                    if (streamingDiv) {
+                        streamingDiv.remove();
                     }
+                    
+                    typingIndicator.classList.add('hidden');
+                    
+                    // Mostra mensagem de cancelamento
+                    addMessage({ 
+                        role: 'assistant', 
+                        content: '⚠️ **Resposta cancelada.** Você pode enviar uma nova mensagem.' 
+                    });
+                } else {
+                    console.log('Streaming failed:', streamError.message);
+                    
+                    // Remove div de streaming se existir
+                    if (streamingDiv) {
+                        streamingDiv.remove();
+                    }
+                    
+                    typingIndicator.classList.add('hidden');
+                    
+                    // NÃO faz fallback para evitar duplicação de mensagem
+                    // A mensagem do usuário já foi salva pelo stream, então mostra erro
+                    addMessage({ 
+                        role: 'assistant', 
+                        content: '❌ **Erro de conexão.** Por favor, recarregue a página e tente novamente.' 
+                    });
                 }
             } finally {
                 typingIndicator.classList.add('hidden');
+                sendBtn.classList.remove('hidden');
+                cancelBtn.classList.add('hidden');
                 sendBtn.disabled = false;
+                currentAbortController = null;
                 messageInput.focus();
+            }
+        });
+        
+        // Evento do botão cancelar
+        cancelBtn.addEventListener('click', () => {
+            if (currentAbortController) {
+                currentAbortController.abort();
             }
         });
         

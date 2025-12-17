@@ -237,8 +237,8 @@ class DeepSeekService
         $chunks = [];
         $done = false;
         
-        curl_setopt($ch, CURLOPT_WRITEFUNCTION, function($ch, $data) use (&$buffer, &$chunks, &$done) {
-            $buffer .= $data;
+        curl_setopt($ch, CURLOPT_WRITEFUNCTION, function($ch, $rawData) use (&$buffer, &$chunks, &$done) {
+            $buffer .= $rawData;
             
             // Processa linhas completas
             while (($pos = strpos($buffer, "\n")) !== false) {
@@ -262,7 +262,7 @@ class DeepSeekService
                 }
             }
             
-            return strlen($data);
+            return strlen($rawData);
         });
         
         // Executa em modo não bloqueante com multi_exec para máxima velocidade

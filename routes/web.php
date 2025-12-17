@@ -12,12 +12,3 @@ Route::get('/', function () {
 Route::get('/profile', function () {
     return view('profile');
 })->name('profile');
-
-Route::get('/api', function () {
-    return response()->json([
-        'name' => 'DeepEyes',
-        'version' => '1.0.0',
-        'description' => 'AI-powered Pentest Assistant',
-        'api_docs' => url('/api'),
-    ]);
-});

@@ -912,3 +912,59 @@
 #9 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\Users\\\\zucks\\\\...')
 #10 {main}
 "} 
+[2025-12-16 00:07:35] local.ERROR: strlen(): Argument #1 ($string) must be of type string, array given {"userId":1,"exception":"[object] (TypeError(code: 0): strlen(): Argument #1 ($string) must be of type string, array given at C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php:265)
+[stacktrace]
+#0 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php(265): strlen(Array)
+#1 [internal function]: App\\Services\\DeepSeekService->App\\Services\\{closure}(Object(CurlHandle), Array)
+#2 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php(276): curl_multi_exec(Object(CurlMultiHandle), 1)
+#3 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php(329): App\\Services\\DeepSeekService->chatStream(Array, Array)
+#4 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Http\\Controllers\\Api\\ChatController.php(215): App\\Services\\DeepSeekService->chatStreamWithContext('# IDENTIDADE: D...', Array, 'Gere um reverse...')
+#5 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\symfony\\http-foundation\\StreamedResponse.php(125): App\\Http\\Controllers\\Api\\ChatController->App\\Http\\Controllers\\Api\\{closure}()
+#6 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\symfony\\http-foundation\\Response.php(403): Symfony\\Component\\HttpFoundation\\StreamedResponse->sendContent()
+#7 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1220): Symfony\\Component\\HttpFoundation\\Response->send()
+#8 C:\\Users\\zucks\\Desktop\\iaforpentester\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#9 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\Users\\\\zucks\\\\...')
+#10 {main}
+"} 
+[2025-12-16 01:10:48] local.ERROR: strlen(): Argument #1 ($string) must be of type string, array given {"userId":1,"exception":"[object] (TypeError(code: 0): strlen(): Argument #1 ($string) must be of type string, array given at C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php:265)
+[stacktrace]
+#0 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php(265): strlen(Array)
+#1 [internal function]: App\\Services\\DeepSeekService->App\\Services\\{closure}(Object(CurlHandle), Array)
+#2 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php(276): curl_multi_exec(Object(CurlMultiHandle), 1)
+#3 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php(329): App\\Services\\DeepSeekService->chatStream(Array, Array)
+#4 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Http\\Controllers\\Api\\ChatController.php(215): App\\Services\\DeepSeekService->chatStreamWithContext('# IDENTIDADE: D...', Array, 'voc\\xC3\\xAA tem restr...')
+#5 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\symfony\\http-foundation\\StreamedResponse.php(125): App\\Http\\Controllers\\Api\\ChatController->App\\Http\\Controllers\\Api\\{closure}()
+#6 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\symfony\\http-foundation\\Response.php(403): Symfony\\Component\\HttpFoundation\\StreamedResponse->sendContent()
+#7 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1220): Symfony\\Component\\HttpFoundation\\Response->send()
+#8 C:\\Users\\zucks\\Desktop\\iaforpentester\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#9 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\Users\\\\zucks\\\\...')
+#10 {main}
+"} 
+[2025-12-16 01:11:08] local.ERROR: strlen(): Argument #1 ($string) must be of type string, array given {"userId":1,"exception":"[object] (TypeError(code: 0): strlen(): Argument #1 ($string) must be of type string, array given at C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php:265)
+[stacktrace]
+#0 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php(265): strlen(Array)
+#1 [internal function]: App\\Services\\DeepSeekService->App\\Services\\{closure}(Object(CurlHandle), Array)
+#2 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php(276): curl_multi_exec(Object(CurlMultiHandle), 1)
+#3 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php(329): App\\Services\\DeepSeekService->chatStream(Array, Array)
+#4 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Http\\Controllers\\Api\\ChatController.php(215): App\\Services\\DeepSeekService->chatStreamWithContext('# IDENTIDADE: G...', Array, 'Voc\\xC3\\xAA tem restr...')
+#5 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\symfony\\http-foundation\\StreamedResponse.php(125): App\\Http\\Controllers\\Api\\ChatController->App\\Http\\Controllers\\Api\\{closure}()
+#6 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\symfony\\http-foundation\\Response.php(403): Symfony\\Component\\HttpFoundation\\StreamedResponse->sendContent()
+#7 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1220): Symfony\\Component\\HttpFoundation\\Response->send()
+#8 C:\\Users\\zucks\\Desktop\\iaforpentester\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#9 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\Users\\\\zucks\\\\...')
+#10 {main}
+"} 
+[2025-12-16 01:13:05] local.ERROR: strlen(): Argument #1 ($string) must be of type string, array given {"userId":1,"exception":"[object] (TypeError(code: 0): strlen(): Argument #1 ($string) must be of type string, array given at C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php:265)
+[stacktrace]
+#0 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php(265): strlen(Array)
+#1 [internal function]: App\\Services\\DeepSeekService->App\\Services\\{closure}(Object(CurlHandle), Array)
+#2 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php(276): curl_multi_exec(Object(CurlMultiHandle), 1)
+#3 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Services\\DeepSeekService.php(329): App\\Services\\DeepSeekService->chatStream(Array, Array)
+#4 C:\\Users\\zucks\\Desktop\\iaforpentester\\app\\Http\\Controllers\\Api\\ChatController.php(215): App\\Services\\DeepSeekService->chatStreamWithContext('# IDENTIDADE: D...', Array, 'ol\\xC3\\xA1')
+#5 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\symfony\\http-foundation\\StreamedResponse.php(125): App\\Http\\Controllers\\Api\\ChatController->App\\Http\\Controllers\\Api\\{closure}()
+#6 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\symfony\\http-foundation\\Response.php(403): Symfony\\Component\\HttpFoundation\\StreamedResponse->sendContent()
+#7 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(1220): Symfony\\Component\\HttpFoundation\\Response->send()
+#8 C:\\Users\\zucks\\Desktop\\iaforpentester\\public\\index.php(17): Illuminate\\Foundation\\Application->handleRequest(Object(Illuminate\\Http\\Request))
+#9 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\Users\\\\zucks\\\\...')
+#10 {main}
+"} 

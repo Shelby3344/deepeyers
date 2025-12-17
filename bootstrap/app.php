@@ -12,10 +12,14 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Middleware global de segurança - executa em TODAS as requisições
+        $middleware->prepend(\App\Http\Middleware\SecurityShield::class);
+        
         $middleware->alias([
             'rate.limit.ai' => \App\Http\Middleware\RateLimitAI::class,
             'ensure.not.banned' => \App\Http\Middleware\EnsureUserNotBanned::class,
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
+            'security.shield' => \App\Http\Middleware\SecurityShield::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
