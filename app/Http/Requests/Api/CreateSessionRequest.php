@@ -16,15 +16,21 @@ class CreateSessionRequest extends FormRequest
 
     public function rules(): array
     {
-        // Pegar perfis permitidos do plano do usuário
         $user = $this->user();
-        $plan = $user?->plan;
         
-        // Fallback seguro para allowed_profiles
-        $allowedProfiles = ['pentest']; // default
-        
-        if ($plan && is_array($plan->allowed_profiles) && !empty($plan->allowed_profiles)) {
-            $allowedProfiles = $plan->allowed_profiles;
+        // Admin tem acesso a todos os perfis
+        if ($user?->role === 'admin') {
+            $allowedProfiles = ['pentest', 'redteam', 'fullattack'];
+        } else {
+            // Pegar perfis permitidos do plano do usuário
+            $plan = $user?->plan;
+            
+            // Fallback seguro para allowed_profiles
+            $allowedProfiles = ['pentest']; // default
+            
+            if ($plan && is_array($plan->allowed_profiles) && !empty($plan->allowed_profiles)) {
+                $allowedProfiles = $plan->allowed_profiles;
+            }
         }
 
         return [
