@@ -18,12 +18,13 @@ class CreateSessionRequest extends FormRequest
     {
         // Pegar perfis permitidos do plano do usuário
         $user = $this->user();
-        $plan = $user->plan ?? Plan::where('slug', 'free')->first();
-        $allowedProfiles = $plan ? $plan->allowed_profiles : ['pentest'];
+        $plan = $user?->plan;
         
-        // Se não tiver plano, permitir apenas pentest
-        if (empty($allowedProfiles)) {
-            $allowedProfiles = ['pentest'];
+        // Fallback seguro para allowed_profiles
+        $allowedProfiles = ['pentest']; // default
+        
+        if ($plan && is_array($plan->allowed_profiles) && !empty($plan->allowed_profiles)) {
+            $allowedProfiles = $plan->allowed_profiles;
         }
 
         return [
