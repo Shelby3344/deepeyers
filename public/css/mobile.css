@@ -1,0 +1,597 @@
+/**
+ * ========================================
+ * DEEPEYES MOBILE RESPONSIVE STYLES
+ * Complete mobile-first responsive design
+ * ========================================
+ */
+
+/* ========================================
+   MOBILE FIRST BASE (< 640px)
+   ======================================== */
+
+/* Prevent horizontal scroll */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* Touch-friendly tap targets */
+button, a, .clickable {
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* ========================================
+   SIDEBAR MOBILE
+   ======================================== */
+@media (max-width: 1023px) {
+    /* Sidebar off-canvas */
+    #sidebar, .de-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        width: 85vw !important;
+        max-width: 320px !important;
+        z-index: 100 !important;
+        transform: translateX(-100%) !important;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        background: rgba(11, 15, 20, 0.98) !important;
+        backdrop-filter: blur(20px) !important;
+    }
+    
+    #sidebar.mobile-open, .de-sidebar.mobile-open {
+        transform: translateX(0) !important;
+    }
+    
+    /* Mobile overlay */
+    #mobileOverlay {
+        position: fixed !important;
+        inset: 0 !important;
+        background: rgba(0, 0, 0, 0.7) !important;
+        backdrop-filter: blur(4px) !important;
+        z-index: 99 !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    #mobileOverlay.active {
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    
+    /* Mobile menu button */
+    #mobileMenuBtn {
+        display: flex !important;
+        position: fixed !important;
+        top: 12px !important;
+        left: 12px !important;
+        z-index: 50 !important;
+        width: 44px !important;
+        height: 44px !important;
+    }
+    
+    /* Close sidebar button */
+    #closeSidebarBtn {
+        display: flex !important;
+    }
+    
+    /* Main content area */
+    #mainContent, .main-content {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+}
+
+/* Hide mobile menu on desktop */
+@media (min-width: 1024px) {
+    #mobileMenuBtn {
+        display: none !important;
+    }
+    
+    #closeSidebarBtn {
+        display: none !important;
+    }
+    
+    #mobileOverlay {
+        display: none !important;
+    }
+}
+
+/* ========================================
+   CHAT INTERFACE MOBILE
+   ======================================== */
+@media (max-width: 1023px) {
+    /* Session header - add space for menu button */
+    #sessionHeader {
+        padding-left: 64px !important;
+        padding-right: 16px !important;
+    }
+    
+    /* Chat container */
+    #chatContainer {
+        padding: 12px !important;
+    }
+    
+    /* Messages */
+    .message-content {
+        max-width: 100% !important;
+    }
+    
+    .user-bubble, .ai-bubble {
+        padding: 12px 14px !important;
+        font-size: 14px !important;
+    }
+    
+    /* Code blocks in messages */
+    .message-content pre {
+        font-size: 12px !important;
+        padding: 12px !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    .code-block-header {
+        padding: 8px 12px !important;
+    }
+    
+    .code-block-lang {
+        font-size: 10px !important;
+    }
+}
+
+/* ========================================
+   CHAT INPUT MOBILE
+   ======================================== */
+@media (max-width: 1023px) {
+    #chatInputArea {
+        padding: 8px 12px 12px !important;
+        background: rgba(11, 15, 20, 0.95) !important;
+    }
+    
+    #chatInputArea .max-w-4xl {
+        max-width: 100% !important;
+    }
+    
+    #inputContainer {
+        padding: 10px !important;
+        border-radius: 16px !important;
+    }
+    
+    #messageInput {
+        font-size: 16px !important; /* Prevents iOS zoom */
+        min-height: 44px !important;
+    }
+    
+    /* Send button */
+    #sendBtn {
+        width: 44px !important;
+        height: 44px !important;
+        min-width: 44px !important;
+        border-radius: 12px !important;
+    }
+    
+    /* Hide keyboard hints on mobile */
+    #inputContainer .border-t {
+        display: none !important;
+    }
+}
+
+/* ========================================
+   WELCOME SCREEN MOBILE
+   ======================================== */
+@media (max-width: 1023px) {
+    #homeWelcome {
+        padding: 16px !important;
+        padding-top: 60px !important; /* Space for menu button */
+    }
+    
+    #homeWelcome h3 {
+        font-size: 1.5rem !important;
+        line-height: 1.3 !important;
+    }
+    
+    #homeWelcome .mb-10 {
+        margin-bottom: 1.5rem !important;
+    }
+    
+    /* Logo */
+    #homeWelcome > .relative img {
+        height: 80px !important;
+    }
+    
+    /* Feature cards grid */
+    #homeWelcome .grid-cols-2 {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    /* Blob cards */
+    .blob-card {
+        padding: 14px !important;
+    }
+    
+    .blob-card h4 {
+        font-size: 0.95rem !important;
+    }
+    
+    .blob-card p {
+        font-size: 0.75rem !important;
+    }
+    
+    /* Profile card */
+    #currentProfileCard {
+        max-width: 100% !important;
+        padding: 16px !important;
+    }
+    
+    /* Profile features grid */
+    #welcomeProfileFeatures {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+    }
+    
+    #welcomeProfileFeatures > div {
+        padding: 8px !important;
+        font-size: 11px !important;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    #homeWelcome h3 {
+        font-size: 1.25rem !important;
+    }
+    
+    #homeWelcome > .relative img {
+        height: 64px !important;
+    }
+    
+    .blob-card h4 {
+        font-size: 0.875rem !important;
+    }
+    
+    #welcomeProfileFeatures {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+
+/* ========================================
+   ATTACK MODE SELECTOR MOBILE
+   ======================================== */
+@media (max-width: 1023px) {
+    .attack-mode-selector,
+    #sidebar .grid-cols-3 {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+    
+    .attack-mode {
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+        padding: 12px 16px !important;
+        gap: 12px !important;
+    }
+    
+    .attack-mode i {
+        font-size: 16px !important;
+    }
+    
+    .attack-mode span {
+        font-size: 12px !important;
+    }
+}
+
+/* ========================================
+   MODALS MOBILE
+   ======================================== */
+@media (max-width: 1023px) {
+    /* Auth modal */
+    #authModal .max-w-md {
+        max-width: calc(100vw - 32px) !important;
+        margin: 16px !important;
+        max-height: calc(100vh - 32px) !important;
+        overflow-y: auto !important;
+    }
+    
+    #authModal .p-8 {
+        padding: 20px !important;
+    }
+    
+    #authModal h1 {
+        font-size: 1.75rem !important;
+    }
+    
+    #authModal img {
+        height: 64px !important;
+    }
+    
+    /* Delete modal */
+    #deleteModal .max-w-sm {
+        max-width: calc(100vw - 32px) !important;
+        margin: 16px !important;
+    }
+    
+    /* Domain modal */
+    #domainModal .max-w-md {
+        max-width: calc(100vw - 32px) !important;
+        margin: 16px !important;
+    }
+    
+    /* Profile dropdown */
+    #profileDropdown.open .profile-options {
+        max-width: calc(100vw - 48px) !important;
+    }
+}
+
+/* ========================================
+   TYPING INDICATOR MOBILE
+   ======================================== */
+@media (max-width: 1023px) {
+    #typingIndicator {
+        padding: 12px !important;
+        margin: 8px 12px !important;
+    }
+    
+    .ai-thinking {
+        gap: 10px !important;
+    }
+    
+    .ai-brain {
+        width: 28px !important;
+        height: 28px !important;
+    }
+    
+    .thinking-text {
+        font-size: 13px !important;
+    }
+}
+
+/* ========================================
+   SESSIONS LIST MOBILE
+   ======================================== */
+@media (max-width: 1023px) {
+    .sidebar-item {
+        padding: 14px 12px !important;
+        min-height: 52px !important;
+    }
+    
+    .sidebar-item .truncate {
+        font-size: 13px !important;
+    }
+    
+    .delete-session-btn {
+        opacity: 1 !important; /* Always visible on mobile */
+        width: 36px !important;
+        height: 36px !important;
+    }
+}
+
+/* ========================================
+   USER INFO MOBILE
+   ======================================== */
+@media (max-width: 1023px) {
+    #userInfo {
+        padding: 12px !important;
+    }
+    
+    #userAvatarLink {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    #userName {
+        font-size: 13px !important;
+    }
+    
+    #userRole {
+        font-size: 10px !important;
+    }
+}
+
+/* ========================================
+   NOTIFICATIONS/TOASTS MOBILE
+   ======================================== */
+@media (max-width: 1023px) {
+    .notification,
+    .de-toast,
+    #planToast > div {
+        max-width: calc(100vw - 32px) !important;
+        margin: 0 16px !important;
+    }
+    
+    .de-toast-container {
+        left: 0 !important;
+        right: 0 !important;
+        padding: 0 16px !important;
+    }
+}
+
+/* ========================================
+   ADMIN PANEL MOBILE (if exists)
+   ======================================== */
+@media (max-width: 1023px) {
+    /* Admin tables */
+    .admin-table {
+        display: block !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    .admin-table th,
+    .admin-table td {
+        white-space: nowrap !important;
+        padding: 10px 12px !important;
+        font-size: 13px !important;
+    }
+    
+    /* Admin cards */
+    .admin-card {
+        padding: 16px !important;
+    }
+    
+    /* Admin stats grid */
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .admin-stats-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ========================================
+   PROFILE PAGE MOBILE
+   ======================================== */
+@media (max-width: 1023px) {
+    .profile-container {
+        padding: 16px !important;
+        padding-top: 60px !important;
+    }
+    
+    .profile-header {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 16px !important;
+    }
+    
+    .profile-avatar {
+        width: 100px !important;
+        height: 100px !important;
+    }
+    
+    .profile-form {
+        padding: 16px !important;
+    }
+    
+    .profile-form input,
+    .profile-form select {
+        font-size: 16px !important; /* Prevents iOS zoom */
+    }
+}
+
+/* ========================================
+   SAFE AREA (iPhone notch)
+   ======================================== */
+@supports (padding: max(0px)) {
+    #chatInputArea {
+        padding-bottom: max(12px, env(safe-area-inset-bottom)) !important;
+    }
+    
+    #sidebar {
+        padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
+    }
+    
+    #mobileMenuBtn {
+        top: max(12px, env(safe-area-inset-top)) !important;
+        left: max(12px, env(safe-area-inset-left)) !important;
+    }
+}
+
+/* ========================================
+   LANDSCAPE MOBILE
+   ======================================== */
+@media (max-height: 500px) and (orientation: landscape) {
+    #homeWelcome {
+        padding-top: 16px !important;
+    }
+    
+    #homeWelcome > .relative img {
+        height: 48px !important;
+    }
+    
+    #homeWelcome h3 {
+        font-size: 1.125rem !important;
+        margin-bottom: 8px !important;
+    }
+    
+    .blob-card {
+        padding: 10px !important;
+    }
+    
+    #chatInputArea {
+        padding: 6px 12px !important;
+    }
+}
+
+/* ========================================
+   TABLET (768px - 1023px)
+   ======================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+    #homeWelcome .grid-cols-2 {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .blob-card {
+        padding: 18px !important;
+    }
+    
+    #sidebar {
+        width: 300px !important;
+    }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+@media print {
+    #sidebar,
+    #mobileMenuBtn,
+    #chatInputArea,
+    #mobileOverlay {
+        display: none !important;
+    }
+    
+    #mainContent {
+        width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    .message-content {
+        break-inside: avoid;
+    }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========================================
+   DARK MODE ENHANCEMENTS
+   ======================================== */
+@media (prefers-color-scheme: dark) {
+    /* Already dark theme, but ensure contrast */
+    .de-input:focus,
+    .auth-input:focus {
+        border-color: #00FF88 !important;
+    }
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+@media (prefers-contrast: high) {
+    .de-btn,
+    .sparkle-btn,
+    .attack-mode {
+        border-width: 2px !important;
+    }
+    
+    .sidebar-item.active {
+        border-left-width: 4px !important;
+    }
+}
