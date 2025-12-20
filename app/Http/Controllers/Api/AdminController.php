@@ -109,10 +109,14 @@ class AdminController extends Controller
         $sessions = ChatSession::where('user_id', $user->id)->get();
         foreach ($sessions as $session) {
             ChatMessage::where('session_id', $session->id)->delete();
-            $session->delete();
+            $session->forceDelete(); // Força exclusão mesmo com SoftDeletes
         }
 
         $user->delete();
+        
+        // Limpa cache de usuários e stats
+        Cache::forget('admin_users_page_1_per_50');
+        Cache::forget('admin_stats');
 
         return response()->json([
             'message' => 'Usuário excluído com sucesso',
