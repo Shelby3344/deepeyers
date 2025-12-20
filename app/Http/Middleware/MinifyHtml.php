@@ -17,8 +17,8 @@ class MinifyHtml
     {
         $response = $next($request);
 
-        // Só minifica se for resposta HTML
-        if ($this->isHtmlResponse($response)) {
+        // Só minifica em produção e se for resposta HTML
+        if ($this->isHtmlResponse($response) && !config('app.debug')) {
             $content = $response->getContent();
             $minified = $this->minify($content);
             $response->setContent($minified);
@@ -41,26 +41,27 @@ class MinifyHtml
      */
     private function minify(string $html): string
     {
-        // Preserva conteúdo de <script>, <style>, <pre>, <textarea>
+        // Preserva conteúdo de <script>, <style>, <pre>, <textarea>, <code>
         $preserved = [];
         $patterns = [
             '/<script\b[^>]*>(.*?)<\/script>/is',
             '/<style\b[^>]*>(.*?)<\/style>/is',
             '/<pre\b[^>]*>(.*?)<\/pre>/is',
             '/<textarea\b[^>]*>(.*?)<\/textarea>/is',
+            '/<code\b[^>]*>(.*?)<\/code>/is',
         ];
 
         // Substitui temporariamente blocos que devem ser preservados
         foreach ($patterns as $index => $pattern) {
             $html = preg_replace_callback($pattern, function ($matches) use (&$preserved, $index) {
-                $key = "<!--PRESERVED_{$index}_" . count($preserved) . "-->";
+                $key = "___PRESERVED_{$index}_" . count($preserved) . "___";
                 $preserved[$key] = $matches[0];
                 return $key;
             }, $html);
         }
 
         // Remove comentários HTML (exceto condicionais do IE)
-        $html = preg_replace('/<!--(?!\[if).*?-->/s', '', $html);
+        $html = preg_replace('/<!--(?!\[if)(?!__).*?-->/s', '', $html);
 
         // Remove espaços em branco entre tags
         $html = preg_replace('/>\s+</', '><', $html);
@@ -95,40 +96,80 @@ class MinifyHtml
     }
 
     /**
-     * Minifica JavaScript básico
+     * Minifica JavaScript - cuidadoso para não quebrar o código
      */
     private function minifyJs(string $js): string
     {
-        // Remove comentários de linha
-        $js = preg_replace('/\/\/(?![\'"]).*/m', '', $js);
+        // Preserva strings e regex
+        $strings = [];
+        
+        // Preserva template literals
+        $js = preg_replace_callback('/`(?:[^`\\\\]|\\\\.)*`/s', function ($m) use (&$strings) {
+            $key = "___STR_" . count($strings) . "___";
+            $strings[$key] = $m[0];
+            return $key;
+        }, $js);
+        
+        // Preserva strings com aspas duplas
+        $js = preg_replace_callback('/"(?:[^"\\\\]|\\\\.)*"/', function ($m) use (&$strings) {
+            $key = "___STR_" . count($strings) . "___";
+            $strings[$key] = $m[0];
+            return $key;
+        }, $js);
+        
+        // Preserva strings com aspas simples
+        $js = preg_replace_callback("/\'(?:[^\'\\\\]|\\\\.)*\'/", function ($m) use (&$strings) {
+            $key = "___STR_" . count($strings) . "___";
+            $strings[$key] = $m[0];
+            return $key;
+        }, $js);
+        
+        // Remove comentários de linha (cuidado com URLs)
+        $js = preg_replace('/(?<!:)\/\/[^\n]*/', '', $js);
         
         // Remove comentários de bloco
         $js = preg_replace('/\/\*[\s\S]*?\*\//', '', $js);
         
-        // Remove quebras de linha e espaços excessivos
-        $js = preg_replace('/\s*\n\s*/', '', $js);
+        // Remove quebras de linha
+        $js = preg_replace('/[\r\n]+/', ' ', $js);
+        
+        // Remove espaços múltiplos
         $js = preg_replace('/\s{2,}/', ' ', $js);
         
-        // Remove espaços desnecessários ao redor de operadores
+        // Remove espaços ao redor de alguns operadores (cuidadoso)
         $js = preg_replace('/\s*([{};,:])\s*/', '$1', $js);
+        $js = preg_replace('/\s*\(\s*/', '(', $js);
+        $js = preg_replace('/\s*\)\s*/', ')', $js);
+        $js = preg_replace('/\s*\[\s*/', '[', $js);
+        $js = preg_replace('/\s*\]\s*/', ']', $js);
+        
+        // Restaura strings
+        foreach ($strings as $key => $value) {
+            $js = str_replace($key, $value, $js);
+        }
         
         return trim($js);
     }
 
     /**
-     * Minifica CSS básico
+     * Minifica CSS
      */
     private function minifyCss(string $css): string
     {
         // Remove comentários
         $css = preg_replace('/\/\*[\s\S]*?\*\//', '', $css);
         
-        // Remove quebras de linha e espaços excessivos
-        $css = preg_replace('/\s*\n\s*/', '', $css);
+        // Remove quebras de linha
+        $css = preg_replace('/[\r\n]+/', '', $css);
+        
+        // Remove espaços múltiplos
         $css = preg_replace('/\s{2,}/', ' ', $css);
         
         // Remove espaços desnecessários
         $css = preg_replace('/\s*([{};:,>~+])\s*/', '$1', $css);
+        
+        // Remove último ponto e vírgula antes de }
+        $css = preg_replace('/;}/', '}', $css);
         
         return trim($css);
     }
