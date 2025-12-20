@@ -1173,10 +1173,7 @@
                         <a href="/profile" id="userName" class="text-sm font-semibold text-white hover:text-[#00FF88] transition-colors block truncate">Não logado</a>
                         <div id="userRole" class="text-[10px] text-gray-500 uppercase tracking-wider">-</div>
                     </div>
-                    <a href="/profile" class="text-gray-500 hover:text-[#00FF88] transition-colors hidden" id="profileLink" title="Perfil">
-                        <i class="fas fa-cog"></i>
-                    </a>
-                    <button id="logoutBtn" class="text-gray-500 hover:text-red-400 transition-colors hidden" title="Sair">
+                    <button id="logoutBtn" class="text-gray-500 hover:text-red-400 transition-colors hidden" title="Sair" onclick="event.stopPropagation()">
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
                 </div>
@@ -2095,7 +2092,6 @@
             document.getElementById('userName').textContent = currentUser?.name || 'Usuário';
             document.getElementById('userRole').textContent = (currentUser?.role || 'user').toUpperCase();
             logoutBtn.classList.remove('hidden');
-            document.getElementById('profileLink').classList.remove('hidden');
             messageInput.disabled = false;
             sendBtn.disabled = false;
             
