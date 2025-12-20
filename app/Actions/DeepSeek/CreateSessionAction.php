@@ -23,6 +23,7 @@ class CreateSessionAction
                 userId: $dto->userId,
                 title: $dto->title,
                 profile: config('deepseek.default_profile'),
+                targetDomain: $dto->targetDomain,
                 metadata: $dto->metadata,
             );
         }
@@ -30,6 +31,7 @@ class CreateSessionAction
         return ChatSession::create([
             'user_id' => $dto->userId,
             'title' => $dto->title,
+            'target_domain' => $dto->targetDomain,
             'profile' => $dto->profile,
             'is_active' => true,
             'metadata' => $dto->metadata,
