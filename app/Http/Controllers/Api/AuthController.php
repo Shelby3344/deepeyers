@@ -168,13 +168,22 @@ class AuthController extends Controller
             ], 401);
         }
 
+        // Carrega o plano
+        $user->loadMissing('plan');
+
         return response()->json([
             'data' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role,
+                'avatar' => $user->avatar_url ?? null,
                 'daily_requests_remaining' => $user->getDailyRequestsRemaining(),
+                'plan' => $user->plan ? [
+                    'id' => $user->plan->id,
+                    'name' => $user->plan->name,
+                    'allowed_profiles' => $user->plan->allowed_profiles ?? ['pentest'],
+                ] : null,
             ],
         ]);
     }
