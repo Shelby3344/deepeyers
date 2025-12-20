@@ -1249,19 +1249,20 @@
         
         async function loadAdminData() {
             try {
-                const [usersRes, sessionsRes] = await Promise.all([
+                // Buscar stats separadamente (cache de 30s) para resposta mais rápida
+                const [usersRes, sessionsRes, statsRes] = await Promise.all([
                     api('/admin/users'),
-                    api('/admin/sessions')
+                    api('/admin/sessions'),
+                    api('/admin/stats')
                 ]);
                 
                 allUsers = usersRes.data || [];
                 allSessions = sessionsRes.data || [];
                 
-                document.getElementById('adminStatUsers').textContent = allUsers.length;
-                document.getElementById('adminStatSessions').textContent = allSessions.length;
-                
-                const totalMsgs = allSessions.reduce((acc, s) => acc + (s.message_count || 0), 0);
-                document.getElementById('adminStatMessages').textContent = totalMsgs;
+                // Usar dados das estatísticas (mais precisos e com cache)
+                document.getElementById('adminStatUsers').textContent = statsRes.users || allUsers.length;
+                document.getElementById('adminStatSessions').textContent = statsRes.sessions || allSessions.length;
+                document.getElementById('adminStatMessages').textContent = statsRes.messages || 0;
                 
                 const recent = allUsers.slice(0, 5);
                 document.getElementById('recentUsersTable').innerHTML = recent.map(u => `
@@ -1397,10 +1398,12 @@
             e.preventDefault();
             
             const userId = document.getElementById('editUserId').value;
+            const roleValue = document.getElementById('editUserRole').value;
+            
             const body = {
                 name: document.getElementById('editUserName').value,
                 email: document.getElementById('editUserEmail').value,
-                role: document.getElementById('editUserRole').value,
+                role: roleValue,
                 plan_id: document.getElementById('editUserPlan').value
             };
             
@@ -1408,12 +1411,12 @@
             if (newPwd) body.password = newPwd;
             
             try {
-                await api(`/admin/users/${userId}`, { method: 'PUT', body: JSON.stringify(body) });
-                showNotification('Usuário atualizado!');
+                const result = await api(`/admin/users/${userId}`, { method: 'PUT', body: JSON.stringify(body) });
+                showNotification('Usuário atualizado! Role: ' + (result.user?.role || roleValue));
                 closeEditUserModal();
                 loadUsers();
             } catch (err) {
-                showNotification('Erro ao atualizar', 'error');
+                showNotification('Erro ao atualizar: ' + err.message, 'error');
             }
         });
         

@@ -62,6 +62,33 @@ class ChatController extends Controller
     }
 
     /**
+     * Verifica se o usuário pode acessar um perfil específico
+     */
+    private function userCanAccessProfile($user, string $profile): bool
+    {
+        // Pentest é sempre permitido
+        if ($profile === 'pentest') {
+            return true;
+        }
+        
+        // Admin sempre tem acesso total
+        if ($user->isAdmin()) {
+            return true;
+        }
+        
+        // Carrega o plano do usuário
+        $user->loadMissing('plan');
+        
+        // Se não tem plano, só pode usar pentest
+        if (!$user->plan) {
+            return false;
+        }
+        
+        // Verifica se o plano permite o perfil
+        return $user->plan->allowsProfile($profile);
+    }
+
+    /**
      * List user sessions
      */
     public function index(Request $request): JsonResponse
@@ -102,6 +129,15 @@ class ChatController extends Controller
             return response()->json([
                 'error' => 'Forbidden',
                 'message' => 'Your account has been suspended',
+            ], 403);
+        }
+
+        // Verificar se usuário tem permissão para o perfil selecionado
+        $profile = $request->validated('profile') ?? 'pentest';
+        if (!$this->userCanAccessProfile($user, $profile)) {
+            return response()->json([
+                'error' => 'Forbidden',
+                'message' => 'Para acessar os modos Red Team e Full Attack, é necessário ativar um plano.',
             ], 403);
         }
 

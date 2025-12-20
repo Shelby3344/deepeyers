@@ -11,25 +11,36 @@ use App\Models\ChatMessage;
 use App\Models\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
     /**
-     * Lista todos os usuários
+     * Lista todos os usuários (com cache de 60 segundos)
      */
     public function users(Request $request): JsonResponse
     {
-        $users = User::with('plan')
-            ->orderByDesc('created_at')
-            ->get()
-            ->map(function ($user) {
+        $page = $request->input('page', 1);
+        $perPage = $request->input('per_page', 50);
+        $cacheKey = "admin_users_page_{$page}_per_{$perPage}";
+        
+        $users = Cache::remember($cacheKey, 60, function () use ($perPage) {
+            return User::select(['id', 'name', 'email', 'role', 'avatar', 'is_banned', 'plan_id', 'created_at'])
+                ->with(['plan:id,name'])
+                ->orderByDesc('created_at')
+                ->paginate($perPage);
+        });
+
+        return response()->json([
+            'data' => $users->map(function ($user) {
                 return [
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
                     'role' => $user->role,
-                    'avatar' => $user->avatar_url, // Usa accessor para URL completa
+                    'avatar' => $user->avatar_url,
                     'is_banned' => (bool) $user->is_banned,
                     'plan' => $user->plan ? [
                         'id' => $user->plan->id,
@@ -37,9 +48,14 @@ class AdminController extends Controller
                     ] : null,
                     'created_at' => $user->created_at,
                 ];
-            });
-
-        return response()->json(['data' => $users]);
+            }),
+            'meta' => [
+                'current_page' => $users->currentPage(),
+                'last_page' => $users->lastPage(),
+                'per_page' => $users->perPage(),
+                'total' => $users->total(),
+            ]
+        ]);
     }
 
     /**
@@ -61,11 +77,17 @@ class AdminController extends Controller
             $validated['password'] = Hash::make($validated['password']);
         }
 
+        Log::info('Atualizando usuário', ['user_id' => $userId, 'data' => $validated]);
+        
         $user->update($validated);
+        
+        // Limpa cache de usuários
+        Cache::forget('admin_users_page_1_per_50');
+        Cache::forget('admin_stats');
 
         return response()->json([
             'message' => 'Usuário atualizado com sucesso',
-            'user' => $user->load('plan'),
+            'user' => $user->fresh()->load('plan'),
         ]);
     }
 
@@ -131,15 +153,29 @@ class AdminController extends Controller
     }
 
     /**
-     * Lista todas as sessões de chat
+     * Lista todas as sessões de chat (com cache e paginação)
      */
     public function sessions(Request $request): JsonResponse
     {
-        $sessions = ChatSession::with('user')
-            ->withCount('messages')
-            ->orderByDesc('created_at')
-            ->get()
-            ->map(function ($session) {
+        $page = $request->input('page', 1);
+        $perPage = $request->input('per_page', 50);
+        $userId = $request->input('user_id');
+        $cacheKey = "admin_sessions_page_{$page}_per_{$perPage}_user_{$userId}";
+        
+        $sessions = Cache::remember($cacheKey, 60, function () use ($perPage, $userId) {
+            $query = ChatSession::select(['id', 'user_id', 'title', 'profile', 'message_count', 'created_at'])
+                ->with(['user:id,name'])
+                ->orderByDesc('created_at');
+            
+            if ($userId) {
+                $query->where('user_id', $userId);
+            }
+            
+            return $query->paginate($perPage);
+        });
+
+        return response()->json([
+            'data' => $sessions->map(function ($session) {
                 return [
                     'id' => $session->id,
                     'title' => $session->title,
@@ -148,12 +184,17 @@ class AdminController extends Controller
                         'id' => $session->user->id,
                         'name' => $session->user->name,
                     ] : null,
-                    'message_count' => $session->messages_count,
+                    'message_count' => $session->message_count,
                     'created_at' => $session->created_at,
                 ];
-            });
-
-        return response()->json(['data' => $sessions]);
+            }),
+            'meta' => [
+                'current_page' => $sessions->currentPage(),
+                'last_page' => $sessions->lastPage(),
+                'per_page' => $sessions->perPage(),
+                'total' => $sessions->total(),
+            ]
+        ]);
     }
 
     /**
@@ -220,43 +261,45 @@ class AdminController extends Controller
     }
 
     /**
-     * Lista todos os planos
+     * Lista todos os planos (cache de 5 minutos)
      */
     public function plans(): JsonResponse
     {
-        $plans = Plan::withCount('users')
-            ->orderBy('price')
-            ->get()
-            ->map(function ($plan) {
-                return [
-                    'id' => $plan->id,
-                    'name' => $plan->name,
-                    'slug' => $plan->slug,
-                    'price' => $plan->price,
-                    'daily_limit' => $plan->requests_per_day,
-                    'users_count' => $plan->users_count,
-                    'features' => $plan->features,
-                ];
-            });
+        $plans = Cache::remember('admin_plans', 300, function () {
+            return Plan::select(['id', 'name', 'slug', 'price', 'requests_per_day', 'features'])
+                ->withCount('users')
+                ->orderBy('price')
+                ->get()
+                ->map(function ($plan) {
+                    return [
+                        'id' => $plan->id,
+                        'name' => $plan->name,
+                        'slug' => $plan->slug,
+                        'price' => $plan->price,
+                        'daily_limit' => $plan->requests_per_day,
+                        'users_count' => $plan->users_count,
+                        'features' => $plan->features,
+                    ];
+                });
+        });
 
         return response()->json(['data' => $plans]);
     }
 
     /**
-     * Estatísticas do dashboard
+     * Estatísticas do dashboard (cache de 30 segundos)
      */
     public function stats(): JsonResponse
     {
-        $totalUsers = User::count();
-        $totalSessions = ChatSession::count();
-        $totalMessages = ChatMessage::count();
-        $todayMessages = ChatMessage::whereDate('created_at', today())->count();
+        $stats = Cache::remember('admin_stats', 30, function () {
+            return [
+                'users' => User::count(),
+                'sessions' => ChatSession::count(),
+                'messages' => ChatMessage::count(),
+                'today_messages' => ChatMessage::whereDate('created_at', today())->count(),
+            ];
+        });
 
-        return response()->json([
-            'users' => $totalUsers,
-            'sessions' => $totalSessions,
-            'messages' => $totalMessages,
-            'today_messages' => $todayMessages,
-        ]);
+        return response()->json($stats);
     }
 }

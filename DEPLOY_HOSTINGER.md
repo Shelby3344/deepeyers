@@ -230,7 +230,7 @@ systemctl restart nginx
 apt install -y certbot python3-certbot-nginx
 
 # Gera certificado SSL
-certbot --nginx -d seudominio.com -d www.seudominio.com
+certbot --nginx -d deepeyes.online -d www.deepeyes.online
 
 # Renovação automática já está configurada
 # Para testar: certbot renew --dry-run

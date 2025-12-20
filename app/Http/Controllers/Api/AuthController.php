@@ -184,11 +184,19 @@ class AuthController extends Controller
      */
     private function sanitizeUser(User $user): array
     {
+        // Carrega o plano se não estiver carregado
+        $user->loadMissing('plan');
+        
         return [
             'id' => $user->id,
             'name' => $user->name,
+            'role' => $user->role,
             'avatar' => $user->avatar_url ?? null,
-            // ❌ NÃO expor: email completo, role, is_banned, created_at para respostas públicas
+            'plan' => $user->plan ? [
+                'id' => $user->plan->id,
+                'name' => $user->plan->name,
+                'allowed_profiles' => $user->plan->allowed_profiles ?? ['pentest'],
+            ] : null,
         ];
     }
 }

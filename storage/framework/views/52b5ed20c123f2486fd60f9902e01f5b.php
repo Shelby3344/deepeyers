@@ -285,13 +285,116 @@
         }
         
         .search-input:focus { outline: none; border-color: #a855f7; }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 1023px) {
+            .flex.h-screen > aside {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                z-index: 40;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+            }
+            
+            .flex.h-screen > aside.mobile-open {
+                transform: translateX(0);
+            }
+            
+            #mobileOverlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(4px);
+                z-index: 35;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease-in-out;
+            }
+            
+            #mobileOverlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            /* Main content takes full width */
+            .flex.h-screen > main {
+                width: 100%;
+                margin-left: 0;
+            }
+            
+            /* Header adjustments */
+            .flex.h-screen > main > header {
+                padding-left: 60px !important;
+            }
+            
+            /* Card grids stack on mobile */
+            .grid.grid-cols-3 {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .grid.grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            
+            /* Table scroll */
+            .overflow-x-auto {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .data-table {
+                min-width: 600px;
+            }
+            
+            /* Modal adjustments */
+            .fixed.inset-0 > .max-w-lg,
+            .fixed.inset-0 > .max-w-md {
+                max-width: 95% !important;
+                margin: 16px !important;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .grid.grid-cols-4 {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Stat cards */
+            .stat-card {
+                padding: 16px !important;
+            }
+            
+            /* Header title */
+            .flex.h-screen > main > header h1 {
+                font-size: 1.25rem !important;
+            }
+            
+            /* Content padding */
+            .flex.h-screen > main > .p-8 {
+                padding: 16px !important;
+            }
+        }
     </style>
 </head>
 <body class="de-gradient-bg min-h-screen text-gray-100">
     
+    <!-- Mobile Menu Button -->
+    <button id="mobileMenuBtn" class="fixed top-4 left-4 z-50 lg:hidden w-10 h-10 rounded-xl bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.2)] text-[#00FF88] flex items-center justify-center">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Mobile Overlay -->
+    <div id="mobileOverlay" onclick="closeMobileSidebar()"></div>
+    
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <aside class="w-64 bg-[rgba(11,15,20,0.95)] border-r border-[rgba(255,255,255,0.08)] flex flex-col backdrop-blur-xl">
+        <aside id="sidebar" class="w-64 bg-[rgba(11,15,20,0.95)] border-r border-[rgba(255,255,255,0.08)] flex flex-col backdrop-blur-xl">
+            <!-- Close button for mobile -->
+            <button id="closeSidebarBtn" class="lg:hidden absolute top-4 right-4 w-8 h-8 rounded-lg bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(239,68,68,0.1)] text-gray-400 hover:text-red-400 flex items-center justify-center transition-all z-10">
+                <i class="fas fa-times"></i>
+            </button>
             <!-- Logo -->
             <div class="p-4 border-b border-[rgba(255,255,255,0.08)]">
                 <a href="/" class="flex items-center gap-3 group">
@@ -383,6 +486,22 @@
         
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto">
+            <!-- Beta Warning Banner -->
+            <div id="betaBanner" class="bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-amber-500/20 border-b border-amber-500/30 px-4 py-3">
+                <div class="flex items-center justify-center gap-3 text-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-flask text-amber-400 animate-pulse"></i>
+                        <span class="text-amber-300 font-semibold text-sm">VERSÃO BETA</span>
+                    </div>
+                    <span class="text-amber-200/80 text-sm">
+                        Estamos em fase de desenvolvimento. Algumas funcionalidades podem estar instáveis.
+                    </span>
+                    <button onclick="closeBetaBanner()" class="ml-2 text-amber-400 hover:text-amber-200 transition-colors" title="Fechar aviso">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            
             <!-- Header -->
             <header class="sticky top-0 bg-[rgba(11,15,20,0.9)] backdrop-blur-xl border-b border-[rgba(255,255,255,0.08)] px-8 py-4 z-10">
                 <div class="flex items-center justify-between">
@@ -701,9 +820,20 @@
                     <div class="card p-6">
                         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
                             <h3 class="text-lg font-semibold text-white">Todas as Sessões</h3>
-                            <div class="relative">
-                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
-                                <input type="text" id="searchSessions" class="search-input" placeholder="Buscar sessão...">
+                            <div class="flex flex-col sm:flex-row gap-3">
+                                <!-- Filtro por Usuário -->
+                                <div class="relative">
+                                    <i class="fas fa-user absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                                    <select id="filterUserSessions" class="search-input pl-10 pr-8 appearance-none cursor-pointer" style="min-width: 180px;">
+                                        <option value="">Todos os usuários</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-xs pointer-events-none"></i>
+                                </div>
+                                <!-- Busca -->
+                                <div class="relative">
+                                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                                    <input type="text" id="searchSessions" class="search-input" placeholder="Buscar sessão...">
+                                </div>
                             </div>
                         </div>
                         <div class="overflow-x-auto">
@@ -785,6 +915,67 @@
         </div>
     </div>
     
+    <!-- View Session Chat Modal -->
+    <div id="viewSessionModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/95 p-4">
+        <div class="bg-slate-900 rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col border border-slate-700 overflow-hidden">
+            <!-- Header -->
+            <div class="p-4 border-b border-slate-700 flex items-center justify-between bg-slate-800/50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00FF88]/20 to-[#00D4FF]/10 flex items-center justify-center border border-[#00FF88]/30">
+                        <i class="fas fa-comments text-[#00FF88]"></i>
+                    </div>
+                    <div>
+                        <h3 id="viewSessionTitle" class="text-lg font-semibold text-white">Sessão de Chat</h3>
+                        <p id="viewSessionMeta" class="text-xs text-gray-500"></p>
+                    </div>
+                </div>
+                <button onclick="closeViewSessionModal()" class="w-10 h-10 rounded-lg bg-slate-700 hover:bg-slate-600 text-gray-400 hover:text-white flex items-center justify-center transition-colors">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <!-- Session Info -->
+            <div id="viewSessionInfo" class="px-4 py-3 bg-slate-800/30 border-b border-slate-700/50 flex flex-wrap gap-4 text-sm">
+                <span class="flex items-center gap-2 text-gray-400">
+                    <i class="fas fa-user text-purple-400"></i>
+                    <span id="viewSessionUser">-</span>
+                </span>
+                <span class="flex items-center gap-2 text-gray-400">
+                    <i class="fas fa-crosshairs text-cyan-400"></i>
+                    <span id="viewSessionTarget">-</span>
+                </span>
+                <span class="flex items-center gap-2 text-gray-400">
+                    <i class="fas fa-shield-halved text-orange-400"></i>
+                    <span id="viewSessionProfile">-</span>
+                </span>
+                <span class="flex items-center gap-2 text-gray-400">
+                    <i class="fas fa-calendar text-green-400"></i>
+                    <span id="viewSessionDate">-</span>
+                </span>
+            </div>
+            
+            <!-- Chat Messages -->
+            <div id="viewSessionMessages" class="flex-1 overflow-y-auto p-4 space-y-4" style="min-height: 300px;">
+                <div class="flex items-center justify-center h-full">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
+                        <p>Carregando mensagens...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="p-4 border-t border-slate-700 bg-slate-800/30">
+                <div class="flex items-center justify-between text-sm text-gray-500">
+                    <span id="viewSessionCount">0 mensagens</span>
+                    <button onclick="closeViewSessionModal()" class="btn-secondary px-4 py-2">
+                        <i class="fas fa-times mr-2"></i>Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Edit User Modal -->
     <div id="editUserModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/90">
         <div class="bg-slate-900 rounded-2xl p-6 w-full max-w-md border border-slate-700 mx-4">
@@ -854,6 +1045,32 @@
             document.getElementById('authModal').classList.add('flex');
         } else {
             init();
+        }
+        
+        // Mobile Sidebar Toggle Functions
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        
+        function openMobileSidebar() {
+            sidebar.classList.add('mobile-open');
+            mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMobileSidebar() {
+            sidebar.classList.remove('mobile-open');
+            mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', openMobileSidebar);
+        }
+        
+        if (closeSidebarBtn) {
+            closeSidebarBtn.addEventListener('click', closeMobileSidebar);
         }
         
         async function init() {
@@ -996,6 +1213,10 @@
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
                     navigateTo(link.dataset.page);
+                    // Close mobile sidebar when navigating
+                    if (window.innerWidth < 1024) {
+                        closeMobileSidebar();
+                    }
                 });
             });
         }
@@ -1028,19 +1249,20 @@
         
         async function loadAdminData() {
             try {
-                const [usersRes, sessionsRes] = await Promise.all([
+                // Buscar stats separadamente (cache de 30s) para resposta mais rápida
+                const [usersRes, sessionsRes, statsRes] = await Promise.all([
                     api('/admin/users'),
-                    api('/admin/sessions')
+                    api('/admin/sessions'),
+                    api('/admin/stats')
                 ]);
                 
                 allUsers = usersRes.data || [];
                 allSessions = sessionsRes.data || [];
                 
-                document.getElementById('adminStatUsers').textContent = allUsers.length;
-                document.getElementById('adminStatSessions').textContent = allSessions.length;
-                
-                const totalMsgs = allSessions.reduce((acc, s) => acc + (s.message_count || 0), 0);
-                document.getElementById('adminStatMessages').textContent = totalMsgs;
+                // Usar dados das estatísticas (mais precisos e com cache)
+                document.getElementById('adminStatUsers').textContent = statsRes.users || allUsers.length;
+                document.getElementById('adminStatSessions').textContent = statsRes.sessions || allSessions.length;
+                document.getElementById('adminStatMessages').textContent = statsRes.messages || 0;
                 
                 const recent = allUsers.slice(0, 5);
                 document.getElementById('recentUsersTable').innerHTML = recent.map(u => `
@@ -1176,10 +1398,12 @@
             e.preventDefault();
             
             const userId = document.getElementById('editUserId').value;
+            const roleValue = document.getElementById('editUserRole').value;
+            
             const body = {
                 name: document.getElementById('editUserName').value,
                 email: document.getElementById('editUserEmail').value,
-                role: document.getElementById('editUserRole').value,
+                role: roleValue,
                 plan_id: document.getElementById('editUserPlan').value
             };
             
@@ -1187,12 +1411,12 @@
             if (newPwd) body.password = newPwd;
             
             try {
-                await api(`/admin/users/${userId}`, { method: 'PUT', body: JSON.stringify(body) });
-                showNotification('Usuário atualizado!');
+                const result = await api(`/admin/users/${userId}`, { method: 'PUT', body: JSON.stringify(body) });
+                showNotification('Usuário atualizado! Role: ' + (result.user?.role || roleValue));
                 closeEditUserModal();
                 loadUsers();
             } catch (err) {
-                showNotification('Erro ao atualizar', 'error');
+                showNotification('Erro ao atualizar: ' + err.message, 'error');
             }
         });
         
@@ -1225,26 +1449,204 @@
                 const data = await api('/admin/sessions');
                 allSessions = data.data || [];
                 renderSessionsTable(allSessions);
+                populateUserFilter(allSessions);
             } catch (err) {
                 console.error('Erro:', err);
             }
         }
         
+        // Popula o filtro de usuários
+        function populateUserFilter(sessions) {
+            const users = new Map();
+            sessions.forEach(s => {
+                if (s.user && s.user.id) {
+                    users.set(s.user.id, s.user.name);
+                }
+            });
+            
+            const select = document.getElementById('filterUserSessions');
+            if (select) {
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">Todos os usuários</option>' + 
+                    Array.from(users.entries()).map(([id, name]) => 
+                        `<option value="${id}">${name}</option>`
+                    ).join('');
+                select.value = currentValue;
+            }
+        }
+        
+        // Filtro por usuário
+        document.getElementById('filterUserSessions')?.addEventListener('change', function() {
+            filterAndRenderSessions();
+        });
+        
+        // Busca por título
+        document.getElementById('searchSessions')?.addEventListener('input', function() {
+            filterAndRenderSessions();
+        });
+        
+        function filterAndRenderSessions() {
+            const userId = document.getElementById('filterUserSessions')?.value || '';
+            const searchTerm = document.getElementById('searchSessions')?.value.toLowerCase() || '';
+            
+            let filtered = allSessions;
+            
+            if (userId) {
+                filtered = filtered.filter(s => s.user && String(s.user.id) === String(userId));
+            }
+            
+            if (searchTerm) {
+                filtered = filtered.filter(s => 
+                    (s.title || '').toLowerCase().includes(searchTerm) ||
+                    (s.user?.name || '').toLowerCase().includes(searchTerm) ||
+                    (s.profile || '').toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            renderSessionsTable(filtered);
+        }
+        
         function renderSessionsTable(sessions) {
             document.getElementById('sessionsTable').innerHTML = sessions.map(s => `
-                <tr>
+                <tr class="hover:bg-slate-800/30 transition-colors cursor-pointer" onclick="viewSession('${s.id}')">
                     <td class="text-white">${s.title || 'Sem título'}</td>
                     <td class="text-gray-400">${s.user?.name || '-'}</td>
-                    <td class="text-purple-400">${s.profile}</td>
+                    <td>
+                        <span class="px-2 py-1 rounded-md text-xs font-medium ${getProfileBadgeClass(s.profile)}">${s.profile}</span>
+                    </td>
                     <td class="text-gray-400">${s.message_count || 0}</td>
                     <td class="text-gray-500 text-sm">${new Date(s.created_at).toLocaleDateString('pt-BR')}</td>
-                    <td>
-                        <button onclick="deleteSession('${s.id}')" class="text-gray-400 hover:text-red-400 transition-colors">
+                    <td class="flex gap-2">
+                        <button onclick="event.stopPropagation(); viewSession('${s.id}')" class="text-gray-400 hover:text-cyan-400 transition-colors" title="Ver chat">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <button onclick="event.stopPropagation(); deleteSession('${s.id}')" class="text-gray-400 hover:text-red-400 transition-colors" title="Excluir">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
                 </tr>
-            `).join('') || '<tr><td colspan="6" class="text-center text-gray-500">Nenhuma sessão</td></tr>';
+            `).join('') || '<tr><td colspan="6" class="text-center text-gray-500">Nenhuma sessão encontrada</td></tr>';
+        }
+        
+        function getProfileBadgeClass(profile) {
+            const classes = {
+                'pentest': 'bg-green-500/20 text-green-400',
+                'redteam': 'bg-orange-500/20 text-orange-400',
+                'fullattack': 'bg-red-500/20 text-red-400',
+                'offensive': 'bg-purple-500/20 text-purple-400'
+            };
+            return classes[profile] || 'bg-gray-500/20 text-gray-400';
+        }
+        
+        // Visualizar sessão com chat completo
+        async function viewSession(sessionId) {
+            const modal = document.getElementById('viewSessionModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Reset content
+            document.getElementById('viewSessionMessages').innerHTML = `
+                <div class="flex items-center justify-center h-full">
+                    <div class="text-center text-gray-500">
+                        <i class="fas fa-spinner fa-spin text-2xl mb-2"></i>
+                        <p>Carregando mensagens...</p>
+                    </div>
+                </div>
+            `;
+            
+            try {
+                const data = await api(`/admin/sessions/${sessionId}/view`);
+                const session = data.data.session;
+                const messages = data.data.messages || [];
+                
+                // Update header
+                document.getElementById('viewSessionTitle').textContent = session.title || 'Sem título';
+                document.getElementById('viewSessionMeta').textContent = `ID: ${session.id}`;
+                
+                // Update info
+                document.getElementById('viewSessionUser').textContent = session.user ? `${session.user.name} (${session.user.email})` : 'Anônimo';
+                document.getElementById('viewSessionTarget').textContent = session.target_domain || 'Não definido';
+                document.getElementById('viewSessionProfile').textContent = session.profile || 'Padrão';
+                document.getElementById('viewSessionDate').textContent = new Date(session.created_at).toLocaleString('pt-BR');
+                document.getElementById('viewSessionCount').textContent = `${messages.length} mensagens`;
+                
+                // Render messages
+                if (messages.length === 0) {
+                    document.getElementById('viewSessionMessages').innerHTML = `
+                        <div class="flex items-center justify-center h-full">
+                            <div class="text-center text-gray-500">
+                                <i class="fas fa-comments text-4xl mb-3 opacity-50"></i>
+                                <p>Nenhuma mensagem nesta sessão</p>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('viewSessionMessages').innerHTML = messages.map(msg => `
+                        <div class="flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}">
+                            <div class="max-w-[80%] ${msg.role === 'user' 
+                                ? 'bg-gradient-to-br from-[#00FF88]/20 to-[#00D4FF]/10 border-[#00FF88]/30' 
+                                : 'bg-slate-800/80 border-slate-700/50'} 
+                                border rounded-2xl p-4 ${msg.role === 'user' ? 'rounded-tr-sm' : 'rounded-tl-sm'}">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <i class="fas ${msg.role === 'user' ? 'fa-user text-[#00FF88]' : 'fa-robot text-purple-400'} text-sm"></i>
+                                    <span class="text-xs font-medium ${msg.role === 'user' ? 'text-[#00FF88]' : 'text-purple-400'}">
+                                        ${msg.role === 'user' ? 'Usuário' : 'DeepEyes AI'}
+                                    </span>
+                                    <span class="text-xs text-gray-500 ml-auto">
+                                        ${new Date(msg.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+                                    </span>
+                                </div>
+                                <div class="text-sm text-gray-200 whitespace-pre-wrap break-words chat-content">${escapeHtml(msg.content)}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                    
+                    // Scroll to bottom
+                    const container = document.getElementById('viewSessionMessages');
+                    container.scrollTop = container.scrollHeight;
+                }
+            } catch (err) {
+                console.error('Erro ao carregar sessão:', err);
+                document.getElementById('viewSessionMessages').innerHTML = `
+                    <div class="flex items-center justify-center h-full">
+                        <div class="text-center text-red-400">
+                            <i class="fas fa-exclamation-circle text-4xl mb-3"></i>
+                            <p>Erro ao carregar mensagens</p>
+                            <p class="text-sm text-gray-500 mt-1">${err.message}</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function closeViewSessionModal() {
+            const modal = document.getElementById('viewSessionModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        // Beta banner
+        function closeBetaBanner() {
+            const banner = document.getElementById('betaBanner');
+            if (banner) {
+                banner.style.transition = 'all 0.3s ease';
+                banner.style.opacity = '0';
+                banner.style.maxHeight = '0';
+                banner.style.padding = '0';
+                setTimeout(() => banner.remove(), 300);
+                sessionStorage.setItem('betaBannerClosed', 'true');
+            }
+        }
+        
+        // Check if banner was closed this session
+        if (sessionStorage.getItem('betaBannerClosed') === 'true') {
+            document.getElementById('betaBanner')?.remove();
         }
         
         async function deleteSession(sessionId) {

@@ -792,6 +792,30 @@
         .mode-redteam { --mode-color: #F97316; --mode-rgb: 249, 115, 22; }
         .mode-fullattack { --mode-color: #EF4444; --mode-rgb: 239, 68, 68; }
         
+        /* Perfil bloqueado (sem plano) */
+        .attack-mode.locked {
+            opacity: 0.4;
+            cursor: not-allowed;
+            position: relative;
+        }
+        
+        .attack-mode.locked::after {
+            content: '\f023';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            font-size: 8px;
+            color: #EF4444;
+            background: rgba(0,0,0,0.7);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        
+        .attack-mode.locked:hover::before { opacity: 0; }
+        .attack-mode.locked:hover { transform: none; }
+
         @keyframes mode-pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -1080,6 +1104,14 @@
                     </div>
                 </div>
                 <p class="text-[10px] text-gray-600 mt-2 text-center" id="profileDescription">🟢 Modo ofensivo autorizado</p>
+            </div>
+            
+            <!-- Toast de Plano Necessário -->
+            <div id="planToast" class="fixed top-4 right-4 z-[9999] hidden">
+                <div class="bg-[#1a1f2e] border border-yellow-500/30 rounded-lg p-3 shadow-lg flex items-center gap-3">
+                    <i class="fas fa-lock text-yellow-500"></i>
+                    <span class="text-sm text-gray-300">Ative um plano para desbloquear</span>
+                </div>
             </div>
             
             <!-- Hidden legacy dropdown for compatibility -->
@@ -1408,6 +1440,26 @@
                     </p>
                 </div>
                 
+                <!-- Banner de Planos Premium -->
+                <div id="premiumBanner" class="mb-4 hidden">
+                    <div class="bg-gradient-to-r from-[#1a1f2e] via-[#1e2538] to-[#1a1f2e] border border-yellow-500/20 rounded-lg p-3 flex items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-500/20 to-orange-500/20 flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-crown text-yellow-500 text-sm"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-300">
+                                    <span class="text-yellow-500 font-semibold">Upgrade para Full Attack</span> — 
+                                    Crie scripts, exploits e ataques reais sem nenhuma restrição da IA
+                                </p>
+                            </div>
+                        </div>
+                        <a href="/profile" class="flex-shrink-0 px-3 py-1.5 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-400 hover:to-orange-400 text-black text-xs font-semibold rounded-lg transition-all">
+                            Ver Planos
+                        </a>
+                    </div>
+                </div>
+                
                 <div id="messagesContainer" class="space-y-6 hidden"></div>
                 
                 <!-- Typing Indicator - Premium Spinner -->
@@ -1734,10 +1786,22 @@
         async function api(endpoint, options = {}) {
             const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json', ...options.headers };
             if (token) headers['Authorization'] = `Bearer ${token}`;
-            const response = await fetch(`/api${endpoint}`, { ...options, headers });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || 'Erro na requisicao');
-            return data;
+            
+            try {
+                const response = await fetch(`/api${endpoint}`, { ...options, headers });
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    if (response.status === 422 && data.errors) {
+                        const firstError = Object.values(data.errors)[0];
+                        throw new Error(Array.isArray(firstError) ? firstError[0] : firstError);
+                    }
+                    throw new Error(data.message || 'Erro na requisição');
+                }
+                return data;
+            } catch (error) {
+                throw error;
+            }
         }
         
         // Auth Tabs
@@ -1768,13 +1832,21 @@
             const submitBtn = loginForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             
+            const emailValue = formData.get('email');
+            const passwordValue = formData.get('password');
+            
+            if (!emailValue || !passwordValue) {
+                showAuthError('Por favor, preencha todos os campos');
+                return;
+            }
+            
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Entrando...';
             submitBtn.disabled = true;
             
             try {
                 const data = await api('/auth/login', {
                     method: 'POST',
-                    body: JSON.stringify({ email: formData.get('email'), password: formData.get('password') })
+                    body: JSON.stringify({ email: emailValue, password: passwordValue })
                 });
                 
                 token = data.data.token;
@@ -1785,22 +1857,47 @@
             } catch (error) {
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
-                showAuthError(error.message);
+                showAuthError(error.message || 'Erro ao fazer login');
             }
         });
         
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(registerForm);
+            const submitBtn = registerForm.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            const nameValue = formData.get('name');
+            const emailValue = formData.get('email');
+            const passwordValue = formData.get('password');
+            const confirmValue = formData.get('password_confirmation');
+            
+            if (!nameValue || !emailValue || !passwordValue || !confirmValue) {
+                showAuthError('Por favor, preencha todos os campos');
+                return;
+            }
+            
+            if (passwordValue !== confirmValue) {
+                showAuthError('As senhas não coincidem');
+                return;
+            }
+            
+            if (passwordValue.length < 8) {
+                showAuthError('A senha deve ter pelo menos 8 caracteres');
+                return;
+            }
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Criando conta...';
+            submitBtn.disabled = true;
             
             try {
                 const data = await api('/auth/register', {
                     method: 'POST',
                     body: JSON.stringify({
-                        name: formData.get('name'),
-                        email: formData.get('email'),
-                        password: formData.get('password'),
-                        password_confirmation: formData.get('password_confirmation')
+                        name: nameValue,
+                        email: emailValue,
+                        password: passwordValue,
+                        password_confirmation: confirmValue
                     })
                 });
                 
@@ -1809,7 +1906,9 @@
                 currentUser = data.data.user;
                 onAuthSuccess();
             } catch (error) {
-                showAuthError(error.message);
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                showAuthError(error.message || 'Erro ao criar conta');
             }
         });
         
@@ -1923,8 +2022,42 @@
             updateWelcomeProfile(value);
         }
         
+        // Função para mostrar toast de plano necessário
+        function showPlanToast() {
+            const toast = document.getElementById('planToast');
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 2500);
+        }
+        
+        // Verifica se usuário tem plano que permite o perfil
+        function userCanAccessProfile(profile) {
+            // Pentest é sempre liberado
+            if (profile === 'pentest') return true;
+            
+            // Admin sempre tem acesso total
+            if (currentUser?.role === 'admin') return true;
+            
+            // Verifica se usuário tem plano
+            if (!currentUser?.plan) return false;
+            
+            // Verifica se o plano permite o perfil
+            const planProfiles = currentUser.plan?.allowed_profiles || ['pentest'];
+            return planProfiles.includes(profile);
+        }
+        
         // Nova função para o Attack Mode Selector (Premium UI)
-        function selectAttackMode(mode) {
+        function selectAttackMode(element) {
+            const mode = typeof element === 'string' ? element : element.dataset.value;
+            const targetElement = typeof element === 'string' 
+                ? document.querySelector(`.attack-mode[data-value="${mode}"]`)
+                : element;
+            
+            // Verifica se o usuário pode acessar este perfil
+            if (!userCanAccessProfile(mode)) {
+                showPlanToast();
+                return;
+            }
+            
             // Atualiza o valor do input oculto
             document.getElementById('profileSelector').value = mode;
             
@@ -1932,7 +2065,7 @@
             document.querySelectorAll('.attack-mode').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.currentTarget.classList.add('active');
+            targetElement.classList.add('active');
             
             // Atualiza descrição
             const descriptions = {
@@ -1958,8 +2091,8 @@
             
             authModal.classList.add('hidden');
             authModal.classList.remove('flex');
-            document.getElementById('userName').textContent = currentUser.name;
-            document.getElementById('userRole').textContent = currentUser.role.toUpperCase();
+            document.getElementById('userName').textContent = currentUser?.name || 'Usuário';
+            document.getElementById('userRole').textContent = (currentUser?.role || 'user').toUpperCase();
             logoutBtn.classList.remove('hidden');
             document.getElementById('profileLink').classList.remove('hidden');
             messageInput.disabled = false;
@@ -1970,6 +2103,10 @@
             
             updateUserAvatar();
             
+            // Atualiza os Attack Mode buttons baseado no plano do usuário
+            updateAttackModeAccess();
+            
+            // Legacy profile options (mantém compatibilidade)
             const allowedProfiles = {
                 'user': ['pentest'],
                 'analyst': ['pentest', 'redteam'],
@@ -1988,6 +2125,32 @@
             });
             
             await loadSessions();
+        }
+        
+        // Atualiza os botões de Attack Mode baseado no plano do usuário
+        function updateAttackModeAccess() {
+            const profiles = ['pentest', 'redteam', 'offensive'];
+            
+            profiles.forEach(profile => {
+                const btn = document.querySelector(`.attack-mode[data-value="${profile}"]`);
+                if (!btn) return;
+                
+                // Remove estado anterior
+                btn.classList.remove('locked');
+                
+                // Verifica se tem acesso
+                if (!userCanAccessProfile(profile)) {
+                    btn.classList.add('locked');
+                }
+            });
+            
+            // Atualiza descrição para mostrar que precisa de plano
+            if (!userCanAccessProfile('redteam') || !userCanAccessProfile('offensive')) {
+                const desc = document.getElementById('profileDescription');
+                if (desc) {
+                    desc.innerHTML = '🔒 <span class="text-yellow-500">Red Team</span> e <span class="text-red-400">Full Attack</span> requerem plano ativo';
+                }
+            }
         }
         
         logoutBtn.addEventListener('click', () => {
@@ -2217,6 +2380,18 @@
             messagesContainer.classList.remove('hidden');
             document.getElementById('chatInputArea').classList.remove('hidden');
             updateSessionHeader();
+            
+            // Mostra banner premium se usuário não tem acesso ao Full Attack
+            updatePremiumBanner();
+        }
+        
+        function updatePremiumBanner() {
+            const banner = document.getElementById('premiumBanner');
+            if (banner && !userCanAccessProfile('offensive')) {
+                banner.classList.remove('hidden');
+            } else if (banner) {
+                banner.classList.add('hidden');
+            }
         }
         
         function showSessionWelcome() {
@@ -2226,6 +2401,7 @@
             document.getElementById('chatInputArea').classList.remove('hidden');
             updateWelcomeProfile(profileSelector.value);
             updateSessionHeader();
+            updatePremiumBanner();
         }
         
         function hideChat() {
@@ -2235,6 +2411,10 @@
             document.getElementById('chatInputArea').classList.add('hidden');
             document.getElementById('sessionHeader').classList.add('hidden');
             document.getElementById('sessionHeader').classList.remove('flex');
+            
+            // Esconde o banner na home
+            const banner = document.getElementById('premiumBanner');
+            if (banner) banner.classList.add('hidden');
         }
         
         function renderMessages(messages) {
