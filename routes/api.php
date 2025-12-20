@@ -92,6 +92,7 @@ Route::middleware(['auth:sanctum', 'ensure.not.banned'])->group(function () {
 
         // Sessions
         Route::get('/sessions', [AdminController::class, 'sessions'])->name('api.admin.sessions');
+        Route::get('/sessions/{sessionId}/view', [AdminController::class, 'viewSession'])->name('api.admin.sessions.view');
         Route::delete('/sessions/{sessionId}', [AdminController::class, 'deleteSession'])->name('api.admin.sessions.delete');
         Route::delete('/sessions/clear', [AdminController::class, 'clearSessions'])->name('api.admin.sessions.clear');
 

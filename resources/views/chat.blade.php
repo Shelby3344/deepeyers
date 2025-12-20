@@ -1205,6 +1205,22 @@
         
         <!-- Main Content -->
         <main class="flex-1 flex flex-col min-h-0">
+            <!-- Beta Warning Banner -->
+            <div id="betaBanner" class="bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-amber-500/20 border-b border-amber-500/30 px-4 py-2 lg:py-3 flex-shrink-0">
+                <div class="flex items-center justify-center gap-2 lg:gap-3 text-center flex-wrap">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-flask text-amber-400 animate-pulse text-sm"></i>
+                        <span class="text-amber-300 font-semibold text-xs lg:text-sm">BETA</span>
+                    </div>
+                    <span class="text-amber-200/80 text-xs lg:text-sm">
+                        Estamos em desenvolvimento. Algumas funcionalidades podem estar instáveis.
+                    </span>
+                    <button onclick="closeBetaBanner()" class="text-amber-400 hover:text-amber-200 transition-colors ml-1" title="Fechar aviso">
+                        <i class="fas fa-times text-sm"></i>
+                    </button>
+                </div>
+            </div>
+            
             <!-- Session Header -->
             <div id="sessionHeader" class="hidden px-6 py-4 bg-[rgba(11,15,20,0.9)] backdrop-blur-xl border-b border-[rgba(0,255,136,0.1)] flex items-center justify-between">
                 <div class="flex items-center gap-4">
@@ -2786,6 +2802,24 @@
             if (window.innerWidth < 1024) {
                 closeMobileSidebar();
             }
+        }
+        
+        // Beta banner
+        function closeBetaBanner() {
+            const banner = document.getElementById('betaBanner');
+            if (banner) {
+                banner.style.transition = 'all 0.3s ease';
+                banner.style.opacity = '0';
+                banner.style.maxHeight = '0';
+                banner.style.padding = '0';
+                setTimeout(() => banner.remove(), 300);
+                sessionStorage.setItem('betaBannerClosed', 'true');
+            }
+        }
+        
+        // Check if banner was closed this session
+        if (sessionStorage.getItem('betaBannerClosed') === 'true') {
+            document.getElementById('betaBanner')?.remove();
         }
         
         async function init() {

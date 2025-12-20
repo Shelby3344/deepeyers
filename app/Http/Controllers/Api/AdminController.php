@@ -172,6 +172,41 @@ class AdminController extends Controller
     }
 
     /**
+     * Visualiza uma sessão com todas as mensagens
+     */
+    public function viewSession(string $sessionId): JsonResponse
+    {
+        $session = ChatSession::with(['user', 'messages' => function($query) {
+            $query->orderBy('created_at', 'asc');
+        }])->findOrFail($sessionId);
+
+        return response()->json([
+            'data' => [
+                'session' => [
+                    'id' => $session->id,
+                    'title' => $session->title,
+                    'profile' => $session->profile,
+                    'target_domain' => $session->target_domain,
+                    'created_at' => $session->created_at,
+                    'user' => $session->user ? [
+                        'id' => $session->user->id,
+                        'name' => $session->user->name,
+                        'email' => $session->user->email,
+                    ] : null,
+                ],
+                'messages' => $session->messages->map(function($msg) {
+                    return [
+                        'id' => $msg->id,
+                        'role' => $msg->role,
+                        'content' => $msg->content,
+                        'created_at' => $msg->created_at,
+                    ];
+                }),
+            ],
+        ]);
+    }
+
+    /**
      * Limpa todas as sessões
      */
     public function clearSessions(): JsonResponse
