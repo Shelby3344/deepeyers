@@ -61,6 +61,9 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'require'), // Obrigatório para Supabase
+            'options' => [
+                \PDO::ATTR_EMULATE_PREPARES => true, // Necessário para Supabase/PgBouncer
+            ],
         ],
 
     ],
