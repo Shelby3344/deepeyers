@@ -34,6 +34,34 @@ class ChatController extends Controller
     ) {}
 
     /**
+     * Verify user can access session
+     */
+    private function authorizeView(Request $request, ChatSession $session): void
+    {
+        $user = $request->user();
+        if ($user->id !== $session->user_id && !$user->isAdmin()) {
+            abort(403, 'You do not have access to this session');
+        }
+    }
+
+    /**
+     * Verify user can send messages to session
+     */
+    private function authorizeSendMessage(Request $request, ChatSession $session): void
+    {
+        $user = $request->user();
+        if ($user->is_banned) {
+            abort(403, 'Your account has been suspended');
+        }
+        if ($user->id !== $session->user_id) {
+            abort(403, 'You do not own this session');
+        }
+        if (!$session->is_active) {
+            abort(403, 'This session is not active');
+        }
+    }
+
+    /**
      * List user sessions
      */
     public function index(Request $request): JsonResponse
@@ -68,7 +96,14 @@ class ChatController extends Controller
      */
     public function store(CreateSessionRequest $request): JsonResponse
     {
-        Gate::authorize('create', ChatSession::class);
+        // Verificar se usuário pode criar sessão
+        $user = $request->user();
+        if ($user->is_banned) {
+            return response()->json([
+                'error' => 'Forbidden',
+                'message' => 'Your account has been suspended',
+            ], 403);
+        }
 
         $dto = CreateSessionDTO::fromRequest(
             $request->validated(),
@@ -93,10 +128,10 @@ class ChatController extends Controller
     /**
      * Get session with messages
      */
-    public function show(string $sessionId): JsonResponse
+    public function show(Request $request, string $sessionId): JsonResponse
     {
         $session = ChatSession::findOrFail($sessionId);
-        Gate::authorize('view', $session);
+        $this->authorizeView($request, $session);
 
         $history = $this->getSessionHistoryAction->execute($sessionId);
 
@@ -111,7 +146,10 @@ class ChatController extends Controller
     public function update(UpdateSessionRequest $request, string $sessionId): JsonResponse
     {
         $session = ChatSession::findOrFail($sessionId);
-        Gate::authorize('update', $session);
+        $user = $request->user();
+        if ($user->id !== $session->user_id) {
+            abort(403, 'You do not own this session');
+        }
 
         $session->update($request->validated());
 
@@ -128,10 +166,13 @@ class ChatController extends Controller
     /**
      * Delete session
      */
-    public function destroy(string $sessionId): JsonResponse
+    public function destroy(Request $request, string $sessionId): JsonResponse
     {
         $session = ChatSession::findOrFail($sessionId);
-        Gate::authorize('delete', $session);
+        $user = $request->user();
+        if ($user->id !== $session->user_id && !$user->isAdmin()) {
+            abort(403, 'You do not have permission to delete this session');
+        }
 
         $session->delete();
 
@@ -146,7 +187,7 @@ class ChatController extends Controller
     public function sendMessage(SendMessageRequest $request, string $sessionId): JsonResponse
     {
         $session = ChatSession::findOrFail($sessionId);
-        Gate::authorize('sendMessage', $session);
+        $this->authorizeSendMessage($request, $session);
 
         $dto = ChatMessageDTO::make(
             content: $request->validated('message'),
@@ -185,9 +226,27 @@ class ChatController extends Controller
     public function sendMessageStream(SendMessageRequest $request, string $sessionId): StreamedResponse
     {
         $session = ChatSession::findOrFail($sessionId);
-        Gate::authorize('sendMessage', $session);
-        
         $user = $request->user();
+        
+        // Verificar permissões
+        if ($user->is_banned) {
+            abort(403, 'Your account has been suspended');
+        }
+        if ($user->id !== $session->user_id) {
+            abort(403, 'You do not own this session');
+        }
+        if (!$session->is_active) {
+            abort(403, 'This session is not active');
+        }
+        
+        // Verificar limite diário
+        if ($user->hasReachedDailyLimit()) {
+            abort(429, 'Você atingiu o limite diário de requisições. Tente novamente amanhã ou faça upgrade do seu plano.');
+        }
+        
+        // Incrementar contador de requisições
+        $user->incrementDailyRequests();
+        
         $message = $request->validated('message');
         
         // Get conversation history BEFORE saving new message (to avoid duplicate in context)
@@ -253,9 +312,9 @@ class ChatController extends Controller
     public function sendMessageAsync(SendMessageRequest $request, string $sessionId): JsonResponse
     {
         $session = ChatSession::findOrFail($sessionId);
-        Gate::authorize('sendMessage', $session);
+        $this->authorizeSendMessage($request, $session);
 
-        $user = $request->user();;
+        $user = $request->user();
 
         $dto = ChatMessageDTO::make(
             content: $request->validated('message'),
@@ -284,7 +343,7 @@ class ChatController extends Controller
     public function checkStatus(Request $request, string $sessionId): JsonResponse
     {
         $session = ChatSession::findOrFail($sessionId);
-        Gate::authorize('view', $session);
+        $this->authorizeView($request, $session);
 
         $cacheKey = ProcessDeepSeekMessageJob::getCacheKey($sessionId, $request->user()->id);
 

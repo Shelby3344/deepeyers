@@ -28,11 +28,14 @@ class User extends Authenticatable
         'daily_requests',
         'daily_requests_date',
         'plan_id',
+        'last_login_at',
+        'last_login_ip',
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+        'last_login_ip', // ✅ Nunca expor IP em APIs públicas
     ];
 
     protected function casts(): array
@@ -44,6 +47,7 @@ class User extends Authenticatable
             'banned_at' => 'datetime',
             'daily_requests' => 'integer',
             'daily_requests_date' => 'date',
+            'last_login_at' => 'datetime',
         ];
     }
 

@@ -13,18 +13,49 @@
         }
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        de: {
+                            dark: '#0B0F14',
+                            darker: '#070A0E',
+                            card: '#0F172A',
+                            border: 'rgba(255,255,255,0.08)',
+                            green: '#00FF88',
+                            cyan: '#00D4FF',
+                            orange: '#F97316',
+                            red: '#EF4444',
+                        }
+                    },
+                    fontFamily: {
+                        'grotesk': ['Space Grotesk', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/deepeyes.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        body { 
+            font-family: 'Inter', sans-serif;
+            background: #0B0F14;
+        }
         
-        .gradient-bg {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+        .de-gradient-bg {
+            background: 
+                radial-gradient(ellipse at top left, rgba(0, 255, 136, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+                linear-gradient(180deg, #0B0F14 0%, #070A0E 100%);
         }
         
         ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+        ::-webkit-scrollbar-track { background: #0B0F14; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 255, 136, 0.3); border-radius: 3px; }
         
         .has-token #authModal { display: none !important; }
         
@@ -33,92 +64,122 @@
             align-items: center;
             gap: 12px;
             padding: 12px 16px;
-            border-radius: 10px;
-            color: #94a3b8;
-            transition: all 0.2s;
+            border-radius: 12px;
+            color: #6B7280;
+            transition: all 0.3s;
+            border: 1px solid transparent;
         }
         
         .sidebar-link:hover {
-            background: rgba(71, 85, 105, 0.3);
+            background: rgba(0, 255, 136, 0.05);
             color: white;
+            border-color: rgba(0, 255, 136, 0.1);
         }
         
         .sidebar-link.active {
-            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(99, 102, 241, 0.2));
-            color: #a855f7;
-            border: 1px solid rgba(168, 85, 247, 0.3);
+            background: rgba(0, 255, 136, 0.1);
+            color: #00FF88;
+            border: 1px solid rgba(0, 255, 136, 0.3);
         }
         
-        .sidebar-link.active i { color: #a855f7; }
+        .sidebar-link.active i { color: #00FF88; }
         
         .card {
-            background: rgba(30, 41, 59, 0.8);
-            border: 1px solid rgba(71, 85, 105, 0.5);
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
+            backdrop-blur: 10px;
         }
         
         .input-field {
             width: 100%;
-            background: #1e293b;
-            border: 1px solid #475569;
-            border-radius: 8px;
+            background: rgba(11, 15, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             padding: 12px 16px;
             color: white;
-            transition: border-color 0.2s;
+            transition: all 0.3s;
+            font-family: inherit;
         }
         
-        .input-field:focus { outline: none; border-color: #a855f7; }
+        .input-field:focus { 
+            outline: none; 
+            border-color: rgba(0, 255, 136, 0.5);
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+        }
         
         .btn-primary {
-            background: linear-gradient(135deg, #a855f7, #6366f1);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.2s;
+            background: linear-gradient(135deg, #00FF88, #00D4FF);
+            color: #0B0F14;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
         }
         
-        .btn-primary:hover { opacity: 0.9; }
-        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-primary:hover { 
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+        }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         
         .btn-secondary {
-            background: #334155;
-            color: #94a3b8;
-            padding: 10px 20px;
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #9CA3AF;
+            padding: 12px 24px;
+            border-radius: 12px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .btn-secondary:hover { background: #475569; color: white; }
+        .btn-secondary:hover { 
+            background: rgba(255, 255, 255, 0.1); 
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
         
         .btn-danger {
-            background: rgba(239, 68, 68, 0.2);
-            color: #f87171;
-            padding: 10px 20px;
-            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            color: #EF4444;
+            padding: 12px 24px;
+            border-radius: 12px;
             font-weight: 500;
             border: 1px solid rgba(239, 68, 68, 0.3);
-            transition: all 0.2s;
+            transition: all 0.3s;
         }
         
-        .btn-danger:hover { background: rgba(239, 68, 68, 0.3); }
+        .btn-danger:hover { 
+            background: rgba(239, 68, 68, 0.2);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
 
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
             padding: 16px 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             gap: 10px;
             z-index: 1000;
             animation: slideIn 0.3s ease;
+            backdrop-filter: blur(10px);
         }
         
-        .notification.success { background: #065f46; border: 1px solid #10b981; color: #6ee7b7; }
-        .notification.error { background: #7f1d1d; border: 1px solid #ef4444; color: #fca5a5; }
+        .notification.success { 
+            background: rgba(0, 255, 136, 0.1); 
+            border: 1px solid rgba(0, 255, 136, 0.3); 
+            color: #00FF88; 
+        }
+        .notification.error { 
+            background: rgba(239, 68, 68, 0.1); 
+            border: 1px solid rgba(239, 68, 68, 0.3); 
+            color: #EF4444; 
+        }
         
         @keyframes slideIn {
             from { transform: translateX(100%); opacity: 0; }
@@ -137,13 +198,13 @@
             height: 100%;
             border-radius: 50%;
             padding: 3px;
-            background: linear-gradient(135deg, #a855f7, #6366f1);
+            background: linear-gradient(135deg, #00FF88, #00D4FF);
         }
         
         .avatar-inner {
             width: 100%;
             height: 100%;
-            background: #1e293b;
+            background: #0B0F14;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -157,7 +218,7 @@
         .avatar-overlay {
             position: absolute;
             inset: 0;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.7);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -169,10 +230,11 @@
         .avatar-container:hover .avatar-overlay { opacity: 1; }
         
         .stat-card {
-            background: rgba(30, 41, 59, 0.6);
-            border: 1px solid rgba(71, 85, 105, 0.3);
-            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
             padding: 20px;
+            backdrop-filter: blur(10px);
         }
         
         .data-table { width: 100%; border-collapse: collapse; }
@@ -181,19 +243,19 @@
             padding: 12px 16px;
             font-size: 12px;
             font-weight: 600;
-            color: #94a3b8;
+            color: #6B7280;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
         
         .data-table td {
             padding: 12px 16px;
-            border-bottom: 1px solid #1e293b;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             font-size: 14px;
         }
         
-        .data-table tr:hover td { background: rgba(71, 85, 105, 0.1); }
+        .data-table tr:hover td { background: rgba(0, 255, 136, 0.02); }
         
         .badge {
             padding: 4px 10px;
@@ -225,39 +287,42 @@
         .search-input:focus { outline: none; border-color: #a855f7; }
     </style>
 </head>
-<body class="gradient-bg min-h-screen text-gray-100">
+<body class="de-gradient-bg min-h-screen text-gray-100">
     
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <aside class="w-64 bg-slate-900/80 border-r border-slate-700/50 flex flex-col">
+        <aside class="w-64 bg-[rgba(11,15,20,0.95)] border-r border-[rgba(255,255,255,0.08)] flex flex-col backdrop-blur-xl">
             <!-- Logo -->
-            <div class="p-4 border-b border-slate-700/50">
-                <a href="/" class="flex items-center gap-3">
-                    <img src="/logo.png" alt="DeepEyes" class="h-10 w-10">
+            <div class="p-4 border-b border-[rgba(255,255,255,0.08)]">
+                <a href="/" class="flex items-center gap-3 group">
+                    <div class="relative">
+                        <div class="absolute inset-0 blur-lg bg-[#00FF88]/20 rounded-full scale-110 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <img src="/logo.png" alt="DeepEyes" class="h-10 w-10 relative z-10">
+                    </div>
                     <div>
-                        <span class="text-lg font-bold block">DeepEyes</span>
-                        <span class="text-xs text-gray-500">Painel de Controle</span>
+                        <span class="text-lg font-bold block bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">DeepEyes</span>
+                        <span class="text-xs text-gray-600 font-mono">PAINEL DE CONTROLE</span>
                     </div>
                 </a>
             </div>
             
             <!-- User Info -->
-            <div class="p-4 border-b border-slate-700/50">
+            <div class="p-4 border-b border-[rgba(255,255,255,0.08)]">
                 <div class="flex items-center gap-3">
-                    <div style="width: 40px; height: 40px;" class="rounded-full overflow-hidden bg-slate-700 flex items-center justify-center">
-                        <i id="sidebarAvatarIcon" class="fas fa-user text-sm text-gray-500"></i>
+                    <div style="width: 40px; height: 40px;" class="rounded-xl overflow-hidden bg-gradient-to-br from-[rgba(0,255,136,0.2)] to-[rgba(0,212,255,0.1)] flex items-center justify-center border border-[rgba(0,255,136,0.2)]">
+                        <i id="sidebarAvatarIcon" class="fas fa-user text-sm text-[#00FF88]"></i>
                         <img id="sidebarAvatarImg" src="" alt="" class="w-full h-full object-cover" style="display: none;">
                     </div>
                     <div class="flex-1 min-w-0">
                         <p id="sidebarUserName" class="text-sm font-medium text-white truncate">Carregando...</p>
-                        <p id="sidebarUserRole" class="text-xs text-gray-500">-</p>
+                        <p id="sidebarUserRole" class="text-xs text-[#00FF88] font-mono uppercase tracking-wider">-</p>
                     </div>
                 </div>
             </div>
             
             <!-- Menu -->
             <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Minha Conta</p>
+                <p class="text-[10px] font-semibold text-gray-600 uppercase tracking-widest mb-3 px-3">Minha Conta</p>
                 
                 <a href="#" class="sidebar-link active" data-page="profile">
                     <i class="fas fa-user w-5"></i>
@@ -274,7 +339,7 @@
                 
                 <!-- Admin Menu -->
                 <div id="adminMenu" class="hidden">
-                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mt-6 mb-3 px-3">Administração</p>
+                    <p class="text-[10px] font-semibold text-gray-600 uppercase tracking-widest mt-6 mb-3 px-3">Administração</p>
                     
                     <a href="#" class="sidebar-link" data-page="admin-dashboard">
                         <i class="fas fa-gauge-high w-5"></i>
@@ -304,12 +369,12 @@
             </nav>
             
             <!-- Footer -->
-            <div class="p-4 border-t border-slate-700/50 space-y-2">
+            <div class="p-4 border-t border-[rgba(255,255,255,0.08)] space-y-2">
                 <a href="/" class="sidebar-link text-sm">
                     <i class="fas fa-arrow-left w-5"></i>
                     <span>Voltar ao Chat</span>
                 </a>
-                <button onclick="logout()" class="sidebar-link text-sm w-full text-red-400 hover:text-red-300 hover:bg-red-500/10">
+                <button onclick="logout()" class="sidebar-link text-sm w-full text-[#EF4444] hover:text-white hover:bg-[rgba(239,68,68,0.1)]">
                     <i class="fas fa-sign-out-alt w-5"></i>
                     <span>Sair</span>
                 </button>
@@ -319,9 +384,9 @@
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto">
             <!-- Header -->
-            <header class="sticky top-0 bg-slate-900/80 backdrop-blur-sm border-b border-slate-700/50 px-8 py-4 z-10">
+            <header class="sticky top-0 bg-[rgba(11,15,20,0.9)] backdrop-blur-xl border-b border-[rgba(255,255,255,0.08)] px-8 py-4 z-10">
                 <div class="flex items-center justify-between">
-                    <h1 id="pageTitle" class="text-xl font-bold">Meu Perfil</h1>
+                    <h1 id="pageTitle" class="text-xl font-bold bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">Meu Perfil</h1>
                 </div>
             </header>
             
@@ -333,7 +398,7 @@
                             <div class="avatar-container" onclick="document.getElementById('avatarInput').click()">
                                 <div class="avatar-ring">
                                     <div class="avatar-inner">
-                                        <i id="avatarIcon" class="fas fa-user text-2xl text-gray-500"></i>
+                                        <i id="avatarIcon" class="fas fa-user text-2xl text-[#00FF88]"></i>
                                         <img id="avatarImage" src="" alt="Avatar" style="display: none;">
                                         <div class="avatar-overlay">
                                             <i class="fas fa-camera text-white"></i>
@@ -423,51 +488,107 @@
                 
                 <!-- Usage Page -->
                 <div id="page-usage" class="page-content">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                        <div class="stat-card">
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                                    <i class="fas fa-bolt text-purple-400"></i>
+                    <!-- Header com info do plano -->
+                    <div class="card p-6 mb-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 flex items-center justify-center border border-purple-500/30">
+                                    <i class="fas fa-gem text-2xl text-purple-400"></i>
                                 </div>
                                 <div>
-                                    <p class="text-2xl font-bold text-white" id="statDailyReqs">0</p>
-                                    <p class="text-xs text-gray-500">Requisições Hoje</p>
+                                    <p class="text-sm text-gray-500">Plano Atual</p>
+                                    <h2 id="usagePlanName" class="text-xl font-bold text-white">-</h2>
                                 </div>
                             </div>
-                            <div class="h-1 bg-slate-700 rounded-full overflow-hidden">
-                                <div id="usageBar" class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 transition-all" style="width: 0%"></div>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-1" id="usageLimitText">de 0 disponíveis</p>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
-                                    <i class="fas fa-comments text-green-400"></i>
-                                </div>
-                                <div>
-                                    <p class="text-2xl font-bold text-white" id="statTotalSessions">0</p>
-                                    <p class="text-xs text-gray-500">Sessões Criadas</p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                                    <i class="fas fa-gem text-blue-400"></i>
-                                </div>
-                                <div>
-                                    <p class="text-2xl font-bold text-white" id="statPlanName">-</p>
-                                    <p class="text-xs text-gray-500">Plano Atual</p>
-                                </div>
+                            <div id="planBadge" class="px-4 py-2 rounded-xl bg-purple-500/20 border border-purple-500/30">
+                                <span id="planStatus" class="text-purple-400 font-semibold">Ativo</span>
                             </div>
                         </div>
                     </div>
                     
+                    <!-- Cards de uso -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <!-- Requisições Hoje -->
+                        <div class="stat-card">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00FF88]/20 to-[#00D4FF]/20 flex items-center justify-center border border-[#00FF88]/30">
+                                    <i class="fas fa-bolt text-xl text-[#00FF88]"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500 uppercase tracking-wider">Requisições Hoje</p>
+                                    <p class="text-2xl font-bold text-white">
+                                        <span id="statDailyReqs">0</span>
+                                        <span class="text-gray-500 text-lg">/</span>
+                                        <span id="statDailyLimit" class="text-gray-400 text-lg">5</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="h-2 bg-slate-700/50 rounded-full overflow-hidden">
+                                <div id="usageBar" class="h-full bg-gradient-to-r from-[#00FF88] to-[#00D4FF] transition-all duration-500" style="width: 0%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2 flex items-center gap-2">
+                                <i class="fas fa-info-circle"></i>
+                                <span id="usageLimitText">Restam 5 requisições</span>
+                            </p>
+                        </div>
+                        
+                        <!-- Requisições Restantes -->
+                        <div class="stat-card">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center border border-cyan-500/30">
+                                    <i class="fas fa-battery-three-quarters text-xl text-cyan-400"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500 uppercase tracking-wider">Restantes</p>
+                                    <p class="text-2xl font-bold text-white" id="statRemaining">5</p>
+                                </div>
+                            </div>
+                            <p id="remainingStatus" class="text-xs text-green-400 mt-3 flex items-center gap-1">
+                                <i class="fas fa-check-circle"></i>
+                                Créditos disponíveis
+                            </p>
+                        </div>
+                        
+                        <!-- Sessões Criadas -->
+                        <div class="stat-card">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center border border-orange-500/30">
+                                    <i class="fas fa-comments text-xl text-orange-400"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500 uppercase tracking-wider">Sessões</p>
+                                    <p class="text-2xl font-bold text-white" id="statTotalSessions">0</p>
+                                </div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-3">Total de sessões criadas</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Aviso para usuários do plano gratuito -->
+                    <div id="freeUserWarning" class="hidden mb-6">
+                        <div class="card p-5 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/30">
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-crown text-yellow-400"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-yellow-400 mb-1">Faça upgrade para mais requisições!</h4>
+                                    <p class="text-sm text-gray-400">Com o plano Pro, você tem <strong class="text-white">100 requisições/dia</strong> e acesso a modos avançados de ataque.</p>
+                                </div>
+                                <button class="px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg font-semibold hover:opacity-90 transition-opacity text-sm">
+                                    <i class="fas fa-rocket mr-2"></i>Upgrade
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Features do plano -->
                     <div class="card p-6">
-                        <h3 class="text-lg font-semibold text-white mb-4">Limites do Plano</h3>
-                        <div class="space-y-3" id="planFeatures"></div>
+                        <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                            <i class="fas fa-list-check text-[#00FF88]"></i>
+                            Recursos do Plano
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="planFeatures"></div>
                     </div>
                 </div>
                 
@@ -811,21 +932,56 @@
             document.getElementById('inputEmail').value = user.email;
             
             document.getElementById('statDailyReqs').textContent = usage.daily_requests;
-            document.getElementById('statPlanName').textContent = plan.name;
+            document.getElementById('statDailyLimit').textContent = usage.daily_limit === -1 ? '∞' : usage.daily_limit;
+            document.getElementById('statRemaining').textContent = usage.remaining === 9999 ? '∞' : usage.remaining;
+            document.getElementById('usagePlanName').textContent = plan.name;
             
-            const limit = usage.daily_limit === -1 ? 'ilimitado' : usage.daily_limit;
-            document.getElementById('usageLimitText').textContent = `de ${limit} disponíveis`;
+            // Texto de limite
+            if (usage.daily_limit === -1) {
+                document.getElementById('usageLimitText').textContent = 'Requisições ilimitadas';
+            } else {
+                const remaining = usage.remaining;
+                if (remaining <= 0) {
+                    document.getElementById('usageLimitText').innerHTML = '<span class="text-red-400">Limite atingido! Tente amanhã.</span>';
+                    document.getElementById('remainingStatus').innerHTML = '<i class="fas fa-times-circle"></i> Limite atingido';
+                    document.getElementById('remainingStatus').className = 'text-xs text-red-400 mt-3 flex items-center gap-1';
+                } else if (remaining <= 2) {
+                    document.getElementById('usageLimitText').textContent = `Apenas ${remaining} requisição(s) restante(s)!`;
+                    document.getElementById('usageLimitText').classList.add('text-yellow-400');
+                    document.getElementById('remainingStatus').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Poucos créditos';
+                    document.getElementById('remainingStatus').className = 'text-xs text-yellow-400 mt-3 flex items-center gap-1';
+                } else {
+                    document.getElementById('usageLimitText').textContent = `Restam ${remaining} requisições`;
+                }
+            }
             
+            // Barra de progresso
             if (usage.daily_limit > 0) {
                 const percent = Math.min((usage.daily_requests / usage.daily_limit) * 100, 100);
                 document.getElementById('usageBar').style.width = `${percent}%`;
+                
+                // Mudar cor se estiver quase no limite
+                if (percent >= 80) {
+                    document.getElementById('usageBar').className = 'h-full bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-500';
+                } else if (percent >= 50) {
+                    document.getElementById('usageBar').className = 'h-full bg-gradient-to-r from-yellow-500 to-orange-500 transition-all duration-500';
+                }
+            } else if (usage.daily_limit === -1) {
+                document.getElementById('usageBar').style.width = '100%';
+                document.getElementById('usageBar').className = 'h-full bg-gradient-to-r from-purple-500 to-indigo-500 transition-all duration-500';
             }
             
+            // Mostrar aviso para usuários gratuitos
+            if (plan.slug === 'free' || plan.price === 'Grátis') {
+                document.getElementById('freeUserWarning').classList.remove('hidden');
+            }
+            
+            // Features do plano
             const features = plan.features || [];
             document.getElementById('planFeatures').innerHTML = features.map(f => `
-                <div class="flex items-center gap-2 text-gray-300">
-                    <i class="fas fa-check text-green-500"></i>
-                    <span>${f}</span>
+                <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
+                    <i class="fas fa-check-circle text-[#00FF88]"></i>
+                    <span class="text-gray-300">${f}</span>
                 </div>
             `).join('');
         }
@@ -974,8 +1130,12 @@
         });
         
         async function openEditUserModal(userId) {
-            const user = allUsers.find(u => u.id === userId);
-            if (!user) return;
+            const user = allUsers.find(u => String(u.id) === String(userId));
+            if (!user) {
+                console.error('Usuário não encontrado:', userId);
+                showNotification('Usuário não encontrado', 'error');
+                return;
+            }
             
             // Carrega planos se ainda não carregou
             if (allPlans.length === 0) {

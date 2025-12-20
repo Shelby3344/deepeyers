@@ -12,14 +12,27 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Middleware global de segurança - executa em TODAS as requisições
+        // ✅ Middleware global de segurança - executa em TODAS as requisições
         $middleware->prepend(\App\Http\Middleware\SecurityShield::class);
         
+        // ✅ Middleware para setar usuário Sanctum na request (API stateless com Bearer token)
+        $middleware->api(append: [
+            \App\Http\Middleware\SetSanctumUser::class,
+        ]);
+        
+        // ✅ Aliases para middlewares de segurança
         $middleware->alias([
             'rate.limit.ai' => \App\Http\Middleware\RateLimitAI::class,
             'ensure.not.banned' => \App\Http\Middleware\EnsureUserNotBanned::class,
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
             'security.shield' => \App\Http\Middleware\SecurityShield::class,
+            'detect.anomalies' => \App\Http\Middleware\DetectAnomalies::class,
+            'validate.signature' => \App\Http\Middleware\ValidateRequestSignature::class,
+        ]);
+        
+        // ✅ Middleware de detecção de anomalias para rotas autenticadas
+        $middleware->appendToGroup('auth:sanctum', [
+            \App\Http\Middleware\DetectAnomalies::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

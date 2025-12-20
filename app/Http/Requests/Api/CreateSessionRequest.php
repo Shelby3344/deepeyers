@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api;
 
+use App\Models\Plan;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateSessionRequest extends FormRequest
@@ -15,7 +16,15 @@ class CreateSessionRequest extends FormRequest
 
     public function rules(): array
     {
-        $allowedProfiles = array_keys(config('deepseek.system_prompts', []));
+        // Pegar perfis permitidos do plano do usuário
+        $user = $this->user();
+        $plan = $user->plan ?? Plan::where('slug', 'free')->first();
+        $allowedProfiles = $plan ? $plan->allowed_profiles : ['pentest'];
+        
+        // Se não tiver plano, permitir apenas pentest
+        if (empty($allowedProfiles)) {
+            $allowedProfiles = ['pentest'];
+        }
 
         return [
             'title' => ['sometimes', 'string', 'max:255'],
@@ -30,7 +39,7 @@ class CreateSessionRequest extends FormRequest
             'title.max' => 'O título não pode exceder 255 caracteres.',
             'target_domain.required' => 'O domínio do alvo é obrigatório.',
             'target_domain.max' => 'O domínio do alvo não pode exceder 255 caracteres.',
-            'profile.in' => 'Perfil inválido selecionado.',
+            'profile.in' => 'Perfil inválido selecionado. Faça upgrade do seu plano para acessar mais perfis.',
         ];
     }
 }

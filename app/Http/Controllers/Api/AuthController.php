@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -31,18 +32,25 @@ class AuthController extends Controller
             'role' => 'user',
         ]);
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        // ✅ Token com abilities limitadas
+        $token = $user->createToken('api-token', [
+            'chat:read',
+            'chat:write',
+            'profile:read',
+        ])->plainTextToken;
+
+        // Log de registro
+        Log::channel('security')->info('User registered', [
+            'user_id' => $user->id,
+            'ip' => $request->ip(),
+        ]);
 
         return response()->json([
             'message' => 'User registered successfully',
             'data' => [
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'role' => $user->role,
-                ],
+                'user' => $this->sanitizeUser($user),
                 'token' => $token,
+                'expires_at' => now()->addDay()->toIso8601String(),
             ],
         ], 201);
     }
@@ -64,6 +72,13 @@ class AuthController extends Controller
             // Delay anti-bruteforce para dificultar ataques
             usleep(random_int(100000, 300000));
             
+            // Log de tentativa falha
+            Log::channel('security')->warning('Login failed', [
+                'email' => $validated['email'],
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+            
             throw ValidationException::withMessages([
                 'credentials' => ['Authentication failed.'],
             ]);
@@ -73,26 +88,51 @@ class AuthController extends Controller
             // Mesma mensagem genérica para não revelar status do usuário
             usleep(random_int(100000, 300000));
             
+            Log::channel('security')->warning('Banned user login attempt', [
+                'user_id' => $user->id,
+                'ip' => $request->ip(),
+            ]);
+            
             throw ValidationException::withMessages([
                 'credentials' => ['Authentication failed.'],
             ]);
         }
 
-        // Revoke old tokens (optional - for single session)
-        // $user->tokens()->delete();
+        // ✅ Revoga TODOS os tokens anteriores (single session por segurança)
+        $user->tokens()->delete();
+        
+        // ✅ Regenera sessão para prevenir session fixation
+        if ($request->hasSession()) {
+            $request->session()->regenerate();
+        }
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        // ✅ Token com abilities limitadas
+        $token = $user->createToken('api-token', [
+            'chat:read',
+            'chat:write',
+            'profile:read',
+            'profile:write',
+        ])->plainTextToken;
+
+        // ✅ Atualiza informações de login
+        $user->update([
+            'last_login_at' => now(),
+            'last_login_ip' => $request->ip(),
+        ]);
+
+        // Log de login bem-sucedido
+        Log::channel('security')->info('User login', [
+            'user_id' => $user->id,
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+        ]);
 
         return response()->json([
             'message' => 'Login successful',
             'data' => [
-                'user' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'role' => $user->role,
-                ],
+                'user' => $this->sanitizeUser($user),
                 'token' => $token,
+                'expires_at' => now()->addDay()->toIso8601String(),
             ],
         ]);
     }
@@ -102,7 +142,13 @@ class AuthController extends Controller
      */
     public function logout(Request $request): JsonResponse
     {
-        $request->user()->currentAccessToken()->delete();
+        // ✅ Remove TODOS os tokens do usuário
+        $request->user()->tokens()->delete();
+
+        Log::channel('security')->info('User logout', [
+            'user_id' => $request->user()->id,
+            'ip' => $request->ip(),
+        ]);
 
         return response()->json([
             'message' => 'Logged out successfully',
@@ -115,6 +161,12 @@ class AuthController extends Controller
     public function me(Request $request): JsonResponse
     {
         $user = $request->user();
+        
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthenticated',
+            ], 401);
+        }
 
         return response()->json([
             'data' => [
@@ -122,10 +174,21 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'role' => $user->role,
-                'is_banned' => $user->is_banned,
                 'daily_requests_remaining' => $user->getDailyRequestsRemaining(),
-                'created_at' => $user->created_at->toIso8601String(),
             ],
         ]);
+    }
+
+    /**
+     * Sanitiza dados do usuário para não expor informações sensíveis
+     */
+    private function sanitizeUser(User $user): array
+    {
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'avatar' => $user->avatar_url ?? null,
+            // ❌ NÃO expor: email completo, role, is_banned, created_at para respostas públicas
+        ];
     }
 }

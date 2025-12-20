@@ -171,7 +171,54 @@ DEEPSEEK_MODEL=deepseek/deepseek-chat
 4. Push para a branch (`git push origin feature/nova-funcionalidade`)
 5. Abra um Pull Request
 
-## 📄 Licença
+## � Roadmap / Futuras Implementações
+
+### 🛠️ Ferramentas de Pentest Integradas
+- [ ] **Templates de Prompts** - Biblioteca de prompts prontos para reconhecimento, exploração, relatórios
+- [ ] **Scanner Integrado** - Nmap/Nikto via interface (execução controlada no servidor)
+- [ ] **Gerador de Payloads** - Assistente para criar payloads personalizados
+- [ ] **Checklist Interativa** - OWASP Top 10, PTES, etc. com tracking de progresso
+- [ ] **Exportar Chat** - Download em PDF/Markdown com formatação profissional
+
+### 🤖 IA Avançada
+- [ ] **Multi-Modelo** - Suporte a GPT-4, Claude, Gemini além do DeepSeek
+- [ ] **RAG com Documentação** - Upload de PDFs/docs para contexto especializado
+- [ ] **Agentes Autônomos** - IA que executa comandos e analisa resultados automaticamente
+- [ ] **Análise de Código** - Upload de código para análise de vulnerabilidades
+- [ ] **Modo Offline** - Modelo local (Ollama) para ambientes air-gapped
+
+### 👥 Colaboração & Equipe
+- [ ] **Workspaces de Equipe** - Compartilhar sessões entre membros
+- [ ] **Comentários em Sessões** - Anotações e discussões inline
+- [ ] **Relatórios Colaborativos** - Gerar reports em equipe
+- [ ] **Roles & Permissões** - Níveis de acesso granulares
+
+### 💰 Monetização & Planos
+- [ ] **Integração Stripe/PagSeguro** - Pagamentos recorrentes
+- [ ] **Planos por Créditos** - Sistema de tokens/créditos para API
+- [ ] **Trial Automático** - Período de teste com onboarding
+- [ ] **Dashboard de Uso** - Métricas de consumo por usuário
+
+### 🎨 UX/UI
+- [ ] **Temas Customizáveis** - Light mode, cores personalizadas
+- [ ] **Atalhos de Teclado** - Navegação rápida (Ctrl+K, etc.)
+- [ ] **PWA Completo** - Instalável como app, notificações push
+- [ ] **Dashboard Pessoal** - Estatísticas, sessões favoritas, progresso
+
+### 🔒 Segurança Adicional
+- [ ] **2FA/MFA** - Autenticação em duas etapas (TOTP/SMS)
+- [ ] **Audit Log** - Registro completo de ações para compliance
+- [ ] **IP Whitelisting** - Restringir acesso por IP
+- [ ] **Session Management** - Visualizar e revogar sessões ativas
+
+### 📊 Analytics & Relatórios
+- [ ] **Dashboard Admin Avançado** - Gráficos de uso, receita, crescimento
+- [ ] **Relatórios de Pentest** - Templates profissionais para clientes
+- [ ] **Exportação de Dados** - GDPR compliance, export de dados do usuário
+
+---
+
+## �📄 Licença
 
 Este projeto é privado e de uso restrito.
 

@@ -4,34 +4,314 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>DeepEyes - Pentest Assistant</title>
+    <title>DeepEyes - Cyber Arsenal</title>
     <link rel="icon" type="image/png" href="/logo.png">
     <link rel="apple-touch-icon" href="/logo.png">
+    <meta name="theme-color" content="#0B0F14">
     <script>
-        // Esconde login imediatamente se tiver token (evita flash)
+        // Controla visibilidade baseado no token
         if (localStorage.getItem('token')) {
             document.documentElement.classList.add('has-token');
+        } else {
+            document.documentElement.classList.add('no-token');
         }
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'de-bg': '#0B0F14',
+                        'de-bg-secondary': '#0F172A',
+                        'de-bg-tertiary': '#1E293B',
+                        'de-neon': '#00FF88',
+                        'de-cyan': '#00D4FF',
+                        'de-purple': '#A855F7',
+                        'de-red': '#EF4444',
+                        'de-orange': '#F97316',
+                    },
+                    fontFamily: {
+                        'display': ['Space Grotesk', 'Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'Fira Code', 'monospace'],
+                    },
+                    animation: {
+                        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+                        'scan': 'scan 8s linear infinite',
+                        'typing': 'typing 0.8s steps(3) infinite',
+                    }
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="/css/deepeyes.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
         
-        body { font-family: 'Inter', sans-serif; }
+        /* ========================================
+           DEEPEYES PREMIUM HACKER UI
+           ======================================== */
+        
+        html, body { 
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0B0F14 0%, #0a0015 50%, #0B0F14 100%);
+            background-attachment: fixed;
+            overflow: hidden;
+            height: 100%;
+        }
         code, pre { font-family: 'JetBrains Mono', monospace; }
         
-        /* Esconde login se tem token (evita flash) */
+        /* Hide auth if logged, show if not */
         .has-token #authModal { display: none !important; }
+        .no-token #authModal { display: flex !important; }
+        .no-token #app { display: none !important; }
         
-        .chat-container {
-            height: calc(100vh - 200px);
+        /* Scanline Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 9999;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.02) 2px,
+                rgba(0, 0, 0, 0.02) 4px
+            );
+            opacity: 0.4;
         }
         
+        /* Grid Background */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0B0F14; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(135deg, #334155, #1E293B); 
+            border-radius: 4px; 
+        }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        
+        /* Neon Glow Classes */
+        .glow-neon { box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), 0 0 40px rgba(0, 255, 136, 0.1); }
+        .glow-cyan { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), 0 0 40px rgba(0, 212, 255, 0.1); }
+        .glow-red { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3), 0 0 40px rgba(239, 68, 68, 0.1); }
+        .glow-purple { box-shadow: 0 0 20px rgba(168, 85, 247, 0.3), 0 0 40px rgba(168, 85, 247, 0.1); }
+        
+        /* Text Gradient */
+        .text-gradient-neon {
+            background: linear-gradient(135deg, #00FF88, #00D4FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .text-gradient-attack {
+            background: linear-gradient(135deg, #EF4444, #A855F7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Sidebar Styles */
+        .de-sidebar {
+            background: rgba(11, 15, 20, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(0, 255, 136, 0.1);
+        }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 1023px) {
+            .de-sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                z-index: 40;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+                width: 280px;
+            }
+            
+            .de-sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            
+            #mobileOverlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(4px);
+                z-index: 35;
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease-in-out;
+            }
+            
+            #mobileOverlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+            
+            /* Chat input mobile adjustments */
+            #chatInputArea {
+                padding: 12px !important;
+            }
+            
+            #chatInputArea .max-w-4xl {
+                max-width: 100% !important;
+            }
+            
+            /* Feature cards mobile */
+            #homeWelcome .grid-cols-2 {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Session header mobile */
+            #sessionHeader {
+                padding-left: 60px !important;
+            }
+            
+            /* Messages container mobile padding */
+            #chatContainer {
+                padding: 16px !important;
+            }
+            
+            /* Auth modal mobile adjustments */
+            #authModal .max-w-md {
+                max-width: 95% !important;
+                margin: 16px !important;
+            }
+            
+            /* Delete/Domain modals mobile */
+            #deleteModal .max-w-sm,
+            #domainModal .max-w-md {
+                max-width: 90% !important;
+            }
+            
+            /* Profile dropdown mobile */
+            #profileDropdown.open {
+                width: calc(100vw - 32px) !important;
+                max-width: 300px;
+            }
+            
+            /* Attack mode selector mobile - stack vertical */
+            .attack-mode-selector {
+                flex-direction: column !important;
+                gap: 8px !important;
+            }
+            
+            .attack-mode-selector .attack-mode {
+                width: 100% !important;
+                justify-content: flex-start !important;
+                padding: 12px 16px !important;
+            }
+            
+            /* Welcome section mobile */
+            #homeWelcome h3 {
+                font-size: 1.5rem !important;
+            }
+            
+            #homeWelcome .mb-10 {
+                margin-bottom: 1.5rem !important;
+            }
+            
+            /* Blob cards mobile */
+            .blob-card {
+                padding: 16px !important;
+            }
+            
+            /* Profile card mobile adjustments */
+            #currentProfileCard {
+                max-width: 100% !important;
+            }
+            
+            #welcomeProfileFeatures {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+            
+            /* Typing indicator mobile */
+            #typingIndicator {
+                padding: 12px !important;
+            }
+            
+            /* Input bar bottom info - hide on mobile */
+            #inputContainer .border-t .text-gray-600 {
+                display: none !important;
+            }
+        }
+        
+        /* Small mobile adjustments */
+        @media (max-width: 480px) {
+            #homeWelcome h3 {
+                font-size: 1.25rem !important;
+            }
+            
+            #homeWelcome > .relative img {
+                height: 80px !important;
+            }
+            
+            .blob-card h4 {
+                font-size: 1rem !important;
+            }
+            
+            #welcomeProfileFeatures {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 4px !important;
+            }
+            
+            /* User info in sidebar */
+            .de-sidebar .p-4 {
+                padding: 12px !important;
+            }
+        }
+        
+        .sidebar-item {
+            transition: all 0.25s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(0, 255, 136, 0.05);
+            border-left-color: rgba(0, 255, 136, 0.3);
+        }
+        
+        .sidebar-item:hover .delete-session-btn { opacity: 1; }
+        
+        .sidebar-item.active {
+            background: linear-gradient(90deg, rgba(0, 255, 136, 0.1), transparent);
+            border-left-color: #00FF88;
+        }
+        
+        /* Chat Messages */
+        .chat-container { height: calc(100vh - 200px); }
+        
         .message-content pre {
-            background: #1e293b;
-            border-radius: 8px;
+            background: #0B0F14;
+            border: 1px solid #1E293B;
+            border-radius: 10px;
             padding: 16px;
             overflow-x: auto;
             margin: 8px 0;
@@ -39,7 +319,8 @@
         }
         
         .message-content code {
-            background: #334155;
+            background: rgba(0, 255, 136, 0.1);
+            color: #00FF88;
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 0.875rem;
@@ -47,34 +328,32 @@
         
         .message-content pre code {
             background: none;
+            color: #00D4FF;
             padding: 0;
         }
         
-        /* Code Block Container */
-        .code-block-wrapper {
-            position: relative;
-            margin: 12px 0;
-        }
+        /* Code Block */
+        .code-block-wrapper { position: relative; margin: 12px 0; }
         
         .code-block-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #0f172a;
-            border-radius: 8px 8px 0 0;
-            padding: 8px 12px;
-            border: 1px solid #334155;
+            background: #0B0F14;
+            border-radius: 10px 10px 0 0;
+            padding: 10px 14px;
+            border: 1px solid #1E293B;
             border-bottom: none;
         }
         
         .code-block-lang {
-            font-size: 12px;
-            color: #22d3ee;
+            font-size: 11px;
+            color: #00FF88;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            background: rgba(34, 211, 238, 0.1);
-            padding: 2px 8px;
+            letter-spacing: 1px;
+            background: rgba(0, 255, 136, 0.1);
+            padding: 3px 10px;
             border-radius: 4px;
         }
         
@@ -84,67 +363,51 @@
             gap: 6px;
             background: transparent;
             border: none;
-            color: #94a3b8;
-            font-size: 12px;
+            color: #64748B;
+            font-size: 11px;
             cursor: pointer;
             padding: 4px 8px;
             border-radius: 4px;
             transition: all 0.2s;
         }
         
-        .code-copy-btn:hover {
-            background: #334155;
-            color: #e2e8f0;
-        }
-        
-        .code-copy-btn.copied {
-            color: #4ade80;
-        }
+        .code-copy-btn:hover { background: rgba(0, 255, 136, 0.1); color: #00FF88; }
+        .code-copy-btn.copied { color: #00FF88; }
         
         .code-block-wrapper pre {
             margin: 0;
-            border-radius: 0 0 8px 8px;
-            border: 1px solid #334155;
+            border-radius: 0 0 10px 10px;
+            border: 1px solid #1E293B;
             border-top: none;
         }
         
-        /* Modern Input Glow Effect */
+        /* Input Glow Effect */
         #inputContainer {
             transition: all 0.3s ease;
+            background: rgba(11, 15, 20, 0.9);
+            backdrop-filter: blur(20px);
         }
         
         #inputContainer:focus-within {
-            border-color: rgba(147, 51, 234, 0.5) !important;
-            box-shadow: 0 0 0 1px rgba(147, 51, 234, 0.3),
-                        0 4px 20px rgba(147, 51, 234, 0.15),
-                        0 0 40px rgba(220, 38, 38, 0.1);
-        }
-        
-        #inputContainer:focus-within #inputGlow {
-            opacity: 1;
+            border-color: rgba(0, 255, 136, 0.4) !important;
+            box-shadow: 0 0 0 1px rgba(0, 255, 136, 0.2),
+                        0 0 30px rgba(0, 255, 136, 0.1),
+                        0 0 60px rgba(0, 212, 255, 0.05);
         }
         
         #messageInput {
             line-height: 1.5;
         }
         
-        #messageInput::-webkit-scrollbar {
-            width: 4px;
-        }
+        #messageInput::-webkit-scrollbar { width: 4px; }
+        #messageInput::-webkit-scrollbar-track { background: transparent; }
+        #messageInput::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
         
-        #messageInput::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        
-        #messageInput::-webkit-scrollbar-thumb {
-            background: #475569;
-            border-radius: 2px;
-        }
-        
-        /* Cursor de streaming */
+        /* Streaming Cursor */
         .streaming-cursor {
-            animation: blink 1s infinite;
-            color: #9333ea;
+            animation: blink 0.8s infinite;
+            color: #00FF88;
+            text-shadow: 0 0 10px #00FF88;
         }
         
         @keyframes blink {
@@ -152,18 +415,10 @@
             51%, 100% { opacity: 0; }
         }
         
-        /* Loading Animado - DeepEyes */
-        .ai-thinking {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        /* AI Thinking Animation */
+        .ai-thinking { display: flex; align-items: center; gap: 12px; }
         
-        .ai-brain {
-            position: relative;
-            width: 32px;
-            height: 32px;
-        }
+        .ai-brain { position: relative; width: 32px; height: 32px; }
         
         .ai-brain-icon {
             animation: pulse-glow 2s ease-in-out infinite;
@@ -173,7 +428,7 @@
             position: absolute;
             inset: -4px;
             border: 2px solid transparent;
-            border-top-color: #9333ea;
+            border-top-color: #00FF88;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -182,35 +437,24 @@
             position: absolute;
             inset: -8px;
             border: 2px solid transparent;
-            border-bottom-color: #dc2626;
+            border-bottom-color: #00D4FF;
             border-radius: 50%;
             animation: spin 1.5s linear infinite reverse;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
         @keyframes pulse-glow {
-            0%, 100% { 
-                filter: drop-shadow(0 0 2px #9333ea);
-                transform: scale(1);
-            }
-            50% { 
-                filter: drop-shadow(0 0 8px #9333ea) drop-shadow(0 0 15px #dc2626);
-                transform: scale(1.1);
-            }
+            0%, 100% { filter: drop-shadow(0 0 4px #00FF88); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 12px #00FF88) drop-shadow(0 0 20px #00D4FF); transform: scale(1.1); }
         }
         
-        .thinking-dots {
-            display: flex;
-            gap: 4px;
-        }
+        .thinking-dots { display: flex; gap: 4px; }
         
         .thinking-dots span {
             width: 8px;
             height: 8px;
-            background: linear-gradient(135deg, #dc2626, #9333ea);
+            background: linear-gradient(135deg, #00FF88, #00D4FF);
             border-radius: 50%;
             animation: thinking-bounce 1.4s ease-in-out infinite;
         }
@@ -220,18 +464,66 @@
         .thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
         
         @keyframes thinking-bounce {
-            0%, 60%, 100% {
-                transform: translateY(0);
-                opacity: 0.4;
-            }
-            30% {
-                transform: translateY(-10px);
-                opacity: 1;
-            }
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-10px); opacity: 1; }
+        }
+        
+        /* AI Loading Spinner */
+        .ai-spinner {
+            position: relative;
+            width: 48px;
+            height: 48px;
+        }
+        
+        .ai-spinner .spinner-outer {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(135deg, #00FF88 0%, #00D4FF 50%, #BA42FF 100%);
+            border-radius: 50%;
+            animation: ai-spin 1.5s linear infinite;
+            filter: blur(1px);
+            box-shadow: 0px -3px 15px 0px rgba(0, 255, 136, 0.5), 
+                        0px 3px 15px 0px rgba(0, 212, 255, 0.5),
+                        0px 0px 20px 0px rgba(186, 66, 255, 0.3);
+        }
+        
+        .ai-spinner .spinner-inner {
+            position: absolute;
+            inset: 4px;
+            background: linear-gradient(135deg, #0B0F14 0%, #0F172A 100%);
+            border-radius: 50%;
+            filter: blur(2px);
+        }
+        
+        .ai-spinner .spinner-core {
+            position: absolute;
+            inset: 8px;
+            background: radial-gradient(circle at center, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .ai-spinner .spinner-core i {
+            font-size: 14px;
+            color: #00FF88;
+            animation: pulse-icon 1s ease-in-out infinite;
+            filter: drop-shadow(0 0 8px #00FF88);
+        }
+        
+        @keyframes ai-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes pulse-icon {
+            0%, 100% { opacity: 0.6; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
         }
         
         .thinking-text {
-            background: linear-gradient(90deg, #9333ea, #dc2626, #9333ea);
+            background: linear-gradient(90deg, #00FF88, #00D4FF, #00FF88);
             background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
@@ -239,13 +531,11 @@
             animation: gradient-text 2s linear infinite;
         }
         
-        @keyframes gradient-text {
-            to { background-position: 200% center; }
-        }
+        @keyframes gradient-text { to { background-position: 200% center; } }
         
         .neural-line {
             height: 2px;
-            background: linear-gradient(90deg, transparent, #9333ea, #dc2626, #9333ea, transparent);
+            background: linear-gradient(90deg, transparent, #00FF88, #00D4FF, #00FF88, transparent);
             background-size: 200% 100%;
             animation: neural-flow 1.5s linear infinite;
             border-radius: 2px;
@@ -256,126 +546,70 @@
             100% { background-position: -100% 0; }
         }
         
+        /* Gradient Background */
         .gradient-bg {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+            background: linear-gradient(135deg, #0B0F14 0%, #0a0015 50%, #0B0F14 100%);
         }
         
-        .glow-red {
-            box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
-        }
-        
-        .glow-purple {
-            box-shadow: 0 0 20px rgba(147, 51, 234, 0.3);
-        }
-        
-        .sidebar-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        
-        .sidebar-item:hover .delete-session-btn {
-            opacity: 1;
-        }
-        
-        .sidebar-item.active {
-            background: rgba(147, 51, 234, 0.2);
-            border-left: 3px solid #9333ea;
-        }
-        
+        /* Animation Slide-in */
         @keyframes slide-in {
             from { opacity: 0; transform: translateX(100%); }
             to { opacity: 1; transform: translateX(0); }
         }
+        .animate-slide-in { animation: slide-in 0.3s ease-out forwards; }
         
-        .animate-slide-in {
-            animation: slide-in 0.3s ease-out forwards;
-        }
-        
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
-        
+        /* Feature Cards */
         .feature-card {
+            --card-color: #00FF88;
             position: relative;
-            border-radius: 12px;
-            overflow: visible;
-        }
-        
-        .feature-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: linear-gradient(135deg, rgba(11, 15, 20, 0.95), rgba(15, 23, 42, 0.9));
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            border-radius: 16px;
+            transition: all 0.3s ease;
             overflow: hidden;
-            border-radius: 12px;
         }
         
-        .feature-card-inner::before {
+        .feature-card::before {
             content: '';
             position: absolute;
-            width: 150px;
-            height: 300%;
-            background: linear-gradient(90deg, transparent, var(--card-color), var(--card-color), transparent);
+            inset: 0;
+            border-radius: 16px;
+            padding: 1px;
+            background: linear-gradient(135deg, var(--card-color), transparent 50%, var(--card-color));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s;
         }
         
-        .feature-card:hover .feature-card-inner::before {
-            opacity: 1;
-            animation: var(--card-animation);
-        }
+        .feature-card:hover::before { opacity: 1; }
         
-        .feature-card-content {
-            position: relative;
-            width: calc(100% - 3px);
-            height: calc(100% - 3px);
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
-            border-radius: 11px;
-            padding: 1.25rem;
-            display: flex;
-            flex-direction: column;
-            z-index: 1;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: border-color 0.3s ease;
-        }
-        
-        .feature-card:hover .feature-card-content {
-            border-color: var(--card-color);
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px -10px rgba(0, 255, 136, 0.2);
         }
         
         .feature-card .card-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-            transition: transform 0.3s ease, filter 0.3s ease;
-            filter: drop-shadow(0 0 8px currentColor);
+            font-size: 1.75rem;
+            color: var(--card-color);
+            filter: drop-shadow(0 0 10px currentColor);
+            transition: all 0.3s;
         }
         
         .feature-card:hover .card-icon {
             transform: scale(1.2);
-            filter: drop-shadow(0 0 15px currentColor) drop-shadow(0 0 30px currentColor);
+            filter: drop-shadow(0 0 20px currentColor);
         }
         
-        .feature-card:hover h4 {
-            color: var(--card-color);
-        }
+        .card-red { --card-color: #EF4444; }
+        .card-purple { --card-color: #A855F7; }
+        .card-green { --card-color: #00FF88; }
+        .card-cyan { --card-color: #00D4FF; }
+        .card-blue { --card-color: #3B82F6; }
         
-        @keyframes card-rotate {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        @keyframes card-rotate-reverse {
-            0% { transform: rotate(360deg); }
-            100% { transform: rotate(0deg); }
-        }
-        
-        .card-red { --card-color: #ef4444; --card-animation: card-rotate 3s linear infinite; }
-        .card-purple { --card-color: #a855f7; --card-animation: card-rotate-reverse 5s linear infinite; }
-        .card-green { --card-color: #22c55e; --card-animation: card-rotate 4s linear infinite; }
-        .card-blue { --card-color: #3b82f6; --card-animation: card-rotate-reverse 3.5s linear infinite; }
-        
+        /* Profile Dropdown */
         .profile-dropdown { position: relative; width: 100%; }
         
         .profile-selected {
@@ -383,17 +617,20 @@
             align-items: center;
             gap: 0.5rem;
             width: 100%;
-            padding: 0.5rem 0.75rem;
-            background: #1e293b;
-            border: 1px solid #475569;
-            border-radius: 0.5rem;
+            padding: 0.75rem 1rem;
+            background: rgba(11, 15, 20, 0.9);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
             color: white;
             font-size: 0.875rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.25s;
         }
         
-        .profile-selected:hover { border-color: #ef4444; }
+        .profile-selected:hover { 
+            border-color: #00FF88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.1);
+        }
         .profile-selected .chevron { margin-left: auto; transition: transform 0.2s; }
         .profile-dropdown.open .chevron { transform: rotate(180deg); }
         
@@ -402,9 +639,10 @@
             top: calc(100% + 4px);
             left: 0;
             right: 0;
-            background: #1e293b;
-            border: 1px solid #475569;
-            border-radius: 0.5rem;
+            background: rgba(11, 15, 20, 0.98);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
             overflow: hidden;
             z-index: 50;
             opacity: 0;
@@ -422,220 +660,516 @@
         .profile-option {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.625rem 0.75rem;
-            color: #cbd5e1;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
+            color: #94A3B8;
             font-size: 0.875rem;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
         }
         
-        .profile-option:hover { background: rgba(239, 68, 68, 0.1); color: white; }
-        .profile-option.selected { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .profile-option:hover { 
+            background: rgba(0, 255, 136, 0.05);
+            color: white;
+            border-left-color: rgba(0, 255, 136, 0.3);
+        }
+        .profile-option.selected { 
+            background: rgba(0, 255, 136, 0.1);
+            color: #00FF88;
+            border-left-color: #00FF88;
+        }
         .profile-option i { font-size: 1rem; width: 1.25rem; text-align: center; }
         
+        /* New Session Button */
         .btn-wrapper { position: relative; display: inline-block; width: 100%; }
         
         .sparkle-btn {
             cursor: pointer;
-            border: solid 4px #1e1b4b;
-            border-top: none;
-            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 12px;
             position: relative;
-            box-shadow: 0px 4px 10px #00000062, 0px 10px 40px -10px #000000a6, 0px 12px 45px -15px #00000071;
             transition: all 0.3s ease;
             width: 100%;
-            background: transparent;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.05));
             padding: 0;
+            overflow: hidden;
         }
         
+        .sparkle-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #00FF88, #00D4FF);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .sparkle-btn:hover::before { opacity: 0.1; }
+        
         .sparkle-btn .inner {
-            padding: 12px 24px;
-            font-size: 1rem;
+            position: relative;
+            padding: 14px 24px;
+            font-size: 0.875rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 10px;
             font-weight: 600;
-            letter-spacing: 1px;
-            border-bottom: solid 3px #080a11;
-            border-radius: 16px;
-            background: linear-gradient(180deg, #121730, #1e1b4b);
-            color: #fff;
-            text-shadow: 1px 1px #000, 0 0 9px #0a0e20;
-        }
-        
-        .sparkle-btn .svgs {
-            position: relative;
-            margin-top: 2px;
-            z-index: 10;
-        }
-        
-        .sparkle-btn .svgs > * {
-            filter: drop-shadow(0 0 6px #4f46e5) drop-shadow(1px 1px 0px #000);
-            animation: sparkle-pulse 2s ease-in-out infinite;
-        }
-        
-        .sparkle-btn .svgs .svg-s {
-            position: absolute;
-            font-size: 0.6rem;
-            left: 14px;
-            top: -3px;
-            animation: sparkle-pulse 2s ease-in-out infinite 0.3s;
-        }
-        
-        .sparkle-btn .svgs .svg-l {
-            font-size: 1rem;
-        }
-        
-        .sparkle-btn .btn-text {
-            display: inline-block;
-        }
-        
-        .sparkle-btn .btn-text span {
-            display: inline-block;
-            animation: text-glow 2s ease-in-out infinite;
-        }
-        
-        .sparkle-btn .btn-text span:nth-child(1) { animation-delay: 0s; }
-        .sparkle-btn .btn-text span:nth-child(2) { animation-delay: 0.05s; }
-        .sparkle-btn .btn-text span:nth-child(3) { animation-delay: 0.1s; }
-        .sparkle-btn .btn-text span:nth-child(4) { animation-delay: 0.15s; }
-        .sparkle-btn .btn-text span:nth-child(5) { animation-delay: 0.2s; }
-        .sparkle-btn .btn-text span:nth-child(6) { animation-delay: 0.25s; }
-        .sparkle-btn .btn-text span:nth-child(7) { animation-delay: 0.3s; }
-        .sparkle-btn .btn-text span:nth-child(8) { animation-delay: 0.35s; }
-        .sparkle-btn .btn-text span:nth-child(9) { animation-delay: 0.4s; }
-        .sparkle-btn .btn-text span:nth-child(10) { animation-delay: 0.45s; }
-        .sparkle-btn .btn-text span:nth-child(11) { animation-delay: 0.5s; }
-        
-        @keyframes sparkle-pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.2); }
-        }
-        
-        @keyframes text-glow {
-            0%, 100% { 
-                color: #fff;
-                text-shadow: 1px 1px #000, 0 0 5px #4f46e5;
-            }
-            50% { 
-                color: #c7d2fe;
-                text-shadow: 1px 1px #000, 0 0 15px #4f46e5, 0 0 25px #4f46e5;
-            }
+            letter-spacing: 0.5px;
+            color: #00FF88;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
         
         .sparkle-btn:hover {
+            border-color: #00FF88;
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
             transform: translateY(-2px);
-            box-shadow: 0px 6px 15px #1e1b4b80, 0px 15px 50px -10px #0a0e2090;
         }
         
-        .sparkle-btn:hover .inner {
-            background: linear-gradient(180deg, #1e2545, #252050);
+        .sparkle-btn:hover .inner { color: #fff; }
+        
+        /* Attack Mode Selector */
+        .attack-mode {
+            --mode-color: #00FF88;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 8px;
+            background: rgba(11, 15, 20, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
         }
         
-        .sparkle-btn:active {
-            box-shadow: none;
-            transform: translateY(0);
+        .attack-mode::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--mode-color), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .attack-mode:hover::before,
+        .attack-mode.active::before { opacity: 0.1; }
+        
+        .attack-mode.active {
+            border-color: var(--mode-color);
+            box-shadow: 0 0 20px rgba(var(--mode-rgb), 0.2);
+        }
+        
+        .attack-mode i {
+            font-size: 18px;
+            color: var(--mode-color);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .attack-mode.active i {
+            filter: drop-shadow(0 0 8px currentColor);
+            animation: mode-pulse 2s ease-in-out infinite;
+        }
+        
+        .attack-mode span {
+            font-size: 10px;
+            font-weight: 600;
+            color: #64748B;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .attack-mode.active span { color: var(--mode-color); }
+        
+        .mode-pentest { --mode-color: #00FF88; --mode-rgb: 0, 255, 136; }
+        .mode-redteam { --mode-color: #F97316; --mode-rgb: 249, 115, 22; }
+        .mode-fullattack { --mode-color: #EF4444; --mode-rgb: 239, 68, 68; }
+        
+        @keyframes mode-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* Auth Modal */
+        .auth-tab {
+            transition: all 0.25s;
+        }
+        
+        .auth-tab.active {
+            background: linear-gradient(135deg, #00FF88, #00D4FF) !important;
+            color: #0B0F14 !important;
+        }
+        
+        .auth-input {
+            background: rgba(11, 15, 20, 0.9);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            transition: all 0.25s;
+        }
+        
+        .auth-input:focus {
+            border-color: #00FF88;
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+        }
+        
+        /* User Message Bubble */
+        .user-bubble {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 212, 255, 0.1));
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+        
+        /* AI Message Bubble */
+        .ai-bubble {
+            background: rgba(11, 15, 20, 0.9);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+        }
+        
+        /* Notification */
+        .notification {
+            background: rgba(11, 15, 20, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+        
+        .notification.success { border-color: #00FF88; }
+        .notification.error { border-color: #EF4444; }
+        .notification.warning { border-color: #FBBF24; }
+        
+        /* Blob Glow Cards */
+        .blob-card {
+            position: relative;
+            border-radius: 16px;
+            z-index: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .blob-card .card-bg {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            z-index: 2;
+            background: rgba(15, 23, 42, 0.98);
+            backdrop-filter: blur(24px);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        
+        .blob-card .card-content {
+            position: relative;
+            z-index: 3;
+            padding: 1.25rem;
+        }
+        
+        .blob-card .blob {
+            position: absolute;
+            z-index: 1;
+            top: 50%;
+            left: 50%;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            opacity: 0.8;
+            filter: blur(20px);
+        }
+        
+        /* Blob Red - SQL Injection */
+        .blob-card.blob-red .blob {
+            background-color: #EF4444;
+            animation: blob-bounce-1 4s infinite ease;
+        }
+        
+        /* Blob Green - Reverse Shells */
+        .blob-card.blob-green .blob {
+            background-color: #00FF88;
+            animation: blob-bounce-2 5s infinite ease;
+            animation-delay: -1s;
+        }
+        
+        /* Blob Orange - Privilege Escalation */
+        .blob-card.blob-orange .blob {
+            background-color: #F97316;
+            animation: blob-bounce-3 4.5s infinite ease;
+            animation-delay: -2s;
+        }
+        
+        /* Blob Cyan - Evasion */
+        .blob-card.blob-cyan .blob {
+            background-color: #00D4FF;
+            animation: blob-bounce-4 5.5s infinite ease;
+            animation-delay: -0.5s;
+        }
+        
+        @keyframes blob-bounce-1 {
+            0% { transform: translate(-100%, -100%) translate3d(0, 0, 0) rotate(0deg); }
+            25% { transform: translate(-100%, -100%) translate3d(100%, 0, 0) rotate(90deg); }
+            50% { transform: translate(-100%, -100%) translate3d(100%, 100%, 0) rotate(180deg); }
+            75% { transform: translate(-100%, -100%) translate3d(0, 100%, 0) rotate(270deg); }
+            100% { transform: translate(-100%, -100%) translate3d(0, 0, 0) rotate(360deg); }
+        }
+        
+        @keyframes blob-bounce-2 {
+            0% { transform: translate(-100%, -100%) translate3d(100%, 100%, 0) rotate(0deg); }
+            25% { transform: translate(-100%, -100%) translate3d(0, 100%, 0) rotate(-90deg); }
+            50% { transform: translate(-100%, -100%) translate3d(0, 0, 0) rotate(-180deg); }
+            75% { transform: translate(-100%, -100%) translate3d(100%, 0, 0) rotate(-270deg); }
+            100% { transform: translate(-100%, -100%) translate3d(100%, 100%, 0) rotate(-360deg); }
+        }
+        
+        @keyframes blob-bounce-3 {
+            0% { transform: translate(-100%, -100%) translate3d(50%, 0, 0) rotate(45deg); }
+            25% { transform: translate(-100%, -100%) translate3d(100%, 50%, 0) rotate(135deg); }
+            50% { transform: translate(-100%, -100%) translate3d(50%, 100%, 0) rotate(225deg); }
+            75% { transform: translate(-100%, -100%) translate3d(0, 50%, 0) rotate(315deg); }
+            100% { transform: translate(-100%, -100%) translate3d(50%, 0, 0) rotate(405deg); }
+        }
+        
+        @keyframes blob-bounce-4 {
+            0% { transform: translate(-100%, -100%) translate3d(0, 50%, 0) rotate(0deg); }
+            33% { transform: translate(-100%, -100%) translate3d(100%, 0, 0) rotate(120deg); }
+            66% { transform: translate(-100%, -100%) translate3d(50%, 100%, 0) rotate(240deg); }
+            100% { transform: translate(-100%, -100%) translate3d(0, 50%, 0) rotate(360deg); }
+        }
+        
+        .blob-card:hover .blob {
+            filter: blur(15px);
+            opacity: 1;
+        }
+        
+        .blob-card:hover {
+            transform: translateY(-4px);
+        }
+        
+        .blob-card {
+            transition: transform 0.3s ease;
         }
     </style>
 </head>
 <body class="gradient-bg min-h-screen text-gray-100">
-    <div id="app" class="flex h-screen">
+    <!-- Auth Modal - Outside #app for proper visibility control -->
+    <div id="authModal" class="fixed inset-0 z-50 items-center justify-center hidden overflow-hidden" style="background: linear-gradient(135deg, #0B0F14 0%, #0a0015 50%, #0B0F14 100%);">
+        <!-- Grid Background -->
+        <div class="absolute inset-0 pointer-events-none" style="background-image: linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);"></div>
+        
+        <div class="relative z-10 w-full max-w-md mx-4 bg-[rgba(11,15,20,0.95)] backdrop-blur-xl rounded-2xl p-8 border border-[rgba(0,255,136,0.2)] max-h-[90vh] overflow-y-auto" style="box-shadow: 0 0 80px rgba(0,255,136,0.05), 0 0 40px rgba(0,212,255,0.05); scrollbar-width: thin; scrollbar-color: rgba(0,255,136,0.3) transparent;">
+            <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#00FF88] to-transparent"></div>
+            
+            <div class="text-center mb-8">
+                <div class="relative inline-block">
+                    <img src="/logo.png" alt="DeepEyes" class="h-20 mx-auto mb-4" style="filter: drop-shadow(0 0 20px rgba(0,255,136,0.5));">
+                    <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(0,255,136,0.2) 0%, transparent 70%);"></div>
+                </div>
+                <h1 class="text-3xl font-bold text-gradient-neon font-display">DeepEyes</h1>
+                <p class="text-gray-500 mt-2 text-sm uppercase tracking-widest">Cyber Arsenal</p>
+            </div>
+
+            <div id="authTabs" class="flex gap-2 mb-6 p-1 bg-[#0B0F14] rounded-xl border border-[rgba(0,255,136,0.1)]">
+                <button class="auth-tab active flex-1 py-3 px-4 rounded-lg font-semibold transition-all" data-tab="login">Login</button>
+                <button class="auth-tab flex-1 py-3 px-4 rounded-lg bg-transparent text-gray-500 hover:text-white font-semibold transition-all" data-tab="register">Registrar</button>
+            </div>
+
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Email</label>
+                    <input type="email" name="email" required autocomplete="email"
+                        class="auth-input w-full rounded-xl px-4 py-3.5 text-white focus:outline-none"
+                        placeholder="seu@email.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Senha</label>
+                    <input type="password" name="password" required autocomplete="current-password"
+                        class="auth-input w-full rounded-xl px-4 py-3.5 text-white focus:outline-none"
+                        placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-[#00FF88] to-[#00D4FF] text-[#0B0F14] rounded-xl py-3.5 font-bold transition-all hover:opacity-90 hover:shadow-[0_0_30px_rgba(0,255,136,0.3)]">
+                    <i class="fas fa-terminal mr-2"></i>Acessar Sistema
+                </button>
+            </form>
+
+            <form id="registerForm" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Nome</label>
+                    <input type="text" name="name" required autocomplete="name"
+                        class="auth-input w-full rounded-xl px-4 py-3.5 text-white focus:outline-none"
+                        placeholder="Seu nome">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Email</label>
+                    <input type="email" name="email" required autocomplete="email"
+                        class="auth-input w-full rounded-xl px-4 py-3.5 text-white focus:outline-none"
+                        placeholder="seu@email.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Senha</label>
+                    <input type="password" name="password" required autocomplete="new-password"
+                        class="auth-input w-full rounded-xl px-4 py-3.5 text-white focus:outline-none"
+                        placeholder="••••••••">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Confirmar Senha</label>
+                    <input type="password" name="password_confirmation" required autocomplete="new-password"
+                        class="auth-input w-full rounded-xl px-4 py-3.5 text-white focus:outline-none"
+                        placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-[#00FF88] to-[#00D4FF] text-[#0B0F14] rounded-xl py-3.5 font-bold transition-all hover:opacity-90 hover:shadow-[0_0_30px_rgba(0,255,136,0.3)]">
+                    <i class="fas fa-user-plus mr-2"></i>Criar Conta
+                </button>
+            </form>
+
+            <div id="authError" class="hidden mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm"></div>
+            
+            <p class="text-center text-gray-600 text-xs mt-6">
+                <i class="fas fa-shield-halved mr-1 text-[#00FF88]"></i>
+                Ambiente seguro para profissionais autorizados
+            </p>
+        </div>
+    </div>
+
+    <!-- Mobile Overlay -->
+    <div id="mobileOverlay" onclick="closeMobileSidebar()"></div>
+
+    <div id="app" class="flex h-screen w-full">
         <!-- Sidebar -->
-        <aside class="w-72 bg-slate-900/80 border-r border-slate-700 flex flex-col">
+        <aside id="sidebar" class="de-sidebar w-72 flex-shrink-0 flex flex-col">
+            <!-- Close button for mobile -->
+            <button id="closeSidebarBtn" class="lg:hidden absolute top-4 right-4 w-8 h-8 rounded-lg bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(239,68,68,0.1)] text-gray-400 hover:text-red-400 flex items-center justify-center transition-all z-10">
+                <i class="fas fa-times"></i>
+            </button>
             <!-- Logo -->
-            <div class="p-4 border-b border-slate-700">
+            <div class="p-5 border-b border-[rgba(0,255,136,0.1)]">
                 <div class="flex items-center gap-3">
-                    <img src="/logo.png" alt="DeepEyes" class="h-10 w-10 object-contain">
+                    <div class="relative">
+                        <img src="/logo.png" alt="DeepEyes" class="h-11 w-11 object-contain" style="filter: drop-shadow(0 0 10px rgba(0,255,136,0.5));">
+                        <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(0,255,136,0.2) 0%, transparent 70%);"></div>
+                    </div>
                     <div>
-                        <h1 class="text-lg font-bold text-white">DeepEyes</h1>
-                        <p class="text-xs text-gray-400">Pentest Assistant</p>
+                        <h1 class="text-lg font-bold text-gradient-neon font-display tracking-tight">DeepEyes</h1>
+                        <p class="text-[10px] text-gray-500 uppercase tracking-widest">Cyber Arsenal</p>
                     </div>
                 </div>
             </div>
             
-            <!-- Profile Selector -->
-            <div class="p-4 border-b border-slate-700">
-                <label class="text-xs text-gray-400 uppercase tracking-wider mb-2 block">Perfil de IA</label>
+            <!-- Attack Mode Selector -->
+            <div class="p-4 border-b border-[rgba(0,255,136,0.1)]">
+                <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-widest mb-3 block flex items-center gap-2">
+                    <i class="fas fa-crosshairs text-[#00FF88]"></i>
+                    Modo de Ataque
+                </label>
                 <input type="hidden" id="profileSelector" value="pentest">
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="attack-mode mode-pentest active" data-value="pentest" onclick="selectAttackMode(this)">
+                        <i class="fas fa-shield-halved"></i>
+                        <span>Pentest</span>
+                    </div>
+                    <div class="attack-mode mode-redteam" data-value="redteam" onclick="selectAttackMode(this)">
+                        <i class="fas fa-crosshairs"></i>
+                        <span>Red Team</span>
+                    </div>
+                    <div class="attack-mode mode-fullattack" data-value="offensive" onclick="selectAttackMode(this)">
+                        <i class="fas fa-biohazard"></i>
+                        <span>Full Attack</span>
+                    </div>
+                </div>
+                <p class="text-[10px] text-gray-600 mt-2 text-center" id="profileDescription">🟢 Modo ofensivo autorizado</p>
+            </div>
+            
+            <!-- Hidden legacy dropdown for compatibility -->
+            <div class="hidden">
                 <div class="profile-dropdown" id="profileDropdown">
                     <div class="profile-selected" onclick="toggleProfileDropdown()">
-                        <i class="fas fa-skull-crossbones text-red-400 profile-icon" id="selectedProfileIcon"></i>
+                        <i class="fas fa-skull-crossbones text-[#00FF88] profile-icon" id="selectedProfileIcon"></i>
                         <span id="selectedProfileText">DeepEyes - Ofensivo</span>
                         <i class="fas fa-chevron-down text-gray-400 chevron"></i>
                     </div>
                     <div class="profile-options">
-                        <div class="profile-option selected" data-value="pentest" data-icon="fa-skull-crossbones" data-color="text-red-400" onclick="selectProfile(this)">
-                            <i class="fas fa-skull-crossbones text-red-400"></i>
-                            <span>DeepEyes - Ofensivo</span>
+                        <div class="profile-option selected" data-value="pentest" data-icon="fa-shield-halved" data-color="text-[#00FF88]" onclick="selectProfile(this)">
+                            <i class="fas fa-shield-halved text-[#00FF88]"></i>
+                            <span>DeepEyes - Pentest</span>
                         </div>
                         <div class="profile-option" data-value="redteam" data-icon="fa-crosshairs" data-color="text-orange-400" onclick="selectProfile(this)">
                             <i class="fas fa-crosshairs text-orange-400"></i>
                             <span>BlackSentinel - Red Team</span>
                         </div>
-                        <div class="profile-option" data-value="offensive" data-icon="fa-biohazard" data-color="text-purple-400" onclick="selectProfile(this)">
-                            <i class="fas fa-biohazard text-purple-400"></i>
-                            <span>GhostOps - Full Attack</span>
+                        <div class="profile-option" data-value="offensive" data-icon="fa-biohazard" data-color="text-red-400" onclick="selectProfile(this)">
+                            <i class="fas fa-biohazard text-red-400"></i>
+                            <span>DarkMind - Full Attack</span>
                         </div>
                     </div>
                 </div>
-                <p class="text-xs text-gray-500 mt-2" id="profileDescription">Modo ofensivo para pentest autorizado</p>
             </div>
             
-            <!-- New Chat Button -->
+            <!-- New Session Button -->
             <div class="p-4">
                 <div class="btn-wrapper">
                     <button id="newChatBtn" class="sparkle-btn">
                         <div class="inner">
                             <i class="fas fa-plus"></i>
-                            <span class="btn-text"><span>N</span><span>o</span><span>v</span><span>a</span><span>&nbsp;</span><span>S</span><span>e</span><span>s</span><span>s</span><span>a</span><span>o</span></span>
+                            <span>Nova Sessão</span>
                         </div>
                     </button>
                 </div>
             </div>
             
             <!-- Sessions List -->
-            <div class="flex-1 overflow-y-auto p-2">
-                <div class="text-xs text-gray-400 uppercase tracking-wider px-3 py-2">Sessoes</div>
+            <div class="flex-1 overflow-y-auto px-3 py-2">
+                <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-widest px-3 py-2 flex items-center gap-2">
+                    <i class="fas fa-history text-[#00FF88] text-[8px]"></i>
+                    Sessões Ativas
+                </div>
                 <div id="sessionsList" class="space-y-1"></div>
             </div>
             
             <!-- User Info -->
-            <div class="p-4 border-t border-slate-700">
-                <div id="userInfo" class="flex items-center gap-3">
-                    <a href="/profile" id="userAvatarLink" class="w-9 h-9 rounded-full bg-gradient-to-br from-slate-600 to-slate-800 flex items-center justify-center border border-slate-600 hover:border-purple-500 transition-colors overflow-hidden">
-                        <img id="userAvatarImg" src="" alt="Avatar" class="w-full h-full object-cover" style="display: none;">
-                        <i id="userAvatarIcon" class="fas fa-user text-gray-400"></i>
+            <div class="p-4 border-t border-[rgba(0,255,136,0.1)]">
+                <div id="userInfo" class="flex items-center gap-3 p-3 rounded-xl bg-[rgba(0,255,136,0.03)] border border-[rgba(0,255,136,0.1)] hover:border-[rgba(0,255,136,0.3)] transition-all cursor-pointer" onclick="window.location.href='/profile'">
+                    <a href="/profile" id="userAvatarLink" class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00FF88] to-[#00D4FF] p-[2px] flex-shrink-0">
+                        <div class="w-full h-full rounded-[10px] bg-[#0B0F14] flex items-center justify-center overflow-hidden">
+                            <img id="userAvatarImg" src="/photo.jpeg" alt="Avatar" class="w-full h-full object-cover">
+                        </div>
                     </a>
-                    <div class="flex-1">
-                        <a href="/profile" id="userName" class="text-sm font-medium hover:text-purple-400 transition-colors">Nao logado</a>
-                        <div id="userRole" class="text-xs text-gray-400">-</div>
+                    <div class="flex-1 min-w-0">
+                        <a href="/profile" id="userName" class="text-sm font-semibold text-white hover:text-[#00FF88] transition-colors block truncate">Não logado</a>
+                        <div id="userRole" class="text-[10px] text-gray-500 uppercase tracking-wider">-</div>
                     </div>
-                    <a href="/profile" class="text-gray-400 hover:text-purple-400 transition-colors hidden" id="profileLink" title="Perfil">
+                    <a href="/profile" class="text-gray-500 hover:text-[#00FF88] transition-colors hidden" id="profileLink" title="Perfil">
                         <i class="fas fa-cog"></i>
                     </a>
-                    <button id="logoutBtn" class="text-gray-400 hover:text-purple-400 transition-colors hidden">
+                    <button id="logoutBtn" class="text-gray-500 hover:text-red-400 transition-colors hidden" title="Sair">
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
                 </div>
             </div>
         </aside>
         
+        <!-- Mobile Sidebar Toggle -->
+        <button id="mobileMenuBtn" class="fixed top-4 left-4 z-50 lg:hidden w-10 h-10 rounded-xl bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.2)] text-[#00FF88] flex items-center justify-center">
+            <i class="fas fa-bars"></i>
+        </button>
+        
         <!-- Delete Confirmation Modal -->
         <div id="deleteModal" class="fixed inset-0 z-50 hidden items-center justify-center">
-            <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeDeleteModal()"></div>
-            <div class="relative z-10 w-full max-w-sm mx-4 bg-slate-900 rounded-xl p-6 border border-slate-700 shadow-2xl">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeDeleteModal()"></div>
+            <div class="relative z-10 w-full max-w-sm mx-4 bg-[#0B0F14] rounded-2xl p-6 border border-[rgba(239,68,68,0.3)] shadow-2xl" style="box-shadow: 0 0 40px rgba(239,68,68,0.1);">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
                 <div class="text-center mb-6">
-                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/20 flex items-center justify-center">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-red-500/10 flex items-center justify-center border border-red-500/30">
                         <i class="fas fa-trash-alt text-2xl text-red-500"></i>
                     </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Excluir Sessao</h3>
-                    <p class="text-gray-400 text-sm">Tem certeza que deseja excluir esta sessao? Esta acao nao pode ser desfeita.</p>
+                    <h3 class="text-lg font-bold text-white mb-2">Excluir Sessão</h3>
+                    <p class="text-gray-400 text-sm">Tem certeza que deseja excluir esta sessão? Esta ação não pode ser desfeita.</p>
                 </div>
                 <div class="flex gap-3">
-                    <button onclick="closeDeleteModal()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-gray-300 rounded-lg py-2.5 font-medium transition-colors">Cancelar</button>
-                    <button onclick="confirmDeleteSession()" class="flex-1 bg-red-600 hover:bg-red-500 text-white rounded-lg py-2.5 font-medium transition-colors">
+                    <button onclick="closeDeleteModal()" class="flex-1 bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Cancelar</button>
+                    <button onclick="confirmDeleteSession()" class="flex-1 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white rounded-xl py-3 font-medium transition-all glow-red">
                         <i class="fas fa-trash-alt mr-2"></i>Excluir
                     </button>
                 </div>
@@ -644,96 +1178,38 @@
         
         <!-- Domain Input Modal -->
         <div id="domainModal" class="fixed inset-0 z-50 hidden items-center justify-center">
-            <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" onclick="closeDomainModal()"></div>
-            <div class="relative z-10 w-full max-w-sm mx-4 bg-slate-900 rounded-xl p-6 border border-slate-700 shadow-2xl">
-                <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                    <i class="fas fa-crosshairs text-red-500"></i>
-                    Novo Alvo
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeDomainModal()"></div>
+            <div class="relative z-10 w-full max-w-md mx-4 bg-[#0B0F14] rounded-2xl p-6 border border-[rgba(0,255,136,0.3)] shadow-2xl" style="box-shadow: 0 0 60px rgba(0,255,136,0.1);">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#00FF88] to-transparent"></div>
+                <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.3)] flex items-center justify-center">
+                        <i class="fas fa-crosshairs text-[#00FF88]"></i>
+                    </div>
+                    Definir Alvo
                 </h3>
-                <div class="mb-4">
-                    <label class="block text-sm text-gray-400 mb-2">Dominio do Alvo</label>
+                <div class="mb-5">
+                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Domínio do Alvo</label>
                     <input type="text" id="domainInput" 
-                        class="w-full bg-slate-800 border border-slate-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors"
-                        placeholder="exemplo.com.br"
+                        class="w-full bg-[#0B0F14] border border-[rgba(0,255,136,0.2)] rounded-xl px-4 py-4 text-white focus:outline-none focus:border-[#00FF88] focus:shadow-[0_0_0_3px_rgba(0,255,136,0.1)] transition-all font-mono"
+                        placeholder="target.example.com"
                         onkeydown="if(event.key === 'Enter') confirmDomainModal()">
                 </div>
                 <div class="flex gap-3">
-                    <button onclick="closeDomainModal()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-gray-300 rounded-lg py-2.5 font-medium transition-colors">Cancelar</button>
-                    <button onclick="confirmDomainModal()" class="flex-1 bg-red-600 hover:bg-red-500 text-white rounded-lg py-2.5 font-medium transition-colors">Criar Sessao</button>
+                    <button onclick="closeDomainModal()" class="flex-1 bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Cancelar</button>
+                    <button onclick="confirmDomainModal()" class="flex-1 bg-gradient-to-r from-[#00FF88] to-[#00D4FF] hover:opacity-90 text-[#0B0F14] rounded-xl py-3 font-bold transition-all">
+                        <i class="fas fa-terminal mr-2"></i>Iniciar Sessão
+                    </button>
                 </div>
             </div>
         </div>
         
         <!-- Main Content -->
-        <main class="flex-1 flex flex-col">
-            <!-- Auth Modal (hidden by default, shown only if no token) -->
-            <div id="authModal" class="fixed inset-0 z-50 items-center justify-center bg-slate-950 hidden">
-                <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950"></div>
-                <div class="relative z-10 w-full max-w-md mx-4 bg-slate-900 rounded-2xl p-8 border border-slate-800 shadow-2xl">
-                    <div class="text-center mb-8">
-                        <img src="/logo.png" alt="DeepEyes" class="h-20 mx-auto mb-4">
-                        <h1 class="text-2xl font-bold text-white">DeepEyes</h1>
-                        <p class="text-gray-400 mt-1">Sistema de IA para Pentest</p>
-                    </div>
-
-                    <div id="authTabs" class="flex gap-2 mb-6">
-                        <button class="auth-tab active flex-1 py-2 px-4 rounded-lg bg-red-600 text-white font-medium transition-all" data-tab="login">Login</button>
-                        <button class="auth-tab flex-1 py-2 px-4 rounded-lg bg-slate-800 text-gray-400 hover:bg-slate-700 transition-all" data-tab="register">Registrar</button>
-                    </div>
-
-                    <form id="loginForm" class="space-y-4">
-                        <div>
-                            <label class="block text-sm text-gray-400 mb-2">Email</label>
-                            <input type="email" name="email" required autocomplete="email"
-                                class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors"
-                                placeholder="seu@email.com">
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-400 mb-2">Senha</label>
-                            <input type="password" name="password" required autocomplete="current-password"
-                                class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors"
-                                placeholder="********">
-                        </div>
-                        <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white rounded-lg py-3 font-medium transition-colors">Entrar</button>
-                    </form>
-
-                    <form id="registerForm" class="space-y-4 hidden">
-                        <div>
-                            <label class="block text-sm text-gray-400 mb-2">Nome</label>
-                            <input type="text" name="name" required autocomplete="name"
-                                class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors"
-                                placeholder="Seu nome">
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-400 mb-2">Email</label>
-                            <input type="email" name="email" required autocomplete="email"
-                                class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors"
-                                placeholder="seu@email.com">
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-400 mb-2">Senha</label>
-                            <input type="password" name="password" required autocomplete="new-password"
-                                class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors"
-                                placeholder="********">
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-400 mb-2">Confirmar Senha</label>
-                            <input type="password" name="password_confirmation" required autocomplete="new-password"
-                                class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-red-500 transition-colors"
-                                placeholder="********">
-                        </div>
-                        <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white rounded-lg py-3 font-medium transition-colors">Criar Conta</button>
-                    </form>
-
-                    <div id="authError" class="hidden mt-4 p-3 bg-red-900/50 border border-red-700 rounded-lg text-red-300 text-sm"></div>
-                </div>
-            </div>
-            
-            <!-- Session Header com Alvo -->
-            <div id="sessionHeader" class="hidden px-6 py-3 bg-slate-900/80 border-b border-slate-700 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500/20 to-purple-600/20 flex items-center justify-center border border-red-500/30">
-                        <i class="fas fa-crosshairs text-red-400 text-sm"></i>
+        <main class="flex-1 flex flex-col min-h-0">
+            <!-- Session Header -->
+            <div id="sessionHeader" class="hidden px-6 py-4 bg-[rgba(11,15,20,0.9)] backdrop-blur-xl border-b border-[rgba(0,255,136,0.1)] flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[rgba(0,255,136,0.2)] to-[rgba(0,212,255,0.1)] flex items-center justify-center border border-[rgba(0,255,136,0.3)]">
+                        <i class="fas fa-crosshairs text-[#00FF88] animate-pulse"></i>
                     </div>
                     <div>
                         <p class="text-xs text-gray-500">🎯 ALVO</p>
@@ -747,184 +1223,227 @@
             </div>
             
             <!-- Chat Messages -->
-            <div id="chatContainer" class="flex-1 overflow-y-auto p-6 chat-container">
+            <div id="chatContainer" class="flex-1 overflow-y-auto p-6">
                 <!-- Welcome para Pagina Inicial (sem sessao) -->
-                <div id="homeWelcome" class="flex flex-col items-center justify-center h-full text-center">
-                    <img src="/logo.png" alt="DeepEyes" class="h-24 mb-6">
-                    <h3 class="text-2xl font-bold mb-2 text-white">Bem-vindo ao DeepEyes</h3>
-                    <p class="text-gray-400 max-w-md mb-8">
-                        Sua IA de <strong>Seguranca Ofensiva</strong> para Pentest, Red Team e CTFs.
-                        Ambiente de laboratorio autorizado.
+                <div id="homeWelcome" class="flex flex-col items-center justify-center text-center py-10">
+                    <!-- Logo com efeito glow -->
+                    <div class="relative mb-8">
+                        <div class="absolute inset-0 blur-3xl bg-gradient-to-r from-[#00FF88]/30 to-[#00D4FF]/30 rounded-full scale-150"></div>
+                        <img src="/logo.png" alt="DeepEyes" class="h-28 relative z-10 drop-shadow-2xl">
+                    </div>
+                    
+                    <!-- Título com gradient -->
+                    <h3 class="text-3xl font-bold mb-3 bg-gradient-to-r from-white via-[#00FF88] to-[#00D4FF] bg-clip-text text-transparent">
+                        Bem-vindo ao DeepEyes
+                    </h3>
+                    <p class="text-gray-400 max-w-md mb-10 leading-relaxed">
+                        Sua IA de <span class="text-[#00FF88] font-semibold">Segurança Ofensiva</span> para Pentest, Red Team e CTFs.
+                        <br><span class="text-gray-500 text-sm">Ambiente de laboratório autorizado.</span>
                     </p>
-                    <div class="grid grid-cols-2 gap-5 max-w-lg">
-                        <div class="feature-card card-red">
-                            <div class="feature-card-inner">
-                                <div class="feature-card-content text-left">
-                                    <i class="fas fa-database text-red-400 card-icon text-xl"></i>
-                                    <h4 class="font-semibold mb-1 text-white">SQL Injection</h4>
-                                    <p class="text-xs text-gray-400">Payloads, bypasses, tecnicas</p>
+                    
+                    <!-- Feature Cards - Premium Design with Blob Glow -->
+                    <div class="grid grid-cols-2 gap-5 max-w-xl">
+                        <!-- SQL Injection Card -->
+                        <div class="blob-card blob-red group">
+                            <div class="blob"></div>
+                            <div class="card-bg"></div>
+                            <div class="card-content">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/20 to-[#EF4444]/5 flex items-center justify-center mb-4 border border-[#EF4444]/30 group-hover:border-[#EF4444]/60 transition-colors">
+                                    <i class="fas fa-database text-[#EF4444] text-xl group-hover:scale-110 transition-transform"></i>
                                 </div>
+                                <h4 class="font-bold mb-2 text-white text-lg group-hover:text-[#EF4444] transition-colors">SQL Injection</h4>
+                                <p class="text-sm text-gray-400">Payloads, bypasses, técnicas avançadas</p>
                             </div>
                         </div>
-                        <div class="feature-card card-purple">
-                            <div class="feature-card-inner">
-                                <div class="feature-card-content text-left">
-                                    <i class="fas fa-terminal text-purple-400 card-icon text-xl"></i>
-                                    <h4 class="font-semibold mb-1 text-white">Reverse Shells</h4>
-                                    <p class="text-xs text-gray-400">One-liners, stagers, implants</p>
+                        
+                        <!-- Reverse Shells Card -->
+                        <div class="blob-card blob-green group">
+                            <div class="blob"></div>
+                            <div class="card-bg"></div>
+                            <div class="card-content">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00FF88]/20 to-[#00FF88]/5 flex items-center justify-center mb-4 border border-[#00FF88]/30 group-hover:border-[#00FF88]/60 transition-colors">
+                                    <i class="fas fa-terminal text-[#00FF88] text-xl group-hover:scale-110 transition-transform"></i>
                                 </div>
+                                <h4 class="font-bold mb-2 text-white text-lg group-hover:text-[#00FF88] transition-colors">Reverse Shells</h4>
+                                <p class="text-sm text-gray-400">One-liners, stagers, implants</p>
                             </div>
                         </div>
-                        <div class="feature-card card-green">
-                            <div class="feature-card-inner">
-                                <div class="feature-card-content text-left">
-                                    <i class="fas fa-user-secret text-green-400 card-icon text-xl"></i>
-                                    <h4 class="font-semibold mb-1 text-white">Privilege Escalation</h4>
-                                    <p class="text-xs text-gray-400">Linux, Windows, AD attacks</p>
+                        
+                        <!-- Privilege Escalation Card -->
+                        <div class="blob-card blob-orange group">
+                            <div class="blob"></div>
+                            <div class="card-bg"></div>
+                            <div class="card-content">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#F97316]/20 to-[#F97316]/5 flex items-center justify-center mb-4 border border-[#F97316]/30 group-hover:border-[#F97316]/60 transition-colors">
+                                    <i class="fas fa-user-secret text-[#F97316] text-xl group-hover:scale-110 transition-transform"></i>
                                 </div>
+                                <h4 class="font-bold mb-2 text-white text-lg group-hover:text-[#F97316] transition-colors">Privilege Escalation</h4>
+                                <p class="text-sm text-gray-400">Linux, Windows, AD attacks</p>
                             </div>
                         </div>
-                        <div class="feature-card card-blue">
-                            <div class="feature-card-inner">
-                                <div class="feature-card-content text-left">
-                                    <i class="fas fa-mask text-blue-400 card-icon text-xl"></i>
-                                    <h4 class="font-semibold mb-1 text-white">Evasion</h4>
-                                    <p class="text-xs text-gray-400">AMSI, EDR, WAF bypass</p>
+                        
+                        <!-- Evasion Card -->
+                        <div class="blob-card blob-cyan group">
+                            <div class="blob"></div>
+                            <div class="card-bg"></div>
+                            <div class="card-content">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00D4FF]/20 to-[#00D4FF]/5 flex items-center justify-center mb-4 border border-[#00D4FF]/30 group-hover:border-[#00D4FF]/60 transition-colors">
+                                    <i class="fas fa-mask text-[#00D4FF] text-xl group-hover:scale-110 transition-transform"></i>
                                 </div>
+                                <h4 class="font-bold mb-2 text-white text-lg group-hover:text-[#00D4FF] transition-colors">Evasion</h4>
+                                <p class="text-sm text-gray-400">AMSI, EDR, WAF bypass</p>
                             </div>
                         </div>
                     </div>
-                    <div class="mt-6 p-4 bg-red-900/30 border border-red-800 rounded-lg max-w-lg">
-                        <p class="text-xs text-red-300">
-                            <i class="fas fa-exclamation-triangle mr-2"></i>
-                            <strong>AVISO:</strong> Use apenas em ambientes autorizados. 
-                            O operador e responsavel pelo uso etico e legal.
+                    
+                    <!-- Warning Banner -->
+                    <div class="mt-8 p-4 bg-[#EF4444]/10 border border-[#EF4444]/30 rounded-xl max-w-lg">
+                        <p class="text-xs text-[#EF4444] flex items-center justify-center gap-2">
+                            <i class="fas fa-radiation animate-pulse"></i>
+                            <span><strong>AVISO:</strong> Use apenas em ambientes autorizados. O operador é responsável pelo uso ético e legal.</span>
                         </p>
                     </div>
                 </div>
                 
                 <!-- Welcome para Sessao (sem mensagens ainda) -->
                 <div id="sessionWelcome" class="flex flex-col items-center justify-center h-full text-center hidden">
-                    <div class="flex items-center gap-3 mb-6">
-                        <img src="/logo.png" alt="DeepEyes" class="h-14">
+                    <!-- Logo compacto -->
+                    <div class="relative mb-6">
+                        <div class="absolute inset-0 blur-2xl bg-gradient-to-r from-[#00FF88]/20 to-[#00D4FF]/20 rounded-full scale-150"></div>
+                        <img src="/logo.png" alt="DeepEyes" class="h-16 relative z-10">
                     </div>
                     
                     <h3 class="text-2xl font-bold text-white mb-2">Pronto para começar!</h3>
                     <p class="text-gray-400 max-w-md mb-6">
                         Faça sua primeira pergunta e eu vou te ajudar com técnicas de 
-                        <span class="text-red-400 font-semibold">Pentest</span> e 
-                        <span class="text-purple-400 font-semibold">Red Team</span>.
+                        <span class="text-[#00FF88] font-semibold">Pentest</span> e 
+                        <span class="text-[#00D4FF] font-semibold">Red Team</span>.
                     </p>
                     
-                    <!-- Perfil Atual -->
-                    <div id="currentProfileCard" class="w-full max-w-md bg-slate-800/60 border border-slate-700 rounded-xl p-4 mb-4">
-                        <div class="flex items-center gap-3 mb-2">
-                            <i id="welcomeProfileIcon" class="fas fa-skull-crossbones text-red-400 text-2xl"></i>
+                    <!-- Perfil Atual - Premium Card -->
+                    <div id="currentProfileCard" class="w-full max-w-md de-card p-5 mb-5">
+                        <div class="flex items-center gap-4 mb-3">
+                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00FF88]/20 to-[#00D4FF]/10 flex items-center justify-center border border-[#00FF88]/30">
+                                <i id="welcomeProfileIcon" class="fas fa-skull-crossbones text-[#00FF88] text-xl"></i>
+                            </div>
                             <div class="text-left flex-1">
-                                <p class="text-[10px] text-gray-500 uppercase tracking-wider">Perfil Ativo</p>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-medium">Modo Ativo</p>
                                 <h4 id="welcomeProfileName" class="text-sm font-bold text-white">DeepEyes - Ofensivo</h4>
                             </div>
                         </div>
-                        <p id="welcomeProfileDesc" class="text-xs text-gray-400 text-left mb-2">
+                        <p id="welcomeProfileDesc" class="text-xs text-gray-400 text-left mb-3 leading-relaxed">
                             Modo ofensivo para pentest autorizado - comandos e payloads reais
                         </p>
-                        <div id="welcomeProfileFeatures" class="grid grid-cols-4 gap-1 text-left mb-3">
-                            <div class="flex items-center gap-1 text-[10px] text-gray-400">
-                                <i class="fas fa-check text-green-500 text-[8px]"></i>
+                        <div id="welcomeProfileFeatures" class="grid grid-cols-4 gap-2 text-left mb-3">
+                            <div class="flex items-center gap-1.5 text-[10px] text-gray-400 bg-[rgba(0,255,136,0.05)] rounded-md px-2 py-1 border border-[rgba(0,255,136,0.1)]">
+                                <i class="fas fa-check text-[#00FF88] text-[8px]"></i>
                                 <span>SQLi</span>
                             </div>
-                            <div class="flex items-center gap-1 text-[10px] text-gray-400">
-                                <i class="fas fa-check text-green-500 text-[8px]"></i>
+                            <div class="flex items-center gap-1.5 text-[10px] text-gray-400 bg-[rgba(0,255,136,0.05)] rounded-md px-2 py-1 border border-[rgba(0,255,136,0.1)]">
+                                <i class="fas fa-check text-[#00FF88] text-[8px]"></i>
                                 <span>XSS</span>
                             </div>
-                            <div class="flex items-center gap-1 text-[10px] text-gray-400">
-                                <i class="fas fa-check text-green-500 text-[8px]"></i>
+                            <div class="flex items-center gap-1.5 text-[10px] text-gray-400 bg-[rgba(0,255,136,0.05)] rounded-md px-2 py-1 border border-[rgba(0,255,136,0.1)]">
+                                <i class="fas fa-check text-[#00FF88] text-[8px]"></i>
                                 <span>Shells</span>
                             </div>
-                            <div class="flex items-center gap-1 text-[10px] text-gray-400">
-                                <i class="fas fa-check text-green-500 text-[8px]"></i>
+                            <div class="flex items-center gap-1.5 text-[10px] text-gray-400 bg-[rgba(0,255,136,0.05)] rounded-md px-2 py-1 border border-[rgba(0,255,136,0.1)]">
+                                <i class="fas fa-check text-[#00FF88] text-[8px]"></i>
                                 <span>PrivEsc</span>
                             </div>
                         </div>
-                        <p id="welcomeProfileRestriction" class="text-[10px] text-gray-500 text-left border-t border-slate-700 pt-2">
-                            <i class="fas fa-shield-check mr-1 text-blue-400"></i>
-                            IA com diretrizes de segurança - respostas técnicas para profissionais autorizados
+                        <p id="welcomeProfileRestriction" class="text-[10px] text-gray-500 text-left border-t border-[rgba(255,255,255,0.05)] pt-3 flex items-center gap-2">
+                            <i class="fas fa-shield-check text-[#00D4FF]"></i>
+                            <span>IA com diretrizes de segurança - respostas técnicas para profissionais autorizados</span>
                         </p>
                     </div>
                     
-                    <!-- Exemplos de Perguntas -->
+                    <!-- Exemplos de Perguntas - Premium Style -->
                     <div class="w-full max-w-md">
-                        <h4 class="text-xs font-semibold text-gray-300 mb-2 flex items-center gap-2">
-                            <i class="fas fa-lightbulb text-yellow-400"></i>
+                        <h4 class="text-xs font-semibold text-gray-400 mb-3 flex items-center gap-2">
+                            <i class="fas fa-lightbulb text-[#F97316]"></i>
                             Experimente Perguntar
                         </h4>
-                        <div class="grid grid-cols-1 gap-1">
-                            <button onclick="setExampleQuestion(this)" class="bg-slate-800/40 border border-slate-700/50 rounded-lg px-3 py-2 text-left hover:bg-slate-700/50 transition-colors group">
-                                <p class="text-xs text-gray-300 group-hover:text-white">Como fazer SQL injection em login bypass?</p>
+                        <div class="grid grid-cols-1 gap-2">
+                            <button onclick="setExampleQuestion(this)" class="de-card p-3 text-left hover:border-[rgba(0,255,136,0.3)] transition-all group">
+                                <p class="text-xs text-gray-400 group-hover:text-white transition-colors flex items-center gap-2">
+                                    <i class="fas fa-chevron-right text-[#00FF88] text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                                    Como fazer SQL injection em login bypass?
+                                </p>
                             </button>
-                            <button onclick="setExampleQuestion(this)" class="bg-slate-800/40 border border-slate-700/50 rounded-lg px-3 py-2 text-left hover:bg-slate-700/50 transition-colors group">
-                                <p class="text-xs text-gray-300 group-hover:text-white">Gere um reverse shell em Python para Linux</p>
+                            <button onclick="setExampleQuestion(this)" class="de-card p-3 text-left hover:border-[rgba(0,255,136,0.3)] transition-all group">
+                                <p class="text-xs text-gray-400 group-hover:text-white transition-colors flex items-center gap-2">
+                                    <i class="fas fa-chevron-right text-[#00FF88] text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                                    Gere um reverse shell em Python para Linux
+                                </p>
                             </button>
-                            <button onclick="setExampleQuestion(this)" class="bg-slate-800/40 border border-slate-700/50 rounded-lg px-3 py-2 text-left hover:bg-slate-700/50 transition-colors group">
-                                <p class="text-xs text-gray-300 group-hover:text-white">Quais tecnicas de privilege escalation no Windows?</p>
+                            <button onclick="setExampleQuestion(this)" class="de-card p-3 text-left hover:border-[rgba(0,255,136,0.3)] transition-all group">
+                                <p class="text-xs text-gray-400 group-hover:text-white transition-colors flex items-center gap-2">
+                                    <i class="fas fa-chevron-right text-[#00FF88] text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                                    Quais técnicas de privilege escalation no Windows?
+                                </p>
                             </button>
                         </div>
                     </div>
                     
-                    <p class="mt-4 text-[10px] text-red-400">
-                        <i class="fas fa-exclamation-triangle mr-1"></i>
+                    <p class="mt-5 text-[10px] text-[#EF4444] flex items-center gap-2">
+                        <i class="fas fa-radiation animate-pulse"></i>
                         Use apenas em ambientes autorizados
                     </p>
                 </div>
                 
                 <div id="messagesContainer" class="space-y-6 hidden"></div>
                 
-                <div id="typingIndicator" class="hidden flex items-start gap-4 mt-6">
-                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500/20 to-purple-600/20 flex items-center justify-center flex-shrink-0 border border-red-500/30 relative overflow-hidden">
-                        <div class="ai-brain">
-                            <div class="ai-brain-ring"></div>
-                            <div class="ai-brain-ring-2"></div>
-                            <img src="/logo.png" alt="AI" class="w-8 h-8 object-contain ai-brain-icon">
+                <!-- Typing Indicator - Premium Spinner -->
+                <div id="typingIndicator" class="hidden flex items-center gap-5 mt-6 p-4">
+                    <!-- Spinner animado -->
+                    <div class="ai-spinner flex-shrink-0">
+                        <div class="spinner-outer"></div>
+                        <div class="spinner-inner"></div>
+                        <div class="spinner-core">
+                            <i class="fas fa-brain"></i>
                         </div>
                     </div>
-                    <div class="bg-slate-800/80 backdrop-blur-sm rounded-2xl rounded-tl-none px-5 py-4 border border-slate-700/50">
-                        <div class="ai-thinking">
-                            <div class="flex items-center gap-3">
-                                <span class="thinking-text text-sm font-medium text-gray-300">DeepEyes pensando...</span>
-                            </div>
-                        </div>
+                    
+                    <!-- Texto de status -->
+                    <div class="flex flex-col gap-1">
+                        <span class="thinking-text text-base font-semibold">Analisando...</span>
+                        <span class="text-xs text-gray-500 flex items-center gap-2">
+                            <i class="fas fa-microchip text-[#00D4FF] animate-pulse"></i>
+                            DeepEyes está processando sua solicitação
+                        </span>
                     </div>
                 </div>
             </div>
             
-            <!-- Chat Input - Modern Design -->
+            <!-- Chat Input - Premium Design -->
             <div id="chatInputArea" class="p-4 hidden">
                 <!-- Container com efeito glow -->
                 <div class="relative max-w-4xl mx-auto">
                     <!-- Glow effect background -->
-                    <div class="absolute -inset-1 bg-gradient-to-r from-red-500/20 via-purple-500/20 to-red-500/20 rounded-2xl blur-lg opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" id="inputGlow"></div>
+                    <div class="absolute -inset-1 bg-gradient-to-r from-[#00FF88]/20 via-[#00D4FF]/10 to-[#00FF88]/20 rounded-2xl blur-lg opacity-0 transition-opacity duration-500" id="inputGlow"></div>
                     
                     <!-- Main input container -->
-                    <div class="relative bg-slate-800/90 backdrop-blur-xl rounded-2xl border border-slate-600/50 shadow-2xl overflow-hidden transition-all duration-300 hover:border-slate-500/50" id="inputContainer">
+                    <div class="relative bg-[rgba(15,23,42,0.9)] backdrop-blur-xl rounded-2xl border border-[rgba(255,255,255,0.1)] shadow-2xl overflow-hidden transition-all duration-300 hover:border-[rgba(0,255,136,0.2)] focus-within:border-[rgba(0,255,136,0.4)]" id="inputContainer">
                         <!-- Preview do anexo -->
-                        <div id="attachmentPreview" class="hidden border-b border-slate-700/50">
+                        <div id="attachmentPreview" class="hidden border-b border-[rgba(255,255,255,0.05)]">
                             <div class="p-3 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <div id="attachmentIcon" class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-red-500/20 border border-purple-500/30 flex items-center justify-center">
-                                        <i class="fas fa-file-code text-purple-400 text-lg"></i>
+                                    <div id="attachmentIcon" class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00FF88]/20 to-[#00D4FF]/10 border border-[#00FF88]/30 flex items-center justify-center">
+                                        <i class="fas fa-file-code text-[#00FF88] text-lg"></i>
                                     </div>
                                     <div>
                                         <p id="attachmentName" class="text-white text-sm font-semibold truncate max-w-xs"></p>
-                                        <p id="attachmentInfo" class="text-gray-400 text-xs mt-0.5"></p>
+                                        <p id="attachmentInfo" class="text-gray-500 text-xs mt-0.5 font-mono"></p>
                                     </div>
                                 </div>
-                                <button type="button" onclick="removeAttachment()" class="w-8 h-8 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 hover:text-red-300 transition-all flex items-center justify-center">
+                                <button type="button" onclick="removeAttachment()" class="w-8 h-8 rounded-lg bg-[rgba(239,68,68,0.1)] hover:bg-[rgba(239,68,68,0.2)] text-[#EF4444] hover:text-white transition-all flex items-center justify-center">
                                     <i class="fas fa-times text-sm"></i>
                                 </button>
                             </div>
                             <!-- Preview de imagem -->
                             <div id="imagePreviewContainer" class="hidden px-3 pb-3">
-                                <img id="imagePreview" class="max-h-32 rounded-xl object-contain border border-slate-600/50" alt="Preview">
+                                <img id="imagePreview" class="max-h-32 rounded-xl object-contain border border-[rgba(255,255,255,0.1)]" alt="Preview">
                             </div>
                         </div>
                         
@@ -937,7 +1456,7 @@
                                 type="button" 
                                 id="attachBtn"
                                 onclick="document.getElementById('fileInput').click()"
-                                class="w-10 h-10 rounded-xl bg-slate-700/50 hover:bg-slate-600/50 border border-slate-600/50 hover:border-purple-500/50 text-gray-400 hover:text-purple-400 transition-all flex-shrink-0 flex items-center justify-center group"
+                                class="w-10 h-10 rounded-xl bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(0,255,136,0.1)] border border-[rgba(255,255,255,0.1)] hover:border-[rgba(0,255,136,0.3)] text-gray-500 hover:text-[#00FF88] transition-all flex-shrink-0 flex items-center justify-center group"
                                 title="Anexar arquivo ou imagem"
                             >
                                 <i class="fas fa-plus text-sm group-hover:rotate-90 transition-transform duration-300"></i>
@@ -949,8 +1468,8 @@
                                     id="messageInput" 
                                     rows="1"
                                     placeholder="O que você quer hackear hoje?"
-                                    class="w-full bg-transparent text-white text-sm resize-none focus:outline-none placeholder-gray-500 py-2.5 px-1 max-h-32"
-                                    style="scrollbar-width: thin; scrollbar-color: #475569 transparent;"
+                                    class="w-full bg-transparent text-white text-sm resize-none focus:outline-none placeholder-gray-600 py-2.5 px-1 max-h-32 font-sans"
+                                    style="scrollbar-width: thin; scrollbar-color: rgba(0,255,136,0.3) transparent;"
                                     disabled
                                 ></textarea>
                             </div>
@@ -960,7 +1479,7 @@
                                 type="submit" 
                                 id="sendBtn"
                                 disabled
-                                class="w-10 h-10 rounded-xl bg-gradient-to-r from-red-600 to-purple-600 hover:from-red-500 hover:to-purple-500 disabled:opacity-30 disabled:cursor-not-allowed text-white transition-all flex-shrink-0 flex items-center justify-center shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 hover:scale-105 active:scale-95"
+                                class="w-10 h-10 rounded-xl bg-gradient-to-r from-[#00FF88] to-[#00D4FF] hover:from-[#00FF88] hover:to-[#00FF88] disabled:opacity-30 disabled:cursor-not-allowed text-[#0B0F14] font-bold transition-all flex-shrink-0 flex items-center justify-center shadow-lg shadow-[rgba(0,255,136,0.3)] hover:shadow-[rgba(0,255,136,0.5)] hover:scale-105 active:scale-95"
                                 title="Enviar mensagem"
                             >
                                 <i class="fas fa-arrow-up text-sm"></i>
@@ -1287,20 +1806,18 @@
             try {
                 const data = await api('/profile');
                 const avatarImg = document.getElementById('userAvatarImg');
-                const avatarIcon = document.getElementById('userAvatarIcon');
                 
                 if (data.user && data.user.avatar) {
                     userAvatarUrl = data.user.avatar;
                     avatarImg.src = data.user.avatar;
-                    avatarImg.style.display = 'block';
-                    avatarIcon.style.display = 'none';
                 } else {
-                    userAvatarUrl = null;
-                    avatarImg.style.display = 'none';
-                    avatarIcon.style.display = 'block';
+                    userAvatarUrl = '/photo.jpeg';
+                    avatarImg.src = '/photo.jpeg';
                 }
             } catch (error) {
                 console.error('Erro ao carregar avatar:', error);
+                // Usa foto padrão em caso de erro
+                document.getElementById('userAvatarImg').src = '/photo.jpeg';
             }
         }
         
@@ -1390,12 +1907,39 @@
             updateWelcomeProfile(value);
         }
         
+        // Nova função para o Attack Mode Selector (Premium UI)
+        function selectAttackMode(mode) {
+            // Atualiza o valor do input oculto
+            document.getElementById('profileSelector').value = mode;
+            
+            // Atualiza visual dos botões
+            document.querySelectorAll('.attack-mode').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Atualiza descrição
+            const descriptions = {
+                'pentest': '🎯 Reconhecimento, enumeração e testes de vulnerabilidade',
+                'redteam': '🔥 Exploits avançados, evasão e persistência',
+                'offensive': '💀 Arsenal completo - sem restrições técnicas'
+            };
+            document.getElementById('profileDescription').textContent = descriptions[mode];
+            
+            // Atualiza o welcome profile também
+            updateWelcomeProfile(mode);
+        }
+        
         document.addEventListener('click', function(e) {
             const dropdown = document.getElementById('profileDropdown');
             if (dropdown && !dropdown.contains(e.target)) dropdown.classList.remove('open');
         });
         
         async function onAuthSuccess() {
+            // Atualiza classes do HTML para mostrar app e esconder login
+            document.documentElement.classList.remove('no-token');
+            document.documentElement.classList.add('has-token');
+            
             authModal.classList.add('hidden');
             authModal.classList.remove('flex');
             document.getElementById('userName').textContent = currentUser.name;
@@ -1404,6 +1948,9 @@
             document.getElementById('profileLink').classList.remove('hidden');
             messageInput.disabled = false;
             sendBtn.disabled = false;
+            
+            // Exibe a tela inicial (homeWelcome) ao fazer login
+            hideChat();
             
             updateUserAvatar();
             
@@ -1446,9 +1993,9 @@
         }
         
         const profileIcons = {
-            'pentest': { icon: 'fa-skull-crossbones', color: 'text-red-400', bg: 'from-red-500/20 to-orange-500/20' },
-            'redteam': { icon: 'fa-crosshairs', color: 'text-orange-400', bg: 'from-orange-500/20 to-yellow-500/20' },
-            'offensive': { icon: 'fa-biohazard', color: 'text-purple-400', bg: 'from-purple-500/20 to-pink-500/20' }
+            'pentest': { icon: 'fa-crosshairs', color: 'text-[#00FF88]', bg: 'from-[rgba(0,255,136,0.2)] to-[rgba(0,212,255,0.1)]' },
+            'redteam': { icon: 'fa-skull-crossbones', color: 'text-[#F97316]', bg: 'from-[rgba(249,115,22,0.2)] to-[rgba(239,68,68,0.1)]' },
+            'offensive': { icon: 'fa-biohazard', color: 'text-[#EF4444]', bg: 'from-[rgba(239,68,68,0.2)] to-[rgba(239,68,68,0.1)]' }
         };
         
         function renderSessions() {
@@ -1588,6 +2135,11 @@
         
         async function loadSession(sessionId) {
             try {
+                // Close mobile sidebar when loading a session
+                if (window.innerWidth < 1024) {
+                    closeMobileSidebar();
+                }
+                
                 // Limpa completamente mensagens anteriores
                 messagesContainer.innerHTML = '';
                 
@@ -1905,27 +2457,27 @@
                             'graphql': { icon: 'fas fa-project-diagram', color: 'text-pink-400' }
                         };
                         const ext = attachmentData.extension;
-                        const iconInfo = iconMap[ext] || { icon: 'fas fa-file-code', color: 'text-purple-400' };
+                        const iconInfo = iconMap[ext] || { icon: 'fas fa-file-code', color: 'text-[#00FF88]' };
                         
                         attachmentHtml = `
-                            <div class="mt-2 bg-slate-900/80 rounded-lg p-3 border border-slate-700/50">
+                            <div class="mt-2 bg-[rgba(0,0,0,0.3)] rounded-xl p-3 border border-[rgba(255,255,255,0.05)]">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center">
+                                    <div class="w-10 h-10 rounded-lg bg-[rgba(0,255,136,0.1)] flex items-center justify-center border border-[rgba(0,255,136,0.2)]">
                                         <i class="${iconInfo.icon} ${iconInfo.color} text-lg"></i>
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <p class="text-white font-medium text-sm truncate">${attachmentData.name}</p>
-                                        <p class="text-gray-400 text-xs">${attachmentData.lines} linhas • ${attachmentData.size}</p>
+                                        <p class="text-gray-500 text-xs font-mono">${attachmentData.lines} linhas • ${attachmentData.size}</p>
                                     </div>
-                                    <i class="fas fa-file-code text-gray-600"></i>
+                                    <i class="fas fa-file-code text-[#00FF88]/50"></i>
                                 </div>
                             </div>
                         `;
                     } else if (attachmentData.type === 'image') {
                         attachmentHtml = `
-                            <div class="mt-2 bg-slate-900/80 rounded-lg p-2 border border-slate-700/50">
+                            <div class="mt-2 bg-[rgba(0,0,0,0.3)] rounded-xl p-2 border border-[rgba(255,255,255,0.05)]">
                                 <img src="${attachmentData.preview}" alt="${attachmentData.name}" class="max-h-48 rounded-lg object-contain mx-auto">
-                                <p class="text-gray-400 text-xs text-center mt-1">${attachmentData.name} • ${attachmentData.size}</p>
+                                <p class="text-gray-500 text-xs text-center mt-1 font-mono">${attachmentData.name} • ${attachmentData.size}</p>
                             </div>
                         `;
                     }
@@ -1933,11 +2485,11 @@
                 
                 return `
                     <div class="flex items-start gap-4 justify-end">
-                        <div class="bg-gradient-to-r from-red-600 to-purple-600 rounded-2xl rounded-tr-none px-6 py-4 max-w-3xl">
-                            ${content ? `<div class="message-content text-white">${content}</div>` : ''}
+                        <div class="bg-gradient-to-br from-[rgba(0,255,136,0.15)] to-[rgba(0,212,255,0.08)] rounded-2xl rounded-tr-none px-6 py-4 max-w-3xl border border-[rgba(0,255,136,0.2)] backdrop-blur-sm">
+                            ${content ? `<div class="message-content text-gray-100">${content}</div>` : ''}
                             ${attachmentHtml}
                         </div>
-                        <div class="w-10 h-10 rounded-lg bg-slate-700 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        <div class="w-10 h-10 rounded-xl bg-[rgba(0,255,136,0.1)] flex items-center justify-center flex-shrink-0 overflow-hidden border border-[rgba(0,255,136,0.2)]">
                             ${avatarHtml}
                         </div>
                     </div>
@@ -1945,10 +2497,10 @@
             } else {
                 return `
                     <div class="flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-red-500/20 to-purple-600/20 flex items-center justify-center flex-shrink-0 p-1 border border-red-500/30">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[rgba(0,255,136,0.2)] to-[rgba(0,212,255,0.1)] flex items-center justify-center flex-shrink-0 p-1 border border-[rgba(0,255,136,0.3)]">
                             <img src="/logo.png" alt="DeepEyes" class="w-8 h-8 object-contain">
                         </div>
-                        <div class="bg-slate-800 rounded-2xl rounded-tl-none px-6 py-4 max-w-3xl border border-slate-700">
+                        <div class="de-card rounded-2xl rounded-tl-none px-6 py-4 max-w-3xl">
                             <div class="message-content prose prose-invert max-w-none">${content}</div>
                         </div>
                     </div>
@@ -2202,6 +2754,39 @@
                 messageForm.dispatchEvent(new Event('submit'));
             }
         });
+        
+        // Mobile Sidebar Toggle Functions
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        
+        function openMobileSidebar() {
+            sidebar.classList.add('mobile-open');
+            mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeMobileSidebar() {
+            sidebar.classList.remove('mobile-open');
+            mobileOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', openMobileSidebar);
+        }
+        
+        if (closeSidebarBtn) {
+            closeSidebarBtn.addEventListener('click', closeMobileSidebar);
+        }
+        
+        // Close sidebar when clicking on a session (mobile)
+        function handleMobileSessionClick() {
+            if (window.innerWidth < 1024) {
+                closeMobileSidebar();
+            }
+        }
         
         async function init() {
             if (token) {

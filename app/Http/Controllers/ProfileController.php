@@ -34,6 +34,13 @@ class ProfileController extends Controller
     public function show(Request $request): JsonResponse
     {
         $user = $request->user();
+        
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthenticated',
+            ], 401);
+        }
+        
         $user->load(['plan', 'subscription']);
         
         $currentPlan = $user->plan ?? Plan::where('slug', 'free')->first();
