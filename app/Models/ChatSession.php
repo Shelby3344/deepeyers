@@ -27,11 +27,26 @@ class ChatSession extends Model
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
         'total_tokens' => 'integer',
         'message_count' => 'integer',
         'metadata' => 'array',
     ];
+
+    /**
+     * Mutator para is_active - garante compatibilidade com PostgreSQL
+     */
+    public function setIsActiveAttribute($value): void
+    {
+        $this->attributes['is_active'] = $value ? 'true' : 'false';
+    }
+
+    /**
+     * Accessor para is_active
+     */
+    public function getIsActiveAttribute($value): bool
+    {
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
 
     protected $hidden = [
         'metadata',
