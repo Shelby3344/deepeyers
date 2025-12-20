@@ -28,13 +28,15 @@ class CreateSessionAction
             );
         }
 
-        return ChatSession::create([
-            'user_id' => $dto->userId,
-            'title' => $dto->title,
-            'target_domain' => $dto->targetDomain,
-            'profile' => $dto->profile,
-            'is_active' => true,
-            'metadata' => $dto->metadata,
-        ]);
+        $session = new ChatSession();
+        $session->user_id = $dto->userId;
+        $session->title = $dto->title;
+        $session->target_domain = $dto->targetDomain;
+        $session->profile = $dto->profile;
+        $session->is_active = true;
+        $session->metadata = $dto->metadata;
+        $session->save();
+
+        return $session;
     }
 }
