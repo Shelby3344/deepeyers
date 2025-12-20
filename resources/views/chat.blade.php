@@ -1099,7 +1099,7 @@
                         <i class="fas fa-crosshairs"></i>
                         <span>Red Team</span>
                     </div>
-                    <div class="attack-mode mode-fullattack" data-value="offensive" onclick="selectAttackMode(this)">
+                    <div class="attack-mode mode-fullattack" data-value="fullattack" onclick="selectAttackMode(this)">
                         <i class="fas fa-biohazard"></i>
                         <span>Full Attack</span>
                     </div>
@@ -1132,7 +1132,7 @@
                             <i class="fas fa-crosshairs text-orange-400"></i>
                             <span>BlackSentinel - Red Team</span>
                         </div>
-                        <div class="profile-option" data-value="offensive" data-icon="fa-biohazard" data-color="text-red-400" onclick="selectProfile(this)">
+                        <div class="profile-option" data-value="fullattack" data-icon="fa-biohazard" data-color="text-red-400" onclick="selectProfile(this)">
                             <i class="fas fa-biohazard text-red-400"></i>
                             <span>DarkMind - Full Attack</span>
                         </div>
@@ -1939,8 +1939,8 @@
         
         const profileDescriptions = {
             'pentest': 'Modo ofensivo para pentest autorizado - comandos e payloads reais',
-            'redteam': 'Simula��o de Atacante e adversarios - t�cnicas avan�adas e sofisticadas de Inva��o',
-            'offensive': 'Modo irrestrito - exploits, malware, full attack'
+            'redteam': 'Simulação de Atacante e adversarios - técnicas avançadas e sofisticadas de Invasão',
+            'fullattack': 'Modo irrestrito - exploits, malware, full attack'
         };
         
         const profileInfo = {
@@ -1960,7 +1960,7 @@
                 badge: { text: 'RESTRITO', class: 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30', icon: 'fa-lock' },
                 features: ['Simulacao APT', 'Evasao de EDR', 'C2 Frameworks', 'Lateral Movement']
             },
-            'offensive': {
+            'fullattack': {
                 name: 'DarkMind - Irrestrito',
                 icon: 'fa-biohazard',
                 color: 'from-purple-600 to-purple-800',
@@ -1992,7 +1992,7 @@
                 `).join('');
             }
             if (restrictionEl) {
-                if (profileKey === 'offensive') {
+                if (profileKey === 'fullattack') {
                     restrictionEl.innerHTML = `<i class="fas fa-unlock mr-1 text-green-400"></i>Modo sem restricoes - todas as respostas tecnicas disponiveis`;
                 } else {
                     restrictionEl.innerHTML = `<i class="fas fa-shield-check mr-1 text-blue-400"></i>IA com diretrizes de seguranca - respostas tecnicas para profissionais autorizados`;
@@ -2072,7 +2072,7 @@
             const descriptions = {
                 'pentest': '🎯 Reconhecimento, enumeração e testes de vulnerabilidade',
                 'redteam': '🔥 Exploits avançados, evasão e persistência',
-                'offensive': '💀 Arsenal completo - sem restrições técnicas'
+                'fullattack': '💀 Arsenal completo - sem restrições técnicas'
             };
             document.getElementById('profileDescription').textContent = descriptions[mode];
             
@@ -2111,8 +2111,8 @@
             const allowedProfiles = {
                 'user': ['pentest'],
                 'analyst': ['pentest', 'redteam'],
-                'redteam': ['pentest', 'redteam', 'offensive'],
-                'admin': ['pentest', 'redteam', 'offensive']
+                'redteam': ['pentest', 'redteam', 'fullattack'],
+                'admin': ['pentest', 'redteam', 'fullattack']
             };
             
             const userAllowed = allowedProfiles[currentUser.role] || ['pentest'];
@@ -2130,7 +2130,7 @@
         
         // Atualiza os botões de Attack Mode baseado no plano do usuário
         function updateAttackModeAccess() {
-            const profiles = ['pentest', 'redteam', 'offensive'];
+            const profiles = ['pentest', 'redteam', 'fullattack'];
             
             profiles.forEach(profile => {
                 const btn = document.querySelector(`.attack-mode[data-value="${profile}"]`);
@@ -2146,7 +2146,7 @@
             });
             
             // Atualiza descrição para mostrar que precisa de plano
-            if (!userCanAccessProfile('redteam') || !userCanAccessProfile('offensive')) {
+            if (!userCanAccessProfile('redteam') || !userCanAccessProfile('fullattack')) {
                 const desc = document.getElementById('profileDescription');
                 if (desc) {
                     desc.innerHTML = '🔒 <span class="text-yellow-500">Red Team</span> e <span class="text-red-400">Full Attack</span> requerem plano ativo';
@@ -2175,7 +2175,7 @@
         const profileIcons = {
             'pentest': { icon: 'fa-crosshairs', color: 'text-[#00FF88]', bg: 'from-[rgba(0,255,136,0.2)] to-[rgba(0,212,255,0.1)]' },
             'redteam': { icon: 'fa-skull-crossbones', color: 'text-[#F97316]', bg: 'from-[rgba(249,115,22,0.2)] to-[rgba(239,68,68,0.1)]' },
-            'offensive': { icon: 'fa-biohazard', color: 'text-[#EF4444]', bg: 'from-[rgba(239,68,68,0.2)] to-[rgba(239,68,68,0.1)]' }
+            'fullattack': { icon: 'fa-biohazard', color: 'text-[#EF4444]', bg: 'from-[rgba(239,68,68,0.2)] to-[rgba(239,68,68,0.1)]' }
         };
         
         function renderSessions() {
@@ -2370,7 +2370,7 @@
             const profiles = {
                 'pentest': { name: 'Pentest', icon: 'fa-skull-crossbones', color: 'text-red-500/70' },
                 'redteam': { name: 'Red Team', icon: 'fa-crosshairs', color: 'text-orange-500/70' },
-                'offensive': { name: 'Full Attack', icon: 'fa-biohazard', color: 'text-purple-500/70' }
+                'fullattack': { name: 'Full Attack', icon: 'fa-biohazard', color: 'text-purple-500/70' }
             };
             return profiles[profile] || { name: profile, icon: 'fa-terminal', color: 'text-gray-500/70' };
         }
@@ -2388,7 +2388,7 @@
         
         function updatePremiumBanner() {
             const banner = document.getElementById('premiumBanner');
-            if (banner && !userCanAccessProfile('offensive')) {
+            if (banner && !userCanAccessProfile('fullattack')) {
                 banner.classList.remove('hidden');
             } else if (banner) {
                 banner.classList.add('hidden');
