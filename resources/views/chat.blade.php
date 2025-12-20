@@ -927,7 +927,7 @@
             animation-delay: -2s;
         }
         
-        /* Blob Cyan - Evasion */
+        /* Blob Cyan - Invasão */
         .blob-card.blob-cyan .blob {
             background-color: #00D4FF;
             animation: blob-bounce-4 5.5s infinite ease;
@@ -1328,7 +1328,7 @@
                             </div>
                         </div>
                         
-                        <!-- Evasion Card -->
+                        <!-- Invasão Card -->
                         <div class="blob-card blob-cyan group">
                             <div class="blob"></div>
                             <div class="card-bg"></div>
@@ -1336,7 +1336,7 @@
                                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00D4FF]/20 to-[#00D4FF]/5 flex items-center justify-center mb-4 border border-[#00D4FF]/30 group-hover:border-[#00D4FF]/60 transition-colors">
                                     <i class="fas fa-mask text-[#00D4FF] text-xl group-hover:scale-110 transition-transform"></i>
                                 </div>
-                                <h4 class="font-bold mb-2 text-white text-lg group-hover:text-[#00D4FF] transition-colors">Evasion</h4>
+                                <h4 class="font-bold mb-2 text-white text-lg group-hover:text-[#00D4FF] transition-colors">Invasão</h4>
                                 <p class="text-sm text-gray-400">AMSI, EDR, WAF bypass</p>
                             </div>
                         </div>
