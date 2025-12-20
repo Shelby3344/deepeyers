@@ -43,8 +43,9 @@ class DetectAnomalies
             $changeCount = (int) Cache::get($changeCountKey, 0) + 1;
             Cache::put($changeCountKey, $changeCount, now()->addHours(1));
             
-            // Se mudou mais de 3 vezes em 1 hora, força re-auth
-            if ($changeCount > 3) {
+            // Se mudou mais de 10 vezes em 1 hora, força re-auth
+            // (aumentado para evitar falsos positivos)
+            if ($changeCount > 10) {
                 $user->tokens()->delete();
                 Cache::forget($changeCountKey);
                 
@@ -65,15 +66,39 @@ class DetectAnomalies
     }
 
     /**
+     * Obtém o IP real do cliente, considerando proxies e Cloudflare
+     */
+    private function getRealClientIp(Request $request): string
+    {
+        // Cloudflare
+        if ($cf = $request->header('CF-Connecting-IP')) {
+            return $cf;
+        }
+        
+        // Proxy padrão
+        if ($forwarded = $request->header('X-Forwarded-For')) {
+            // Pega o primeiro IP (cliente original)
+            $ips = explode(',', $forwarded);
+            return trim($ips[0]);
+        }
+        
+        if ($realIp = $request->header('X-Real-IP')) {
+            return $realIp;
+        }
+        
+        return $request->ip() ?? 'unknown';
+    }
+
+    /**
      * Gera fingerprint único baseado em características do cliente
+     * Nota: Usa apenas User-Agent para ser menos sensível a mudanças de rede
      */
     private function generateFingerprint(Request $request): string
     {
         return hash('sha256', implode('|', [
-            $request->ip(),
             $request->userAgent() ?? 'unknown',
-            $request->header('Accept-Language', 'unknown'),
-            $request->header('Accept-Encoding', 'unknown'),
+            // Não incluímos IP no fingerprint para evitar falsos positivos
+            // com usuários em redes móveis ou atrás de proxies
         ]));
     }
 
@@ -109,7 +134,7 @@ class DetectAnomalies
         Log::channel('security')->warning("Anomaly detected: {$type}", array_merge([
             'user_id' => $user->id,
             'user_email' => $user->email,
-            'ip' => $request->ip(),
+            'ip' => $this->getRealClientIp($request),
             'user_agent' => $request->userAgent(),
             'path' => $request->path(),
             'method' => $request->method(),
