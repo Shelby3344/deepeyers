@@ -1270,22 +1270,30 @@
                     <i class="fas fa-toolbox text-[#00D4FF] text-[8px]"></i>
                     Ferramentas
                 </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <button onclick="openTemplatesModal()" class="flex flex-col items-center gap-1 p-3 rounded-lg bg-[rgba(0,255,136,0.05)] border border-[rgba(0,255,136,0.1)] hover:border-[rgba(0,255,136,0.3)] hover:bg-[rgba(0,255,136,0.1)] transition-all group">
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="openTemplatesModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(0,255,136,0.05)] border border-[rgba(0,255,136,0.1)] hover:border-[rgba(0,255,136,0.3)] hover:bg-[rgba(0,255,136,0.1)] transition-all group">
                         <i class="fas fa-file-code text-[#00FF88] group-hover:scale-110 transition-transform"></i>
-                        <span class="text-[10px] text-gray-400 group-hover:text-white">Templates</span>
+                        <span class="text-[9px] text-gray-400 group-hover:text-white">Templates</span>
                     </button>
-                    <button onclick="openPayloadModal()" class="flex flex-col items-center gap-1 p-3 rounded-lg bg-[rgba(239,68,68,0.05)] border border-[rgba(239,68,68,0.1)] hover:border-[rgba(239,68,68,0.3)] hover:bg-[rgba(239,68,68,0.1)] transition-all group">
+                    <button onclick="openPayloadModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(239,68,68,0.05)] border border-[rgba(239,68,68,0.1)] hover:border-[rgba(239,68,68,0.3)] hover:bg-[rgba(239,68,68,0.1)] transition-all group">
                         <i class="fas fa-bug text-[#EF4444] group-hover:scale-110 transition-transform"></i>
-                        <span class="text-[10px] text-gray-400 group-hover:text-white">Payloads</span>
+                        <span class="text-[9px] text-gray-400 group-hover:text-white">Payloads</span>
                     </button>
-                    <button onclick="openChecklistModal()" class="flex flex-col items-center gap-1 p-3 rounded-lg bg-[rgba(249,115,22,0.05)] border border-[rgba(249,115,22,0.1)] hover:border-[rgba(249,115,22,0.3)] hover:bg-[rgba(249,115,22,0.1)] transition-all group">
+                    <button onclick="openNmapModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(0,212,255,0.05)] border border-[rgba(0,212,255,0.1)] hover:border-[rgba(0,212,255,0.3)] hover:bg-[rgba(0,212,255,0.1)] transition-all group">
+                        <i class="fas fa-radar text-[#00D4FF] group-hover:scale-110 transition-transform"></i>
+                        <span class="text-[9px] text-gray-400 group-hover:text-white">Nmap</span>
+                    </button>
+                    <button onclick="openChecklistModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(249,115,22,0.05)] border border-[rgba(249,115,22,0.1)] hover:border-[rgba(249,115,22,0.3)] hover:bg-[rgba(249,115,22,0.1)] transition-all group">
                         <i class="fas fa-list-check text-[#F97316] group-hover:scale-110 transition-transform"></i>
-                        <span class="text-[10px] text-gray-400 group-hover:text-white">Checklist</span>
+                        <span class="text-[9px] text-gray-400 group-hover:text-white">OWASP</span>
                     </button>
-                    <button onclick="exportChat()" class="flex flex-col items-center gap-1 p-3 rounded-lg bg-[rgba(168,85,247,0.05)] border border-[rgba(168,85,247,0.1)] hover:border-[rgba(168,85,247,0.3)] hover:bg-[rgba(168,85,247,0.1)] transition-all group">
+                    <button onclick="exportChat()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(168,85,247,0.05)] border border-[rgba(168,85,247,0.1)] hover:border-[rgba(168,85,247,0.3)] hover:bg-[rgba(168,85,247,0.1)] transition-all group">
                         <i class="fas fa-download text-[#A855F7] group-hover:scale-110 transition-transform"></i>
-                        <span class="text-[10px] text-gray-400 group-hover:text-white">Exportar</span>
+                        <span class="text-[9px] text-gray-400 group-hover:text-white">Exportar</span>
+                    </button>
+                    <button onclick="openWordlistModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(236,72,153,0.05)] border border-[rgba(236,72,153,0.1)] hover:border-[rgba(236,72,153,0.3)] hover:bg-[rgba(236,72,153,0.1)] transition-all group">
+                        <i class="fas fa-list text-[#EC4899] group-hover:scale-110 transition-transform"></i>
+                        <span class="text-[9px] text-gray-400 group-hover:text-white">Wordlists</span>
                     </button>
                 </div>
             </div>

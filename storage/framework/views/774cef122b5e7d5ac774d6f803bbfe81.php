@@ -47,6 +47,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="/css/deepeyes.css">
+    <link rel="stylesheet" href="/css/mobile.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
         
@@ -926,7 +927,7 @@
             animation-delay: -2s;
         }
         
-        /* Blob Cyan - Evasion */
+        /* Blob Cyan - Invasão */
         .blob-card.blob-cyan .blob {
             background-color: #00D4FF;
             animation: blob-bounce-4 5.5s infinite ease;
@@ -975,6 +976,118 @@
         
         .blob-card {
             transition: transform 0.3s ease;
+        }
+        
+        /* Template & Tools Styles */
+        .template-category {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px;
+        }
+        
+        .template-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(11, 15, 20, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            color: #94A3B8;
+            font-size: 13px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .template-btn:hover {
+            background: rgba(0, 255, 136, 0.05);
+            border-color: rgba(0, 255, 136, 0.2);
+            color: white;
+            transform: translateX(4px);
+        }
+        
+        .template-btn i {
+            font-size: 14px;
+            width: 18px;
+            text-align: center;
+        }
+        
+        /* Checklist Item */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .checklist-item:hover {
+            background: rgba(249, 115, 22, 0.05);
+            border-color: rgba(249, 115, 22, 0.2);
+        }
+        
+        .checklist-item.checked {
+            background: rgba(0, 255, 136, 0.05);
+            border-color: rgba(0, 255, 136, 0.2);
+        }
+        
+        .checklist-item .check-box {
+            width: 22px;
+            height: 22px;
+            border: 2px solid rgba(249, 115, 22, 0.4);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        
+        .checklist-item.checked .check-box {
+            background: linear-gradient(135deg, #00FF88, #00D4FF);
+            border-color: transparent;
+        }
+        
+        .checklist-item .check-box i {
+            color: #0B0F14;
+            font-size: 12px;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s ease;
+        }
+        
+        .checklist-item.checked .check-box i {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .checklist-item .item-text {
+            flex: 1;
+            color: #94A3B8;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+        
+        .checklist-item.checked .item-text {
+            color: #00FF88;
+            text-decoration: line-through;
+            text-decoration-color: rgba(0, 255, 136, 0.3);
+        }
+        
+        .checklist-item .item-code {
+            font-size: 11px;
+            color: #64748B;
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 8px;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -1098,7 +1211,7 @@
                         <i class="fas fa-crosshairs"></i>
                         <span>Red Team</span>
                     </div>
-                    <div class="attack-mode mode-fullattack" data-value="offensive" onclick="selectAttackMode(this)">
+                    <div class="attack-mode mode-fullattack" data-value="fullattack" onclick="selectAttackMode(this)">
                         <i class="fas fa-biohazard"></i>
                         <span>Full Attack</span>
                     </div>
@@ -1131,7 +1244,7 @@
                             <i class="fas fa-crosshairs text-orange-400"></i>
                             <span>BlackSentinel - Red Team</span>
                         </div>
-                        <div class="profile-option" data-value="offensive" data-icon="fa-biohazard" data-color="text-red-400" onclick="selectProfile(this)">
+                        <div class="profile-option" data-value="fullattack" data-icon="fa-biohazard" data-color="text-red-400" onclick="selectProfile(this)">
                             <i class="fas fa-biohazard text-red-400"></i>
                             <span>DarkMind - Full Attack</span>
                         </div>
@@ -1147,6 +1260,40 @@
                             <i class="fas fa-plus"></i>
                             <span>Nova Sessão</span>
                         </div>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Tools Menu -->
+            <div class="px-4 pb-2">
+                <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-widest px-1 py-2 flex items-center gap-2">
+                    <i class="fas fa-toolbox text-[#00D4FF] text-[8px]"></i>
+                    Ferramentas
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="openTemplatesModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(0,255,136,0.05)] border border-[rgba(0,255,136,0.1)] hover:border-[rgba(0,255,136,0.3)] hover:bg-[rgba(0,255,136,0.1)] transition-all group">
+                        <i class="fas fa-file-code text-[#00FF88] group-hover:scale-110 transition-transform"></i>
+                        <span class="text-[9px] text-gray-400 group-hover:text-white">Templates</span>
+                    </button>
+                    <button onclick="openPayloadModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(239,68,68,0.05)] border border-[rgba(239,68,68,0.1)] hover:border-[rgba(239,68,68,0.3)] hover:bg-[rgba(239,68,68,0.1)] transition-all group">
+                        <i class="fas fa-bug text-[#EF4444] group-hover:scale-110 transition-transform"></i>
+                        <span class="text-[9px] text-gray-400 group-hover:text-white">Payloads</span>
+                    </button>
+                    <button onclick="openNmapModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(0,212,255,0.05)] border border-[rgba(0,212,255,0.1)] hover:border-[rgba(0,212,255,0.3)] hover:bg-[rgba(0,212,255,0.1)] transition-all group">
+                        <i class="fas fa-radar text-[#00D4FF] group-hover:scale-110 transition-transform"></i>
+                        <span class="text-[9px] text-gray-400 group-hover:text-white">Nmap</span>
+                    </button>
+                    <button onclick="openChecklistModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(249,115,22,0.05)] border border-[rgba(249,115,22,0.1)] hover:border-[rgba(249,115,22,0.3)] hover:bg-[rgba(249,115,22,0.1)] transition-all group">
+                        <i class="fas fa-list-check text-[#F97316] group-hover:scale-110 transition-transform"></i>
+                        <span class="text-[9px] text-gray-400 group-hover:text-white">OWASP</span>
+                    </button>
+                    <button onclick="exportChat()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(168,85,247,0.05)] border border-[rgba(168,85,247,0.1)] hover:border-[rgba(168,85,247,0.3)] hover:bg-[rgba(168,85,247,0.1)] transition-all group">
+                        <i class="fas fa-download text-[#A855F7] group-hover:scale-110 transition-transform"></i>
+                        <span class="text-[9px] text-gray-400 group-hover:text-white">Exportar</span>
+                    </button>
+                    <button onclick="openWordlistModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(236,72,153,0.05)] border border-[rgba(236,72,153,0.1)] hover:border-[rgba(236,72,153,0.3)] hover:bg-[rgba(236,72,153,0.1)] transition-all group">
+                        <i class="fas fa-list text-[#EC4899] group-hover:scale-110 transition-transform"></i>
+                        <span class="text-[9px] text-gray-400 group-hover:text-white">Wordlists</span>
                     </button>
                 </div>
             </div>
@@ -1172,10 +1319,7 @@
                         <a href="/profile" id="userName" class="text-sm font-semibold text-white hover:text-[#00FF88] transition-colors block truncate">Não logado</a>
                         <div id="userRole" class="text-[10px] text-gray-500 uppercase tracking-wider">-</div>
                     </div>
-                    <a href="/profile" class="text-gray-500 hover:text-[#00FF88] transition-colors hidden" id="profileLink" title="Perfil">
-                        <i class="fas fa-cog"></i>
-                    </a>
-                    <button id="logoutBtn" class="text-gray-500 hover:text-red-400 transition-colors hidden" title="Sair">
+                    <button id="logoutBtn" class="text-gray-500 hover:text-red-400 transition-colors hidden" title="Sair" onclick="event.stopPropagation()">
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
                 </div>
@@ -1232,6 +1376,224 @@
                         <i class="fas fa-terminal mr-2"></i>Iniciar Sessão
                     </button>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Templates Modal -->
+        <div id="templatesModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeTemplatesModal()"></div>
+            <div class="relative z-10 w-full max-w-2xl mx-4 bg-[#0B0F14] rounded-2xl border border-[rgba(0,255,136,0.3)] shadow-2xl max-h-[85vh] flex flex-col">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#00FF88] to-transparent"></div>
+                <div class="p-6 border-b border-[rgba(0,255,136,0.1)]">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.3)] flex items-center justify-center">
+                            <i class="fas fa-file-code text-[#00FF88]"></i>
+                        </div>
+                        Templates de Prompts
+                    </h3>
+                    <p class="text-gray-400 text-sm mt-2">Prompts prontos para acelerar seu pentest</p>
+                </div>
+                <div class="flex-1 overflow-y-auto p-4">
+                    <div class="grid gap-3" id="templatesList">
+                        <!-- Reconhecimento -->
+                        <div class="template-category">
+                            <h4 class="text-xs font-semibold text-[#00FF88] uppercase tracking-wider mb-2 flex items-center gap-2">
+                                <i class="fas fa-search"></i> Reconhecimento
+                            </h4>
+                            <div class="grid gap-2">
+                                <button onclick="useTemplate('recon_subdomain')" class="template-btn">
+                                    <i class="fas fa-sitemap text-cyan-400"></i>
+                                    <span>Enumeração de Subdomínios</span>
+                                </button>
+                                <button onclick="useTemplate('recon_tech')" class="template-btn">
+                                    <i class="fas fa-microchip text-cyan-400"></i>
+                                    <span>Identificar Tecnologias</span>
+                                </button>
+                                <button onclick="useTemplate('recon_ports')" class="template-btn">
+                                    <i class="fas fa-network-wired text-cyan-400"></i>
+                                    <span>Scan de Portas</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Exploração Web -->
+                        <div class="template-category">
+                            <h4 class="text-xs font-semibold text-[#EF4444] uppercase tracking-wider mb-2 flex items-center gap-2">
+                                <i class="fas fa-bug"></i> Exploração Web
+                            </h4>
+                            <div class="grid gap-2">
+                                <button onclick="useTemplate('sqli')" class="template-btn">
+                                    <i class="fas fa-database text-red-400"></i>
+                                    <span>SQL Injection</span>
+                                </button>
+                                <button onclick="useTemplate('xss')" class="template-btn">
+                                    <i class="fas fa-code text-red-400"></i>
+                                    <span>XSS Payloads</span>
+                                </button>
+                                <button onclick="useTemplate('lfi')" class="template-btn">
+                                    <i class="fas fa-folder-open text-red-400"></i>
+                                    <span>LFI/RFI</span>
+                                </button>
+                                <button onclick="useTemplate('ssrf')" class="template-btn">
+                                    <i class="fas fa-server text-red-400"></i>
+                                    <span>SSRF</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Pós-Exploração -->
+                        <div class="template-category">
+                            <h4 class="text-xs font-semibold text-[#F97316] uppercase tracking-wider mb-2 flex items-center gap-2">
+                                <i class="fas fa-skull"></i> Pós-Exploração
+                            </h4>
+                            <div class="grid gap-2">
+                                <button onclick="useTemplate('privesc_linux')" class="template-btn">
+                                    <i class="fab fa-linux text-orange-400"></i>
+                                    <span>PrivEsc Linux</span>
+                                </button>
+                                <button onclick="useTemplate('privesc_windows')" class="template-btn">
+                                    <i class="fab fa-windows text-orange-400"></i>
+                                    <span>PrivEsc Windows</span>
+                                </button>
+                                <button onclick="useTemplate('persistence')" class="template-btn">
+                                    <i class="fas fa-door-open text-orange-400"></i>
+                                    <span>Persistência</span>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Relatórios -->
+                        <div class="template-category">
+                            <h4 class="text-xs font-semibold text-[#A855F7] uppercase tracking-wider mb-2 flex items-center gap-2">
+                                <i class="fas fa-file-alt"></i> Relatórios
+                            </h4>
+                            <div class="grid gap-2">
+                                <button onclick="useTemplate('report_vuln')" class="template-btn">
+                                    <i class="fas fa-exclamation-triangle text-purple-400"></i>
+                                    <span>Documentar Vulnerabilidade</span>
+                                </button>
+                                <button onclick="useTemplate('report_exec')" class="template-btn">
+                                    <i class="fas fa-file-contract text-purple-400"></i>
+                                    <span>Resumo Executivo</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-[rgba(0,255,136,0.1)]">
+                    <button onclick="closeTemplatesModal()" class="w-full bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Fechar</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payload Generator Modal -->
+        <div id="payloadModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closePayloadModal()"></div>
+            <div class="relative z-10 w-full max-w-lg mx-4 bg-[#0B0F14] rounded-2xl border border-[rgba(239,68,68,0.3)] shadow-2xl max-h-[85vh] flex flex-col">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#EF4444] to-transparent"></div>
+                <div class="p-6 border-b border-[rgba(239,68,68,0.1)]">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-[rgba(239,68,68,0.1)] border border-[rgba(239,68,68,0.3)] flex items-center justify-center">
+                            <i class="fas fa-bug text-[#EF4444]"></i>
+                        </div>
+                        Gerador de Payloads
+                    </h3>
+                </div>
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Tipo de Payload</label>
+                            <select id="payloadType" class="w-full bg-[#0B0F14] border border-[rgba(239,68,68,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#EF4444]">
+                                <option value="reverse_shell">Reverse Shell</option>
+                                <option value="web_shell">Web Shell</option>
+                                <option value="sqli">SQL Injection</option>
+                                <option value="xss">XSS</option>
+                                <option value="xxe">XXE</option>
+                                <option value="ssti">SSTI</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Linguagem/Plataforma</label>
+                            <select id="payloadLang" class="w-full bg-[#0B0F14] border border-[rgba(239,68,68,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#EF4444]">
+                                <option value="bash">Bash</option>
+                                <option value="python">Python</option>
+                                <option value="php">PHP</option>
+                                <option value="powershell">PowerShell</option>
+                                <option value="nc">Netcat</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">IP do Atacante</label>
+                            <input type="text" id="payloadIP" placeholder="10.10.14.1" class="w-full bg-[#0B0F14] border border-[rgba(239,68,68,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#EF4444] font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Porta</label>
+                            <input type="text" id="payloadPort" placeholder="4444" class="w-full bg-[#0B0F14] border border-[rgba(239,68,68,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#EF4444] font-mono">
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-[rgba(239,68,68,0.1)] flex gap-3">
+                    <button onclick="closePayloadModal()" class="flex-1 bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Cancelar</button>
+                    <button onclick="generatePayload()" class="flex-1 bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:opacity-90 text-white rounded-xl py-3 font-bold transition-all">
+                        <i class="fas fa-wand-magic-sparkles mr-2"></i>Gerar
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Checklist Modal -->
+        <div id="checklistModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeChecklistModal()"></div>
+            <div class="relative z-10 w-full max-w-2xl mx-4 bg-[#0B0F14] rounded-2xl border border-[rgba(249,115,22,0.3)] shadow-2xl max-h-[85vh] flex flex-col">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#F97316] to-transparent"></div>
+                <div class="p-6 border-b border-[rgba(249,115,22,0.1)]">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-[rgba(249,115,22,0.1)] border border-[rgba(249,115,22,0.3)] flex items-center justify-center">
+                            <i class="fas fa-list-check text-[#F97316]"></i>
+                        </div>
+                        Checklist OWASP Top 10
+                    </h3>
+                    <div class="mt-3 flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-[#1E293B] rounded-full overflow-hidden">
+                            <div id="checklistProgress" class="h-full bg-gradient-to-r from-[#F97316] to-[#EF4444] transition-all" style="width: 0%"></div>
+                        </div>
+                        <span id="checklistPercent" class="text-sm font-bold text-[#F97316]">0%</span>
+                    </div>
+                </div>
+                <div class="flex-1 overflow-y-auto p-4">
+                    <div class="space-y-2" id="checklistItems">
+                        <!-- Items serão inseridos via JS -->
+                    </div>
+                </div>
+                <div class="p-4 border-t border-[rgba(249,115,22,0.1)] flex gap-3">
+                    <button onclick="resetChecklist()" class="flex-1 bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">
+                        <i class="fas fa-rotate-left mr-2"></i>Resetar
+                    </button>
+                    <button onclick="closeChecklistModal()" class="flex-1 bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:opacity-90 text-white rounded-xl py-3 font-bold transition-all">Fechar</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Export Modal -->
+        <div id="exportModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeExportModal()"></div>
+            <div class="relative z-10 w-full max-w-md mx-4 bg-[#0B0F14] rounded-2xl p-6 border border-[rgba(168,85,247,0.3)] shadow-2xl">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#A855F7] to-transparent"></div>
+                <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-[rgba(168,85,247,0.1)] border border-[rgba(168,85,247,0.3)] flex items-center justify-center">
+                        <i class="fas fa-download text-[#A855F7]"></i>
+                    </div>
+                    Exportar Chat
+                </h3>
+                <p class="text-gray-400 text-sm mb-6">Escolha o formato para exportar a conversa atual.</p>
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <button onclick="downloadChat('md')" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-[rgba(168,85,247,0.05)] border border-[rgba(168,85,247,0.2)] hover:border-[rgba(168,85,247,0.5)] hover:bg-[rgba(168,85,247,0.1)] transition-all group">
+                        <i class="fab fa-markdown text-2xl text-[#A855F7] group-hover:scale-110 transition-transform"></i>
+                        <span class="text-sm text-gray-300">Markdown</span>
+                    </button>
+                    <button onclick="downloadChat('txt')" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-[rgba(168,85,247,0.05)] border border-[rgba(168,85,247,0.2)] hover:border-[rgba(168,85,247,0.5)] hover:bg-[rgba(168,85,247,0.1)] transition-all group">
+                        <i class="fas fa-file-lines text-2xl text-[#A855F7] group-hover:scale-110 transition-transform"></i>
+                        <span class="text-sm text-gray-300">Texto</span>
+                    </button>
+                </div>
+                <button onclick="closeExportModal()" class="w-full bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Cancelar</button>
             </div>
         </div>
         
@@ -1330,7 +1692,7 @@
                             </div>
                         </div>
                         
-                        <!-- Evasion Card -->
+                        <!-- Invasão Card -->
                         <div class="blob-card blob-cyan group">
                             <div class="blob"></div>
                             <div class="card-bg"></div>
@@ -1338,7 +1700,7 @@
                                 <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00D4FF]/20 to-[#00D4FF]/5 flex items-center justify-center mb-4 border border-[#00D4FF]/30 group-hover:border-[#00D4FF]/60 transition-colors">
                                     <i class="fas fa-mask text-[#00D4FF] text-xl group-hover:scale-110 transition-transform"></i>
                                 </div>
-                                <h4 class="font-bold mb-2 text-white text-lg group-hover:text-[#00D4FF] transition-colors">Evasion</h4>
+                                <h4 class="font-bold mb-2 text-white text-lg group-hover:text-[#00D4FF] transition-colors">Invasão</h4>
                                 <p class="text-sm text-gray-400">AMSI, EDR, WAF bypass</p>
                             </div>
                         </div>
@@ -1938,8 +2300,8 @@
         
         const profileDescriptions = {
             'pentest': 'Modo ofensivo para pentest autorizado - comandos e payloads reais',
-            'redteam': 'Simula��o de Atacante e adversarios - t�cnicas avan�adas e sofisticadas de Inva��o',
-            'offensive': 'Modo irrestrito - exploits, malware, full attack'
+            'redteam': 'Simulação de Atacante e adversarios - técnicas avançadas e sofisticadas de Invasão',
+            'fullattack': 'Modo irrestrito - exploits, malware, full attack'
         };
         
         const profileInfo = {
@@ -1959,7 +2321,7 @@
                 badge: { text: 'RESTRITO', class: 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30', icon: 'fa-lock' },
                 features: ['Simulacao APT', 'Evasao de EDR', 'C2 Frameworks', 'Lateral Movement']
             },
-            'offensive': {
+            'fullattack': {
                 name: 'DarkMind - Irrestrito',
                 icon: 'fa-biohazard',
                 color: 'from-purple-600 to-purple-800',
@@ -1991,7 +2353,7 @@
                 `).join('');
             }
             if (restrictionEl) {
-                if (profileKey === 'offensive') {
+                if (profileKey === 'fullattack') {
                     restrictionEl.innerHTML = `<i class="fas fa-unlock mr-1 text-green-400"></i>Modo sem restricoes - todas as respostas tecnicas disponiveis`;
                 } else {
                     restrictionEl.innerHTML = `<i class="fas fa-shield-check mr-1 text-blue-400"></i>IA com diretrizes de seguranca - respostas tecnicas para profissionais autorizados`;
@@ -2071,7 +2433,7 @@
             const descriptions = {
                 'pentest': '🎯 Reconhecimento, enumeração e testes de vulnerabilidade',
                 'redteam': '🔥 Exploits avançados, evasão e persistência',
-                'offensive': '💀 Arsenal completo - sem restrições técnicas'
+                'fullattack': '💀 Arsenal completo - sem restrições técnicas'
             };
             document.getElementById('profileDescription').textContent = descriptions[mode];
             
@@ -2094,7 +2456,6 @@
             document.getElementById('userName').textContent = currentUser?.name || 'Usuário';
             document.getElementById('userRole').textContent = (currentUser?.role || 'user').toUpperCase();
             logoutBtn.classList.remove('hidden');
-            document.getElementById('profileLink').classList.remove('hidden');
             messageInput.disabled = false;
             sendBtn.disabled = false;
             
@@ -2110,8 +2471,8 @@
             const allowedProfiles = {
                 'user': ['pentest'],
                 'analyst': ['pentest', 'redteam'],
-                'redteam': ['pentest', 'redteam', 'offensive'],
-                'admin': ['pentest', 'redteam', 'offensive']
+                'redteam': ['pentest', 'redteam', 'fullattack'],
+                'admin': ['pentest', 'redteam', 'fullattack']
             };
             
             const userAllowed = allowedProfiles[currentUser.role] || ['pentest'];
@@ -2129,7 +2490,7 @@
         
         // Atualiza os botões de Attack Mode baseado no plano do usuário
         function updateAttackModeAccess() {
-            const profiles = ['pentest', 'redteam', 'offensive'];
+            const profiles = ['pentest', 'redteam', 'fullattack'];
             
             profiles.forEach(profile => {
                 const btn = document.querySelector(`.attack-mode[data-value="${profile}"]`);
@@ -2145,7 +2506,7 @@
             });
             
             // Atualiza descrição para mostrar que precisa de plano
-            if (!userCanAccessProfile('redteam') || !userCanAccessProfile('offensive')) {
+            if (!userCanAccessProfile('redteam') || !userCanAccessProfile('fullattack')) {
                 const desc = document.getElementById('profileDescription');
                 if (desc) {
                     desc.innerHTML = '🔒 <span class="text-yellow-500">Red Team</span> e <span class="text-red-400">Full Attack</span> requerem plano ativo';
@@ -2174,7 +2535,7 @@
         const profileIcons = {
             'pentest': { icon: 'fa-crosshairs', color: 'text-[#00FF88]', bg: 'from-[rgba(0,255,136,0.2)] to-[rgba(0,212,255,0.1)]' },
             'redteam': { icon: 'fa-skull-crossbones', color: 'text-[#F97316]', bg: 'from-[rgba(249,115,22,0.2)] to-[rgba(239,68,68,0.1)]' },
-            'offensive': { icon: 'fa-biohazard', color: 'text-[#EF4444]', bg: 'from-[rgba(239,68,68,0.2)] to-[rgba(239,68,68,0.1)]' }
+            'fullattack': { icon: 'fa-biohazard', color: 'text-[#EF4444]', bg: 'from-[rgba(239,68,68,0.2)] to-[rgba(239,68,68,0.1)]' }
         };
         
         function renderSessions() {
@@ -2369,7 +2730,7 @@
             const profiles = {
                 'pentest': { name: 'Pentest', icon: 'fa-skull-crossbones', color: 'text-red-500/70' },
                 'redteam': { name: 'Red Team', icon: 'fa-crosshairs', color: 'text-orange-500/70' },
-                'offensive': { name: 'Full Attack', icon: 'fa-biohazard', color: 'text-purple-500/70' }
+                'fullattack': { name: 'Full Attack', icon: 'fa-biohazard', color: 'text-purple-500/70' }
             };
             return profiles[profile] || { name: profile, icon: 'fa-terminal', color: 'text-gray-500/70' };
         }
@@ -2387,7 +2748,7 @@
         
         function updatePremiumBanner() {
             const banner = document.getElementById('premiumBanner');
-            if (banner && !userCanAccessProfile('offensive')) {
+            if (banner && !userCanAccessProfile('fullattack')) {
                 banner.classList.remove('hidden');
             } else if (banner) {
                 banner.classList.add('hidden');
@@ -3000,6 +3361,257 @@
         // Check if banner was closed this session
         if (sessionStorage.getItem('betaBannerClosed') === 'true') {
             document.getElementById('betaBanner')?.remove();
+        }
+        
+        // ========================================
+        // FERRAMENTAS DE PENTEST
+        // ========================================
+        
+        // Templates de Prompts
+        const promptTemplates = {
+            // Reconhecimento
+            recon_subdomain: 'Preciso enumerar subdomínios do alvo. Me dê comandos para usar subfinder, amass, assetfinder e técnicas de DNS bruteforce. Inclua também como verificar quais estão ativos.',
+            recon_tech: 'Quero identificar as tecnologias usadas no alvo (web server, frameworks, CMS, linguagens). Me dê comandos para whatweb, wappalyzer, builtwith e análise manual de headers/responses.',
+            recon_ports: 'Preciso fazer um scan de portas completo. Me dê comandos nmap para: scan rápido, scan completo, detecção de versões, scripts NSE úteis e técnicas de evasão de firewall.',
+            
+            // Exploração Web
+            sqli: 'Encontrei um possível ponto de SQL Injection. Me dê payloads para: detecção, bypass de WAF, union-based, blind boolean, blind time-based, e comandos sqlmap otimizados.',
+            xss: 'Preciso testar XSS em um formulário. Me dê payloads para: reflected, stored, DOM-based, bypass de filtros comuns, polyglots e técnicas de exfiltração de dados.',
+            lfi: 'Encontrei possível LFI. Me dê payloads para: path traversal, null byte, wrappers PHP (php://filter, data://), log poisoning e técnicas para RCE via LFI.',
+            ssrf: 'Preciso testar SSRF. Me dê payloads para: bypass de filtros, acesso a metadados cloud (AWS/GCP/Azure), port scanning interno e técnicas de exfiltração.',
+            
+            // Pós-Exploração
+            privesc_linux: 'Consegui shell em Linux. Me dê um checklist completo de privilege escalation: SUID, capabilities, sudo, cron, kernel exploits, e comandos para enumerar tudo automaticamente.',
+            privesc_windows: 'Consegui shell em Windows. Me dê técnicas de privilege escalation: tokens, services, scheduled tasks, AlwaysInstallElevated, unquoted paths e ferramentas como winPEAS.',
+            persistence: 'Preciso manter acesso ao sistema. Me dê técnicas de persistência para Linux e Windows: backdoors, scheduled tasks, registry, services e métodos mais discretos.',
+            
+            // Relatórios
+            report_vuln: 'Encontrei uma vulnerabilidade e preciso documentar. Me ajude a criar um relatório com: descrição, impacto (CVSS), passos para reproduzir, evidências necessárias e recomendações.',
+            report_exec: 'Preciso criar um resumo executivo do pentest. Me dê um template com: escopo, metodologia, principais achados, riscos críticos e recomendações priorizadas.'
+        };
+        
+        // OWASP Top 10 Checklist
+        const owaspChecklist = [
+            { id: 'a01', code: 'A01:2021', text: 'Broken Access Control - Testar IDOR, privilege escalation, bypass de autenticação' },
+            { id: 'a02', code: 'A02:2021', text: 'Cryptographic Failures - Verificar TLS, hashing de senhas, dados sensíveis expostos' },
+            { id: 'a03', code: 'A03:2021', text: 'Injection - Testar SQLi, XSS, Command Injection, LDAP, XPath' },
+            { id: 'a04', code: 'A04:2021', text: 'Insecure Design - Analisar fluxos de negócio, threat modeling' },
+            { id: 'a05', code: 'A05:2021', text: 'Security Misconfiguration - Headers, CORS, directory listing, default creds' },
+            { id: 'a06', code: 'A06:2021', text: 'Vulnerable Components - Verificar versões, CVEs conhecidos, dependências' },
+            { id: 'a07', code: 'A07:2021', text: 'Auth Failures - Brute force, session management, password policy' },
+            { id: 'a08', code: 'A08:2021', text: 'Software & Data Integrity - Verificar CI/CD, updates sem assinatura, deserialização' },
+            { id: 'a09', code: 'A09:2021', text: 'Logging & Monitoring - Verificar se ataques são detectados e logados' },
+            { id: 'a10', code: 'A10:2021', text: 'SSRF - Testar requisições server-side, bypass de filtros, cloud metadata' }
+        ];
+        
+        // Carregar estado do checklist do localStorage
+        let checklistState = JSON.parse(localStorage.getItem('deepeyes_checklist') || '{}');
+        
+        // Templates Modal
+        function openTemplatesModal() {
+            const modal = document.getElementById('templatesModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function closeTemplatesModal() {
+            const modal = document.getElementById('templatesModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        function useTemplate(templateId) {
+            const template = promptTemplates[templateId];
+            if (template && messageInput) {
+                messageInput.value = template;
+                messageInput.style.height = 'auto';
+                messageInput.style.height = Math.min(messageInput.scrollHeight, 150) + 'px';
+                closeTemplatesModal();
+                messageInput.focus();
+                showNotification('Template carregado!', 'success');
+            }
+        }
+        
+        // Payload Generator Modal
+        function openPayloadModal() {
+            const modal = document.getElementById('payloadModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function closePayloadModal() {
+            const modal = document.getElementById('payloadModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        function generatePayload() {
+            const type = document.getElementById('payloadType').value;
+            const lang = document.getElementById('payloadLang').value;
+            const ip = document.getElementById('payloadIP').value || 'ATTACKER_IP';
+            const port = document.getElementById('payloadPort').value || '4444';
+            
+            let prompt = `Gere um payload de ${type} em ${lang}`;
+            
+            if (type === 'reverse_shell') {
+                prompt = `Gere múltiplos payloads de reverse shell em ${lang} para conectar em ${ip}:${port}. Inclua variações para bypass de filtros, versões one-liner e com encoding.`;
+            } else if (type === 'web_shell') {
+                prompt = `Gere web shells em ${lang} com funcionalidades de: execução de comandos, upload de arquivos, e versões ofuscadas para bypass de WAF.`;
+            } else if (type === 'sqli') {
+                prompt = `Gere payloads de SQL Injection avançados: union-based, blind boolean, blind time-based, bypass de WAF comuns, e técnicas de exfiltração.`;
+            } else if (type === 'xss') {
+                prompt = `Gere payloads XSS avançados: bypass de filtros, polyglots, DOM-based, e payloads para exfiltração de cookies/dados.`;
+            } else if (type === 'xxe') {
+                prompt = `Gere payloads XXE para: leitura de arquivos, SSRF, exfiltração out-of-band, e bypass de parsers comuns.`;
+            } else if (type === 'ssti') {
+                prompt = `Gere payloads SSTI para os principais template engines (Jinja2, Twig, Freemarker, Velocity). Inclua detecção e RCE.`;
+            }
+            
+            if (messageInput) {
+                messageInput.value = prompt;
+                messageInput.style.height = 'auto';
+                messageInput.style.height = Math.min(messageInput.scrollHeight, 150) + 'px';
+                closePayloadModal();
+                messageInput.focus();
+                showNotification('Prompt de payload gerado!', 'success');
+            }
+        }
+        
+        // Checklist Modal
+        function openChecklistModal() {
+            const modal = document.getElementById('checklistModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            renderChecklist();
+        }
+        
+        function closeChecklistModal() {
+            const modal = document.getElementById('checklistModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        function renderChecklist() {
+            const container = document.getElementById('checklistItems');
+            container.innerHTML = owaspChecklist.map(item => `
+                <div class="checklist-item ${checklistState[item.id] ? 'checked' : ''}" onclick="toggleChecklistItem('${item.id}')">
+                    <div class="check-box">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <span class="item-text">${item.text}</span>
+                    <span class="item-code">${item.code}</span>
+                </div>
+            `).join('');
+            updateChecklistProgress();
+        }
+        
+        function toggleChecklistItem(itemId) {
+            checklistState[itemId] = !checklistState[itemId];
+            localStorage.setItem('deepeyes_checklist', JSON.stringify(checklistState));
+            renderChecklist();
+        }
+        
+        function updateChecklistProgress() {
+            const total = owaspChecklist.length;
+            const checked = Object.values(checklistState).filter(v => v).length;
+            const percent = Math.round((checked / total) * 100);
+            
+            document.getElementById('checklistProgress').style.width = percent + '%';
+            document.getElementById('checklistPercent').textContent = percent + '%';
+        }
+        
+        function resetChecklist() {
+            checklistState = {};
+            localStorage.setItem('deepeyes_checklist', JSON.stringify(checklistState));
+            renderChecklist();
+            showNotification('Checklist resetado!', 'success');
+        }
+        
+        // Export Chat
+        function exportChat() {
+            if (!currentSession) {
+                showNotification('Nenhuma sessão ativa para exportar', 'error');
+                return;
+            }
+            openExportModal();
+        }
+        
+        function openExportModal() {
+            const modal = document.getElementById('exportModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function closeExportModal() {
+            const modal = document.getElementById('exportModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        async function downloadChat(format) {
+            if (!currentSession) {
+                showNotification('Nenhuma sessão para exportar', 'error');
+                return;
+            }
+            
+            try {
+                // Busca mensagens da sessão atual
+                const data = await api(`/chat/sessions/${currentSession.id}/messages`);
+                const messages = data.data || [];
+                
+                if (messages.length === 0) {
+                    showNotification('Nenhuma mensagem para exportar', 'error');
+                    return;
+                }
+                
+                let content = '';
+                const sessionTitle = currentSession.title || 'Chat DeepEyes';
+                const sessionDate = new Date().toLocaleDateString('pt-BR');
+                const sessionProfile = currentSession.profile || 'pentest';
+                
+                if (format === 'md') {
+                    // Formato Markdown
+                    content = `# ${sessionTitle}\n\n`;
+                    content += `**Data:** ${sessionDate}\n`;
+                    content += `**Perfil:** ${sessionProfile}\n`;
+                    content += `**Alvo:** ${currentSession.target_domain || 'N/A'}\n\n`;
+                    content += `---\n\n`;
+                    
+                    messages.forEach(msg => {
+                        const role = msg.role === 'user' ? '👤 **Você**' : '🤖 **DeepEyes**';
+                        content += `${role}\n\n${msg.content}\n\n---\n\n`;
+                    });
+                } else {
+                    // Formato texto simples
+                    content = `${sessionTitle}\n`;
+                    content += `${'='.repeat(50)}\n`;
+                    content += `Data: ${sessionDate}\n`;
+                    content += `Perfil: ${sessionProfile}\n`;
+                    content += `Alvo: ${currentSession.target_domain || 'N/A'}\n\n`;
+                    
+                    messages.forEach(msg => {
+                        const role = msg.role === 'user' ? '[VOCÊ]' : '[DEEPEYES]';
+                        content += `${role}\n${msg.content}\n\n${'-'.repeat(40)}\n\n`;
+                    });
+                }
+                
+                // Cria e baixa o arquivo
+                const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `deepeyes_${sessionTitle.replace(/[^a-z0-9]/gi, '_')}_${Date.now()}.${format}`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                closeExportModal();
+                showNotification('Chat exportado com sucesso!', 'success');
+            } catch (error) {
+                console.error('Erro ao exportar:', error);
+                showNotification('Erro ao exportar chat', 'error');
+            }
         }
         
         async function init() {
