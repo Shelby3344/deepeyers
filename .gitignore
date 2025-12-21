@@ -1,21 +1,84 @@
+# ============================================
+# ENVIRONMENT & SECRETS - NEVER COMMIT
+# ============================================
 .env
-.env.backup
-.env.production
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# ============================================
+# SENSITIVE DATA
+# ============================================
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
 auth.json
 npm-debug.log
 yarn-error.log
+*.log
+*.sql
+*.sqlite
+*.sqlite-journal
+*.bak
+*.backup
+*.old
+*.orig
+*.swp
+*.tmp
+
+# ============================================
+# IDE & EDITOR
+# ============================================
 /.fleet
 /.idea
 /.vscode
+*.sublime-*
+.project
+.settings
+
+# ============================================
+# DEPENDENCIES
+# ============================================
 /node_modules
+/vendor
+
+# ============================================
+# BUILD & CACHE
+# ============================================
 /public/build
 /public/hot
 /public/storage
 /storage/*.key
-/vendor
+/storage/logs/*
+!/storage/logs/.gitkeep
+/storage/framework/cache/data/*
+!/storage/framework/cache/data/.gitkeep
+/storage/framework/sessions/*
+!/storage/framework/sessions/.gitkeep
+/storage/framework/views/*
+!/storage/framework/views/.gitkeep
+/bootstrap/cache/*
+!/bootstrap/cache/.gitkeep
+
+# ============================================
+# DATABASE
+# ============================================
 /database/*.sqlite
 *.sqlite
 *.sqlite-journal
+*.db
+
+# ============================================
+# SECURITY - BLOCK SENSITIVE FILES
+# ============================================
+*.phar
+phpunit.xml
+.php_cs
+.php_cs.cache
+.phpunit.cache
+docker-compose.override.yml
+.docker/

@@ -12,6 +12,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // ✅ SECURITY LAYER 1: Block sensitive paths FIRST
+        $middleware->prepend(\App\Http\Middleware\BlockSensitivePaths::class);
+        
+        // ✅ SECURITY LAYER 2: Security headers on all responses
+        $middleware->prepend(\App\Http\Middleware\SecurityHeaders::class);
+        
+        // ✅ SECURITY LAYER 3: Rate limiting
+        $middleware->prepend(\App\Http\Middleware\RateLimitRequests::class);
+        
         // ✅ Middleware global de segurança - executa em TODAS as requisições
         $middleware->prepend(\App\Http\Middleware\SecurityShield::class);
         
@@ -28,6 +37,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'security.shield' => \App\Http\Middleware\SecurityShield::class,
             'detect.anomalies' => \App\Http\Middleware\DetectAnomalies::class,
             'validate.signature' => \App\Http\Middleware\ValidateRequestSignature::class,
+            'security.headers' => \App\Http\Middleware\SecurityHeaders::class,
+            'block.sensitive' => \App\Http\Middleware\BlockSensitivePaths::class,
+            'rate.limit' => \App\Http\Middleware\RateLimitRequests::class,
         ]);
         
         // ✅ Middleware de detecção de anomalias para rotas autenticadas
