@@ -1750,29 +1750,29 @@
                     // TOOLS
                 </div>
                 <div class="grid grid-cols-3 gap-2">
-                    <button onclick="openTemplatesModal()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.4)] hover:bg-[rgba(0,255,136,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-file-code text-[#00FF88] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(0,255,136,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#00FF88]" style="font-family: var(--font-mono);">TEMPLATES</span>
-                    </button>
-                    <button onclick="openPayloadModal()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(239,68,68,0.15)] hover:border-[rgba(239,68,68,0.4)] hover:bg-[rgba(239,68,68,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-bug text-[#EF4444] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(239,68,68,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#EF4444]" style="font-family: var(--font-mono);">PAYLOADS</span>
-                    </button>
-                    <button onclick="openNmapModal()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,212,255,0.15)] hover:border-[rgba(0,212,255,0.4)] hover:bg-[rgba(0,212,255,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-network-wired text-[#00D4FF] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(0,212,255,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#00D4FF]" style="font-family: var(--font-mono);">NMAP</span>
-                    </button>
-                    <button onclick="openChecklistModal()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(249,115,22,0.15)] hover:border-[rgba(249,115,22,0.4)] hover:bg-[rgba(249,115,22,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                    <a href="/exploits" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(239,68,68,0.15)] hover:border-[rgba(239,68,68,0.4)] hover:bg-[rgba(239,68,68,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-skull text-[#EF4444] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(239,68,68,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#EF4444]" style="font-family: var(--font-mono);">EXPLOITS</span>
+                    </a>
+                    <a href="/checklist" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(249,115,22,0.15)] hover:border-[rgba(249,115,22,0.4)] hover:bg-[rgba(249,115,22,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
                         <i class="fas fa-list-check text-[#F97316] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(249,115,22,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#F97316]" style="font-family: var(--font-mono);">OWASP</span>
-                    </button>
-                    <button onclick="exportChat()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(168,85,247,0.15)] hover:border-[rgba(168,85,247,0.4)] hover:bg-[rgba(168,85,247,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-download text-[#A855F7] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(168,85,247,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#A855F7]" style="font-family: var(--font-mono);">EXPORT</span>
-                    </button>
-                    <button onclick="openWordlistModal()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(236,72,153,0.15)] hover:border-[rgba(236,72,153,0.4)] hover:bg-[rgba(236,72,153,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-list text-[#EC4899] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(236,72,153,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#EC4899]" style="font-family: var(--font-mono);">WORDLIST</span>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#F97316]" style="font-family: var(--font-mono);">CHECKLIST</span>
+                    </a>
+                    <a href="/scanner" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,212,255,0.15)] hover:border-[rgba(0,212,255,0.4)] hover:bg-[rgba(0,212,255,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-radar text-[#00D4FF] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(0,212,255,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#00D4FF]" style="font-family: var(--font-mono);">SCANNER</span>
+                    </a>
+                    <a href="/reports" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(168,85,247,0.15)] hover:border-[rgba(168,85,247,0.4)] hover:bg-[rgba(168,85,247,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-file-alt text-[#A855F7] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(168,85,247,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#A855F7]" style="font-family: var(--font-mono);">REPORTS</span>
+                    </a>
+                    <a href="/terminal" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.4)] hover:bg-[rgba(0,255,136,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-terminal text-[#00FF88] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(0,255,136,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#00FF88]" style="font-family: var(--font-mono);">TERMINAL</span>
+                    </a>
+                    <button onclick="exportChat()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(236,72,153,0.15)] hover:border-[rgba(236,72,153,0.4)] hover:bg-[rgba(236,72,153,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-download text-[#EC4899] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(236,72,153,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#EC4899]" style="font-family: var(--font-mono);">EXPORT</span>
                     </button>
                 </div>
             </div>
