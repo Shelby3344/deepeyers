@@ -42,6 +42,11 @@ Route::middleware([MinifyHtml::class])->group(function () {
         return view('reports');
     });
 
+    // Terminal Interativo
+    Route::get('/terminal', function () {
+        return view('terminal');
+    });
+
     Route::get('/profile', function () {
         return view('profile');
     })->name('profile');
