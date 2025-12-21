@@ -357,7 +357,7 @@ com bypass de AMSI e ofuscação básica."</div>
                     <div class="tool-card">
                         <div class="icon green"><i class="fas fa-terminal"></i></div>
                         <h4>Terminal</h4>
-                        <p>Terminal interativo com comandos simulados (nmap, whois, dig, etc.).</p>
+                        <p>Terminal interativo com comandos  (nmap, whois, dig, etc.).</p>
                         <a href="#terminal" class="link">Ver documentação <i class="fas fa-arrow-right"></i></a>
                     </div>
                     <div class="tool-card">

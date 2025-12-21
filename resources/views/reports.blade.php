@@ -139,7 +139,7 @@
 
     <main class="main">
         <div class="page-header">
-            <h1 class="page-title">📄 Gerador de Relatórios</h1>
+            <h1 class="page-title">Gerador de Relatórios</h1>
             <p class="page-subtitle">Crie relatórios profissionais de pentest em PDF ou Markdown</p>
         </div>
 
@@ -209,8 +209,8 @@
                     Preview do Relatório
                 </div>
                 <div class="preview-actions">
-                    <button class="preview-btn" onclick="exportMarkdown()">📝 Exportar MD</button>
-                    <button class="preview-btn" onclick="exportHTML()">🌐 Exportar HTML</button>
+                    <button class="preview-btn" onclick="exportMarkdown()">Exportar MD</button>
+                    <button class="preview-btn" onclick="exportHTML()">Exportar HTML</button>
                     <button class="preview-btn primary" onclick="printReport()">🖨️ Imprimir/PDF</button>
                 </div>
             </div>
@@ -267,7 +267,7 @@
                                 <option value="medium" ${f.severity === 'medium' ? 'selected' : ''}>Médio</option>
                                 <option value="low" ${f.severity === 'low' ? 'selected' : ''}>Baixo</option>
                             </select>
-                            <button class="finding-remove" onclick="removeFinding(${f.id})">🗑️ Remover</button>
+                            <button class="finding-remove" onclick="removeFinding(${f.id})">Remover</button>
                         </div>
                     </div>
                 </div>

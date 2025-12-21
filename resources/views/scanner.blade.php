@@ -152,7 +152,7 @@
 
     <main class="main">
         <div class="page-header">
-            <h1 class="page-title">🔍 Scanner de Vulnerabilidades</h1>
+            <h1 class="page-title">Scanner de Vulnerabilidades</h1>
             <p class="page-subtitle">Análise rápida de segurança em URLs. Verifica headers, SSL, portas abertas e vulnerabilidades comuns.</p>
         </div>
 
@@ -188,7 +188,7 @@
 
             <button class="scan-btn" id="scanBtn" onclick="startScan()">
                 <span class="spinner"></span>
-                <span class="btn-text">🚀 Iniciar Scan</span>
+                <span class="btn-text">Iniciar Scan</span>
             </button>
         </div>
 
