@@ -22,6 +22,16 @@ Route::middleware([MinifyHtml::class])->group(function () {
         return view('docs');
     });
 
+    // Biblioteca de Exploits
+    Route::get('/exploits', function () {
+        return view('exploits');
+    });
+
+    // Checklist de Pentest
+    Route::get('/checklist', function () {
+        return view('checklist');
+    });
+
     Route::get('/profile', function () {
         return view('profile');
     })->name('profile');
