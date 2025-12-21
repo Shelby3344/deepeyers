@@ -32,6 +32,16 @@ Route::middleware([MinifyHtml::class])->group(function () {
         return view('checklist');
     });
 
+    // Scanner de Vulnerabilidades
+    Route::get('/scanner', function () {
+        return view('scanner');
+    });
+
+    // Gerador de Relatórios
+    Route::get('/reports', function () {
+        return view('reports');
+    });
+
     Route::get('/profile', function () {
         return view('profile');
     })->name('profile');
