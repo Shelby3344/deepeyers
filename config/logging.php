@@ -77,6 +77,13 @@ return [
             'days' => 90,
         ],
 
+        'terminal' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/terminal.log'),
+            'level' => 'info',
+            'days' => 30,
+        ],
+
     ],
 
 ];

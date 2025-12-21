@@ -6,9 +6,9 @@
     <title>Terminal - DeepEyes</title>
     <link rel="icon" type="image/png" href="/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>html:not(.auth-checked) body { visibility: hidden; }</style>
     <script>
-        // Verificação de autenticação - redireciona se não estiver logado
         if (!localStorage.getItem('token')) {
             window.location.replace('/?login=required');
         } else {
@@ -46,19 +46,19 @@
 
         .main { flex: 1; display: flex; flex-direction: column; padding: 24px; max-width: 1400px; margin: 0 auto; width: 100%; }
 
-        /* Terminal Header */
-        .terminal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .terminal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
         .terminal-title { font-size: 1.2rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
-        .terminal-title svg { width: 24px; height: 24px; color: var(--accent-green); }
-        .terminal-actions { display: flex; gap: 8px; }
-        .terminal-btn { padding: 8px 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-primary); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; }
-        .terminal-btn:hover { border-color: var(--accent-cyan); }
-        .terminal-btn svg { width: 16px; height: 16px; }
+        .terminal-title i { color: var(--accent-green); }
+        .terminal-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .terminal-btn { padding: 8px 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; color: var(--text-primary); font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s; }
+        .terminal-btn:hover { border-color: var(--accent-cyan); background: var(--bg-secondary); }
+        .terminal-btn i { font-size: 14px; }
 
-        /* Terminal Container */
-        .terminal-container { flex: 1; display: flex; gap: 16px; min-height: 0; }
+        .rate-limit-info { font-size: 0.75rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+        .rate-limit-info i { color: var(--accent-orange); }
 
-        /* Terminal Window */
+        .terminal-container { flex: 1; display: flex; gap: 16px; min-height: 500px; }
+
         .terminal-window { flex: 1; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
         .terminal-bar { padding: 12px 16px; background: var(--bg-card); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 8px; }
         .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
@@ -66,8 +66,11 @@
         .terminal-dot.yellow { background: #eab308; }
         .terminal-dot.green { background: #22c55e; }
         .terminal-path { margin-left: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--text-secondary); }
+        .terminal-status { margin-left: auto; font-size: 0.75rem; color: var(--accent-green); display: flex; align-items: center; gap: 6px; }
+        .terminal-status.busy { color: var(--accent-orange); }
+        .terminal-status i { font-size: 10px; }
 
-        .terminal-output { flex: 1; padding: 16px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; line-height: 1.6; }
+        .terminal-output { flex: 1; padding: 16px; overflow-y: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.6; }
         .terminal-line { margin-bottom: 4px; white-space: pre-wrap; word-break: break-all; }
         .terminal-line.command { color: var(--accent-cyan); }
         .terminal-line.command::before { content: '$ '; color: var(--accent-green); }
@@ -81,21 +84,26 @@
         .terminal-prompt { color: var(--accent-green); font-family: 'JetBrains Mono', monospace; margin-right: 8px; }
         .terminal-input { flex: 1; background: transparent; border: none; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; outline: none; }
         .terminal-input::placeholder { color: var(--text-secondary); }
+        .terminal-input:disabled { opacity: 0.5; }
 
-        /* Sidebar */
-        .terminal-sidebar { width: 280px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
-        .sidebar-header { padding: 16px; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.9rem; }
+        .terminal-sidebar { width: 300px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; display: flex; flex-direction: column; overflow: hidden; }
+        .sidebar-header { padding: 16px; border-bottom: 1px solid var(--border-color); font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+        .sidebar-header i { color: var(--accent-cyan); }
         .sidebar-content { flex: 1; overflow-y: auto; }
         .sidebar-section { padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
-        .sidebar-section-title { font-size: 0.75rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-        .command-item { padding: 8px 12px; background: var(--bg-secondary); border-radius: 6px; margin-bottom: 6px; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); transition: all 0.2s; }
+        .sidebar-section-title { font-size: 0.7rem; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .command-item { padding: 8px 12px; background: var(--bg-secondary); border-radius: 6px; margin-bottom: 6px; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-secondary); transition: all 0.2s; display: flex; align-items: center; justify-content: space-between; }
         .command-item:hover { background: var(--bg-primary); color: var(--accent-cyan); }
-        .command-item:last-child { margin-bottom: 0; }
+        .command-item.not-installed { opacity: 0.5; }
+        .command-item .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green); }
+        .command-item.not-installed .status-dot { background: var(--accent-red); }
 
-        /* History */
-        .history-item { padding: 8px 12px; border-radius: 6px; margin-bottom: 4px; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+        .history-item { padding: 8px 12px; border-radius: 6px; margin-bottom: 4px; cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; transition: all 0.2s; }
         .history-item:hover { background: var(--bg-secondary); color: var(--text-primary); }
-        .history-time { font-size: 0.7rem; color: var(--text-secondary); }
+        .history-item i { font-size: 10px; color: var(--accent-purple); }
+
+        .loading-spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--accent-cyan); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         @media (max-width: 1024px) {
             .terminal-sidebar { display: none; }
@@ -124,21 +132,22 @@
     <main class="main">
         <div class="terminal-header">
             <div class="terminal-title">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-                Terminal Interativo
+                <i class="fas fa-terminal"></i>
+                Terminal de Pentest
+            </div>
+            <div class="rate-limit-info">
+                <i class="fas fa-gauge-high"></i>
+                <span id="rateLimitInfo">10 cmd/min • 60 cmd/hora</span>
             </div>
             <div class="terminal-actions">
                 <button class="terminal-btn" onclick="clearTerminal()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
-                    Limpar
+                    <i class="fas fa-trash-can"></i> Limpar
                 </button>
                 <button class="terminal-btn" onclick="exportHistory()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                    Exportar
+                    <i class="fas fa-download"></i> Exportar
                 </button>
                 <button class="terminal-btn" onclick="askAI()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
-                    Perguntar à IA
+                    <i class="fas fa-robot"></i> Analisar com IA
                 </button>
             </div>
         </div>
@@ -149,13 +158,16 @@
                     <span class="terminal-dot red"></span>
                     <span class="terminal-dot yellow"></span>
                     <span class="terminal-dot green"></span>
-                    <span class="terminal-path">deepeyes@lab:~</span>
+                    <span class="terminal-path">deepeyes@server:~</span>
+                    <span class="terminal-status" id="terminalStatus">
+                        <i class="fas fa-circle"></i> Pronto
+                    </span>
                 </div>
                 <div class="terminal-output" id="terminalOutput">
-                    <div class="terminal-line info">╔══════════════════════════════════════════════════════════════╗</div>
-                    <div class="terminal-line info">║  DeepEyes Terminal v1.0 - Ambiente de Pentest Simulado       ║</div>
-                    <div class="terminal-line info">║  Digite 'help' para ver comandos disponíveis                 ║</div>
-                    <div class="terminal-line info">╚══════════════════════════════════════════════════════════════╝</div>
+                    <div class="terminal-line info">╔═══════════════════════════════════════════════════════════════════╗</div>
+                    <div class="terminal-line info">║  DeepEyes Terminal v2.0 - Comandos executados no servidor         ║</div>
+                    <div class="terminal-line info">║  Digite 'help' para ver comandos • 'commands' para ver status     ║</div>
+                    <div class="terminal-line info">╚═══════════════════════════════════════════════════════════════════╝</div>
                     <div class="terminal-line output"></div>
                 </div>
                 <div class="terminal-input-line">
@@ -165,30 +177,55 @@
             </div>
 
             <div class="terminal-sidebar">
-                <div class="sidebar-header">⚡ Comandos Rápidos</div>
+                <div class="sidebar-header"><i class="fas fa-bolt"></i> Comandos Rápidos</div>
                 <div class="sidebar-content">
                     <div class="sidebar-section">
-                        <div class="sidebar-section-title">Reconhecimento</div>
-                        <div class="command-item" onclick="runCommand('nmap -sV target.com')">nmap -sV target.com</div>
-                        <div class="command-item" onclick="runCommand('whois target.com')">whois target.com</div>
-                        <div class="command-item" onclick="runCommand('dig target.com')">dig target.com</div>
-                        <div class="command-item" onclick="runCommand('subfinder -d target.com')">subfinder -d target.com</div>
+                        <div class="sidebar-section-title"><i class="fas fa-search"></i> Reconhecimento</div>
+                        <div class="command-item" onclick="runCommand('whois example.com')">
+                            <span>whois example.com</span>
+                            <span class="status-dot"></span>
+                        </div>
+                        <div class="command-item" onclick="runCommand('dig example.com')">
+                            <span>dig example.com</span>
+                            <span class="status-dot"></span>
+                        </div>
+                        <div class="command-item" onclick="runCommand('nslookup example.com')">
+                            <span>nslookup example.com</span>
+                            <span class="status-dot"></span>
+                        </div>
+                        <div class="command-item" onclick="runCommand('host example.com')">
+                            <span>host example.com</span>
+                            <span class="status-dot"></span>
+                        </div>
                     </div>
                     <div class="sidebar-section">
-                        <div class="sidebar-section-title">Web</div>
-                        <div class="command-item" onclick="runCommand('gobuster dir -u http://target.com -w common.txt')">gobuster dir</div>
-                        <div class="command-item" onclick="runCommand('nikto -h http://target.com')">nikto -h target</div>
-                        <div class="command-item" onclick="runCommand('sqlmap -u \"http://target.com?id=1\"')">sqlmap</div>
-                        <div class="command-item" onclick="runCommand('wpscan --url http://target.com')">wpscan</div>
+                        <div class="sidebar-section-title"><i class="fas fa-network-wired"></i> Rede</div>
+                        <div class="command-item" onclick="runCommand('ping -c 4 example.com')">
+                            <span>ping -c 4 example.com</span>
+                            <span class="status-dot"></span>
+                        </div>
+                        <div class="command-item" onclick="runCommand('traceroute example.com')">
+                            <span>traceroute example.com</span>
+                            <span class="status-dot"></span>
+                        </div>
+                        <div class="command-item" onclick="runCommand('curl -I https://example.com')">
+                            <span>curl -I https://example.com</span>
+                            <span class="status-dot"></span>
+                        </div>
                     </div>
                     <div class="sidebar-section">
-                        <div class="sidebar-section-title">Exploitation</div>
-                        <div class="command-item" onclick="runCommand('msfconsole')">msfconsole</div>
-                        <div class="command-item" onclick="runCommand('nc -lvnp 4444')">nc listener</div>
-                        <div class="command-item" onclick="runCommand('python3 -c \"import pty;pty.spawn(\\\"/bin/bash\\\")\"')">pty spawn</div>
+                        <div class="sidebar-section-title"><i class="fas fa-radar"></i> Scanner</div>
+                        <div class="command-item" onclick="runCommand('nmap -sV example.com')">
+                            <span>nmap -sV example.com</span>
+                            <span class="status-dot"></span>
+                        </div>
+                        <div class="command-item" onclick="runCommand('subfinder -d example.com')">
+                            <span>subfinder -d example.com</span>
+                            <span class="status-dot"></span>
+                        </div>
                     </div>
                     <div class="sidebar-section">
-                        <div class="sidebar-section-title">Histórico</div>
+                        <div class="sidebar-section-title"><i class="fas fa-clock-rotate-left"></i> Histórico</div>
                         <div id="historyList"></div>
                     </div>
                 </div>
@@ -200,35 +237,63 @@
         const token = localStorage.getItem('token');
         let commandHistory = JSON.parse(localStorage.getItem('terminalHistory') || '[]');
         let historyIndex = -1;
+        let isExecuting = false;
+        let availableCommands = {};
 
-        // Comandos locais (não precisam de API)
+        // Carrega lista de comandos disponíveis
+        async function loadCommands() {
+            try {
+                const response = await fetch('/api/terminal/commands', {
+                    headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    availableCommands = data.commands;
+                    if (data.rate_limit) {
+                        document.getElementById('rateLimitInfo').textContent = 
+                            `${data.rate_limit.per_minute} cmd/min • ${data.rate_limit.per_hour} cmd/hora`;
+                    }
+                }
+            } catch (e) {
+                console.error('Erro ao carregar comandos:', e);
+            }
+        }
+
+        // Comandos locais
         const localCommands = {
             help: () => ({
                 type: 'info',
                 output: `Comandos disponíveis (executados no servidor):
 
-  RECONHECIMENTO:
-    whois <domain>      - Consulta WHOIS
-    dig <domain>        - Consulta DNS
-    nslookup <domain>   - Consulta DNS
-    host <domain>       - Consulta DNS
-    ping <host>         - Teste de conectividade
-    traceroute <host>   - Rastreamento de rota
+  RECONHECIMENTO DNS:
+    whois <domain>       - Consulta informações WHOIS
+    dig <domain>         - Consulta DNS detalhada
+    nslookup <domain>    - Consulta DNS simples
+    host <domain>        - Resolução de DNS
 
-  WEB/HTTP:
-    curl <url>          - Requisições HTTP
-    nmap <target>       - Scanner de portas
-    nikto -h <url>      - Scanner de vulnerabilidades
-    gobuster <args>     - Fuzzing de diretórios
-    wpscan <args>       - Scanner WordPress
+  REDE:
+    ping <host>          - Teste de conectividade (4 pacotes)
+    traceroute <host>    - Rastreamento de rota
 
-  UTILITÁRIOS:
-    clear               - Limpa o terminal
-    history             - Mostra histórico
-    export              - Exporta sessão
-    ask <pergunta>      - Consulta a IA
+  HTTP/WEB:
+    curl -I <url>        - Headers HTTP
+    curl <url>           - Conteúdo da página
 
-⚠️  Comandos são executados no servidor com whitelist de segurança.`
+  SCANNER (se instalado):
+    nmap <target>        - Scanner de portas
+    nikto -h <url>       - Scanner de vulnerabilidades
+    gobuster <args>      - Fuzzing de diretórios
+    wpscan <args>        - Scanner WordPress
+    subfinder -d <dom>   - Descoberta de subdomínios
+
+  TERMINAL:
+    clear                - Limpa o terminal
+    history              - Mostra histórico
+    commands             - Lista comandos e status
+    help                 - Mostra esta ajuda
+
+⚠️  Rate limit: 10 comandos/minuto, 60 comandos/hora
+🔒  Todos os comandos são logados para auditoria`
             }),
             clear: () => {
                 document.getElementById('terminalOutput').innerHTML = '';
@@ -238,13 +303,14 @@
                 type: 'output',
                 output: commandHistory.slice(-20).map((c, i) => `  ${i + 1}  ${c.cmd}`).join('\n') || 'Histórico vazio'
             }),
-            ask: (args) => {
-                if (!args.trim()) {
-                    return { type: 'error', output: 'Uso: ask [sua pergunta]' };
+            commands: () => {
+                let output = 'Status dos comandos:\n\n';
+                for (const [cmd, info] of Object.entries(availableCommands)) {
+                    const status = info.installed ? '✓' : '✗';
+                    const color = info.installed ? '' : ' (não instalado)';
+                    output += `  ${status} ${cmd.padEnd(12)} - ${info.description}${color}\n`;
                 }
-                localStorage.setItem('exploitPrompt', args);
-                window.location.href = '/chat';
-                return null;
+                return { type: 'info', output };
             },
             export: () => {
                 exportHistory();
@@ -265,23 +331,41 @@
                     body: JSON.stringify({ command })
                 });
 
-                const data = await response.json();
-                
                 if (response.status === 401) {
                     localStorage.removeItem('token');
                     window.location.replace('/?login=required');
                     return { type: 'error', output: 'Sessão expirada. Redirecionando...' };
                 }
 
+                if (response.status === 429) {
+                    const data = await response.json();
+                    return { type: 'warning', output: data.output || 'Rate limit excedido. Aguarde.' };
+                }
+
+                const data = await response.json();
                 return {
                     type: data.type || 'output',
                     output: data.output || 'Sem resposta'
                 };
             } catch (error) {
-                return {
-                    type: 'error',
-                    output: `Erro de conexão: ${error.message}`
-                };
+                return { type: 'error', output: `Erro de conexão: ${error.message}` };
+            }
+        }
+
+        // Atualiza status do terminal
+        function setTerminalStatus(busy, text) {
+            const status = document.getElementById('terminalStatus');
+            const input = document.getElementById('terminalInput');
+            isExecuting = busy;
+            input.disabled = busy;
+            
+            if (busy) {
+                status.className = 'terminal-status busy';
+                status.innerHTML = `<span class="loading-spinner"></span> ${text || 'Executando...'}`;
+            } else {
+                status.className = 'terminal-status';
+                status.innerHTML = '<i class="fas fa-circle"></i> Pronto';
+                input.focus();
             }
         }
 
@@ -290,7 +374,7 @@
             const output = document.getElementById('terminalOutput');
             const trimmed = input.trim();
             
-            if (!trimmed) return;
+            if (!trimmed || isExecuting) return;
 
             // Adiciona comando ao output
             const cmdLine = document.createElement('div');
@@ -307,28 +391,16 @@
             // Parse do comando
             const parts = trimmed.split(' ');
             const cmd = parts[0].toLowerCase();
-            const args = parts.slice(1).join(' ');
-
-            // Mostra loading
-            const loadingLine = document.createElement('div');
-            loadingLine.className = 'terminal-line output';
-            loadingLine.textContent = '⏳ Executando...';
-            loadingLine.id = 'loading-line';
-            output.appendChild(loadingLine);
-            output.scrollTop = output.scrollHeight;
 
             // Executa
             let result;
             if (localCommands[cmd]) {
-                result = await localCommands[cmd](args);
+                result = localCommands[cmd]();
             } else {
-                // Executa via API
+                setTerminalStatus(true, 'Executando...');
                 result = await executeRemoteCommand(trimmed);
+                setTerminalStatus(false);
             }
-
-            // Remove loading
-            const loading = document.getElementById('loading-line');
-            if (loading) loading.remove();
 
             // Mostra output
             if (result) {
@@ -339,13 +411,19 @@
                 output.appendChild(outLine);
             }
 
-            // Scroll para baixo
+            // Linha vazia após output
+            const spacer = document.createElement('div');
+            spacer.className = 'terminal-line output';
+            spacer.innerHTML = '&nbsp;';
+            output.appendChild(spacer);
+
             output.scrollTop = output.scrollHeight;
         }
 
         function runCommand(cmd) {
-            document.getElementById('terminalInput').value = cmd;
-            document.getElementById('terminalInput').focus();
+            const input = document.getElementById('terminalInput');
+            input.value = cmd;
+            input.focus();
         }
 
         function clearTerminal() {
@@ -355,36 +433,33 @@
         function exportHistory() {
             let text = `DeepEyes Terminal Session\n`;
             text += `Date: ${new Date().toISOString()}\n`;
-            text += `${'='.repeat(50)}\n\n`;
+            text += `${'='.repeat(60)}\n\n`;
             
-            const lines = document.querySelectorAll('.terminal-line');
-            lines.forEach(line => {
+            document.querySelectorAll('.terminal-line').forEach(line => {
                 if (line.classList.contains('command')) {
                     text += `$ ${line.textContent}\n`;
-                } else {
+                } else if (line.textContent.trim()) {
                     text += `${line.textContent}\n`;
                 }
             });
 
             const blob = new Blob([text], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = `terminal-session-${new Date().toISOString().split('T')[0]}.txt`;
+            a.href = URL.createObjectURL(blob);
+            a.download = `terminal-${new Date().toISOString().split('T')[0]}.txt`;
             a.click();
         }
 
         function askAI() {
-            const lines = document.querySelectorAll('.terminal-line');
-            let context = 'Contexto do terminal:\n\n';
-            lines.forEach(line => {
+            let context = 'Analise os resultados do terminal:\n\n';
+            document.querySelectorAll('.terminal-line').forEach(line => {
                 if (line.classList.contains('command')) {
                     context += `$ ${line.textContent}\n`;
                 } else if (line.textContent.trim()) {
                     context += `${line.textContent}\n`;
                 }
             });
-            context += '\n\nMe ajude a analisar esses resultados e sugerir próximos passos.';
+            context += '\n\nIdentifique vulnerabilidades e sugira próximos passos.';
             
             localStorage.setItem('exploitPrompt', context);
             window.location.href = '/chat';
@@ -395,14 +470,15 @@
             const recent = commandHistory.slice(-5).reverse();
             list.innerHTML = recent.map(h => `
                 <div class="history-item" onclick="runCommand('${h.cmd.replace(/'/g, "\\'")}')">
-                    <span>${h.cmd.length > 25 ? h.cmd.substring(0, 25) + '...' : h.cmd}</span>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>${h.cmd.length > 22 ? h.cmd.substring(0, 22) + '...' : h.cmd}</span>
                 </div>
-            `).join('') || '<div style="padding: 8px 12px; color: var(--text-secondary); font-size: 0.8rem;">Nenhum comando</div>';
+            `).join('') || '<div style="padding: 8px 12px; color: var(--text-secondary); font-size: 0.75rem;">Nenhum comando</div>';
         }
 
         // Event listeners
         document.getElementById('terminalInput').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !isExecuting) {
                 executeCommand(e.target.value);
                 e.target.value = '';
             } else if (e.key === 'ArrowUp') {
@@ -423,7 +499,7 @@
             } else if (e.key === 'Tab') {
                 e.preventDefault();
                 const val = e.target.value.toLowerCase();
-                const allCmds = [...Object.keys(localCommands), 'whois', 'dig', 'nslookup', 'host', 'ping', 'traceroute', 'curl', 'nmap', 'nikto', 'gobuster', 'wpscan', 'subfinder'];
+                const allCmds = [...Object.keys(localCommands), ...Object.keys(availableCommands)];
                 const match = allCmds.find(c => c.startsWith(val));
                 if (match) e.target.value = match + ' ';
             } else if (e.key === 'l' && e.ctrlKey) {
@@ -433,6 +509,7 @@
         });
 
         // Initialize
+        loadCommands();
         updateHistoryList();
     </script>
 </body>
