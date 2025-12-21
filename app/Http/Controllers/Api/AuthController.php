@@ -25,11 +25,15 @@ class AuthController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
+        // Busca o plano Ghost para novos usuários
+        $ghostPlan = \App\Models\Plan::where('slug', 'ghost')->first();
+
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => 'user',
+            'plan_id' => $ghostPlan?->id,
         ]);
 
         // ✅ Token com abilities limitadas

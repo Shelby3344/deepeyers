@@ -1,0 +1,39 @@
+.disclaimer {
+  padding: 60px 20px;
+  background: rgba(10, 10, 15, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.disclaimer-box {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 32px;
+  background: rgba(255, 189, 46, 0.08);
+  border: 1px solid rgba(255, 189, 46, 0.3);
+  border-radius: 16px;
+}
+
+.disclaimer-icon {
+  flex-shrink: 0;
+  color: #ffbd2e;
+}
+
+.disclaimer-text {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.disclaimer-text strong {
+  color: #ffbd2e;
+}
+
+@media (max-width: 768px) {
+  .disclaimer-box {
+    flex-direction: column;
+    text-align: center;
+  }
+}

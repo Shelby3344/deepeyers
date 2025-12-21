@@ -1,129 +1,14 @@
 /**
  * ========================================
- * DEEPEYES MOBILE RESPONSIVE STYLES v2.0
- * Complete mobile-first responsive design
- * ========================================
+ * DEEPEYES MOBILE RESPONSIVE STYLES v2.2
+ * Mobile-only styles - Desktop unaffected
+ * Cyberpunk Pixel Edition
+ * ======================================== 
  */
 
 /* ========================================
-   RESET & BASE MOBILE
+   HIDE MOBILE ELEMENTS ON DESKTOP
    ======================================== */
-html, body {
-    overflow-x: hidden !important;
-    width: 100% !important;
-    -webkit-text-size-adjust: 100%;
-    -webkit-tap-highlight-color: transparent;
-}
-
-* {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-/* Touch-friendly tap targets */
-@media (max-width: 1023px) {
-    button, a, .clickable, input, select, textarea {
-        min-height: 44px;
-    }
-    
-    input, select, textarea {
-        font-size: 16px !important; /* Prevents iOS zoom on focus */
-    }
-}
-
-/* ========================================
-   SIDEBAR MOBILE - CRITICAL FIX
-   ======================================== */
-@media (max-width: 1023px) {
-    #sidebar, .de-sidebar {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        bottom: 0 !important;
-        width: 85vw !important;
-        max-width: 300px !important;
-        z-index: 1000 !important;
-        transform: translateX(-100%) !important;
-        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        background: #0B0F14 !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-    }
-    
-    #sidebar.mobile-open, .de-sidebar.mobile-open {
-        transform: translateX(0) !important;
-    }
-}
-
-    
-    /* Mobile overlay - MUST work */
-    #mobileOverlay {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
-        background: rgba(0, 0, 0, 0.8) !important;
-        backdrop-filter: blur(4px) !important;
-        -webkit-backdrop-filter: blur(4px) !important;
-        z-index: 999 !important;
-        opacity: 0 !important;
-        visibility: hidden !important;
-        transition: all 0.3s ease !important;
-        pointer-events: none !important;
-    }
-    
-    #mobileOverlay.active {
-        opacity: 1 !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-    }
-    
-    /* Mobile menu button - ALWAYS visible */
-    #mobileMenuBtn {
-        display: flex !important;
-        position: fixed !important;
-        top: 12px !important;
-        left: 12px !important;
-        z-index: 100 !important;
-        width: 44px !important;
-        height: 44px !important;
-        align-items: center !important;
-        justify-content: center !important;
-        background: rgba(11, 15, 20, 0.9) !important;
-        border: 1px solid rgba(0, 255, 136, 0.2) !important;
-        border-radius: 10px !important;
-        color: #00FF88 !important;
-        cursor: pointer !important;
-    }
-    
-    #closeSidebarBtn {
-        display: flex !important;
-        position: absolute !important;
-        top: 12px !important;
-        right: 12px !important;
-        width: 36px !important;
-        height: 36px !important;
-        align-items: center !important;
-        justify-content: center !important;
-        z-index: 10 !important;
-    }
-    
-    /* Main content - full width */
-    #mainContent, main, .main-content {
-        width: 100% !important;
-        margin-left: 0 !important;
-        min-width: 0 !important;
-    }
-    
-    /* App container */
-    #app {
-        flex-direction: column !important;
-    }
-}
-
-
-/* Hide mobile elements on desktop */
 @media (min-width: 1024px) {
     #mobileMenuBtn {
         display: none !important;
@@ -139,73 +24,145 @@ html, body {
 }
 
 /* ========================================
-   CHAT INTERFACE MOBILE
+   MOBILE STYLES (max-width: 1023px)
    ======================================== */
 @media (max-width: 1023px) {
-    /* Session header - space for menu button */
-    #sessionHeader {
-        padding-left: 64px !important;
-        padding-right: 12px !important;
-        padding-top: 10px !important;
-        padding-bottom: 10px !important;
+    /* Prevent horizontal scroll */
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
     }
     
-    #sessionHeader h2 {
-        font-size: 14px !important;
+    /* Touch-friendly tap targets */
+    button, a, .clickable {
+        min-height: 44px;
     }
     
-    /* Chat container */
+    /* Prevent iOS zoom on input focus */
+    input, select, textarea {
+        font-size: 16px !important;
+    }
+}
+
+
+/* ========================================
+   SIDEBAR MOBILE - CYBER STYLE
+   ======================================== */
+@media (max-width: 1023px) {
+    #sidebar, .de-sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        width: 85vw !important;
+        max-width: 300px !important;
+        z-index: 1000 !important;
+        transform: translateX(-100%) !important;
+        transition: transform 0.3s ease !important;
+        background: linear-gradient(180deg, #0a0a0f 0%, #0d1117 100%) !important;
+        overflow-y: auto !important;
+        border-right: 1px solid rgba(0, 255, 136, 0.2) !important;
+    }
+    
+    #sidebar.mobile-open, .de-sidebar.mobile-open {
+        transform: translateX(0) !important;
+        box-shadow: 0 0 40px rgba(0, 255, 136, 0.1) !important;
+    }
+    
+    #mobileOverlay {
+        position: fixed !important;
+        inset: 0 !important;
+        background: rgba(0, 0, 0, 0.9) !important;
+        backdrop-filter: blur(4px) !important;
+        z-index: 999 !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transition: all 0.3s ease !important;
+        pointer-events: none !important;
+    }
+    
+    #mobileOverlay.active {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+    
+    #mobileMenuBtn {
+        display: flex !important;
+        position: fixed !important;
+        top: 12px !important;
+        left: 12px !important;
+        z-index: 100 !important;
+        width: 44px !important;
+        height: 44px !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: rgba(10, 10, 15, 0.95) !important;
+        border: 1px solid rgba(0, 255, 136, 0.3) !important;
+        color: #00FF88 !important;
+        clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)) !important;
+        border-radius: 0 !important;
+    }
+    
+    #closeSidebarBtn {
+        display: flex !important;
+    }
+    
+    #mainContent, main {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
+}
+
+
+/* ========================================
+   CHAT MESSAGES MOBILE
+   ======================================== */
+@media (max-width: 1023px) {
     #chatContainer {
         padding: 12px !important;
-        padding-top: 8px !important;
     }
     
-    /* Messages - full width */
+    #messagesContainer {
+        gap: 12px !important;
+    }
+    
     #messagesContainer > div {
-        max-width: 100% !important;
+        gap: 8px !important;
     }
     
-    .message-content {
-        max-width: 100% !important;
-        word-wrap: break-word !important;
-        overflow-wrap: break-word !important;
+    /* Message bubbles */
+    #messagesContainer .max-w-3xl {
+        max-width: calc(100% - 44px) !important;
+        padding: 10px 12px !important;
     }
     
-    /* User/AI bubbles */
-    .user-bubble, 
-    [class*="from-[rgba(0,255,136"] {
-        padding: 12px 14px !important;
-        font-size: 14px !important;
-        max-width: calc(100% - 50px) !important;
-        border-radius: 16px !important;
-    }
-    
-    .ai-bubble,
-    .de-card {
-        padding: 12px 14px !important;
-        font-size: 14px !important;
-        max-width: calc(100% - 50px) !important;
-    }
-    
-    /* Avatar smaller on mobile */
+    /* Avatars */
     #messagesContainer .w-10 {
         width: 32px !important;
         height: 32px !important;
         min-width: 32px !important;
     }
     
-    /* Code blocks */
+    #messagesContainer .w-10 img {
+        width: 24px !important;
+        height: 24px !important;
+    }
+    
+    /* Message content */
+    .message-content {
+        font-size: 14px !important;
+        word-wrap: break-word !important;
+    }
+    
     .message-content pre {
         font-size: 11px !important;
         padding: 10px !important;
         overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        max-width: 100% !important;
     }
     
     .message-content code {
         font-size: 12px !important;
-        word-break: break-all !important;
     }
     
     .code-block-header {
@@ -215,73 +172,43 @@ html, body {
     .code-block-lang {
         font-size: 9px !important;
     }
-    
-    .code-copy-btn {
-        font-size: 10px !important;
-        padding: 4px 6px !important;
-    }
 }
 
 
 /* ========================================
-   CHAT INPUT MOBILE - CRITICAL
+   CHAT INPUT MOBILE - CYBER STYLE
    ======================================== */
 @media (max-width: 1023px) {
     #chatInputArea {
-        padding: 8px 12px !important;
-        padding-bottom: 12px !important;
-        background: rgba(11, 15, 20, 0.98) !important;
-        border-top: 1px solid rgba(0, 255, 136, 0.1) !important;
+        padding: 8px 12px 12px !important;
     }
     
     #chatInputArea .max-w-4xl {
         max-width: 100% !important;
-        padding: 0 !important;
     }
     
     #inputContainer {
         padding: 8px 10px !important;
-        border-radius: 14px !important;
-        gap: 8px !important;
+        clip-path: polygon(0 6px, 6px 6px, 6px 0, calc(100% - 6px) 0, calc(100% - 6px) 6px, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 6px calc(100% - 6px), 0 calc(100% - 6px)) !important;
+        border-radius: 0 !important;
     }
     
     #messageInput {
         font-size: 16px !important;
         min-height: 40px !important;
-        max-height: 120px !important;
-        padding: 8px 0 !important;
     }
     
-    /* Send/Cancel buttons */
-    #sendBtn, #cancelBtn {
+    #sendBtn, #cancelBtn, #attachBtn {
         width: 40px !important;
         height: 40px !important;
         min-width: 40px !important;
-        border-radius: 10px !important;
-        flex-shrink: 0 !important;
-    }
-    
-    /* Attachment button */
-    #attachBtn, .attach-btn {
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
+        clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)) !important;
+        border-radius: 0 !important;
     }
     
     /* Hide keyboard hints */
-    #inputContainer .border-t,
-    #inputContainer > div:last-child {
+    #inputContainer .border-t {
         display: none !important;
-    }
-    
-    /* Attachment preview */
-    #attachmentPreview {
-        max-width: 100% !important;
-        margin-bottom: 8px !important;
-    }
-    
-    #attachmentPreview > div {
-        padding: 8px !important;
     }
 }
 
@@ -292,106 +219,41 @@ html, body {
     #homeWelcome {
         padding: 16px !important;
         padding-top: 64px !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
     }
     
     #homeWelcome h3 {
         font-size: 1.25rem !important;
-        line-height: 1.3 !important;
-        margin-bottom: 8px !important;
     }
     
-    #homeWelcome .mb-10 {
-        margin-bottom: 1rem !important;
-    }
-    
-    /* Logo smaller */
-    #homeWelcome > .relative img,
-    #homeWelcome img[alt="DeepEyes"] {
+    #homeWelcome > .relative img {
         height: 64px !important;
     }
     
-    /* Feature cards - single column */
-    #homeWelcome .grid-cols-2,
-    #homeWelcome .grid.grid-cols-2 {
+    #homeWelcome .grid-cols-2 {
         grid-template-columns: 1fr !important;
         gap: 10px !important;
     }
     
-    /* Blob cards */
     .blob-card {
         padding: 12px !important;
     }
     
-    .blob-card h4 {
-        font-size: 0.875rem !important;
-    }
-    
-    .blob-card p {
-        font-size: 0.7rem !important;
-    }
-    
-    .blob-card .card-content {
-        padding: 12px !important;
-    }
-    
-    /* Profile card */
     #currentProfileCard {
         max-width: 100% !important;
-        padding: 12px !important;
-        margin: 0 !important;
     }
     
-    /* Profile features - 2 columns */
     #welcomeProfileFeatures {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 4px !important;
     }
-    
-    #welcomeProfileFeatures > div {
-        padding: 6px 8px !important;
-        font-size: 10px !important;
-    }
-    
-    #welcomeProfileFeatures i {
-        font-size: 10px !important;
-    }
 }
 
-
-/* Small phones */
-@media (max-width: 380px) {
-    #homeWelcome h3 {
-        font-size: 1.1rem !important;
-    }
-    
-    #homeWelcome > .relative img {
-        height: 56px !important;
-    }
-    
-    .blob-card h4 {
-        font-size: 0.8rem !important;
-    }
-    
-    #welcomeProfileFeatures {
-        grid-template-columns: 1fr 1fr !important;
-        gap: 3px !important;
-    }
-    
-    #welcomeProfileFeatures > div {
-        padding: 5px 6px !important;
-        font-size: 9px !important;
-    }
-}
 
 /* ========================================
-   ATTACK MODE SELECTOR MOBILE
+   ATTACK MODE & TOOLS MOBILE
    ======================================== */
 @media (max-width: 1023px) {
-    /* Stack attack modes vertically */
-    .grid-cols-3,
-    #sidebar .grid-cols-3 {
+    #sidebar .grid-cols-3:first-of-type {
         grid-template-columns: 1fr !important;
         gap: 6px !important;
     }
@@ -402,297 +264,94 @@ html, body {
         padding: 10px 14px !important;
         gap: 10px !important;
     }
-    
-    .attack-mode i {
-        font-size: 14px !important;
-        width: 20px !important;
-    }
-    
-    .attack-mode span {
-        font-size: 11px !important;
-    }
 }
 
 /* ========================================
-   TOOLS MENU MOBILE
+   MODALS MOBILE - CYBER STYLE
    ======================================== */
 @media (max-width: 1023px) {
-    /* Tools grid - keep 3 columns but smaller */
-    #sidebar .grid.grid-cols-3 {
-        grid-template-columns: repeat(3, 1fr) !important;
-        gap: 6px !important;
-    }
-    
-    /* Tool buttons */
-    #sidebar button[onclick*="Modal"] {
-        padding: 8px 4px !important;
-    }
-    
-    #sidebar button[onclick*="Modal"] i {
-        font-size: 14px !important;
-    }
-    
-    #sidebar button[onclick*="Modal"] span {
-        font-size: 8px !important;
-    }
-}
-
-/* ========================================
-   MODALS MOBILE - ALL MODALS
-   ======================================== */
-@media (max-width: 1023px) {
-    /* Base modal styles */
-    #authModal,
-    #deleteModal,
-    #domainModal,
-    #templatesModal,
-    #payloadModal,
-    #checklistModal,
-    #exportModal,
-    #limitReachedModal {
-        padding: 12px !important;
-    }
-    
-    /* Modal content boxes */
-    #authModal > div:not(.absolute),
-    #deleteModal > div:not(.absolute),
-    #domainModal > div:not(.absolute),
-    #templatesModal > div:not(.absolute),
-    #payloadModal > div:not(.absolute),
-    #checklistModal > div:not(.absolute),
-    #exportModal > div:not(.absolute) {
+    #authModal .max-w-md,
+    #deleteModal .max-w-sm,
+    #domainModal .max-w-md,
+    #templatesModal .max-w-2xl,
+    #payloadModal .max-w-lg,
+    #checklistModal .max-w-2xl,
+    #exportModal .max-w-md,
+    #nmapModal .max-w-lg,
+    #wordlistModal .max-w-2xl {
         max-width: calc(100vw - 24px) !important;
         max-height: calc(100vh - 24px) !important;
-        margin: 0 auto !important;
+        margin: 12px !important;
         overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-    }
-    
-    /* Auth modal specific */
-    #authModal .max-w-md {
-        max-width: calc(100vw - 24px) !important;
-        padding: 20px !important;
+        border-radius: 0 !important;
     }
     
     #authModal h1 {
-        font-size: 1.5rem !important;
+        font-size: 1.25rem !important;
     }
     
     #authModal img {
         height: 56px !important;
     }
     
-    #authModal .p-8 {
-        padding: 16px !important;
-    }
-    
-    /* Templates modal */
-    #templatesModal .max-w-2xl {
-        max-width: calc(100vw - 24px) !important;
-    }
-    
-    .template-category {
-        padding: 10px !important;
-    }
-    
-    .template-btn {
-        padding: 10px 12px !important;
-        font-size: 12px !important;
-    }
-    
-    /* Checklist modal */
-    #checklistModal .max-w-2xl {
-        max-width: calc(100vw - 24px) !important;
-    }
-    
-    .checklist-item {
-        padding: 10px 12px !important;
-    }
-    
-    .checklist-item .item-text {
-        font-size: 12px !important;
-    }
-    
-    .checklist-item .item-code {
-        font-size: 9px !important;
-        padding: 2px 6px !important;
-    }
-    
-    /* Payload modal */
-    #payloadModal .max-w-lg {
-        max-width: calc(100vw - 24px) !important;
-    }
-    
-    /* Export modal */
-    #exportModal .max-w-md {
-        max-width: calc(100vw - 24px) !important;
+    /* Cyber modal corners on mobile */
+    .cyber-modal {
+        clip-path: polygon(0 8px, 8px 8px, 8px 0, calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px)) !important;
     }
 }
 
+/* ========================================
+   SESSION HEADER & BETA BANNER
+   ======================================== */
+@media (max-width: 1023px) {
+    #sessionHeader {
+        padding-left: 64px !important;
+    }
+    
+    #betaBanner {
+        padding-left: 60px !important;
+    }
+}
 
 /* ========================================
    TYPING INDICATOR MOBILE
    ======================================== */
 @media (max-width: 1023px) {
     #typingIndicator {
-        padding: 10px !important;
         margin: 8px 12px !important;
-    }
-    
-    #typingIndicator > div {
-        padding: 12px !important;
-        gap: 10px !important;
-    }
-    
-    .ai-thinking {
-        gap: 8px !important;
     }
     
     .ai-brain, .ai-spinner {
         width: 28px !important;
         height: 28px !important;
     }
-    
-    .thinking-text {
-        font-size: 12px !important;
-    }
-    
-    .thinking-dots span {
-        width: 6px !important;
-        height: 6px !important;
-    }
 }
 
+
 /* ========================================
-   SESSIONS LIST MOBILE
+   SESSIONS LIST & USER INFO MOBILE
    ======================================== */
 @media (max-width: 1023px) {
-    #sessionsList {
-        padding: 0 8px !important;
-    }
-    
     .sidebar-item {
         padding: 12px 10px !important;
-        min-height: 48px !important;
-        margin-bottom: 4px !important;
     }
     
-    .sidebar-item .truncate {
-        font-size: 12px !important;
-    }
-    
-    .sidebar-item .text-xs {
-        font-size: 10px !important;
-    }
-    
-    /* Delete button always visible on mobile */
     .delete-session-btn {
         opacity: 1 !important;
-        width: 32px !important;
-        height: 32px !important;
-        min-width: 32px !important;
-    }
-}
-
-/* ========================================
-   USER INFO MOBILE
-   ======================================== */
-@media (max-width: 1023px) {
-    #userInfo {
-        padding: 10px 12px !important;
     }
     
-    #userInfo > div {
-        gap: 10px !important;
+    #userInfo {
+        padding: 10px 12px !important;
     }
     
     #userAvatarLink {
         width: 36px !important;
         height: 36px !important;
-        min-width: 36px !important;
-    }
-    
-    #userName {
-        font-size: 12px !important;
-    }
-    
-    #userRole {
-        font-size: 9px !important;
-    }
-    
-    /* Logout button */
-    #userInfo button {
-        width: 32px !important;
-        height: 32px !important;
-        min-width: 32px !important;
     }
 }
 
 /* ========================================
-   BETA BANNER MOBILE
-   ======================================== */
-@media (max-width: 1023px) {
-    #betaBanner {
-        padding: 8px 12px !important;
-        padding-left: 60px !important; /* Space for menu button */
-    }
-    
-    #betaBanner span {
-        font-size: 11px !important;
-    }
-    
-    #betaBanner .text-xs {
-        font-size: 10px !important;
-    }
-}
-
-/* ========================================
-   NOTIFICATIONS MOBILE
-   ======================================== */
-@media (max-width: 1023px) {
-    .notification,
-    .de-toast,
-    #planToast > div {
-        max-width: calc(100vw - 24px) !important;
-        margin: 0 12px !important;
-        font-size: 13px !important;
-    }
-    
-    #planToast {
-        top: 60px !important;
-        right: 12px !important;
-        left: 12px !important;
-    }
-}
-
-
-/* ========================================
-   PROFILE PAGE MOBILE
-   ======================================== */
-@media (max-width: 1023px) {
-    .profile-container {
-        padding: 16px !important;
-        padding-top: 64px !important;
-    }
-    
-    .profile-header {
-        flex-direction: column !important;
-        text-align: center !important;
-        gap: 12px !important;
-    }
-    
-    .profile-avatar {
-        width: 80px !important;
-        height: 80px !important;
-    }
-    
-    .profile-form {
-        padding: 14px !important;
-    }
-}
-
-/* ========================================
-   SAFE AREA (iPhone notch/home indicator)
+   SAFE AREA (iPhone notch)
    ======================================== */
 @supports (padding: max(0px)) {
     @media (max-width: 1023px) {
@@ -700,23 +359,33 @@ html, body {
             padding-bottom: max(12px, env(safe-area-inset-bottom)) !important;
         }
         
-        #sidebar {
-            padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
-            padding-top: max(12px, env(safe-area-inset-top)) !important;
-        }
-        
         #mobileMenuBtn {
             top: max(12px, calc(env(safe-area-inset-top) + 8px)) !important;
-            left: max(12px, env(safe-area-inset-left)) !important;
         }
-        
-        #homeWelcome {
-            padding-top: max(64px, calc(env(safe-area-inset-top) + 56px)) !important;
-        }
-        
-        #betaBanner {
-            padding-top: max(8px, env(safe-area-inset-top)) !important;
-        }
+    }
+}
+
+/* ========================================
+   SMALL PHONES (< 380px)
+   ======================================== */
+@media (max-width: 380px) {
+    #homeWelcome h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    #homeWelcome > .relative img {
+        height: 56px !important;
+    }
+    
+    #messagesContainer .max-w-3xl {
+        max-width: calc(100% - 36px) !important;
+        padding: 8px 10px !important;
+    }
+    
+    #messagesContainer .w-10 {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
     }
 }
 
@@ -730,123 +399,5 @@ html, body {
     
     #homeWelcome > .relative img {
         height: 40px !important;
-    }
-    
-    #homeWelcome h3 {
-        font-size: 1rem !important;
-        margin-bottom: 6px !important;
-    }
-    
-    .blob-card {
-        padding: 8px !important;
-    }
-    
-    #chatInputArea {
-        padding: 6px 10px !important;
-    }
-    
-    #sidebar {
-        width: 250px !important;
-    }
-}
-
-/* ========================================
-   TABLET (768px - 1023px)
-   ======================================== */
-@media (min-width: 768px) and (max-width: 1023px) {
-    #homeWelcome .grid-cols-2 {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-    
-    .blob-card {
-        padding: 16px !important;
-    }
-    
-    #sidebar {
-        width: 280px !important;
-    }
-    
-    #messagesContainer > div {
-        max-width: 85% !important;
-    }
-}
-
-/* ========================================
-   SCROLLBAR MOBILE
-   ======================================== */
-@media (max-width: 1023px) {
-    /* Thin scrollbars on mobile */
-    ::-webkit-scrollbar {
-        width: 4px !important;
-        height: 4px !important;
-    }
-    
-    ::-webkit-scrollbar-track {
-        background: transparent !important;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-        background: rgba(0, 255, 136, 0.2) !important;
-        border-radius: 2px !important;
-    }
-}
-
-/* ========================================
-   PRINT STYLES
-   ======================================== */
-@media print {
-    #sidebar,
-    #mobileMenuBtn,
-    #chatInputArea,
-    #mobileOverlay,
-    #betaBanner {
-        display: none !important;
-    }
-    
-    #mainContent, main {
-        width: 100% !important;
-        margin: 0 !important;
-    }
-    
-    .message-content {
-        break-inside: avoid;
-    }
-}
-
-/* ========================================
-   REDUCED MOTION
-   ======================================== */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* ========================================
-   FIX: Prevent body scroll when modal open
-   ======================================== */
-body.modal-open {
-    overflow: hidden !important;
-    position: fixed !important;
-    width: 100% !important;
-}
-
-/* ========================================
-   FIX: iOS input zoom prevention
-   ======================================== */
-@media screen and (max-width: 1023px) {
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="number"],
-    input[type="tel"],
-    input[type="url"],
-    textarea,
-    select {
-        font-size: 16px !important;
     }
 }
