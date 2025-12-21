@@ -197,29 +197,38 @@
     </main>
 
     <script>
+        const token = localStorage.getItem('token');
         let commandHistory = JSON.parse(localStorage.getItem('terminalHistory') || '[]');
         let historyIndex = -1;
 
-        const commands = {
+        // Comandos locais (não precisam de API)
+        const localCommands = {
             help: () => ({
                 type: 'info',
-                output: `Comandos disponíveis:
-  help          - Mostra esta ajuda
-  clear         - Limpa o terminal
-  nmap          - Scanner de portas (simulado)
-  whois         - Consulta WHOIS
-  dig           - Consulta DNS
-  gobuster      - Fuzzing de diretórios
-  nikto         - Scanner de vulnerabilidades web
-  sqlmap        - Teste de SQL Injection
-  nc            - Netcat
-  curl          - Requisições HTTP
-  ping          - Teste de conectividade
-  traceroute    - Rastreamento de rota
-  history       - Mostra histórico de comandos
-  export        - Exporta sessão
+                output: `Comandos disponíveis (executados no servidor):
 
-Dica: Use 'ask [pergunta]' para consultar a IA`
+  RECONHECIMENTO:
+    whois <domain>      - Consulta WHOIS
+    dig <domain>        - Consulta DNS
+    nslookup <domain>   - Consulta DNS
+    host <domain>       - Consulta DNS
+    ping <host>         - Teste de conectividade
+    traceroute <host>   - Rastreamento de rota
+
+  WEB/HTTP:
+    curl <url>          - Requisições HTTP
+    nmap <target>       - Scanner de portas
+    nikto -h <url>      - Scanner de vulnerabilidades
+    gobuster <args>     - Fuzzing de diretórios
+    wpscan <args>       - Scanner WordPress
+
+  UTILITÁRIOS:
+    clear               - Limpa o terminal
+    history             - Mostra histórico
+    export              - Exporta sessão
+    ask <pergunta>      - Consulta a IA
+
+⚠️  Comandos são executados no servidor com whitelist de segurança.`
             }),
             clear: () => {
                 document.getElementById('terminalOutput').innerHTML = '';
@@ -229,277 +238,108 @@ Dica: Use 'ask [pergunta]' para consultar a IA`
                 type: 'output',
                 output: commandHistory.slice(-20).map((c, i) => `  ${i + 1}  ${c.cmd}`).join('\n') || 'Histórico vazio'
             }),
-            nmap: (args) => simulateNmap(args),
-            whois: (args) => simulateWhois(args),
-            dig: (args) => simulateDig(args),
-            ping: (args) => simulatePing(args),
-            curl: (args) => simulateCurl(args),
-            gobuster: (args) => simulateGobuster(args),
-            nikto: (args) => simulateNikto(args),
-            sqlmap: (args) => simulateSqlmap(args),
-            nc: (args) => simulateNc(args),
-            traceroute: (args) => simulateTraceroute(args),
-            ask: (args) => askAICommand(args),
-            echo: (args) => ({ type: 'output', output: args }),
-            whoami: () => ({ type: 'output', output: 'root' }),
-            pwd: () => ({ type: 'output', output: '/root/pentest' }),
-            ls: () => ({ type: 'output', output: 'exploits/  payloads/  scripts/  wordlists/  notes.txt  targets.txt' }),
-            id: () => ({ type: 'output', output: 'uid=0(root) gid=0(root) groups=0(root)' }),
-            uname: () => ({ type: 'output', output: 'Linux deepeyes-lab 5.15.0-kali1 #1 SMP x86_64 GNU/Linux' }),
-            date: () => ({ type: 'output', output: new Date().toString() }),
-            uptime: () => ({ type: 'output', output: ' 12:34:56 up 42 days, 13:37,  1 user,  load average: 0.00, 0.01, 0.05' }),
+            ask: (args) => {
+                if (!args.trim()) {
+                    return { type: 'error', output: 'Uso: ask [sua pergunta]' };
+                }
+                localStorage.setItem('exploitPrompt', args);
+                window.location.href = '/chat';
+                return null;
+            },
+            export: () => {
+                exportHistory();
+                return { type: 'success', output: 'Sessão exportada!' };
+            }
         };
 
-        // Simulated command outputs
-        function simulateNmap(args) {
-            const target = args.split(' ').pop() || 'target.com';
-            return {
-                type: 'output',
-                output: `Starting Nmap 7.94 ( https://nmap.org )
-Nmap scan report for ${target}
-Host is up (0.023s latency).
+        // Executa comando via API
+        async function executeRemoteCommand(command) {
+            try {
+                const response = await fetch('/api/terminal/execute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ command })
+                });
 
-PORT     STATE SERVICE     VERSION
-22/tcp   open  ssh         OpenSSH 8.9p1
-80/tcp   open  http        nginx 1.18.0
-443/tcp  open  ssl/http    nginx 1.18.0
-3306/tcp open  mysql       MySQL 8.0.32
+                const data = await response.json();
+                
+                if (response.status === 401) {
+                    localStorage.removeItem('token');
+                    window.location.replace('/?login=required');
+                    return { type: 'error', output: 'Sessão expirada. Redirecionando...' };
+                }
 
-Service detection performed. 4 services scanned.
-Nmap done: 1 IP address (1 host up) scanned in 12.45 seconds`
-            };
-        }
-
-        function simulateWhois(args) {
-            const domain = args.split(' ').pop() || 'example.com';
-            return {
-                type: 'output',
-                output: `Domain Name: ${domain.toUpperCase()}
-Registry Domain ID: 123456789_DOMAIN
-Registrar: Example Registrar, Inc.
-Creation Date: 2020-01-15T00:00:00Z
-Updated Date: 2024-01-15T00:00:00Z
-Registrar Registration Expiration Date: 2025-01-15T00:00:00Z
-Registrant Organization: Example Corp
-Registrant Country: US
-Name Server: NS1.EXAMPLE.COM
-Name Server: NS2.EXAMPLE.COM`
-            };
-        }
-
-        function simulateDig(args) {
-            const domain = args.split(' ').pop() || 'example.com';
-            return {
-                type: 'output',
-                output: `; <<>> DiG 9.18.12 <<>> ${domain}
-;; ANSWER SECTION:
-${domain}.        300    IN    A    93.184.216.34
-${domain}.        300    IN    A    93.184.216.35
-
-;; Query time: 23 msec
-;; SERVER: 8.8.8.8#53(8.8.8.8)
-;; WHEN: ${new Date().toUTCString()}
-;; MSG SIZE  rcvd: 56`
-            };
-        }
-
-        function simulatePing(args) {
-            const target = args.split(' ').pop() || '8.8.8.8';
-            return {
-                type: 'output',
-                output: `PING ${target} (${target}) 56(84) bytes of data.
-64 bytes from ${target}: icmp_seq=1 ttl=117 time=12.3 ms
-64 bytes from ${target}: icmp_seq=2 ttl=117 time=11.8 ms
-64 bytes from ${target}: icmp_seq=3 ttl=117 time=12.1 ms
-64 bytes from ${target}: icmp_seq=4 ttl=117 time=11.9 ms
-
---- ${target} ping statistics ---
-4 packets transmitted, 4 received, 0% packet loss, time 3004ms
-rtt min/avg/max/mdev = 11.8/12.0/12.3/0.2 ms`
-            };
-        }
-
-        function simulateCurl(args) {
-            return {
-                type: 'output',
-                output: `HTTP/1.1 200 OK
-Server: nginx/1.18.0
-Date: ${new Date().toUTCString()}
-Content-Type: text/html; charset=UTF-8
-X-Frame-Options: SAMEORIGIN
-X-Content-Type-Options: nosniff
-Strict-Transport-Security: max-age=31536000
-
-<!DOCTYPE html>
-<html>
-<head><title>Example</title></head>
-<body>...</body>
-</html>`
-            };
-        }
-
-        function simulateGobuster(args) {
-            return {
-                type: 'output',
-                output: `===============================================================
-Gobuster v3.5
-===============================================================
-[+] Url:            http://target.com
-[+] Threads:        10
-[+] Wordlist:       /usr/share/wordlists/common.txt
-===============================================================
-/admin                (Status: 302) [Size: 0]
-/api                  (Status: 200) [Size: 1234]
-/backup               (Status: 403) [Size: 278]
-/config               (Status: 403) [Size: 278]
-/css                  (Status: 301) [Size: 178]
-/images               (Status: 301) [Size: 178]
-/js                   (Status: 301) [Size: 178]
-/login                (Status: 200) [Size: 4521]
-/robots.txt           (Status: 200) [Size: 68]
-/uploads              (Status: 403) [Size: 278]
-===============================================================
-Finished
-===============================================================`
-            };
-        }
-
-        function simulateNikto(args) {
-            return {
-                type: 'output',
-                output: `- Nikto v2.5.0
----------------------------------------------------------------------------
-+ Target IP:          93.184.216.34
-+ Target Hostname:    target.com
-+ Target Port:        80
-+ Start Time:         ${new Date().toISOString()}
----------------------------------------------------------------------------
-+ Server: nginx/1.18.0
-+ /: The X-Content-Type-Options header is not set.
-+ /admin/: Admin login page found.
-+ /backup/: Backup directory found.
-+ /config.php.bak: Config backup file found.
-+ /phpinfo.php: PHP info file found.
-+ OSVDB-3092: /sitemap.xml: Sitemap found.
-+ 7915 requests: 0 error(s) and 6 item(s) reported
-+ End Time:           ${new Date().toISOString()}
----------------------------------------------------------------------------`
-            };
-        }
-
-        function simulateSqlmap(args) {
-            return {
-                type: 'output',
-                output: `        ___
-       __H__
- ___ ___[']_____ ___ ___  {1.7.2#stable}
-|_ -| . ["]     | .'| . |
-|___|_  [']_|_|_|__,|  _|
-      |_|V...       |_|
-
-[*] starting @ ${new Date().toTimeString().split(' ')[0]}
-
-[INFO] testing connection to the target URL
-[INFO] testing if the target URL is stable
-[INFO] target URL is stable
-[INFO] testing if GET parameter 'id' is dynamic
-[INFO] GET parameter 'id' appears to be dynamic
-[INFO] heuristic (basic) test shows that GET parameter 'id' might be injectable
-[INFO] testing for SQL injection on GET parameter 'id'
-[INFO] testing 'AND boolean-based blind'
-[INFO] GET parameter 'id' is 'AND boolean-based blind' injectable
-[INFO] testing 'MySQL >= 5.0 AND error-based'
-[INFO] GET parameter 'id' is 'MySQL >= 5.0 AND error-based' injectable
-
-[*] Parameter: id (GET)
-    Type: boolean-based blind
-    Title: AND boolean-based blind
-    Payload: id=1 AND 1=1
-
-    Type: error-based
-    Title: MySQL >= 5.0 AND error-based
-    Payload: id=1 AND (SELECT 1 FROM(SELECT COUNT(*),CONCAT(0x7171,0x7171)a FROM INFORMATION_SCHEMA.TABLES GROUP BY a)b)
-
-[INFO] the back-end DBMS is MySQL
-back-end DBMS: MySQL >= 5.0`
-            };
-        }
-
-        function simulateNc(args) {
-            if (args.includes('-lvnp')) {
                 return {
-                    type: 'warning',
-                    output: `listening on [any] 4444 ...
-[Aguardando conexão reversa...]
-(Use Ctrl+C para cancelar)`
+                    type: data.type || 'output',
+                    output: data.output || 'Sem resposta'
+                };
+            } catch (error) {
+                return {
+                    type: 'error',
+                    output: `Erro de conexão: ${error.message}`
                 };
             }
-            return { type: 'output', output: 'Connection established.' };
         }
 
-        function simulateTraceroute(args) {
-            const target = args.split(' ').pop() || '8.8.8.8';
-            return {
-                type: 'output',
-                output: `traceroute to ${target}, 30 hops max, 60 byte packets
- 1  gateway (192.168.1.1)  1.234 ms  1.123 ms  1.089 ms
- 2  10.0.0.1 (10.0.0.1)  5.432 ms  5.321 ms  5.234 ms
- 3  72.14.215.85 (72.14.215.85)  12.345 ms  12.234 ms  12.123 ms
- 4  108.170.252.129 (108.170.252.129)  13.456 ms  13.345 ms  13.234 ms
- 5  ${target} (${target})  14.567 ms  14.456 ms  14.345 ms`
-            };
-        }
-
-        function askAICommand(question) {
-            if (!question.trim()) {
-                return { type: 'error', output: 'Uso: ask [sua pergunta]' };
-            }
-            localStorage.setItem('exploitPrompt', question);
-            window.location.href = '/chat';
-            return null;
-        }
-
-        // Execute command
+        // Executa comando
         async function executeCommand(input) {
             const output = document.getElementById('terminalOutput');
             const trimmed = input.trim();
             
             if (!trimmed) return;
 
-            // Add command to output
+            // Adiciona comando ao output
             const cmdLine = document.createElement('div');
             cmdLine.className = 'terminal-line command';
             cmdLine.textContent = trimmed;
             output.appendChild(cmdLine);
 
-            // Save to history
+            // Salva no histórico
             commandHistory.push({ cmd: trimmed, time: new Date().toISOString() });
             localStorage.setItem('terminalHistory', JSON.stringify(commandHistory.slice(-100)));
             historyIndex = commandHistory.length;
             updateHistoryList();
 
-            // Parse command
+            // Parse do comando
             const parts = trimmed.split(' ');
             const cmd = parts[0].toLowerCase();
             const args = parts.slice(1).join(' ');
 
-            // Execute
+            // Mostra loading
+            const loadingLine = document.createElement('div');
+            loadingLine.className = 'terminal-line output';
+            loadingLine.textContent = '⏳ Executando...';
+            loadingLine.id = 'loading-line';
+            output.appendChild(loadingLine);
+            output.scrollTop = output.scrollHeight;
+
+            // Executa
             let result;
-            if (commands[cmd]) {
-                result = await commands[cmd](args);
+            if (localCommands[cmd]) {
+                result = await localCommands[cmd](args);
             } else {
-                result = { type: 'error', output: `Command not found: ${cmd}. Type 'help' for available commands.` };
+                // Executa via API
+                result = await executeRemoteCommand(trimmed);
             }
 
-            // Show output
+            // Remove loading
+            const loading = document.getElementById('loading-line');
+            if (loading) loading.remove();
+
+            // Mostra output
             if (result) {
                 const outLine = document.createElement('div');
                 outLine.className = `terminal-line ${result.type}`;
+                outLine.style.whiteSpace = 'pre-wrap';
                 outLine.textContent = result.output;
                 output.appendChild(outLine);
             }
 
-            // Scroll to bottom
+            // Scroll para baixo
             output.scrollTop = output.scrollHeight;
         }
 
@@ -582,10 +422,9 @@ back-end DBMS: MySQL >= 5.0`
                 }
             } else if (e.key === 'Tab') {
                 e.preventDefault();
-                // Simple tab completion
-                const val = e.target.value;
-                const cmds = Object.keys(commands);
-                const match = cmds.find(c => c.startsWith(val));
+                const val = e.target.value.toLowerCase();
+                const allCmds = [...Object.keys(localCommands), 'whois', 'dig', 'nslookup', 'host', 'ping', 'traceroute', 'curl', 'nmap', 'nikto', 'gobuster', 'wpscan', 'subfinder'];
+                const match = allCmds.find(c => c.startsWith(val));
                 if (match) e.target.value = match + ' ';
             } else if (e.key === 'l' && e.ctrlKey) {
                 e.preventDefault();

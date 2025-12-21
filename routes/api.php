@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\TerminalController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Plan;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,12 @@ Route::middleware(['auth:sanctum', 'ensure.not.banned'])->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('api.profile.update');
     Route::post('/profile/avatar', [ProfileController::class, 'uploadAvatar'])->name('api.profile.avatar.upload');
     Route::delete('/profile/avatar', [ProfileController::class, 'deleteAvatar'])->name('api.profile.avatar.delete');
+
+    // Terminal - comandos de pentest
+    Route::prefix('terminal')->group(function () {
+        Route::post('/execute', [TerminalController::class, 'execute'])->name('api.terminal.execute');
+        Route::get('/commands', [TerminalController::class, 'commands'])->name('api.terminal.commands');
+    });
 
     // Plans
     Route::get('/plans', function () {
