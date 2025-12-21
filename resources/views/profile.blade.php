@@ -7,9 +7,13 @@
     <title>Perfil - DeepEyes</title>
     <link rel="icon" type="image/png" href="/logo.png">
     <link rel="apple-touch-icon" href="/logo.png">
+    <style>html:not(.auth-checked) body { visibility: hidden; }</style>
     <script>
-        if (localStorage.getItem('token')) {
-            document.documentElement.classList.add('has-token');
+        // Verificação de autenticação - redireciona se não estiver logado
+        if (!localStorage.getItem('token')) {
+            window.location.replace('/?login=required');
+        } else {
+            document.documentElement.classList.add('auth-checked', 'has-token');
         }
     </script>
     <script src="https://cdn.tailwindcss.com"></script>

@@ -4,50 +4,50 @@ declare(strict_types=1);
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\MinifyHtml;
+use App\Http\Middleware\EnsureAuthenticated;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([MinifyHtml::class])->group(function () {
-    // Landing page como página inicial
+    // Landing page como página inicial (pública)
     Route::get('/', function () {
         return view('landing');
     });
 
-    // Chat em /chat
-    Route::get('/chat', function () {
-        return view('chat');
-    });
-
-    // Documentação
+    // Documentação (pública)
     Route::get('/docs', function () {
         return view('docs');
     });
 
-    // Biblioteca de Exploits
-    Route::get('/exploits', function () {
-        return view('exploits');
-    });
+    // Rotas protegidas - requerem autenticação
+    Route::middleware([EnsureAuthenticated::class])->group(function () {
+        // Chat
+        Route::get('/chat', function () {
+            return view('chat');
+        });
 
-    // Checklist de Pentest
-    Route::get('/checklist', function () {
-        return view('checklist');
-    });
+        // Checklist de Pentest
+        Route::get('/checklist', function () {
+            return view('checklist');
+        });
 
-    // Scanner de Vulnerabilidades
-    Route::get('/scanner', function () {
-        return view('scanner');
-    });
+        // Scanner de Vulnerabilidades
+        Route::get('/scanner', function () {
+            return view('scanner');
+        });
 
-    // Gerador de Relatórios
-    Route::get('/reports', function () {
-        return view('reports');
-    });
+        // Gerador de Relatórios
+        Route::get('/reports', function () {
+            return view('reports');
+        });
 
-    // Terminal Interativo
-    Route::get('/terminal', function () {
-        return view('terminal');
-    });
+        // Terminal Interativo
+        Route::get('/terminal', function () {
+            return view('terminal');
+        });
 
-    Route::get('/profile', function () {
-        return view('profile');
-    })->name('profile');
+        // Perfil do usuário
+        Route::get('/profile', function () {
+            return view('profile');
+        })->name('profile');
+    });
 });

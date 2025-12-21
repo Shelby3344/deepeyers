@@ -1568,7 +1568,6 @@
                             Tools <span class="text-xs">▼</span>
                         </a>
                         <div id="toolsMenuChat" class="absolute top-full left-0 mt-2 py-2 rounded-xl hidden" style="background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.2); min-width: 160px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-                            <a href="/exploits" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">💀 Exploits</a>
                             <a href="/checklist" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">✓ Checklist</a>
                             <a href="/scanner" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">🔍 Scanner</a>
                             <a href="/reports" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">📄 Reports</a>
@@ -1750,16 +1749,12 @@
                     // TOOLS
                 </div>
                 <div class="grid grid-cols-3 gap-2">
-                    <a href="/exploits" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(239,68,68,0.15)] hover:border-[rgba(239,68,68,0.4)] hover:bg-[rgba(239,68,68,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-skull text-[#EF4444] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(239,68,68,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#EF4444]" style="font-family: var(--font-mono);">EXPLOITS</span>
-                    </a>
                     <a href="/checklist" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(249,115,22,0.15)] hover:border-[rgba(249,115,22,0.4)] hover:bg-[rgba(249,115,22,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
                         <i class="fas fa-list-check text-[#F97316] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(249,115,22,0.5));"></i>
                         <span class="text-[8px] text-gray-400 group-hover:text-[#F97316]" style="font-family: var(--font-mono);">CHECKLIST</span>
                     </a>
                     <a href="/scanner" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,212,255,0.15)] hover:border-[rgba(0,212,255,0.4)] hover:bg-[rgba(0,212,255,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-radar text-[#00D4FF] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(0,212,255,0.5));"></i>
+                        <i class="fas fa-crosshairs text-[#00D4FF] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(0,212,255,0.5));"></i>
                         <span class="text-[8px] text-gray-400 group-hover:text-[#00D4FF]" style="font-family: var(--font-mono);">SCANNER</span>
                     </a>
                     <a href="/reports" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(168,85,247,0.15)] hover:border-[rgba(168,85,247,0.4)] hover:bg-[rgba(168,85,247,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
@@ -2213,6 +2208,27 @@
         
         <!-- Main Content -->
         <main class="flex-1 flex flex-col min-h-0">
+            <!-- Top Navbar - Cyber Style -->
+            <nav class="px-4 py-3 border-b border-[rgba(0,255,136,0.15)] flex items-center justify-between flex-shrink-0" style="background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(20px);">
+                <div class="flex items-center gap-6">
+                    <a href="/" class="flex items-center gap-2 no-underline">
+                        <img src="/logo.png" alt="DeepEyes" class="w-7 h-7">
+                        <span class="font-semibold text-base hidden sm:block" style="font-family: 'JetBrains Mono', monospace; background: linear-gradient(135deg, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DeepEyes</span>
+                    </a>
+                    <div class="hidden md:flex items-center gap-5">
+                        <a href="/" class="text-[#a0a0b0] no-underline text-sm hover:text-[#00d4ff] transition-colors">Home</a>
+                        <a href="/docs" class="text-[#a0a0b0] no-underline text-sm hover:text-[#00d4ff] transition-colors">Docs</a>
+                        <a href="/scanner" class="text-[#a0a0b0] no-underline text-sm hover:text-[#00d4ff] transition-colors">Scanner</a>
+                        <a href="/chat" class="text-[#00ff88] no-underline text-sm font-medium">Chat</a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="/profile" class="text-[#a0a0b0] hover:text-[#00d4ff] transition-colors" title="Perfil">
+                        <i class="fas fa-user-circle text-lg"></i>
+                    </a>
+                </div>
+            </nav>
+            
             <!-- Beta Warning Banner - Cyber Style -->
             <div id="betaBanner" class="border-b border-[rgba(249,115,22,0.3)] px-4 py-2 lg:py-3 flex-shrink-0" style="background: linear-gradient(90deg, rgba(249,115,22,0.1), rgba(239,68,68,0.1), rgba(249,115,22,0.1));">
                 <div class="flex items-center justify-center gap-2 lg:gap-3 text-center flex-wrap">
@@ -4340,6 +4356,10 @@
         }
         
         async function init() {
+            // Verifica se foi redirecionado por falta de autenticação
+            const urlParams = new URLSearchParams(window.location.search);
+            const loginRequired = urlParams.get('login') === 'required';
+            
             if (token) {
                 try {
                     const data = await api('/auth/me');
@@ -4348,16 +4368,26 @@
                 } catch (error) {
                     localStorage.removeItem('token');
                     token = null;
-                    showAuthModal();
+                    showAuthModal(loginRequired);
                 }
             } else {
-                showAuthModal();
+                showAuthModal(loginRequired);
+            }
+            
+            // Limpa o parâmetro da URL
+            if (loginRequired) {
+                window.history.replaceState({}, document.title, window.location.pathname);
             }
         }
         
-        function showAuthModal() {
+        function showAuthModal(showMessage = false) {
             authModal.classList.remove('hidden');
             authModal.classList.add('flex');
+            
+            // Mostra mensagem se foi redirecionado
+            if (showMessage) {
+                showAuthError('Faça login para acessar esta funcionalidade');
+            }
         }
         
         init();

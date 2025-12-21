@@ -40,6 +40,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'security.headers' => \App\Http\Middleware\SecurityHeaders::class,
             'block.sensitive' => \App\Http\Middleware\BlockSensitivePaths::class,
             'rate.limit' => \App\Http\Middleware\RateLimitRequests::class,
+            'auth.web' => \App\Http\Middleware\EnsureAuthenticated::class,
         ]);
         
         // ✅ Middleware de detecção de anomalias para rotas autenticadas

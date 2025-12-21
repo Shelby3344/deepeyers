@@ -6,6 +6,16 @@
     <title>Checklist de Pentest - DeepEyes</title>
     <link rel="icon" type="image/png" href="/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>html:not(.auth-checked) body { visibility: hidden; }</style>
+    <script>
+        // Verificação de autenticação - redireciona se não estiver logado
+        if (!localStorage.getItem('token')) {
+            window.location.replace('/?login=required');
+        } else {
+            document.documentElement.classList.add('auth-checked');
+        }
+    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -124,7 +134,6 @@
             <div class="navbar-links">
                 <a href="/">Home</a>
                 <a href="/docs">Docs</a>
-                <a href="/exploits">Exploits</a>
                 <a href="/checklist" class="active">Checklist</a>
                 <a href="/chat">Chat</a>
             </div>
@@ -139,9 +148,9 @@
                 <p class="page-subtitle">Acompanhe o progresso do seu teste de penetração</p>
             </div>
             <div class="header-actions">
-                <button class="header-btn" onclick="resetChecklist()">🔄 Resetar</button>
-                <button class="header-btn" onclick="exportChecklist()">📥 Exportar</button>
-                <button class="header-btn primary" onclick="exportReport()">📄 Gerar Relatório</button>
+                <button class="header-btn" onclick="resetChecklist()"><i class="fas fa-rotate-right"></i> Resetar</button>
+                <button class="header-btn" onclick="exportChecklist()"><i class="fas fa-download"></i> Exportar</button>
+                <button class="header-btn primary" onclick="exportReport()"><i class="fas fa-file-lines"></i> Gerar Relatório</button>
             </div>
         </div>
 

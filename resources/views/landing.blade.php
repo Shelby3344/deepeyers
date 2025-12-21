@@ -1757,7 +1757,6 @@
                                 Tools <span class="dropdown-arrow">▼</span>
                             </a>
                             <div class="tools-menu" id="toolsMenu">
-                                <a href="/exploits"><span class="tool-icon">💀</span> Exploits</a>
                                 <a href="/checklist"><span class="tool-icon">✓</span> Checklist</a>
                                 <a href="/scanner"><span class="tool-icon">🔍</span> Scanner</a>
                                 <a href="/reports"><span class="tool-icon">📄</span> Reports</a>
@@ -2317,6 +2316,15 @@ subprocess.call(["/bin/sh","-i"])</code>
     </div>
 
     <script>
+        // Verifica se o usuário foi redirecionado por falta de autenticação
+        (function checkLoginRequired() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('login') === 'required') {
+                // Redireciona para o chat que tem o modal de login
+                window.location.href = '/chat?login=required';
+            }
+        })();
+
         // Toggle Tools Dropdown
         function toggleToolsDropdown(event) {
             event.preventDefault();

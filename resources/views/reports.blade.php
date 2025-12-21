@@ -6,6 +6,15 @@
     <title>Gerador de Relatórios - DeepEyes</title>
     <link rel="icon" type="image/png" href="/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>html:not(.auth-checked) body { visibility: hidden; }</style>
+    <script>
+        // Verificação de autenticação - redireciona se não estiver logado
+        if (!localStorage.getItem('token')) {
+            window.location.replace('/?login=required');
+        } else {
+            document.documentElement.classList.add('auth-checked');
+        }
+    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
@@ -120,7 +129,6 @@
             </a>
             <div class="navbar-links">
                 <a href="/">Home</a>
-                <a href="/exploits">Exploits</a>
                 <a href="/scanner">Scanner</a>
                 <a href="/reports" class="active">Relatórios</a>
                 <a href="/chat">Chat</a>
