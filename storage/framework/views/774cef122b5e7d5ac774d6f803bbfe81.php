@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-    <title>DeepEyes - Cyber Arsenal</title>
+    <title>DeepEyes - Deep visibility into security.</title>
     <link rel="icon" type="image/png" href="/logo.png">
     <link rel="apple-touch-icon" href="/logo.png">
     <meta name="theme-color" content="#0B0F14">
@@ -49,29 +49,84 @@
     <link rel="stylesheet" href="/css/deepeyes.css">
     <link rel="stylesheet" href="/css/mobile.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
         
         /* ========================================
-           DEEPEYES PREMIUM HACKER UI
+           DEEPEYES CYBERPUNK PIXEL UI v3.0
            ======================================== */
+        
+        :root {
+            --neon-green: #00ff88;
+            --neon-cyan: #00d4ff;
+            --neon-purple: #bf00ff;
+            --neon-red: #ff0055;
+            --neon-orange: #ff6600;
+            --bg-dark: #0a0a0f;
+            --bg-secondary: #0d1117;
+            --font-pixel: 'Press Start 2P', monospace;
+            --font-terminal: 'VT323', monospace;
+            --font-mono: 'Share Tech Mono', 'JetBrains Mono', monospace;
+        }
         
         html, body { 
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0B0F14 0%, #0a0015 50%, #0B0F14 100%);
-            background-attachment: fixed;
+            background: #0a0a0f;
             overflow: hidden;
             height: 100%;
         }
-        code, pre { font-family: 'JetBrains Mono', monospace; }
+        
+        code, pre { font-family: var(--font-mono); }
         
         /* Hide auth if logged, show if not */
         .has-token #authModal { display: none !important; }
         .no-token #authModal { display: flex !important; }
         .no-token #app { display: none !important; }
         
-        /* Scanline Effect */
+        /* ========================================
+           CYBERPUNK BACKGROUND EFFECTS
+           ======================================== */
+        
+        /* Animated gradient background */
         body::before {
             content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: -2;
+            background: 
+                radial-gradient(ellipse at 20% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(191, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
+            animation: bg-pulse 8s ease-in-out infinite;
+        }
+        
+        @keyframes bg-pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+        
+        /* Pixel Grid Overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 9998;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 4px 4px;
+            opacity: 0.4;
+        }
+        
+        /* CRT Scanlines */
+        .scanlines {
             position: fixed;
             top: 0;
             left: 0;
@@ -83,64 +138,123 @@
                 0deg,
                 transparent,
                 transparent 2px,
-                rgba(0, 0, 0, 0.02) 2px,
-                rgba(0, 0, 0, 0.02) 4px
+                rgba(0, 0, 0, 0.15) 2px,
+                rgba(0, 0, 0, 0.15) 4px
             );
-            opacity: 0.4;
+            opacity: 0.3;
         }
         
-        /* Grid Background */
-        body::after {
+        /* Moving scan line */
+        .scanlines::after {
             content: '';
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            pointer-events: none;
-            z-index: -1;
-            background-image: 
-                linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px);
-            background-size: 60px 60px;
-            mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);
+            height: 4px;
+            background: linear-gradient(180deg, transparent, rgba(0, 255, 136, 0.15), transparent);
+            animation: scan-move 4s linear infinite;
         }
         
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0B0F14; }
+        @keyframes scan-move {
+            0% { top: -10%; }
+            100% { top: 110%; }
+        }
+        
+        /* ========================================
+           SCROLLBAR - CYBER STYLE
+           ======================================== */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); }
         ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(135deg, #334155, #1E293B); 
-            border-radius: 4px; 
+            background: linear-gradient(180deg, var(--neon-green), var(--neon-cyan));
+            border-radius: 0;
         }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        ::-webkit-scrollbar-thumb:hover { 
+            background: var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green);
+        }
         
-        /* Neon Glow Classes */
-        .glow-neon { box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), 0 0 40px rgba(0, 255, 136, 0.1); }
-        .glow-cyan { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), 0 0 40px rgba(0, 212, 255, 0.1); }
-        .glow-red { box-shadow: 0 0 20px rgba(239, 68, 68, 0.3), 0 0 40px rgba(239, 68, 68, 0.1); }
-        .glow-purple { box-shadow: 0 0 20px rgba(168, 85, 247, 0.3), 0 0 40px rgba(168, 85, 247, 0.1); }
+        /* ========================================
+           NEON GLOW EFFECTS
+           ======================================== */
+        .glow-neon { 
+            box-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green), 0 0 20px var(--neon-green); 
+        }
+        .glow-cyan { 
+            box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan); 
+        }
+        .glow-red { 
+            box-shadow: 0 0 5px var(--neon-red), 0 0 10px var(--neon-red), 0 0 20px var(--neon-red); 
+        }
+        .glow-purple { 
+            box-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple); 
+        }
         
-        /* Text Gradient */
+        /* Text Gradients */
         .text-gradient-neon {
-            background: linear-gradient(135deg, #00FF88, #00D4FF);
+            background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));
         }
         
         .text-gradient-attack {
-            background: linear-gradient(135deg, #EF4444, #A855F7);
+            background: linear-gradient(135deg, var(--neon-red), var(--neon-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         
-        /* Sidebar Styles */
+        /* ========================================
+           GLITCH TEXT EFFECT
+           ======================================== */
+        .glitch-text {
+            position: relative;
+            animation: glitch-skew 2s infinite linear alternate-reverse;
+        }
+        
+        @keyframes glitch-skew {
+            0%, 95% { transform: skew(0deg); }
+            96% { transform: skew(2deg); }
+            97% { transform: skew(-1deg); }
+            98% { transform: skew(1deg); }
+            99% { transform: skew(-2deg); }
+            100% { transform: skew(0deg); }
+        }
+        
+        /* ========================================
+           SIDEBAR - HACKER TERMINAL STYLE
+           ======================================== */
         .de-sidebar {
-            background: rgba(11, 15, 20, 0.95);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(0, 255, 136, 0.1);
+            background: linear-gradient(180deg, rgba(10, 10, 15, 0.98), rgba(13, 17, 23, 0.95));
+            border-right: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Animated border glow */
+        .de-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                transparent, 
+                var(--neon-green) 20%, 
+                var(--neon-cyan) 50%, 
+                var(--neon-purple) 80%, 
+                transparent
+            );
+            animation: sidebar-glow 4s ease-in-out infinite;
+        }
+        
+        @keyframes sidebar-glow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
         }
         
         /* Mobile Responsive Styles */
@@ -163,7 +277,7 @@
             #mobileOverlay {
                 position: fixed;
                 inset: 0;
-                background: rgba(0, 0, 0, 0.6);
+                background: rgba(0, 0, 0, 0.8);
                 backdrop-filter: blur(4px);
                 z-index: 35;
                 opacity: 0;
@@ -175,43 +289,7 @@
                 opacity: 1;
                 visibility: visible;
             }
-            
-            /* Chat input mobile adjustments */
-            #chatInputArea {
-                padding: 12px !important;
-            }
-            
-            #chatInputArea .max-w-4xl {
-                max-width: 100% !important;
-            }
-            
-            /* Feature cards mobile */
-            #homeWelcome .grid-cols-2 {
-                grid-template-columns: 1fr !important;
-            }
-            
-            /* Session header mobile */
-            #sessionHeader {
-                padding-left: 60px !important;
-            }
-            
-            /* Messages container mobile padding */
-            #chatContainer {
-                padding: 16px !important;
-            }
-            
-            /* Auth modal mobile adjustments */
-            #authModal .max-w-md {
-                max-width: 95% !important;
-                margin: 16px !important;
-            }
-            
-            /* Delete/Domain modals mobile */
-            #deleteModal .max-w-sm,
-            #domainModal .max-w-md {
-                max-width: 90% !important;
-            }
-            
+        }
             /* Profile dropdown mobile */
             #profileDropdown.open {
                 width: calc(100vw - 32px) !important;
@@ -793,6 +871,202 @@
         .mode-redteam { --mode-color: #F97316; --mode-rgb: 249, 115, 22; }
         .mode-fullattack { --mode-color: #EF4444; --mode-rgb: 239, 68, 68; }
         
+        /* ========================================
+           CYBERPUNK PIXEL ENHANCEMENTS
+           ======================================== */
+        
+        /* Pixel Title Effect */
+        .pixel-title {
+            font-family: var(--font-pixel);
+            text-shadow: 
+                2px 2px 0 var(--neon-cyan),
+                -1px -1px 0 var(--neon-purple);
+            letter-spacing: 2px;
+        }
+        
+        /* Cyber Card Style */
+        .cyber-card {
+            background: linear-gradient(135deg, rgba(10, 10, 15, 0.95), rgba(13, 17, 23, 0.9));
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(
+                0 8px, 8px 8px, 8px 0,
+                calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+                100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%,
+                8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px)
+            );
+        }
+        
+        .cyber-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-cyan), transparent);
+            animation: card-glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes card-glow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        /* Cyber Button */
+        .cyber-btn {
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(
+                0 4px, 4px 4px, 4px 0,
+                calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+                100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+                4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+            );
+        }
+        
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .cyber-btn:hover::before {
+            left: 100%;
+        }
+        
+        /* Terminal Input Style */
+        .terminal-input {
+            font-family: var(--font-mono);
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            color: var(--neon-green);
+            caret-color: var(--neon-green);
+        }
+        
+        .terminal-input::placeholder {
+            color: rgba(0, 255, 136, 0.4);
+        }
+        
+        .terminal-input:focus {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3), inset 0 0 10px rgba(0, 255, 136, 0.1);
+        }
+        
+        /* Neon Badge */
+        .neon-badge {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 10px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        /* Holographic Effect */
+        .holo-effect {
+            background: linear-gradient(
+                135deg,
+                rgba(0, 255, 136, 0.1) 0%,
+                rgba(0, 212, 255, 0.1) 25%,
+                rgba(191, 0, 255, 0.1) 50%,
+                rgba(0, 212, 255, 0.1) 75%,
+                rgba(0, 255, 136, 0.1) 100%
+            );
+            background-size: 400% 400%;
+            animation: holo-shift 8s ease infinite;
+        }
+        
+        @keyframes holo-shift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Matrix Rain Text */
+        .matrix-text {
+            font-family: var(--font-terminal);
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        /* Cyber Modal */
+        .cyber-modal {
+            background: linear-gradient(135deg, rgba(10, 10, 15, 0.98), rgba(13, 17, 23, 0.95));
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            clip-path: polygon(
+                0 12px, 12px 12px, 12px 0,
+                calc(100% - 12px) 0, calc(100% - 12px) 12px, 100% 12px,
+                100% calc(100% - 12px), calc(100% - 12px) calc(100% - 12px), calc(100% - 12px) 100%,
+                12px 100%, 12px calc(100% - 12px), 0 calc(100% - 12px)
+            );
+        }
+        
+        .cyber-modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), var(--neon-cyan), var(--neon-purple), transparent);
+            animation: modal-glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes modal-glow {
+            0%, 100% { opacity: 0.5; transform: scaleX(0.8); }
+            50% { opacity: 1; transform: scaleX(1); }
+        }
+        
+        /* Flicker Animation */
+        .flicker {
+            animation: flicker 3s infinite;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 1; }
+            93% { opacity: 0.8; }
+            94% { opacity: 1; }
+            95% { opacity: 0.9; }
+            96% { opacity: 1; }
+        }
+        
+        /* Data Stream Effect */
+        .data-stream::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                180deg,
+                transparent 0%,
+                rgba(0, 255, 136, 0.03) 50%,
+                transparent 100%
+            );
+            animation: data-flow 2s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes data-flow {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
         /* Perfil bloqueado (sem plano) */
         .attack-mode.locked {
             opacity: 0.4;
@@ -822,58 +1096,166 @@
             50% { transform: scale(1.1); }
         }
         
-        /* Auth Modal */
+        /* ========================================
+           AUTH MODAL - LANDING PAGE STYLE
+           ======================================== */
         .auth-tab {
-            transition: all 0.25s;
+            transition: all 0.3s ease;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 500;
+            border-radius: 8px;
         }
         
         .auth-tab.active {
-            background: linear-gradient(135deg, #00FF88, #00D4FF) !important;
-            color: #0B0F14 !important;
+            background: linear-gradient(135deg, #00d4ff, #00ff88) !important;
+            color: #0a0a0f !important;
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        .auth-tab:not(.active):hover {
+            background: rgba(0, 212, 255, 0.1);
         }
         
         .auth-input {
-            background: rgba(11, 15, 20, 0.9);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            transition: all 0.25s;
+            background: rgba(18, 18, 26, 0.8);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            transition: all 0.3s ease;
+            font-family: 'JetBrains Mono', monospace;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        
+        .auth-input::placeholder {
+            color: rgba(160, 160, 176, 0.5);
         }
         
         .auth-input:focus {
-            border-color: #00FF88;
-            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
         }
         
+        .auth-input:focus {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3), inset 0 0 15px rgba(0, 255, 136, 0.1);
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        /* ========================================
+           MESSAGE BUBBLES - CYBER TERMINAL STYLE
+           ======================================== */
         /* User Message Bubble */
         .user-bubble {
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.15), rgba(0, 212, 255, 0.1));
-            border: 1px solid rgba(0, 255, 136, 0.2);
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.12), rgba(0, 212, 255, 0.08));
+            border: 1px solid rgba(0, 255, 136, 0.4);
+            position: relative;
+            clip-path: polygon(
+                0 8px, 8px 8px, 8px 0,
+                100% 0, 100% calc(100% - 8px),
+                calc(100% - 8px) 100%, 0 100%
+            );
+        }
+        
+        .user-bubble::before {
+            content: '// USER INPUT';
+            position: absolute;
+            top: 4px;
+            right: 12px;
+            font-size: 8px;
+            font-family: var(--font-mono);
+            color: rgba(0, 255, 136, 0.4);
+            letter-spacing: 1px;
         }
         
         /* AI Message Bubble */
         .ai-bubble {
-            background: rgba(11, 15, 20, 0.9);
-            border: 1px solid rgba(0, 255, 136, 0.1);
+            background: linear-gradient(135deg, rgba(13, 17, 23, 0.95), rgba(10, 10, 15, 0.9));
+            border: 1px solid rgba(191, 0, 255, 0.3);
+            position: relative;
+            clip-path: polygon(
+                0 0, calc(100% - 8px) 0, 100% 8px,
+                100% 100%, 8px 100%, 0 calc(100% - 8px)
+            );
         }
         
-        /* Notification */
+        .ai-bubble::before {
+            content: '// DEEPEYES OUTPUT';
+            position: absolute;
+            top: 4px;
+            left: 12px;
+            font-size: 8px;
+            font-family: var(--font-mono);
+            color: rgba(191, 0, 255, 0.4);
+            letter-spacing: 1px;
+        }
+        
+        .ai-bubble::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan), transparent);
+        }
+        
+        /* Notification - Cyber Alert */
         .notification {
-            background: rgba(11, 15, 20, 0.95);
+            background: rgba(10, 10, 15, 0.95);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-left: 4px solid var(--neon-green);
+            font-family: var(--font-mono);
+            clip-path: polygon(
+                0 0, calc(100% - 8px) 0, 100% 8px,
+                100% 100%, 0 100%
+            );
         }
         
-        .notification.success { border-color: #00FF88; }
-        .notification.error { border-color: #EF4444; }
-        .notification.warning { border-color: #FBBF24; }
+        .notification::before {
+            content: '[SYSTEM]';
+            font-size: 8px;
+            color: var(--neon-green);
+            letter-spacing: 2px;
+            display: block;
+            margin-bottom: 4px;
+        }
         
-        /* Blob Glow Cards */
+        .notification.success { 
+            border-color: #00FF88; 
+            border-left-color: #00FF88;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+        .notification.success::before { content: '[SUCCESS]'; color: #00FF88; }
+        
+        .notification.error { 
+            border-color: #EF4444; 
+            border-left-color: #EF4444;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+        }
+        .notification.error::before { content: '[ERROR]'; color: #EF4444; }
+        
+        .notification.warning { 
+            border-color: #FBBF24; 
+            border-left-color: #FBBF24;
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.2);
+        }
+        .notification.warning::before { content: '[WARNING]'; color: #FBBF24; }
+        
+        /* Blob Glow Cards - Cyber Enhanced */
         .blob-card {
             position: relative;
-            border-radius: 16px;
+            border-radius: 0;
             z-index: 1;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            clip-path: polygon(
+                0 8px, 8px 8px, 8px 0,
+                calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+                100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%,
+                8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px)
+            );
         }
         
         .blob-card .card-bg {
@@ -883,10 +1265,27 @@
             right: 2px;
             bottom: 2px;
             z-index: 2;
-            background: rgba(15, 23, 42, 0.98);
+            background: rgba(10, 10, 15, 0.98);
             backdrop-filter: blur(24px);
-            border-radius: 14px;
+            border-radius: 0;
             overflow: hidden;
+            clip-path: polygon(
+                0 6px, 6px 6px, 6px 0,
+                calc(100% - 6px) 0, calc(100% - 6px) 6px, 100% 6px,
+                100% calc(100% - 6px), calc(100% - 6px) calc(100% - 6px), calc(100% - 6px) 100%,
+                6px 100%, 6px calc(100% - 6px), 0 calc(100% - 6px)
+            );
+        }
+        
+        .blob-card .card-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+            opacity: 0.5;
         }
         
         .blob-card .card-content {
@@ -978,12 +1377,30 @@
             transition: transform 0.3s ease;
         }
         
-        /* Template & Tools Styles */
+        /* Template & Tools Styles - Cyber Terminal */
         .template-category {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+            background: rgba(10, 10, 15, 0.7);
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            border-radius: 0;
             padding: 12px;
+            position: relative;
+            clip-path: polygon(
+                0 4px, 4px 4px, 4px 0,
+                calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+                100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+                4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+            );
+        }
+        
+        .template-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--neon-green), transparent);
+            opacity: 0.3;
         }
         
         .template-btn {
@@ -992,21 +1409,38 @@
             gap: 10px;
             width: 100%;
             padding: 10px 14px;
-            background: rgba(11, 15, 20, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            border-radius: 0;
             color: #94A3B8;
-            font-size: 13px;
+            font-size: 12px;
+            font-family: var(--font-mono);
             text-align: left;
             cursor: pointer;
             transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .template-btn::before {
+            content: '>';
+            position: absolute;
+            left: -20px;
+            color: var(--neon-green);
+            transition: left 0.2s ease;
+            font-family: var(--font-mono);
         }
         
         .template-btn:hover {
-            background: rgba(0, 255, 136, 0.05);
-            border-color: rgba(0, 255, 136, 0.2);
-            color: white;
-            transform: translateX(4px);
+            background: rgba(0, 255, 136, 0.08);
+            border-color: rgba(0, 255, 136, 0.3);
+            color: var(--neon-green);
+            padding-left: 24px;
+            text-shadow: 0 0 10px var(--neon-green);
+        }
+        
+        .template-btn:hover::before {
+            left: 8px;
         }
         
         .template-btn i {
@@ -1015,34 +1449,44 @@
             text-align: center;
         }
         
-        /* Checklist Item */
+        /* Checklist Item - Cyber Style */
         .checklist-item {
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 12px 16px;
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 255, 136, 0.1);
+            border-radius: 0;
             cursor: pointer;
             transition: all 0.2s ease;
+            font-family: var(--font-mono);
+            position: relative;
+            clip-path: polygon(
+                0 4px, 4px 4px, 4px 0,
+                calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px,
+                100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%,
+                4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px)
+            );
         }
         
         .checklist-item:hover {
-            background: rgba(249, 115, 22, 0.05);
-            border-color: rgba(249, 115, 22, 0.2);
+            background: rgba(249, 115, 22, 0.08);
+            border-color: rgba(249, 115, 22, 0.3);
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.1);
         }
         
         .checklist-item.checked {
-            background: rgba(0, 255, 136, 0.05);
-            border-color: rgba(0, 255, 136, 0.2);
+            background: rgba(0, 255, 136, 0.08);
+            border-color: rgba(0, 255, 136, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
         }
         
         .checklist-item .check-box {
             width: 22px;
             height: 22px;
-            border: 2px solid rgba(249, 115, 22, 0.4);
-            border-radius: 6px;
+            border: 2px solid rgba(249, 115, 22, 0.5);
+            border-radius: 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1053,10 +1497,11 @@
         .checklist-item.checked .check-box {
             background: linear-gradient(135deg, #00FF88, #00D4FF);
             border-color: transparent;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
         }
         
         .checklist-item .check-box i {
-            color: #0B0F14;
+            color: #0a0a0f;
             font-size: 12px;
             opacity: 0;
             transform: scale(0);
@@ -1071,102 +1516,131 @@
         .checklist-item .item-text {
             flex: 1;
             color: #94A3B8;
-            font-size: 14px;
+            font-size: 13px;
             transition: color 0.2s ease;
         }
         
         .checklist-item.checked .item-text {
             color: #00FF88;
             text-decoration: line-through;
-            text-decoration-color: rgba(0, 255, 136, 0.3);
+            text-decoration-color: rgba(0, 255, 136, 0.4);
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
         }
         
         .checklist-item .item-code {
-            font-size: 11px;
-            color: #64748B;
-            font-family: 'JetBrains Mono', monospace;
-            background: rgba(0, 0, 0, 0.3);
+            font-size: 10px;
+            color: var(--neon-cyan);
+            font-family: var(--font-mono);
+            background: rgba(0, 212, 255, 0.1);
             padding: 2px 8px;
-            border-radius: 4px;
+            border-radius: 0;
+            border: 1px solid rgba(0, 212, 255, 0.2);
         }
     </style>
 </head>
-<body class="gradient-bg min-h-screen text-gray-100">
+<body class="min-h-screen text-gray-100">
+    <!-- CRT Scanlines Effect -->
+    <div class="scanlines"></div>
+    
     <!-- Auth Modal - Outside #app for proper visibility control -->
-    <div id="authModal" class="fixed inset-0 z-50 items-center justify-center hidden overflow-hidden" style="background: linear-gradient(135deg, #0B0F14 0%, #0a0015 50%, #0B0F14 100%);">
+    <div id="authModal" class="fixed inset-0 z-50 items-center justify-center hidden overflow-hidden" style="background: radial-gradient(ellipse at center, #12121a 0%, #0a0a0f 100%);">
+        <!-- Animated Background -->
+        <div class="absolute inset-0 pointer-events-none overflow-hidden">
+            <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-[rgba(0,212,255,0.08)] rounded-full blur-3xl animate-pulse"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[rgba(0,255,136,0.06)] rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        </div>
         <!-- Grid Background -->
-        <div class="absolute inset-0 pointer-events-none" style="background-image: linear-gradient(rgba(0, 255, 136, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 136, 0.02) 1px, transparent 1px); background-size: 60px 60px; mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);"></div>
+        <div class="absolute inset-0 pointer-events-none" style="background-image: linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);"></div>
         
-        <div class="relative z-10 w-full max-w-md mx-4 bg-[rgba(11,15,20,0.95)] backdrop-blur-xl rounded-2xl p-8 border border-[rgba(0,255,136,0.2)] max-h-[90vh] overflow-y-auto" style="box-shadow: 0 0 80px rgba(0,255,136,0.05), 0 0 40px rgba(0,212,255,0.05); scrollbar-width: thin; scrollbar-color: rgba(0,255,136,0.3) transparent;">
-            <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#00FF88] to-transparent"></div>
+        <!-- Navbar -->
+        <nav class="fixed top-5 left-1/2 -translate-x-1/2 z-[1001] w-[90%] max-w-[900px]">
+            <div class="flex items-center justify-between px-6 py-3 rounded-full" style="background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.15); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);">
+                <a href="/" class="flex items-center gap-2 no-underline">
+                    <span class="font-semibold text-lg" style="font-family: 'JetBrains Mono', monospace; background: linear-gradient(135deg, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DeepEyes</span>
+                    <span class="text-[10px] px-1.5 py-0.5 bg-[#8b5cf6] rounded text-white font-semibold">BETA</span>
+                </a>
+                <div class="hidden md:flex items-center gap-7">
+                    <a href="/#como-funciona" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors">Como Funciona</a>
+                    <a href="/#recursos" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors">Recursos</a>
+                    <a href="/docs" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors">Docs</a>
+                    <a href="/#faq" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors">FAQ</a>
+                </div>
+                <a href="/" class="flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-sm no-underline transition-all hover:scale-105" style="background: linear-gradient(135deg, #00d4ff, #00ff88); color: #0a0a0f; box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);">
+                    ‹ Voltar
+                </a>
+            </div>
+        </nav>
+        
+        <div class="relative z-10 w-full max-w-md mx-4 p-8 max-h-[90vh] overflow-y-auto" style="background: rgba(26, 26, 36, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 20px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(0, 212, 255, 0.1);">
+            <!-- Top gradient line -->
+            <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#00d4ff] to-transparent"></div>
             
             <div class="text-center mb-8">
-                <div class="relative inline-block">
-                    <img src="/logo.png" alt="DeepEyes" class="h-20 mx-auto mb-4" style="filter: drop-shadow(0 0 20px rgba(0,255,136,0.5));">
-                    <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(0,255,136,0.2) 0%, transparent 70%);"></div>
+                <div class="flex items-center justify-center gap-3 mb-4">
+                    <span class="text-3xl font-bold" style="font-family: 'JetBrains Mono', monospace; background: linear-gradient(135deg, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DeepEyes</span>
+                    <span class="text-[10px] px-2 py-1 bg-[#8b5cf6] rounded text-white font-semibold">BETA</span>
                 </div>
-                <h1 class="text-3xl font-bold text-gradient-neon font-display">DeepEyes</h1>
-                <p class="text-gray-500 mt-2 text-sm uppercase tracking-widest">Cyber Arsenal</p>
+                <p class="text-[#a0a0b0] text-sm">Deep visibility into security.</p>
             </div>
 
-            <div id="authTabs" class="flex gap-2 mb-6 p-1 bg-[#0B0F14] rounded-xl border border-[rgba(0,255,136,0.1)]">
-                <button class="auth-tab active flex-1 py-3 px-4 rounded-lg font-semibold transition-all" data-tab="login">Login</button>
-                <button class="auth-tab flex-1 py-3 px-4 rounded-lg bg-transparent text-gray-500 hover:text-white font-semibold transition-all" data-tab="register">Registrar</button>
+            <div id="authTabs" class="flex gap-2 mb-6 p-1 rounded-xl" style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(0, 212, 255, 0.15);">
+                <button class="auth-tab active flex-1 py-3 px-4 font-semibold transition-all rounded-lg" data-tab="login">Login</button>
+                <button class="auth-tab flex-1 py-3 px-4 bg-transparent text-[#a0a0b0] hover:text-[#00d4ff] font-semibold transition-all rounded-lg" data-tab="register">Registrar</button>
             </div>
 
             <form id="loginForm" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Email</label>
+                    <label class="block text-xs font-medium text-[#00d4ff] mb-2" style="font-family: 'JetBrains Mono', monospace;">Email</label>
                     <input type="email" name="email" required autocomplete="email"
-                        class="auth-input w-full rounded-xl px-4 py-3.5 text-white focus:outline-none"
-                        placeholder="seu@email.com">
+                        class="auth-input w-full px-4 py-3.5 rounded-xl focus:outline-none"
+                        placeholder="user@example.com">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Senha</label>
+                    <label class="block text-xs font-medium text-[#00d4ff] mb-2" style="font-family: 'JetBrains Mono', monospace;">Senha</label>
                     <input type="password" name="password" required autocomplete="current-password"
-                        class="auth-input w-full rounded-xl px-4 py-3.5 text-white focus:outline-none"
+                        class="auth-input w-full px-4 py-3.5 rounded-xl focus:outline-none"
                         placeholder="••••••••">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-[#00FF88] to-[#00D4FF] text-[#0B0F14] rounded-xl py-3.5 font-bold transition-all hover:opacity-90 hover:shadow-[0_0_30px_rgba(0,255,136,0.3)]">
-                    <i class="fas fa-terminal mr-2"></i>Acessar Sistema
+                <button type="submit" class="w-full py-4 font-semibold transition-all rounded-xl" style="background: linear-gradient(135deg, #00d4ff, #00ff88); color: #0a0a0f; box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);">
+                    Entrar no Lab
                 </button>
             </form>
 
             <form id="registerForm" class="space-y-4 hidden">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Nome</label>
+                    <label class="block text-xs font-medium text-[#00d4ff] mb-2" style="font-family: 'JetBrains Mono', monospace;">Nome</label>
                     <input type="text" name="name" required autocomplete="name"
-                        class="auth-input w-full rounded-xl px-4 py-3.5 text-white focus:outline-none"
+                        class="auth-input w-full px-4 py-3.5 rounded-xl focus:outline-none"
                         placeholder="Seu nome">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Email</label>
+                    <label class="block text-xs font-medium text-[#00d4ff] mb-2" style="font-family: 'JetBrains Mono', monospace;">Email</label>
                     <input type="email" name="email" required autocomplete="email"
-                        class="auth-input w-full rounded-xl px-4 py-3.5 text-white focus:outline-none"
-                        placeholder="seu@email.com">
+                        class="auth-input w-full px-4 py-3.5 rounded-xl focus:outline-none"
+                        placeholder="user@example.com">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Senha</label>
+                    <label class="block text-xs font-medium text-[#00d4ff] mb-2" style="font-family: 'JetBrains Mono', monospace;">Senha</label>
                     <input type="password" name="password" required autocomplete="new-password"
-                        class="auth-input w-full rounded-xl px-4 py-3.5 text-white focus:outline-none"
+                        class="auth-input w-full px-4 py-3.5 rounded-xl focus:outline-none"
                         placeholder="••••••••">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Confirmar Senha</label>
+                    <label class="block text-xs font-medium text-[#00d4ff] mb-2" style="font-family: 'JetBrains Mono', monospace;">Confirmar Senha</label>
                     <input type="password" name="password_confirmation" required autocomplete="new-password"
-                        class="auth-input w-full rounded-xl px-4 py-3.5 text-white focus:outline-none"
+                        class="auth-input w-full px-4 py-3.5 rounded-xl focus:outline-none"
                         placeholder="••••••••">
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-[#00FF88] to-[#00D4FF] text-[#0B0F14] rounded-xl py-3.5 font-bold transition-all hover:opacity-90 hover:shadow-[0_0_30px_rgba(0,255,136,0.3)]">
-                    <i class="fas fa-user-plus mr-2"></i>Criar Conta
+                <button type="submit" class="w-full py-4 font-semibold transition-all rounded-xl" style="background: linear-gradient(135deg, #00d4ff, #00ff88); color: #0a0a0f; box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);">
+                    Criar Conta
                 </button>
             </form>
 
-            <div id="authError" class="hidden mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm"></div>
+            <div id="authError" class="hidden mt-4 p-4 rounded-xl text-red-400 text-sm" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); font-family: 'JetBrains Mono', monospace;"></div>
             
-            <p class="text-center text-gray-600 text-xs mt-6">
-                <i class="fas fa-shield-halved mr-1 text-[#00FF88]"></i>
-                Ambiente seguro para profissionais autorizados
+            <p class="text-center text-[#a0a0b0] text-xs mt-6" style="font-family: 'JetBrains Mono', monospace;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline mr-1"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+                Ambiente seguro para profissionais
             </p>
         </div>
     </div>
@@ -1178,28 +1652,22 @@
         <!-- Sidebar -->
         <aside id="sidebar" class="de-sidebar w-72 flex-shrink-0 flex flex-col">
             <!-- Close button for mobile -->
-            <button id="closeSidebarBtn" class="lg:hidden absolute top-4 right-4 w-8 h-8 rounded-lg bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(239,68,68,0.1)] text-gray-400 hover:text-red-400 flex items-center justify-center transition-all z-10">
+            <button id="closeSidebarBtn" class="lg:hidden absolute top-4 right-4 w-8 h-8 bg-[rgba(239,68,68,0.1)] hover:bg-[rgba(239,68,68,0.2)] border border-[rgba(239,68,68,0.3)] text-gray-400 hover:text-red-400 flex items-center justify-center transition-all z-10">
                 <i class="fas fa-times"></i>
             </button>
-            <!-- Logo -->
-            <div class="p-5 border-b border-[rgba(0,255,136,0.1)]">
-                <div class="flex items-center gap-3">
-                    <div class="relative">
-                        <img src="/logo.png" alt="DeepEyes" class="h-11 w-11 object-contain" style="filter: drop-shadow(0 0 10px rgba(0,255,136,0.5));">
-                        <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle, rgba(0,255,136,0.2) 0%, transparent 70%);"></div>
-                    </div>
-                    <div>
-                        <h1 class="text-lg font-bold text-gradient-neon font-display tracking-tight">DeepEyes</h1>
-                        <p class="text-[10px] text-gray-500 uppercase tracking-widest">Cyber Arsenal</p>
-                    </div>
+            <!-- Logo - Cyber Style -->
+            <div class="p-5 border-b border-[rgba(0,255,136,0.15)]">
+                <div>
+                    <h1 class="text-lg font-bold text-white tracking-tight" style="font-family: var(--font-pixel); font-size: 14px; text-shadow: 0 0 10px rgba(0,255,136,0.8), 0 0 20px rgba(0,255,136,0.4);">DeepEyes</h1>
+                    <p class="text-[10px] text-[#00FF88] uppercase tracking-[2px] mt-1" style="font-family: var(--font-mono);">// Deep visibility</p>
                 </div>
             </div>
             
-            <!-- Attack Mode Selector -->
-            <div class="p-4 border-b border-[rgba(0,255,136,0.1)]">
-                <label class="text-[10px] font-semibold text-gray-500 uppercase tracking-widest mb-3 block flex items-center gap-2">
-                    <i class="fas fa-crosshairs text-[#00FF88]"></i>
-                    Modo de Ataque
+            <!-- Attack Mode Selector - Cyber Terminal Style -->
+            <div class="p-4 border-b border-[rgba(0,255,136,0.15)]">
+                <label class="text-[9px] font-semibold text-[#00FF88] uppercase tracking-[3px] mb-3 block flex items-center gap-2" style="font-family: var(--font-mono);">
+                    <i class="fas fa-crosshairs"></i>
+                    // ATTACK_MODE
                 </label>
                 <input type="hidden" id="profileSelector" value="pentest">
                 <div class="grid grid-cols-3 gap-2">
@@ -1216,7 +1684,7 @@
                         <span>Full Attack</span>
                     </div>
                 </div>
-                <p class="text-[10px] text-gray-600 mt-2 text-center" id="profileDescription">🟢 Modo ofensivo autorizado</p>
+                <p class="text-[9px] text-[#00FF88] mt-2 text-center" id="profileDescription" style="font-family: var(--font-mono);">[ACTIVE] Modo ofensivo autorizado</p>
             </div>
             
             <!-- Toast de Plano Necessário -->
@@ -1252,72 +1720,73 @@
                 </div>
             </div>
             
-            <!-- New Session Button -->
+            <!-- New Session Button - Cyber Style -->
             <div class="p-4">
                 <div class="btn-wrapper">
-                    <button id="newChatBtn" class="sparkle-btn">
+                    <button id="newChatBtn" class="sparkle-btn cyber-btn">
                         <div class="inner">
                             <i class="fas fa-plus"></i>
-                            <span>Nova Sessão</span>
+                            <span>NOVA SESSÃO</span>
                         </div>
                     </button>
                 </div>
             </div>
             
-            <!-- Tools Menu -->
+            <!-- Tools Menu - Cyber Grid -->
             <div class="px-4 pb-2">
-                <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-widest px-1 py-2 flex items-center gap-2">
-                    <i class="fas fa-toolbox text-[#00D4FF] text-[8px]"></i>
-                    Ferramentas
+                <div class="text-[9px] font-semibold text-[#00D4FF] uppercase tracking-[3px] px-1 py-2 flex items-center gap-2" style="font-family: var(--font-mono);">
+                    <i class="fas fa-toolbox text-[8px]"></i>
+                    // TOOLS
                 </div>
                 <div class="grid grid-cols-3 gap-2">
-                    <button onclick="openTemplatesModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(0,255,136,0.05)] border border-[rgba(0,255,136,0.1)] hover:border-[rgba(0,255,136,0.3)] hover:bg-[rgba(0,255,136,0.1)] transition-all group">
-                        <i class="fas fa-file-code text-[#00FF88] group-hover:scale-110 transition-transform"></i>
-                        <span class="text-[9px] text-gray-400 group-hover:text-white">Templates</span>
+                    <button onclick="openTemplatesModal()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.4)] hover:bg-[rgba(0,255,136,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-file-code text-[#00FF88] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(0,255,136,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#00FF88]" style="font-family: var(--font-mono);">TEMPLATES</span>
                     </button>
-                    <button onclick="openPayloadModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(239,68,68,0.05)] border border-[rgba(239,68,68,0.1)] hover:border-[rgba(239,68,68,0.3)] hover:bg-[rgba(239,68,68,0.1)] transition-all group">
-                        <i class="fas fa-bug text-[#EF4444] group-hover:scale-110 transition-transform"></i>
-                        <span class="text-[9px] text-gray-400 group-hover:text-white">Payloads</span>
+                    <button onclick="openPayloadModal()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(239,68,68,0.15)] hover:border-[rgba(239,68,68,0.4)] hover:bg-[rgba(239,68,68,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-bug text-[#EF4444] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(239,68,68,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#EF4444]" style="font-family: var(--font-mono);">PAYLOADS</span>
                     </button>
-                    <button onclick="openNmapModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(0,212,255,0.05)] border border-[rgba(0,212,255,0.1)] hover:border-[rgba(0,212,255,0.3)] hover:bg-[rgba(0,212,255,0.1)] transition-all group">
-                        <i class="fas fa-radar text-[#00D4FF] group-hover:scale-110 transition-transform"></i>
-                        <span class="text-[9px] text-gray-400 group-hover:text-white">Nmap</span>
+                    <button onclick="openNmapModal()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,212,255,0.15)] hover:border-[rgba(0,212,255,0.4)] hover:bg-[rgba(0,212,255,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-network-wired text-[#00D4FF] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(0,212,255,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#00D4FF]" style="font-family: var(--font-mono);">NMAP</span>
                     </button>
-                    <button onclick="openChecklistModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(249,115,22,0.05)] border border-[rgba(249,115,22,0.1)] hover:border-[rgba(249,115,22,0.3)] hover:bg-[rgba(249,115,22,0.1)] transition-all group">
-                        <i class="fas fa-list-check text-[#F97316] group-hover:scale-110 transition-transform"></i>
-                        <span class="text-[9px] text-gray-400 group-hover:text-white">OWASP</span>
+                    <button onclick="openChecklistModal()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(249,115,22,0.15)] hover:border-[rgba(249,115,22,0.4)] hover:bg-[rgba(249,115,22,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-list-check text-[#F97316] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(249,115,22,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#F97316]" style="font-family: var(--font-mono);">OWASP</span>
                     </button>
-                    <button onclick="exportChat()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(168,85,247,0.05)] border border-[rgba(168,85,247,0.1)] hover:border-[rgba(168,85,247,0.3)] hover:bg-[rgba(168,85,247,0.1)] transition-all group">
-                        <i class="fas fa-download text-[#A855F7] group-hover:scale-110 transition-transform"></i>
-                        <span class="text-[9px] text-gray-400 group-hover:text-white">Exportar</span>
+                    <button onclick="exportChat()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(168,85,247,0.15)] hover:border-[rgba(168,85,247,0.4)] hover:bg-[rgba(168,85,247,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-download text-[#A855F7] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(168,85,247,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#A855F7]" style="font-family: var(--font-mono);">EXPORT</span>
                     </button>
-                    <button onclick="openWordlistModal()" class="flex flex-col items-center gap-1 p-2 rounded-lg bg-[rgba(236,72,153,0.05)] border border-[rgba(236,72,153,0.1)] hover:border-[rgba(236,72,153,0.3)] hover:bg-[rgba(236,72,153,0.1)] transition-all group">
-                        <i class="fas fa-list text-[#EC4899] group-hover:scale-110 transition-transform"></i>
-                        <span class="text-[9px] text-gray-400 group-hover:text-white">Wordlists</span>
+                    <button onclick="openWordlistModal()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(236,72,153,0.15)] hover:border-[rgba(236,72,153,0.4)] hover:bg-[rgba(236,72,153,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-list text-[#EC4899] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(236,72,153,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#EC4899]" style="font-family: var(--font-mono);">WORDLIST</span>
                     </button>
                 </div>
             </div>
             
-            <!-- Sessions List -->
+            <!-- Sessions List - Cyber Style -->
             <div class="flex-1 overflow-y-auto px-3 py-2">
-                <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-widest px-3 py-2 flex items-center gap-2">
-                    <i class="fas fa-history text-[#00FF88] text-[8px]"></i>
-                    Sessões Ativas
+                <div class="text-[9px] font-semibold text-[#00FF88] uppercase tracking-[3px] px-3 py-2 flex items-center gap-2" style="font-family: var(--font-mono);">
+                    <i class="fas fa-history text-[8px]"></i>
+                    // SESSIONS
                 </div>
                 <div id="sessionsList" class="space-y-1"></div>
             </div>
             
-            <!-- User Info -->
-            <div class="p-4 border-t border-[rgba(0,255,136,0.1)]">
-                <div id="userInfo" class="flex items-center gap-3 p-3 rounded-xl bg-[rgba(0,255,136,0.03)] border border-[rgba(0,255,136,0.1)] hover:border-[rgba(0,255,136,0.3)] transition-all cursor-pointer" onclick="window.location.href='/profile'">
-                    <a href="/profile" id="userAvatarLink" class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#00FF88] to-[#00D4FF] p-[2px] flex-shrink-0">
-                        <div class="w-full h-full rounded-[10px] bg-[#0B0F14] flex items-center justify-center overflow-hidden">
-                            <img id="userAvatarImg" src="/photo.jpeg" alt="Avatar" class="w-full h-full object-cover">
+            <!-- User Info - Cyber Style -->
+            <div class="p-4 border-t border-[rgba(0,255,136,0.15)]">
+                <div id="userInfo" class="flex items-center gap-3 p-3 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.4)] transition-all cursor-pointer" onclick="window.location.href='/profile'" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                    <a href="/profile" id="userAvatarLink" class="w-10 h-10 p-[2px] flex-shrink-0 border border-[rgba(0,255,136,0.4)]" style="background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,212,255,0.1)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <div class="w-full h-full bg-[#0a0a0f] flex items-center justify-center overflow-hidden">
+                            <i id="userAvatarIcon" class="fas fa-user text-[#00FF88]"></i>
+                            <img id="userAvatarImg" src="" alt="Avatar" class="w-full h-full object-cover hidden">
                         </div>
                     </a>
                     <div class="flex-1 min-w-0">
-                        <a href="/profile" id="userName" class="text-sm font-semibold text-white hover:text-[#00FF88] transition-colors block truncate">Não logado</a>
-                        <div id="userRole" class="text-[10px] text-gray-500 uppercase tracking-wider">-</div>
+                        <a href="/profile" id="userName" class="text-sm font-semibold text-[#00FF88] hover:text-white transition-colors block truncate" style="font-family: var(--font-mono);">NOT_LOGGED</a>
+                        <div id="userRole" class="text-[9px] text-gray-500 uppercase tracking-wider" style="font-family: var(--font-mono);">-</div>
                     </div>
                     <button id="logoutBtn" class="text-gray-500 hover:text-red-400 transition-colors hidden" title="Sair" onclick="event.stopPropagation()">
                         <i class="fas fa-sign-out-alt"></i>
@@ -1326,8 +1795,8 @@
             </div>
         </aside>
         
-        <!-- Mobile Sidebar Toggle -->
-        <button id="mobileMenuBtn" class="fixed top-4 left-4 z-50 lg:hidden w-10 h-10 rounded-xl bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.2)] text-[#00FF88] flex items-center justify-center">
+        <!-- Mobile Sidebar Toggle - Cyber Style -->
+        <button id="mobileMenuBtn" class="fixed top-4 left-4 z-50 lg:hidden w-10 h-10 bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.3)] text-[#00FF88] flex items-center justify-center hover:bg-[rgba(0,255,136,0.2)] hover:shadow-[0_0_15px_rgba(0,255,136,0.3)] transition-all" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
             <i class="fas fa-bars"></i>
         </button>
         
@@ -1597,17 +2066,151 @@
             </div>
         </div>
         
+        <!-- Nmap Generator Modal -->
+        <div id="nmapModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeNmapModal()"></div>
+            <div class="relative z-10 w-full max-w-lg mx-4 bg-[#0B0F14] rounded-2xl border border-[rgba(0,212,255,0.3)] shadow-2xl max-h-[85vh] flex flex-col">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#00D4FF] to-transparent"></div>
+                <div class="p-6 border-b border-[rgba(0,212,255,0.1)]">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-[rgba(0,212,255,0.1)] border border-[rgba(0,212,255,0.3)] flex items-center justify-center">
+                            <i class="fas fa-network-wired text-[#00D4FF]"></i>
+                        </div>
+                        Gerador de Comandos Nmap
+                    </h3>
+                    <p class="text-gray-400 text-sm mt-2">Gere comandos nmap otimizados para seu scan</p>
+                </div>
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Alvo (IP ou domínio)</label>
+                            <input type="text" id="nmapTarget" placeholder="192.168.1.1 ou exemplo.com" class="w-full bg-[#0B0F14] border border-[rgba(0,212,255,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00D4FF] font-mono">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Tipo de Scan</label>
+                            <select id="nmapScanType" class="w-full bg-[#0B0F14] border border-[rgba(0,212,255,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00D4FF]">
+                                <option value="quick">Scan Rápido (-F)</option>
+                                <option value="full">Scan Completo (-p-)</option>
+                                <option value="top100">Top 100 Portas</option>
+                                <option value="top1000">Top 1000 Portas</option>
+                                <option value="udp">Scan UDP (-sU)</option>
+                                <option value="stealth">Scan Stealth (-sS)</option>
+                                <option value="version">Detecção de Versão (-sV)</option>
+                                <option value="aggressive">Agressivo (-A)</option>
+                                <option value="vuln">Scan de Vulnerabilidades</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Opções Adicionais</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="flex items-center gap-2 p-2 rounded-lg bg-[rgba(0,212,255,0.05)] border border-[rgba(0,212,255,0.1)] cursor-pointer hover:border-[rgba(0,212,255,0.3)]">
+                                    <input type="checkbox" id="nmapOS" class="accent-[#00D4FF]">
+                                    <span class="text-sm text-gray-300">Detectar OS (-O)</span>
+                                </label>
+                                <label class="flex items-center gap-2 p-2 rounded-lg bg-[rgba(0,212,255,0.05)] border border-[rgba(0,212,255,0.1)] cursor-pointer hover:border-[rgba(0,212,255,0.3)]">
+                                    <input type="checkbox" id="nmapScripts" class="accent-[#00D4FF]">
+                                    <span class="text-sm text-gray-300">Scripts (-sC)</span>
+                                </label>
+                                <label class="flex items-center gap-2 p-2 rounded-lg bg-[rgba(0,212,255,0.05)] border border-[rgba(0,212,255,0.1)] cursor-pointer hover:border-[rgba(0,212,255,0.3)]">
+                                    <input type="checkbox" id="nmapVerbose" class="accent-[#00D4FF]">
+                                    <span class="text-sm text-gray-300">Verbose (-v)</span>
+                                </label>
+                                <label class="flex items-center gap-2 p-2 rounded-lg bg-[rgba(0,212,255,0.05)] border border-[rgba(0,212,255,0.1)] cursor-pointer hover:border-[rgba(0,212,255,0.3)]">
+                                    <input type="checkbox" id="nmapNoPin" class="accent-[#00D4FF]">
+                                    <span class="text-sm text-gray-300">Skip Ping (-Pn)</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="nmapOutput" class="hidden">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Comando Gerado</label>
+                            <div class="bg-[#0B0F14] border border-[rgba(0,212,255,0.2)] rounded-xl p-4 font-mono text-sm text-[#00D4FF] relative">
+                                <code id="nmapCommand"></code>
+                                <button onclick="copyNmapCommand()" class="absolute top-2 right-2 text-gray-500 hover:text-[#00D4FF] transition-colors">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-[rgba(0,212,255,0.1)] flex gap-3">
+                    <button onclick="closeNmapModal()" class="flex-1 bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Cancelar</button>
+                    <button onclick="generateNmapCommand()" class="flex-1 bg-gradient-to-r from-[#00D4FF] to-[#0EA5E9] hover:opacity-90 text-white rounded-xl py-3 font-bold transition-all">
+                        <i class="fas fa-terminal mr-2"></i>Gerar
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Wordlist Modal -->
+        <div id="wordlistModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeWordlistModal()"></div>
+            <div class="relative z-10 w-full max-w-2xl mx-4 bg-[#0B0F14] rounded-2xl border border-[rgba(236,72,153,0.3)] shadow-2xl max-h-[85vh] flex flex-col">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#EC4899] to-transparent"></div>
+                <div class="p-6 border-b border-[rgba(236,72,153,0.1)]">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-[rgba(236,72,153,0.1)] border border-[rgba(236,72,153,0.3)] flex items-center justify-center">
+                            <i class="fas fa-list text-[#EC4899]"></i>
+                        </div>
+                        Wordlists para Pentest
+                    </h3>
+                    <p class="text-gray-400 text-sm mt-2">Wordlists populares e onde encontrá-las</p>
+                </div>
+                <div class="flex-1 overflow-y-auto p-4">
+                    <div class="space-y-3">
+                        <div class="p-4 rounded-xl bg-[rgba(236,72,153,0.05)] border border-[rgba(236,72,153,0.1)]">
+                            <h4 class="font-semibold text-white flex items-center gap-2 mb-2">
+                                <i class="fas fa-folder text-[#EC4899]"></i> SecLists
+                            </h4>
+                            <p class="text-gray-400 text-sm mb-2">Coleção mais completa de wordlists para pentest</p>
+                            <code class="text-xs text-[#EC4899] bg-black/30 px-2 py-1 rounded">git clone https://github.com/danielmiessler/SecLists.git</code>
+                        </div>
+                        <div class="p-4 rounded-xl bg-[rgba(236,72,153,0.05)] border border-[rgba(236,72,153,0.1)]">
+                            <h4 class="font-semibold text-white flex items-center gap-2 mb-2">
+                                <i class="fas fa-key text-[#EC4899]"></i> RockYou
+                            </h4>
+                            <p class="text-gray-400 text-sm mb-2">14 milhões de senhas vazadas - essencial para brute force</p>
+                            <code class="text-xs text-[#EC4899] bg-black/30 px-2 py-1 rounded">/usr/share/wordlists/rockyou.txt</code>
+                        </div>
+                        <div class="p-4 rounded-xl bg-[rgba(236,72,153,0.05)] border border-[rgba(236,72,153,0.1)]">
+                            <h4 class="font-semibold text-white flex items-center gap-2 mb-2">
+                                <i class="fas fa-globe text-[#EC4899]"></i> Dirbuster
+                            </h4>
+                            <p class="text-gray-400 text-sm mb-2">Wordlists para descoberta de diretórios web</p>
+                            <code class="text-xs text-[#EC4899] bg-black/30 px-2 py-1 rounded">/usr/share/wordlists/dirbuster/</code>
+                        </div>
+                        <div class="p-4 rounded-xl bg-[rgba(236,72,153,0.05)] border border-[rgba(236,72,153,0.1)]">
+                            <h4 class="font-semibold text-white flex items-center gap-2 mb-2">
+                                <i class="fas fa-at text-[#EC4899]"></i> Subdomains
+                            </h4>
+                            <p class="text-gray-400 text-sm mb-2">Para enumeração de subdomínios</p>
+                            <code class="text-xs text-[#EC4899] bg-black/30 px-2 py-1 rounded">SecLists/Discovery/DNS/subdomains-top1million-*.txt</code>
+                        </div>
+                        <div class="p-4 rounded-xl bg-[rgba(236,72,153,0.05)] border border-[rgba(236,72,153,0.1)]">
+                            <h4 class="font-semibold text-white flex items-center gap-2 mb-2">
+                                <i class="fas fa-user text-[#EC4899]"></i> Usernames
+                            </h4>
+                            <p class="text-gray-400 text-sm mb-2">Nomes de usuário comuns</p>
+                            <code class="text-xs text-[#EC4899] bg-black/30 px-2 py-1 rounded">SecLists/Usernames/</code>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-[rgba(236,72,153,0.1)]">
+                    <button onclick="closeWordlistModal()" class="w-full bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Fechar</button>
+                </div>
+            </div>
+        </div>
+        
         <!-- Main Content -->
         <main class="flex-1 flex flex-col min-h-0">
-            <!-- Beta Warning Banner -->
-            <div id="betaBanner" class="bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-amber-500/20 border-b border-amber-500/30 px-4 py-2 lg:py-3 flex-shrink-0">
+            <!-- Beta Warning Banner - Cyber Style -->
+            <div id="betaBanner" class="border-b border-[rgba(249,115,22,0.3)] px-4 py-2 lg:py-3 flex-shrink-0" style="background: linear-gradient(90deg, rgba(249,115,22,0.1), rgba(239,68,68,0.1), rgba(249,115,22,0.1));">
                 <div class="flex items-center justify-center gap-2 lg:gap-3 text-center flex-wrap">
                     <div class="flex items-center gap-2">
                         <i class="fas fa-flask text-amber-400 animate-pulse text-sm"></i>
-                        <span class="text-amber-300 font-semibold text-xs lg:text-sm">BETA</span>
+                        <span class="text-amber-300 font-semibold text-xs lg:text-sm" style="font-family: var(--font-mono); letter-spacing: 2px;">[BETA]</span>
                     </div>
-                    <span class="text-amber-200/80 text-xs lg:text-sm">
-                        Estamos em desenvolvimento. Algumas funcionalidades podem estar instáveis.
+                    <span class="text-amber-200/80 text-xs lg:text-sm" style="font-family: var(--font-mono);">
+                        // Sistema em desenvolvimento. Algumas funcionalidades podem estar instáveis.
                     </span>
                     <button onclick="closeBetaBanner()" class="text-amber-400 hover:text-amber-200 transition-colors ml-1" title="Fechar aviso">
                         <i class="fas fa-times text-sm"></i>
@@ -1615,20 +2218,20 @@
                 </div>
             </div>
             
-            <!-- Session Header -->
-            <div id="sessionHeader" class="hidden px-6 py-4 bg-[rgba(11,15,20,0.9)] backdrop-blur-xl border-b border-[rgba(0,255,136,0.1)] flex items-center justify-between">
+            <!-- Session Header - Cyber Terminal Style -->
+            <div id="sessionHeader" class="hidden px-6 py-4 backdrop-blur-xl border-b border-[rgba(0,255,136,0.2)] flex items-center justify-between" style="background: linear-gradient(90deg, rgba(10,10,15,0.95), rgba(13,17,23,0.9));">
                 <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[rgba(0,255,136,0.2)] to-[rgba(0,212,255,0.1)] flex items-center justify-center border border-[rgba(0,255,136,0.3)]">
+                    <div class="w-10 h-10 flex items-center justify-center border border-[rgba(0,255,136,0.4)]" style="background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,212,255,0.1)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
                         <i class="fas fa-crosshairs text-[#00FF88] animate-pulse"></i>
                     </div>
                     <div>
-                        <p class="text-xs text-gray-500">🎯 ALVO</p>
-                        <p id="sessionTargetDomain" class="text-sm font-bold text-white">-</p>
+                        <p class="text-[10px] text-[#00FF88] uppercase tracking-[3px]" style="font-family: var(--font-mono);">// TARGET</p>
+                        <p id="sessionTargetDomain" class="text-sm font-bold text-white" style="font-family: var(--font-mono); text-shadow: 0 0 10px rgba(0,255,136,0.3);">-</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2 text-xs text-gray-500">
-                    <i class="fas fa-robot text-purple-400"></i>
-                    <span>DeepEyes</span>
+                <div class="flex items-center gap-2 text-xs" style="font-family: var(--font-mono);">
+                    <i class="fas fa-robot text-[#bf00ff]"></i>
+                    <span class="text-[#bf00ff]">DEEPEYES_AI</span>
                 </div>
             </div>
             
@@ -1639,30 +2242,30 @@
                     <!-- Logo com efeito glow -->
                     <div class="relative mb-8">
                         <div class="absolute inset-0 blur-3xl bg-gradient-to-r from-[#00FF88]/30 to-[#00D4FF]/30 rounded-full scale-150"></div>
-                        <img src="/logo.png" alt="DeepEyes" class="h-28 relative z-10 drop-shadow-2xl">
+                        <img src="/logo.png" alt="DeepEyes" class="h-28 relative z-10 drop-shadow-2xl flicker">
                     </div>
                     
-                    <!-- Título com gradient -->
-                    <h3 class="text-3xl font-bold mb-3 bg-gradient-to-r from-white via-[#00FF88] to-[#00D4FF] bg-clip-text text-transparent">
+                    <!-- Título com gradient e pixel font -->
+                    <h3 class="text-2xl font-bold mb-3 glitch-text" data-text="Bem-vindo ao DeepEyes" style="font-family: var(--font-pixel); background: linear-gradient(135deg, #fff, #00FF88, #00D4FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none;">
                         Bem-vindo ao DeepEyes
                     </h3>
-                    <p class="text-gray-400 max-w-md mb-10 leading-relaxed">
-                        Sua IA de <span class="text-[#00FF88] font-semibold">Segurança Ofensiva</span> para Pentest, Red Team e CTFs.
-                        <br><span class="text-gray-500 text-sm">Ambiente de laboratório autorizado.</span>
+                    <p class="text-gray-400 max-w-md mb-10 leading-relaxed" style="font-family: var(--font-mono);">
+                        Sua IA de <span class="text-[#00FF88] font-semibold text-shadow-neon">Segurança Ofensiva</span> para Pentest, Red Team e CTFs.
+                        <br><span class="text-gray-500 text-sm">// Ambiente de laboratório autorizado</span>
                     </p>
                     
-                    <!-- Feature Cards - Premium Design with Blob Glow -->
+                    <!-- Feature Cards - Cyberpunk Pixel Design -->
                     <div class="grid grid-cols-2 gap-5 max-w-xl">
                         <!-- SQL Injection Card -->
                         <div class="blob-card blob-red group">
                             <div class="blob"></div>
                             <div class="card-bg"></div>
                             <div class="card-content">
-                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/20 to-[#EF4444]/5 flex items-center justify-center mb-4 border border-[#EF4444]/30 group-hover:border-[#EF4444]/60 transition-colors">
-                                    <i class="fas fa-database text-[#EF4444] text-xl group-hover:scale-110 transition-transform"></i>
+                                <div class="w-12 h-12 flex items-center justify-center mb-4 border border-[#EF4444]/40 group-hover:border-[#EF4444] transition-colors" style="background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.05)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                                    <i class="fas fa-database text-[#EF4444] text-xl group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 10px #EF4444);"></i>
                                 </div>
-                                <h4 class="font-bold mb-2 text-white text-lg group-hover:text-[#EF4444] transition-colors">SQL Injection</h4>
-                                <p class="text-sm text-gray-400">Payloads, bypasses, técnicas avançadas</p>
+                                <h4 class="font-bold mb-2 text-white text-base group-hover:text-[#EF4444] transition-colors" style="font-family: var(--font-mono);">SQL Injection</h4>
+                                <p class="text-xs text-gray-400" style="font-family: var(--font-mono);">Payloads, bypasses, técnicas avançadas</p>
                             </div>
                         </div>
                         
@@ -1671,11 +2274,11 @@
                             <div class="blob"></div>
                             <div class="card-bg"></div>
                             <div class="card-content">
-                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00FF88]/20 to-[#00FF88]/5 flex items-center justify-center mb-4 border border-[#00FF88]/30 group-hover:border-[#00FF88]/60 transition-colors">
-                                    <i class="fas fa-terminal text-[#00FF88] text-xl group-hover:scale-110 transition-transform"></i>
+                                <div class="w-12 h-12 flex items-center justify-center mb-4 border border-[#00FF88]/40 group-hover:border-[#00FF88] transition-colors" style="background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,255,136,0.05)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                                    <i class="fas fa-terminal text-[#00FF88] text-xl group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 10px #00FF88);"></i>
                                 </div>
-                                <h4 class="font-bold mb-2 text-white text-lg group-hover:text-[#00FF88] transition-colors">Reverse Shells</h4>
-                                <p class="text-sm text-gray-400">One-liners, stagers, implants</p>
+                                <h4 class="font-bold mb-2 text-white text-base group-hover:text-[#00FF88] transition-colors" style="font-family: var(--font-mono);">Reverse Shells</h4>
+                                <p class="text-xs text-gray-400" style="font-family: var(--font-mono);">One-liners, stagers, implants</p>
                             </div>
                         </div>
                         
@@ -1684,11 +2287,11 @@
                             <div class="blob"></div>
                             <div class="card-bg"></div>
                             <div class="card-content">
-                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#F97316]/20 to-[#F97316]/5 flex items-center justify-center mb-4 border border-[#F97316]/30 group-hover:border-[#F97316]/60 transition-colors">
-                                    <i class="fas fa-user-secret text-[#F97316] text-xl group-hover:scale-110 transition-transform"></i>
+                                <div class="w-12 h-12 flex items-center justify-center mb-4 border border-[#F97316]/40 group-hover:border-[#F97316] transition-colors" style="background: linear-gradient(135deg, rgba(249,115,22,0.2), rgba(249,115,22,0.05)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                                    <i class="fas fa-user-secret text-[#F97316] text-xl group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 10px #F97316);"></i>
                                 </div>
-                                <h4 class="font-bold mb-2 text-white text-lg group-hover:text-[#F97316] transition-colors">Privilege Escalation</h4>
-                                <p class="text-sm text-gray-400">Linux, Windows, AD attacks</p>
+                                <h4 class="font-bold mb-2 text-white text-base group-hover:text-[#F97316] transition-colors" style="font-family: var(--font-mono);">Privilege Escalation</h4>
+                                <p class="text-xs text-gray-400" style="font-family: var(--font-mono);">Linux, Windows, AD attacks</p>
                             </div>
                         </div>
                         
@@ -1697,20 +2300,20 @@
                             <div class="blob"></div>
                             <div class="card-bg"></div>
                             <div class="card-content">
-                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00D4FF]/20 to-[#00D4FF]/5 flex items-center justify-center mb-4 border border-[#00D4FF]/30 group-hover:border-[#00D4FF]/60 transition-colors">
-                                    <i class="fas fa-mask text-[#00D4FF] text-xl group-hover:scale-110 transition-transform"></i>
+                                <div class="w-12 h-12 flex items-center justify-center mb-4 border border-[#00D4FF]/40 group-hover:border-[#00D4FF] transition-colors" style="background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(0,212,255,0.05)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                                    <i class="fas fa-mask text-[#00D4FF] text-xl group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 10px #00D4FF);"></i>
                                 </div>
-                                <h4 class="font-bold mb-2 text-white text-lg group-hover:text-[#00D4FF] transition-colors">Invasão</h4>
-                                <p class="text-sm text-gray-400">AMSI, EDR, WAF bypass</p>
+                                <h4 class="font-bold mb-2 text-white text-base group-hover:text-[#00D4FF] transition-colors" style="font-family: var(--font-mono);">Evasion</h4>
+                                <p class="text-xs text-gray-400" style="font-family: var(--font-mono);">AMSI, EDR, WAF bypass</p>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Warning Banner -->
-                    <div class="mt-8 p-4 bg-[#EF4444]/10 border border-[#EF4444]/30 rounded-xl max-w-lg">
-                        <p class="text-xs text-[#EF4444] flex items-center justify-center gap-2">
+                    <!-- Warning Banner - Cyber Style -->
+                    <div class="mt-8 p-4 border border-[#EF4444]/40 max-w-lg" style="background: rgba(239,68,68,0.08); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <p class="text-xs text-[#EF4444] flex items-center justify-center gap-2" style="font-family: var(--font-mono);">
                             <i class="fas fa-radiation animate-pulse"></i>
-                            <span><strong>AVISO:</strong> Use apenas em ambientes autorizados. O operador é responsável pelo uso ético e legal.</span>
+                            <span>[WARNING] Use apenas em ambientes autorizados. O operador é responsável pelo uso ético e legal.</span>
                         </p>
                     </div>
                 </div>
@@ -1846,34 +2449,37 @@
                 </div>
             </div>
             
-            <!-- Chat Input - Premium Design -->
+            <!-- Chat Input - Cyberpunk Terminal Design -->
             <div id="chatInputArea" class="p-4 hidden">
                 <!-- Container com efeito glow -->
                 <div class="relative max-w-4xl mx-auto">
                     <!-- Glow effect background -->
-                    <div class="absolute -inset-1 bg-gradient-to-r from-[#00FF88]/20 via-[#00D4FF]/10 to-[#00FF88]/20 rounded-2xl blur-lg opacity-0 transition-opacity duration-500" id="inputGlow"></div>
+                    <div class="absolute -inset-1 bg-gradient-to-r from-[#00FF88]/20 via-[#00D4FF]/10 to-[#00FF88]/20 blur-lg opacity-0 transition-opacity duration-500" id="inputGlow"></div>
                     
-                    <!-- Main input container -->
-                    <div class="relative bg-[rgba(15,23,42,0.9)] backdrop-blur-xl rounded-2xl border border-[rgba(255,255,255,0.1)] shadow-2xl overflow-hidden transition-all duration-300 hover:border-[rgba(0,255,136,0.2)] focus-within:border-[rgba(0,255,136,0.4)]" id="inputContainer">
+                    <!-- Main input container - Cyber Style -->
+                    <div class="relative bg-[rgba(10,10,15,0.95)] backdrop-blur-xl border border-[rgba(0,255,136,0.2)] shadow-2xl overflow-hidden transition-all duration-300 hover:border-[rgba(0,255,136,0.4)] focus-within:border-[rgba(0,255,136,0.6)] focus-within:shadow-[0_0_30px_rgba(0,255,136,0.15)]" id="inputContainer" style="clip-path: polygon(0 8px, 8px 8px, 8px 0, calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px));">
+                        <!-- Top glow line -->
+                        <div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#00FF88] to-transparent opacity-50"></div>
+                        
                         <!-- Preview do anexo -->
-                        <div id="attachmentPreview" class="hidden border-b border-[rgba(255,255,255,0.05)]">
+                        <div id="attachmentPreview" class="hidden border-b border-[rgba(0,255,136,0.1)]">
                             <div class="p-3 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <div id="attachmentIcon" class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00FF88]/20 to-[#00D4FF]/10 border border-[#00FF88]/30 flex items-center justify-center">
+                                    <div id="attachmentIcon" class="w-12 h-12 border border-[#00FF88]/40 flex items-center justify-center" style="background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,212,255,0.1)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
                                         <i class="fas fa-file-code text-[#00FF88] text-lg"></i>
                                     </div>
                                     <div>
-                                        <p id="attachmentName" class="text-white text-sm font-semibold truncate max-w-xs"></p>
-                                        <p id="attachmentInfo" class="text-gray-500 text-xs mt-0.5 font-mono"></p>
+                                        <p id="attachmentName" class="text-[#00FF88] text-sm font-semibold truncate max-w-xs" style="font-family: var(--font-mono);"></p>
+                                        <p id="attachmentInfo" class="text-gray-500 text-xs mt-0.5" style="font-family: var(--font-mono);"></p>
                                     </div>
                                 </div>
-                                <button type="button" onclick="removeAttachment()" class="w-8 h-8 rounded-lg bg-[rgba(239,68,68,0.1)] hover:bg-[rgba(239,68,68,0.2)] text-[#EF4444] hover:text-white transition-all flex items-center justify-center">
+                                <button type="button" onclick="removeAttachment()" class="w-8 h-8 bg-[rgba(239,68,68,0.1)] hover:bg-[rgba(239,68,68,0.2)] border border-[rgba(239,68,68,0.3)] text-[#EF4444] hover:text-white transition-all flex items-center justify-center">
                                     <i class="fas fa-times text-sm"></i>
                                 </button>
                             </div>
                             <!-- Preview de imagem -->
                             <div id="imagePreviewContainer" class="hidden px-3 pb-3">
-                                <img id="imagePreview" class="max-h-32 rounded-xl object-contain border border-[rgba(255,255,255,0.1)]" alt="Preview">
+                                <img id="imagePreview" class="max-h-32 object-contain border border-[rgba(0,255,136,0.2)]" alt="Preview">
                             </div>
                         </div>
                         
@@ -1881,36 +2487,39 @@
                             <!-- Input de arquivo oculto -->
                             <input type="file" id="fileInput" class="hidden" accept=".txt,.py,.js,.php,.html,.css,.json,.xml,.sh,.bat,.ps1,.sql,.md,.c,.cpp,.h,.java,.rb,.go,.rs,.ts,.vue,.jsx,.tsx,.yaml,.yml,.toml,.ini,.cfg,.conf,.env,.log,.csv,.dockerfile,.makefile,.gitignore,.htaccess,.nginx,.apache,.reg,.vbs,.asm,.lua,.perl,.pl,.r,.scala,.kt,.swift,.dart,.ex,.exs,.elm,.hs,.clj,.lisp,.scm,.ml,.fs,.pas,.vb,.m,.mm,.groovy,.gradle,.cmake,.proto,.graphql,.prisma,.tf,.hcl,image/*">
                             
-                            <!-- Botao de anexo -->
+                            <!-- Botao de anexo - Cyber Style -->
                             <button 
                                 type="button" 
                                 id="attachBtn"
                                 onclick="document.getElementById('fileInput').click()"
-                                class="w-10 h-10 rounded-xl bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(0,255,136,0.1)] border border-[rgba(255,255,255,0.1)] hover:border-[rgba(0,255,136,0.3)] text-gray-500 hover:text-[#00FF88] transition-all flex-shrink-0 flex items-center justify-center group"
+                                class="w-10 h-10 bg-[rgba(0,0,0,0.4)] hover:bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.2)] hover:border-[rgba(0,255,136,0.5)] text-gray-500 hover:text-[#00FF88] transition-all flex-shrink-0 flex items-center justify-center group"
                                 title="Anexar arquivo ou imagem"
+                                style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));"
                             >
                                 <i class="fas fa-plus text-sm group-hover:rotate-90 transition-transform duration-300"></i>
                             </button>
                             
                             <!-- Textarea container -->
                             <div class="flex-1 relative">
+                                <span class="absolute left-0 top-1/2 -translate-y-1/2 text-[#00FF88] opacity-50" style="font-family: var(--font-mono);">></span>
                                 <textarea 
                                     id="messageInput" 
                                     rows="1"
-                                    placeholder="O que você quer hackear hoje?"
-                                    class="w-full bg-transparent text-white text-sm resize-none focus:outline-none placeholder-gray-600 py-2.5 px-1 max-h-32 font-sans"
-                                    style="scrollbar-width: thin; scrollbar-color: rgba(0,255,136,0.3) transparent;"
+                                    placeholder="root@deepeyes:~$ Digite seu comando..."
+                                    class="w-full bg-transparent text-[#00FF88] text-sm resize-none focus:outline-none placeholder-[rgba(0,255,136,0.3)] py-2.5 pl-4 pr-1 max-h-32"
+                                    style="scrollbar-width: thin; scrollbar-color: rgba(0,255,136,0.3) transparent; font-family: var(--font-mono); caret-color: #00FF88;"
                                     disabled
                                 ></textarea>
                             </div>
                             
-                            <!-- Botao de enviar -->
+                            <!-- Botao de enviar - Cyber Style -->
                             <button 
                                 type="submit" 
                                 id="sendBtn"
                                 disabled
-                                class="w-10 h-10 rounded-xl bg-gradient-to-r from-[#00FF88] to-[#00D4FF] hover:from-[#00FF88] hover:to-[#00FF88] disabled:opacity-30 disabled:cursor-not-allowed text-[#0B0F14] font-bold transition-all flex-shrink-0 flex items-center justify-center shadow-lg shadow-[rgba(0,255,136,0.3)] hover:shadow-[rgba(0,255,136,0.5)] hover:scale-105 active:scale-95"
+                                class="w-10 h-10 bg-gradient-to-r from-[#00FF88] to-[#00D4FF] hover:from-[#00FF88] hover:to-[#00FF88] disabled:opacity-30 disabled:cursor-not-allowed text-[#0a0a0f] font-bold transition-all flex-shrink-0 flex items-center justify-center shadow-lg shadow-[rgba(0,255,136,0.3)] hover:shadow-[0_0_20px_rgba(0,255,136,0.5)] hover:scale-105 active:scale-95"
                                 title="Enviar mensagem"
+                                style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));"
                             >
                                 <i class="fas fa-arrow-up text-sm"></i>
                             </button>
@@ -1919,27 +2528,28 @@
                             <button 
                                 type="button" 
                                 id="cancelBtn"
-                                class="hidden w-10 h-10 rounded-xl bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-white transition-all flex-shrink-0 flex items-center justify-center shadow-lg shadow-red-500/30 hover:shadow-red-500/50 hover:scale-105 active:scale-95 animate-pulse"
+                                class="hidden w-10 h-10 bg-gradient-to-r from-red-700 to-red-600 hover:from-red-600 hover:to-red-500 text-white transition-all flex-shrink-0 flex items-center justify-center shadow-lg shadow-red-500/30 hover:shadow-[0_0_20px_rgba(239,68,68,0.5)] hover:scale-105 active:scale-95 animate-pulse"
                                 title="Cancelar resposta"
+                                style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));"
                             >
                                 <i class="fas fa-stop text-sm"></i>
                             </button>
                         </form>
                         
-                        <!-- Barra inferior com info -->
-                        <div class="px-4 py-2 border-t border-slate-700/30 flex items-center justify-between text-xs text-gray-500">
+                        <!-- Barra inferior com info - Cyber Style -->
+                        <div class="px-4 py-2 border-t border-[rgba(0,255,136,0.1)] flex items-center justify-between text-xs" style="font-family: var(--font-mono); background: rgba(0,0,0,0.3);">
                             <div class="flex items-center gap-4">
-                                <span class="flex items-center gap-1.5">
-                                    <i class="fas fa-shield-halved text-green-500/70"></i>
-                                    Ambiente autorizado
+                                <span class="flex items-center gap-1.5 text-[#00FF88]">
+                                    <i class="fas fa-shield-halved"></i>
+                                    <span class="opacity-70">AUTHORIZED</span>
                                 </span>
-                                <span class="flex items-center gap-1.5" id="currentProfileBadge">
-                                    <i class="fas fa-skull-crossbones text-red-500/70"></i>
-                                    <span id="currentProfileText">Pentest</span>
+                                <span class="flex items-center gap-1.5 text-[#EF4444]" id="currentProfileBadge">
+                                    <i class="fas fa-skull-crossbones"></i>
+                                    <span id="currentProfileText" class="opacity-70">PENTEST</span>
                                 </span>
                             </div>
                             <span class="text-gray-600">
-                                <kbd class="px-1.5 py-0.5 bg-slate-700/50 rounded text-[10px]">Enter</kbd> enviar
+                                <kbd class="px-1.5 py-0.5 bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.2)] text-[10px] text-[#00FF88]">Enter</kbd> enviar
                                 <span class="mx-1">•</span>
                                 <kbd class="px-1.5 py-0.5 bg-slate-700/50 rounded text-[10px]">Shift+Enter</kbd> nova linha
                             </span>
@@ -2283,18 +2893,26 @@
             try {
                 const data = await api('/profile');
                 const avatarImg = document.getElementById('userAvatarImg');
+                const avatarIcon = document.getElementById('userAvatarIcon');
                 
                 if (data.user && data.user.avatar) {
                     userAvatarUrl = data.user.avatar;
                     avatarImg.src = data.user.avatar;
+                    avatarImg.classList.remove('hidden');
+                    if (avatarIcon) avatarIcon.classList.add('hidden');
                 } else {
-                    userAvatarUrl = '/photo.jpeg';
-                    avatarImg.src = '/photo.jpeg';
+                    userAvatarUrl = null;
+                    avatarImg.classList.add('hidden');
+                    if (avatarIcon) avatarIcon.classList.remove('hidden');
                 }
             } catch (error) {
                 console.error('Erro ao carregar avatar:', error);
-                // Usa foto padrão em caso de erro
-                document.getElementById('userAvatarImg').src = '/photo.jpeg';
+                // Mostra ícone padrão em caso de erro
+                const avatarImg = document.getElementById('userAvatarImg');
+                const avatarIcon = document.getElementById('userAvatarIcon');
+                avatarImg.classList.add('hidden');
+                if (avatarIcon) avatarIcon.classList.remove('hidden');
+                userAvatarUrl = null;
             }
         }
         
@@ -3409,6 +4027,11 @@
         
         // Templates Modal
         function openTemplatesModal() {
+            // Só abre se tiver uma sessão ativa
+            if (!currentSession) {
+                showNotification('Inicie uma sessão primeiro para usar templates', 'warning');
+                return;
+            }
             const modal = document.getElementById('templatesModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -3612,6 +4235,80 @@
                 console.error('Erro ao exportar:', error);
                 showNotification('Erro ao exportar chat', 'error');
             }
+        }
+        
+        // Nmap Generator Functions
+        function openNmapModal() {
+            const modal = document.getElementById('nmapModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('nmapOutput').classList.add('hidden');
+        }
+        
+        function closeNmapModal() {
+            const modal = document.getElementById('nmapModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        function generateNmapCommand() {
+            const target = document.getElementById('nmapTarget').value.trim();
+            if (!target) {
+                showNotification('Digite um alvo (IP ou domínio)', 'error');
+                return;
+            }
+            
+            const scanType = document.getElementById('nmapScanType').value;
+            const detectOS = document.getElementById('nmapOS').checked;
+            const scripts = document.getElementById('nmapScripts').checked;
+            const verbose = document.getElementById('nmapVerbose').checked;
+            const noPing = document.getElementById('nmapNoPin').checked;
+            
+            let cmd = 'nmap';
+            
+            // Tipo de scan
+            switch(scanType) {
+                case 'quick': cmd += ' -F'; break;
+                case 'full': cmd += ' -p-'; break;
+                case 'top100': cmd += ' --top-ports 100'; break;
+                case 'top1000': cmd += ' --top-ports 1000'; break;
+                case 'udp': cmd += ' -sU'; break;
+                case 'stealth': cmd += ' -sS'; break;
+                case 'version': cmd += ' -sV'; break;
+                case 'aggressive': cmd += ' -A'; break;
+                case 'vuln': cmd += ' --script vuln'; break;
+            }
+            
+            // Opções adicionais
+            if (detectOS) cmd += ' -O';
+            if (scripts && scanType !== 'vuln') cmd += ' -sC';
+            if (verbose) cmd += ' -v';
+            if (noPing) cmd += ' -Pn';
+            
+            cmd += ` ${target}`;
+            
+            document.getElementById('nmapCommand').textContent = cmd;
+            document.getElementById('nmapOutput').classList.remove('hidden');
+        }
+        
+        function copyNmapCommand() {
+            const cmd = document.getElementById('nmapCommand').textContent;
+            navigator.clipboard.writeText(cmd).then(() => {
+                showNotification('Comando copiado!', 'success');
+            });
+        }
+        
+        // Wordlist Modal Functions
+        function openWordlistModal() {
+            const modal = document.getElementById('wordlistModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function closeWordlistModal() {
+            const modal = document.getElementById('wordlistModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
         
         async function init() {

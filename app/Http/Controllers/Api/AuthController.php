@@ -15,14 +15,52 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     /**
+     * Lista de domínios de email descartáveis bloqueados
+     */
+    private array $blockedEmailDomains = [
+        'tempmail.com', 'temp-mail.org', 'guerrillamail.com', 'guerrillamail.org',
+        'mailinator.com', 'throwaway.email', '10minutemail.com', 'fakeinbox.com',
+        'trashmail.com', 'yopmail.com', 'getnada.com', 'maildrop.cc', 'dispostable.com',
+        'mailnesia.com', 'tempail.com', 'tempr.email', 'discard.email', 'spamgourmet.com',
+        'mytemp.email', 'mohmal.com', 'emailondeck.com', 'mintemail.com', 'tempinbox.com',
+        'sharklasers.com', 'spam4.me', 'grr.la', 'guerrillamailblock.com', 'pokemail.net',
+    ];
+
+    /**
      * Register a new user
      */
     public function register(Request $request): JsonResponse
     {
+        // Validação forte de senha e email
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name' => ['required', 'string', 'max:255', 'min:2'],
+            'email' => [
+                'required', 
+                'string', 
+                'email:rfc,dns', // Valida formato RFC + verifica DNS do domínio
+                'max:255', 
+                'unique:users',
+                function ($attribute, $value, $fail) {
+                    $domain = strtolower(substr(strrchr($value, "@"), 1));
+                    if (in_array($domain, $this->blockedEmailDomains)) {
+                        $fail('Emails temporários não são permitidos.');
+                    }
+                },
+            ],
+            'password' => [
+                'required', 
+                'string', 
+                'min:8',
+                'max:128',
+                'confirmed',
+                'regex:/[a-z]/',      // Pelo menos uma letra minúscula
+                'regex:/[A-Z]/',      // Pelo menos uma letra maiúscula  
+                'regex:/[0-9]/',      // Pelo menos um número
+                'regex:/[@$!%*#?&]/', // Pelo menos um caractere especial
+            ],
+        ], [
+            'password.regex' => 'A senha deve conter: maiúscula, minúscula, número e caractere especial (@$!%*#?&)',
+            'email.email' => 'Email inválido ou domínio não existe.',
         ]);
 
         // Busca o plano Ghost para novos usuários

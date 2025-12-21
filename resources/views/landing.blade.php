@@ -213,6 +213,69 @@
             font-size: 1.2rem;
         }
 
+        /* Tools Dropdown */
+        .tools-dropdown {
+            position: relative;
+        }
+
+        .tools-trigger {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .dropdown-arrow {
+            font-size: 0.7rem;
+            transition: transform 0.2s;
+        }
+
+        .tools-dropdown.open .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .tools-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 160px;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 8px 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+        }
+
+        .tools-dropdown.open .tools-menu {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .tools-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            color: var(--text-secondary) !important;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .tools-menu a:hover {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green) !important;
+        }
+
+        .tool-icon {
+            font-size: 1rem;
+        }
+
         @media (max-width: 768px) {
             .navbar {
                 width: 95%;
@@ -1689,6 +1752,18 @@
                         <a href="#recursos">Recursos</a>
                         <a href="/docs">Docs</a>
                         <a href="#faq">FAQ</a>
+                        <div class="tools-dropdown">
+                            <a href="#" class="tools-trigger" onclick="toggleToolsDropdown(event)">
+                                Tools <span class="dropdown-arrow">▼</span>
+                            </a>
+                            <div class="tools-menu" id="toolsMenu">
+                                <a href="/exploits"><span class="tool-icon">💀</span> Exploits</a>
+                                <a href="/checklist"><span class="tool-icon">✓</span> Checklist</a>
+                                <a href="/scanner"><span class="tool-icon">🔍</span> Scanner</a>
+                                <a href="/reports"><span class="tool-icon">📄</span> Reports</a>
+                                <a href="/terminal"><span class="tool-icon">⌨</span> Terminal</a>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="navbar-actions">
@@ -2242,6 +2317,22 @@ subprocess.call(["/bin/sh","-i"])</code>
     </div>
 
     <script>
+        // Toggle Tools Dropdown
+        function toggleToolsDropdown(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const dropdown = event.target.closest('.tools-dropdown');
+            dropdown.classList.toggle('open');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            const dropdown = document.querySelector('.tools-dropdown');
+            if (dropdown && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
+
         // Toggle mobile nav
         function toggleNav() {
             const navLinks = document.getElementById('navLinks');

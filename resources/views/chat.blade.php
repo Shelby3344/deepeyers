@@ -1563,7 +1563,18 @@
                     <a href="/#como-funciona" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors">Como Funciona</a>
                     <a href="/#recursos" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors">Recursos</a>
                     <a href="/docs" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors">Docs</a>
-                    <a href="/#faq" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors">FAQ</a>
+                    <div class="relative tools-dropdown-chat">
+                        <a href="#" onclick="toggleToolsMenu(event)" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors flex items-center gap-1">
+                            Tools <span class="text-xs">▼</span>
+                        </a>
+                        <div id="toolsMenuChat" class="absolute top-full left-0 mt-2 py-2 rounded-xl hidden" style="background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.2); min-width: 160px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+                            <a href="/exploits" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">💀 Exploits</a>
+                            <a href="/checklist" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">✓ Checklist</a>
+                            <a href="/scanner" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">🔍 Scanner</a>
+                            <a href="/reports" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">📄 Reports</a>
+                            <a href="/terminal" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">⌨ Terminal</a>
+                        </div>
+                    </div>
                 </div>
                 <a href="/" class="flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-sm no-underline transition-all hover:scale-105" style="background: linear-gradient(135deg, #00d4ff, #00ff88); color: #0a0a0f; box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);">
                     ‹ Voltar
@@ -3947,6 +3958,23 @@
             mobileOverlay.classList.remove('active');
             document.body.style.overflow = '';
         }
+
+        // Toggle Tools Menu in navbar
+        function toggleToolsMenu(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const menu = document.getElementById('toolsMenuChat');
+            menu.classList.toggle('hidden');
+        }
+
+        // Close tools menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('toolsMenuChat');
+            const dropdown = document.querySelector('.tools-dropdown-chat');
+            if (menu && dropdown && !dropdown.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
         
         if (mobileMenuBtn) {
             mobileMenuBtn.addEventListener('click', openMobileSidebar);
