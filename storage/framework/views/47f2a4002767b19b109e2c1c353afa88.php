@@ -1743,8 +1743,7 @@
             <nav class="navbar">
                 <div class="navbar-container">
                     <a href="#" class="navbar-logo">
-                        <span class="logo-text">DeepEyes</span>
-                        <span class="beta-badge">BETA</span>
+                        <img src="/logo.png" alt="DeepEyes" class="hero-logo" style="width: 80px; height: 80px;">
                     </a>
 
                     <div class="navbar-links" id="navLinks">
@@ -1757,10 +1756,10 @@
                                 Tools <span class="dropdown-arrow">▼</span>
                             </a>
                             <div class="tools-menu" id="toolsMenu">
-                                <a href="/checklist"><span class="tool-icon">✓</span> Checklist</a>
-                                <a href="/scanner"><span class="tool-icon">🔍</span> Scanner</a>
-                                <a href="/reports"><span class="tool-icon">📄</span> Reports</a>
-                                <a href="/terminal"><span class="tool-icon">⌨</span> Terminal</a>
+                                <a href="/checklist">Checklist</a>
+                                <a href="/scanner">Scanner</a>
+                                <a href="/reports">Reports</a>
+                                <a href="/terminal">Terminal</a>
                             </div>
                         </div>
                     </div>
@@ -1782,12 +1781,6 @@
             <div class="fade-section">
                 <section class="hero">
                     <div class="hero-content">
-                        <img src="/logo.png" alt="DeepEyes" class="hero-logo">
-                        
-                        <div class="hero-badge mono">
-                            <span class="pulse"></span>
-                            Sistema Ativo — Modo BETA
-                        </div>
                         
                         <h1 class="hero-title">
                             Bem-vindo ao <span class="highlight">DeepEyes</span>
@@ -2531,17 +2524,17 @@ subprocess.call(["/bin/sh","-i"])</code>
                 uniforms: {
                     uTime: { value: 0 },
                     uResolution: { value: new THREE.Vector2(container.offsetWidth, container.offsetHeight) },
-                    uFlakeSize: { value: 0.01 },
-                    uMinFlakeSize: { value: 1.25 },
-                    uPixelResolution: { value: 200 },
-                    uSpeed: { value: 1.25 },
-                    uDepthFade: { value: 8 },
-                    uFarPlane: { value: 20 },
+                    uFlakeSize: { value: 0.008 },
+                    uMinFlakeSize: { value: 0.8 },
+                    uPixelResolution: { value: 400 },
+                    uSpeed: { value: 0.8 },
+                    uDepthFade: { value: 12 },
+                    uFarPlane: { value: 30 },
                     uColor: { value: new THREE.Vector3(color.r, color.g, color.b) },
-                    uBrightness: { value: 1 },
-                    uGamma: { value: 0.4545 },
-                    uDensity: { value: 0.3 },
-                    uVariant: { value: 0.0 },
+                    uBrightness: { value: 0.9 },
+                    uGamma: { value: 0.5 },
+                    uDensity: { value: 0.2 },
+                    uVariant: { value: 1.0 },
                     uDirection: { value: (125 * Math.PI) / 180 }
                 },
                 transparent: true

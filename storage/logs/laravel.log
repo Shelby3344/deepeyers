@@ -1204,3 +1204,11 @@ CONTEXT:  unnamed portal parameter $1 = '...' at C:\\Users\\zucks\\Desktop\\iafo
 #66 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php(23): require_once('C:\\\\Users\\\\zucks\\\\...')
 #67 {main}
 "} 
+[2025-12-22 21:45:39] local.ERROR: Command "sevr" is not defined. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"sevr\" is not defined. at C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\symfony\\console\\Application.php:759)
+[stacktrace]
+#0 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\symfony\\console\\Application.php(298): Symfony\\Component\\Console\\Application->find('sevr')
+#1 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\symfony\\console\\Application.php(195): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 C:\\Users\\zucks\\Desktop\\iaforpentester\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(198): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 C:\\Users\\zucks\\Desktop\\iaforpentester\\artisan(16): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 {main}
+"} 

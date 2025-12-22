@@ -123,27 +123,35 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 24px;
-            background: rgba(10, 10, 15, 0.85);
+            padding: 10px 20px;
+            background: rgba(10, 10, 15, 0.9);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(0, 212, 255, 0.15);
             border-radius: 50px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            gap: 16px;
         }
 
         .navbar-logo {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             text-decoration: none;
             color: var(--text-primary);
+            flex-shrink: 0;
+        }
+
+        .navbar-logo img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
         }
 
         .logo-text {
             font-family: 'JetBrains Mono', monospace;
             font-weight: 600;
-            font-size: 1.1rem;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+            font-size: 1rem;
+            background: linear-gradient(135deg, var(--accent-cy var(--accent-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -161,15 +169,18 @@
         .navbar-links {
             display: flex;
             align-items: center;
-            gap: 28px;
+            gap: 24px;
+            flex: 1;
+            justify-content: center;
         }
 
         .navbar-links a {
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 500;
             transition: color 0.3s ease;
+            white-space: nowrap;
         }
 
         .navbar-links a:hover {
@@ -179,23 +190,24 @@
         .navbar-actions {
             display: flex;
             align-items: center;
-            gap: 12px;
+            flex-shrink: 0;
         }
 
         .btn-enter {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
+            justify-content: center;
+            padding: 8px 18px;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
             border: none;
             border-radius: 25px;
             color: var(--bg-primary);
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
+            white-space: nowrap;
         }
 
         .btn-enter:hover {
@@ -208,10 +220,10 @@
             background: none;
             border: none;
             cursor: pointer;
-            padding: 5px;
+            padding: 8px;
             color: var(--accent-cyan);
-            font-size: 1.2rem;
-        }
+            font-size: 1.4rem;
+            line-heig
 
         /* Tools Dropdown */
         .tools-dropdown {
@@ -277,44 +289,73 @@
         }
 
         @media (max-width: 768px) {
+        @media (max-width: 768px) {
             .navbar {
                 width: 95%;
                 top: 10px;
             }
 
             .navbar-container {
-                padding: 10px 16px;
-                border-radius: 20px;
+                padding: 12px 16px;
+                border-radius: 25px;
+            }
+
+            .navbar-logo img {
+                width: 28px;
+                height: 28px;
+            }
+
+            .logo-text {
+                font-size: 0.9rem;
             }
 
             .navbar-links {
                 display: none;
             }
 
-            .navbar-links.active {
+                bordlinks.active {
                 display: flex;
                 position: absolute;
-                top: 70px;
+                top: 60px;
                 left: 0;
                 right: 0;
                 flex-direction: column;
-                background: rgba(10, 10, 15, 0.95);
+                background: rgba(10, 10, 15, 0.98);
                 backdrop-filter: blur(20px);
                 border: 1px solid rgba(0, 212, 255, 0.15);
                 border-radius: 16px;
-                padding: 20px;
-                gap: 16px;
+                padding: 16px;
+                gap: 12px;
+            }
+
+            .navbar-links.active a {
+                padding: 10px 16px;
+                border-radius: 8px;
+            }
+
+            .navbar-links.active a:hover {
+                background: rgba(0, 212, 255, 0.1);
             }
 
             .navbar-toggle {
                 display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
             .navbar-actions {
                 display: none;
             }
-        }
 
+            .tools-dropdown.open .tools-menu {
+                position: static;
+                transform: none;
+                background: rgba(0, 0, 0, 0.3);
+                margin-top: 8px;
+                border: none;
+                box-shadow: none;
+            }
+        }
         /* ========================================
            HERO
            ======================================== */
@@ -1742,9 +1783,9 @@
             <!-- Navbar -->
             <nav class="navbar">
                 <div class="navbar-container">
-                    <a href="#" class="navbar-logo">
+                    <a href="/" class="navbar-logo">
+                        <img src="/logo.png" alt="DeepEyes" style="width: 36px; height: 36px; object-fit: contain;">
                         <span class="logo-text">DeepEyes</span>
-                        <span class="beta-badge">BETA</span>
                     </a>
 
                     <div class="navbar-links" id="navLinks">
@@ -1757,19 +1798,16 @@
                                 Tools <span class="dropdown-arrow">▼</span>
                             </a>
                             <div class="tools-menu" id="toolsMenu">
-                                <a href="/checklist"><span class="tool-icon">✓</span> Checklist</a>
-                                <a href="/scanner"><span class="tool-icon">🔍</span> Scanner</a>
-                                <a href="/reports"><span class="tool-icon">📄</span> Reports</a>
-                                <a href="/terminal"><span class="tool-icon">⌨</span> Terminal</a>
+                                <a href="/checklist">Checklist</a>
+                                <a href="/scanner">Scanner</a>
+                                <a href="/reports">Reports</a>
+                                <a href="/terminal">Terminal</a>
                             </div>
                         </div>
                     </div>
 
                     <div class="navbar-actions">
-                        <a href="/chat" class="btn-enter">
-                            ›
-                            Entrar no Lab
-                        </a>
+                        <a href="/chat" class="btn-enter">Entrar no chat</a>
                     </div>
 
                     <button class="navbar-toggle" onclick="toggleNav()">
@@ -1782,12 +1820,6 @@
             <div class="fade-section">
                 <section class="hero">
                     <div class="hero-content">
-                        <img src="/logo.png" alt="DeepEyes" class="hero-logo">
-                        
-                        <div class="hero-badge mono">
-                            <span class="pulse"></span>
-                            Sistema Ativo — Modo BETA
-                        </div>
                         
                         <h1 class="hero-title">
                             Bem-vindo ao <span class="highlight">DeepEyes</span>
