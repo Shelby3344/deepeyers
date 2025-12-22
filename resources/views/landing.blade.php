@@ -151,7 +151,7 @@
             font-family: 'JetBrains Mono', monospace;
             font-weight: 600;
             font-size: 1rem;
-            background: linear-gradient(135deg, var(--accent-cy var(--accent-green));
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -223,7 +223,8 @@
             padding: 8px;
             color: var(--accent-cyan);
             font-size: 1.4rem;
-            line-heig
+            line-height: 1;
+        }
 
         /* Tools Dropdown */
         .tools-dropdown {
@@ -289,7 +290,6 @@
         }
 
         @media (max-width: 768px) {
-        @media (max-width: 768px) {
             .navbar {
                 width: 95%;
                 top: 10px;
@@ -313,7 +313,7 @@
                 display: none;
             }
 
-                bordlinks.active {
+            .navbar-links.active {
                 display: flex;
                 position: absolute;
                 top: 60px;
