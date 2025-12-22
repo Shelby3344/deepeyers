@@ -183,11 +183,20 @@ DEEPSEEK_MODEL=deepseek/deepseek-chat
 5. Abra um Pull Request
 
 ### 🔜 Próximas Features
+- [ ] **Terminal Integrado no Chat** - Execute comandos diretamente na conversa com a IA, que analisa os resultados em tempo real e sugere próximos passos para descobrir vulnerabilidades
 - [ ] Multi-modelo (GPT-4, Claude)
 - [ ] Integração Stripe para pagamentos
 - [ ] 2FA/MFA
 - [ ] Workspaces de equipe
 - [ ] Relatórios PDF profissionais
+
+### ✅ Implementado Recentemente
+- [x] Seleção múltipla e exclusão em massa de usuários no admin
+- [x] Validação de email (apenas provedores confiáveis: Gmail, Outlook, Yahoo, etc)
+- [x] Validação de senha forte (maiúscula, minúscula, número, caractere especial)
+- [x] Terminal interativo com whitelist de comandos
+- [x] Rate limiting e logging de comandos
+- [x] Sistema de autenticação em todas as ferramentas
 
 ## � LiceAnça
 
