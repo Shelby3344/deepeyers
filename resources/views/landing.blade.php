@@ -1793,21 +1793,10 @@
                         <a href="#recursos">Recursos</a>
                         <a href="/docs">Docs</a>
                         <a href="#faq">FAQ</a>
-                        <div class="tools-dropdown">
-                            <a href="#" class="tools-trigger" onclick="toggleToolsDropdown(event)">
-                                Tools <span class="dropdown-arrow">▼</span>
-                            </a>
-                            <div class="tools-menu" id="toolsMenu">
-                                <a href="/checklist">Checklist</a>
-                                <a href="/scanner">Scanner</a>
-                                <a href="/reports">Reports</a>
-                                <a href="/terminal">Terminal</a>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="navbar-actions">
-                        <a href="/chat" class="btn-enter">Entrar no chat</a>
+                        <a href="/chat" class="btn-enter">Entrar no Lab</a>
                     </div>
 
                     <button class="navbar-toggle" onclick="toggleNav()">
