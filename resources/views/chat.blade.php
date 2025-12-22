@@ -1553,29 +1553,18 @@
         <div class="absolute inset-0 pointer-events-none" style="background-image: linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);"></div>
         
         <!-- Navbar -->
-        <nav class="fixed top-5 left-1/2 -translate-x-1/2 z-[1001] w-[90%] max-w-[900px]">
-            <div class="flex items-center justify-between px-6 py-3 rounded-full" style="background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.15); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);">
+        <nav class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-[1001] w-[95%] sm:w-[90%] max-w-[900px]">
+            <div class="flex items-center justify-between px-4 sm:px-6 py-2.5 sm:py-3 rounded-full" style="background: rgba(10, 10, 15, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.15); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);">
                 <a href="/" class="flex items-center gap-2 no-underline">
-                    <span class="font-semibold text-lg" style="font-family: 'JetBrains Mono', monospace; background: linear-gradient(135deg, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DeepEyes</span>
-                    <span class="text-[10px] px-1.5 py-0.5 bg-[#8b5cf6] rounded text-white font-semibold">BETA</span>
+                    <img src="/logo.png" alt="DeepEyes" class="w-7 h-7 sm:w-8 sm:h-8 object-contain">
+                    <span class="font-semibold text-base sm:text-lg" style="font-family: 'JetBrains Mono', monospace; background: linear-gradient(135deg, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DeepEyes</span>
                 </a>
                 <div class="hidden md:flex items-center gap-7">
                     <a href="/#como-funciona" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors">Como Funciona</a>
                     <a href="/#recursos" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors">Recursos</a>
                     <a href="/docs" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors">Docs</a>
-                    <div class="relative tools-dropdown-chat">
-                        <a href="#" onclick="toggleToolsMenu(event)" class="text-[#a0a0b0] no-underline text-sm font-medium hover:text-[#00d4ff] transition-colors flex items-center gap-1">
-                            Tools <span class="text-xs">▼</span>
-                        </a>
-                        <div id="toolsMenuChat" class="absolute top-full left-0 mt-2 py-2 rounded-xl hidden" style="background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.2); min-width: 160px; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-                            <a href="/checklist" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">✓ Checklist</a>
-                            <a href="/scanner" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">🔍 Scanner</a>
-                            <a href="/reports" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">📄 Reports</a>
-                            <a href="/terminal" class="flex items-center gap-2 px-4 py-2 text-[#a0a0b0] hover:text-[#00ff88] hover:bg-[rgba(0,255,136,0.1)] transition-all text-sm">⌨ Terminal</a>
-                        </div>
-                    </div>
                 </div>
-                <a href="/" class="flex items-center gap-2 px-5 py-2.5 rounded-full font-semibold text-sm no-underline transition-all hover:scale-105" style="background: linear-gradient(135deg, #00d4ff, #00ff88); color: #0a0a0f; box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);">
+                <a href="/" class="flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm no-underline transition-all hover:scale-105" style="background: linear-gradient(135deg, #00d4ff, #00ff88); color: #0a0a0f; box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);">
                     ‹ Voltar
                 </a>
             </div>
@@ -1650,7 +1639,7 @@
             
             <p class="text-center text-[#a0a0b0] text-xs mt-6" style="font-family: 'JetBrains Mono', monospace;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline mr-1"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
-                Ambiente seguro para profissionais
+                 1.0
             </p>
         </div>
     </div>

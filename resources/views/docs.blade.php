@@ -263,15 +263,15 @@
                 <p>O DeepEyes oferece três modos distintos, cada um otimizado para diferentes cenários.</p>
                 <div class="mode-grid">
                     <div class="mode-card pentest">
-                        <div class="mode-name">🔍 Pentest Mode</div>
+                        <div class="mode-name">Pentest Mode</div>
                         <div class="mode-desc">Focado em testes de penetração metodológicos. Ideal para assessments estruturados com documentação.</div>
                     </div>
                     <div class="mode-card redteam">
-                        <div class="mode-name">🎯 Red Team Mode</div>
+                        <div class="mode-name">Red Team Mode</div>
                         <div class="mode-desc">Simulação de adversários reais. Técnicas avançadas de evasão e persistência.</div>
                     </div>
                     <div class="mode-card fullattack">
-                        <div class="mode-name">💀 Full Attack Mode</div>
+                        <div class="mode-name">Full Attack Mode</div>
                         <div class="mode-desc">Modo sem restrições. Acesso completo a todas as técnicas e payloads ofensivos.</div>
                     </div>
                 </div>
@@ -330,45 +330,7 @@ sem ser detectado pelo Defender. Quais técnicas recomendam?"</div>
 com bypass de AMSI e ofuscação básica."</div>
             </section>
 
-            <!-- Tools Overview -->
-            <section class="section" id="tools-overview">
-                <h2>🔧 Ferramentas Integradas</h2>
-                <p>O DeepEyes inclui 5 ferramentas poderosas acessíveis diretamente da sidebar do chat.</p>
-                
-                <div class="tool-grid">
-                    <div class="tool-card">
-                        <div class="icon orange"><i class="fas fa-list-check"></i></div>
-                        <h4>Checklist</h4>
-                        <p>Checklist interativo de pentest por tipo (Web, API, Network, AD, Mobile).</p>
-                        <a href="#checklist" class="link">Ver documentação <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="tool-card">
-                        <div class="icon cyan"><i class="fas fa-crosshairs"></i></div>
-                        <h4>Scanner</h4>
-                        <p>Scanner de vulnerabilidades que analisa headers, SSL, portas e tecnologias.</p>
-                        <a href="#scanner" class="link">Ver documentação <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="tool-card">
-                        <div class="icon purple"><i class="fas fa-file-alt"></i></div>
-                        <h4>Reports</h4>
-                        <p>Gerador de relatórios profissionais em Markdown, HTML e PDF.</p>
-                        <a href="#reports" class="link">Ver documentação <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="tool-card">
-                        <div class="icon green"><i class="fas fa-terminal"></i></div>
-                        <h4>Terminal</h4>
-                        <p>Terminal interativo com comandos  (nmap, whois, dig, etc.).</p>
-                        <a href="#terminal" class="link">Ver documentação <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                    <div class="tool-card">
-                        <div class="icon pink"><i class="fas fa-download"></i></div>
-                        <h4>Export</h4>
-                        <p>Exporta a conversa atual do chat para arquivo de texto.</p>
-                        <a href="#reports" class="link">Ver documentação <i class="fas fa-arrow-right"></i></a>
-                    </div>
-                </div>
-            </section>
-
+           
             <!-- Checklist -->
             <section class="section" id="checklist">
                 <h2>✓ Checklist de Pentest</h2>
@@ -513,7 +475,7 @@ com bypass de AMSI e ofuscação básica."</div>
 
             <!-- Terminal -->
             <section class="section" id="terminal">
-                <h2>⌨ Terminal Interativo</h2>
+                <h2>Terminal Interativo</h2>
                 <p>Terminal com comandos simulados para praticar e gerar comandos rapidamente.</p>
                 
                 <h3>Como acessar</h3>
@@ -625,7 +587,7 @@ PORT     STATE SERVICE VERSION
 
             <!-- Casos de Uso -->
             <section class="section" id="casos-uso">
-                <h2>📋 Casos de Uso</h2>
+                <h2>Como usar?</h2>
                 <p>Exemplos reais de como usar o DeepEyes em diferentes cenários.</p>
 
                 <h3>1. Web Application Pentest</h3>
