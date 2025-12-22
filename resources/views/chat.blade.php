@@ -117,7 +117,7 @@
             right: 0;
             bottom: 0;
             pointer-events: none;
-            z-index: 9998;
+            z-index: 0;
             background-image: 
                 linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
@@ -133,7 +133,7 @@
             right: 0;
             bottom: 0;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 1;
             background: repeating-linear-gradient(
                 0deg,
                 transparent,
