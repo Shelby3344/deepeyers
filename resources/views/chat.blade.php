@@ -2238,7 +2238,7 @@
                     </h3>
                     <p class="text-gray-400 max-w-md mb-10 leading-relaxed" style="font-family: var(--font-mono);">
                         Sua IA de <span class="text-[#00FF88] font-semibold text-shadow-neon">Segurança Ofensiva</span> para Pentest, Red Team e CTFs.
-                        <br><span class="text-gray-500 text-sm">// Ambiente de laboratório autorizado</span>
+<br><span class="text-gray-500 text-sm">// Novo no sistema? <a href="/docs" class="text-[#00D4FF] hover:text-[#00FF88] underline transition-colors">Consulte a documentação</a></span>
                     </p>
                     
                     <!-- Feature Cards - Cyberpunk Pixel Design -->
