@@ -16,6 +16,11 @@
             document.documentElement.classList.add('no-token');
         }
     </script>
+    <style>
+        /* Previne flash na transição de páginas */
+        html { visibility: hidden; }
+        html.page-ready { visibility: visible; }
+    </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -4347,7 +4352,9 @@
         }
         
         init();
+        
+        // Mostra página quando estiver pronta (evita flash)
+        document.documentElement.classList.add('page-ready');
     </script>
 </body>
 </html>
-
