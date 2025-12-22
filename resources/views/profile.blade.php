@@ -794,6 +794,9 @@
                         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
                             <h3 class="text-lg font-semibold text-white">Gerenciar Usuários</h3>
                             <div class="flex items-center gap-3">
+                                <button id="deleteSelectedBtn" onclick="deleteSelectedUsers()" class="btn-danger hidden" style="padding: 8px 16px; font-size: 13px;">
+                                    <i class="fas fa-trash mr-2"></i>Excluir Selecionados (<span id="selectedCount">0</span>)
+                                </button>
                                 <div class="relative">
                                     <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
                                     <input type="text" id="searchUsers" class="search-input" placeholder="Buscar usuário...">
@@ -804,6 +807,9 @@
                             <table class="data-table">
                                 <thead>
                                     <tr>
+                                        <th style="width: 40px;">
+                                            <input type="checkbox" id="selectAllUsers" onchange="toggleSelectAll(this)" class="w-4 h-4 rounded cursor-pointer">
+                                        </th>
                                         <th>Usuário</th>
                                         <th>Email</th>
                                         <th>Role</th>
@@ -813,7 +819,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="usersTable">
-                                    <tr><td colspan="6" class="text-center text-gray-500">Carregando...</td></tr>
+                                    <tr><td colspan="7" class="text-center text-gray-500">Carregando...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1289,14 +1295,83 @@
                 const data = await api('/admin/users');
                 allUsers = data.data || [];
                 renderUsersTable(allUsers);
+                updateSelectedCount();
             } catch (err) {
                 console.error('Erro:', err);
+            }
+        }
+        
+        let selectedUserIds = new Set();
+        
+        function toggleSelectAll(checkbox) {
+            const checkboxes = document.querySelectorAll('.user-checkbox');
+            checkboxes.forEach(cb => {
+                if (cb.dataset.role !== 'admin') {
+                    cb.checked = checkbox.checked;
+                    if (checkbox.checked) {
+                        selectedUserIds.add(parseInt(cb.value));
+                    } else {
+                        selectedUserIds.delete(parseInt(cb.value));
+                    }
+                }
+            });
+            updateSelectedCount();
+        }
+        
+        function toggleUserSelection(checkbox) {
+            const userId = parseInt(checkbox.value);
+            if (checkbox.checked) {
+                selectedUserIds.add(userId);
+            } else {
+                selectedUserIds.delete(userId);
+                document.getElementById('selectAllUsers').checked = false;
+            }
+            updateSelectedCount();
+        }
+        
+        function updateSelectedCount() {
+            const count = selectedUserIds.size;
+            document.getElementById('selectedCount').textContent = count;
+            const btn = document.getElementById('deleteSelectedBtn');
+            if (count > 0) {
+                btn.classList.remove('hidden');
+            } else {
+                btn.classList.add('hidden');
+            }
+        }
+        
+        async function deleteSelectedUsers() {
+            if (selectedUserIds.size === 0) return;
+            
+            if (!confirm(`Tem certeza que deseja excluir ${selectedUserIds.size} usuário(s)? Esta ação não pode ser desfeita.`)) {
+                return;
+            }
+            
+            try {
+                const response = await api('/admin/users/delete-bulk', {
+                    method: 'POST',
+                    body: JSON.stringify({ user_ids: Array.from(selectedUserIds) })
+                });
+                
+                showNotification(response.message, 'success');
+                selectedUserIds.clear();
+                document.getElementById('selectAllUsers').checked = false;
+                updateSelectedCount();
+                loadUsers();
+            } catch (err) {
+                showNotification('Erro ao excluir usuários', 'error');
             }
         }
         
         function renderUsersTable(users) {
             document.getElementById('usersTable').innerHTML = users.map(u => `
                 <tr>
+                    <td>
+                        ${u.role !== 'admin' 
+                            ? `<input type="checkbox" class="user-checkbox w-4 h-4 rounded cursor-pointer" value="${u.id}" data-role="${u.role}" onchange="toggleUserSelection(this)" ${selectedUserIds.has(u.id) ? 'checked' : ''}>`
+                            : '<span class="text-gray-600" title="Admin não pode ser excluído"><i class="fas fa-shield-halved"></i></span>'
+                        }
+                    </td>
                     <td>
                         <div class="flex items-center gap-3">
                             ${u.avatar 
@@ -1327,7 +1402,7 @@
                         </div>
                     </td>
                 </tr>
-            `).join('') || '<tr><td colspan="6" class="text-center text-gray-500">Nenhum usuário</td></tr>';
+            `).join('') || '<tr><td colspan="7" class="text-center text-gray-500">Nenhum usuário</td></tr>';
             
             // Adiciona event listeners para os botões de editar
             document.querySelectorAll('.edit-user-btn').forEach(btn => {
