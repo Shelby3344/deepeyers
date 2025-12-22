@@ -1614,13 +1614,15 @@
                     <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Email</label>
                     <input type="email" name="email" required autocomplete="email"
                         class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
-                        placeholder="user@example.com">
+                        placeholder="user@gmail.com">
+                    <p class="text-[10px] text-[#a0a0b0] mt-1">Gmail, Outlook, Yahoo, iCloud, etc.</p>
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Senha</label>
-                    <input type="password" name="password" required autocomplete="new-password"
+                    <input type="password" name="password" required autocomplete="new-password" minlength="8"
                         class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
                         placeholder="••••••••">
+                    <p class="text-[10px] text-[#a0a0b0] mt-1">Mín. 8 chars: Aa, 123, @#$</p>
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Confirmar Senha</label>

@@ -15,15 +15,23 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     /**
-     * Lista de domínios de email descartáveis bloqueados
+     * Domínios de email permitidos (principais provedores)
      */
-    private array $blockedEmailDomains = [
-        'tempmail.com', 'temp-mail.org', 'guerrillamail.com', 'guerrillamail.org',
-        'mailinator.com', 'throwaway.email', '10minutemail.com', 'fakeinbox.com',
-        'trashmail.com', 'yopmail.com', 'getnada.com', 'maildrop.cc', 'dispostable.com',
-        'mailnesia.com', 'tempail.com', 'tempr.email', 'discard.email', 'spamgourmet.com',
-        'mytemp.email', 'mohmal.com', 'emailondeck.com', 'mintemail.com', 'tempinbox.com',
-        'sharklasers.com', 'spam4.me', 'grr.la', 'guerrillamailblock.com', 'pokemail.net',
+    private array $allowedEmailDomains = [
+        // Google
+        'gmail.com', 'googlemail.com',
+        // Microsoft
+        'outlook.com', 'hotmail.com', 'live.com', 'msn.com', 'outlook.com.br', 'hotmail.com.br',
+        // Yahoo
+        'yahoo.com', 'yahoo.com.br', 'ymail.com',
+        // Apple
+        'icloud.com', 'me.com', 'mac.com',
+        // ProtonMail
+        'protonmail.com', 'proton.me', 'pm.me',
+        // Outros populares
+        'zoho.com', 'aol.com', 'mail.com', 'gmx.com', 'gmx.net',
+        // Brasil
+        'uol.com.br', 'bol.com.br', 'terra.com.br', 'ig.com.br', 'globo.com', 'r7.com',
     ];
 
     /**
@@ -37,13 +45,13 @@ class AuthController extends Controller
             'email' => [
                 'required', 
                 'string', 
-                'email:rfc,dns', // Valida formato RFC + verifica DNS do domínio
+                'email:rfc,dns',
                 'max:255', 
                 'unique:users',
                 function ($attribute, $value, $fail) {
                     $domain = strtolower(substr(strrchr($value, "@"), 1));
-                    if (in_array($domain, $this->blockedEmailDomains)) {
-                        $fail('Emails temporários não são permitidos.');
+                    if (!in_array($domain, $this->allowedEmailDomains)) {
+                        $fail('Use um email de provedor válido (Gmail, Outlook, Yahoo, etc).');
                     }
                 },
             ],
@@ -56,11 +64,14 @@ class AuthController extends Controller
                 'regex:/[a-z]/',      // Pelo menos uma letra minúscula
                 'regex:/[A-Z]/',      // Pelo menos uma letra maiúscula  
                 'regex:/[0-9]/',      // Pelo menos um número
-                'regex:/[@$!%*#?&]/', // Pelo menos um caractere especial
+                'regex:/[@$!%*#?&.]/', // Pelo menos um caractere especial
             ],
         ], [
-            'password.regex' => 'A senha deve conter: maiúscula, minúscula, número e caractere especial (@$!%*#?&)',
+            'password.min' => 'A senha deve ter no mínimo 8 caracteres.',
+            'password.regex' => 'A senha deve conter: maiúscula, minúscula, número e caractere especial (@$!%*#?&.)',
+            'password.confirmed' => 'As senhas não conferem.',
             'email.email' => 'Email inválido ou domínio não existe.',
+            'email.unique' => 'Este email já está cadastrado.',
         ]);
 
         // Busca o plano Ghost para novos usuários

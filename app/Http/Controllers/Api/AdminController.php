@@ -124,6 +124,53 @@ class AdminController extends Controller
     }
 
     /**
+     * Exclui múltiplos usuários de uma vez
+     */
+    public function deleteUsers(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'user_ids' => 'required|array|min:1',
+            'user_ids.*' => 'integer|exists:users,id',
+        ]);
+
+        $userIds = $validated['user_ids'];
+        $deleted = 0;
+        $skipped = 0;
+
+        foreach ($userIds as $userId) {
+            $user = User::find($userId);
+            
+            if (!$user) continue;
+            
+            // Não permite excluir admin
+            if ($user->role === 'admin') {
+                $skipped++;
+                continue;
+            }
+
+            // Exclui sessões e mensagens do usuário
+            $sessions = ChatSession::where('user_id', $user->id)->get();
+            foreach ($sessions as $session) {
+                ChatMessage::where('session_id', $session->id)->delete();
+                $session->forceDelete();
+            }
+
+            $user->delete();
+            $deleted++;
+        }
+        
+        // Limpa cache
+        Cache::forget('admin_users_page_1_per_50');
+        Cache::forget('admin_stats');
+
+        return response()->json([
+            'message' => "{$deleted} usuário(s) excluído(s)" . ($skipped > 0 ? ", {$skipped} admin(s) ignorado(s)" : ""),
+            'deleted' => $deleted,
+            'skipped' => $skipped,
+        ]);
+    }
+
+    /**
      * Bane um usuário
      */
     public function banUser(string $userId): JsonResponse

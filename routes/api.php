@@ -94,6 +94,7 @@ Route::middleware(['auth:sanctum', 'ensure.not.banned'])->group(function () {
         Route::get('/users', [AdminController::class, 'users'])->name('api.admin.users');
         Route::put('/users/{userId}', [AdminController::class, 'updateUser'])->name('api.admin.users.update');
         Route::delete('/users/{userId}', [AdminController::class, 'deleteUser'])->name('api.admin.users.delete');
+        Route::post('/users/delete-bulk', [AdminController::class, 'deleteUsers'])->name('api.admin.users.delete.bulk');
         Route::post('/users/{userId}/ban', [AdminController::class, 'banUser'])->name('api.admin.users.ban');
         Route::post('/users/{userId}/unban', [AdminController::class, 'unbanUser'])->name('api.admin.users.unban');
 
