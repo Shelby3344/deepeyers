@@ -2359,6 +2359,21 @@
                         </p>
                     </div>
                     
+                    <!-- Dica do Terminal Integrado -->
+                    <div class="w-full max-w-md mb-4">
+                        <div class="de-card p-3 border-[rgba(0,212,255,0.2)] bg-[rgba(0,212,255,0.03)]">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-[rgba(0,212,255,0.1)] flex items-center justify-center border border-[rgba(0,212,255,0.2)]">
+                                    <i class="fas fa-terminal text-[#00d4ff] text-sm"></i>
+                                </div>
+                                <div class="text-left flex-1">
+                                    <p class="text-xs font-semibold text-white">Terminal Integrado</p>
+                                    <p class="text-[10px] text-gray-400">Digite <code class="text-[#00ff88] bg-[rgba(0,255,136,0.1)] px-1 rounded">$ comando</code> para executar e a IA analisa o resultado</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <!-- Exemplos de Perguntas - Premium Style -->
                     <div class="w-full max-w-md">
                         <h4 class="text-xs font-semibold text-gray-400 mb-3 flex items-center gap-2">
@@ -2366,6 +2381,12 @@
                             Experimente Perguntar
                         </h4>
                         <div class="grid grid-cols-1 gap-2">
+                            <button onclick="setExampleQuestion(this)" class="de-card p-3 text-left hover:border-[rgba(0,212,255,0.3)] transition-all group">
+                                <p class="text-xs text-gray-400 group-hover:text-white transition-colors flex items-center gap-2">
+                                    <i class="fas fa-terminal text-[#00d4ff] text-[10px]"></i>
+                                    $ nmap -sV deepeyes.online
+                                </p>
+                            </button>
                             <button onclick="setExampleQuestion(this)" class="de-card p-3 text-left hover:border-[rgba(0,255,136,0.3)] transition-all group">
                                 <p class="text-xs text-gray-400 group-hover:text-white transition-colors flex items-center gap-2">
                                     <i class="fas fa-chevron-right text-[#00FF88] text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
@@ -2376,12 +2397,6 @@
                                 <p class="text-xs text-gray-400 group-hover:text-white transition-colors flex items-center gap-2">
                                     <i class="fas fa-chevron-right text-[#00FF88] text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
                                     Gere um reverse shell em Python para Linux
-                                </p>
-                            </button>
-                            <button onclick="setExampleQuestion(this)" class="de-card p-3 text-left hover:border-[rgba(0,255,136,0.3)] transition-all group">
-                                <p class="text-xs text-gray-400 group-hover:text-white transition-colors flex items-center gap-2">
-                                    <i class="fas fa-chevron-right text-[#00FF88] text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"></i>
-                                    Quais técnicas de privilege escalation no Windows?
                                 </p>
                             </button>
                         </div>
@@ -2493,7 +2508,7 @@
                                 <textarea 
                                     id="messageInput" 
                                     rows="1"
-                                    placeholder="root@deepeyes:~$ Digite seu comando..."
+                                    placeholder="Digite sua mensagem ou $ comando para terminal..."
                                     class="w-full bg-transparent text-[#00FF88] text-sm resize-none focus:outline-none placeholder-[rgba(0,255,136,0.3)] py-2.5 pl-4 pr-1 max-h-32"
                                     style="scrollbar-width: thin; scrollbar-color: rgba(0,255,136,0.3) transparent; font-family: var(--font-mono); caret-color: #00FF88;"
                                     disabled
@@ -2557,6 +2572,10 @@
         let userAvatarUrl = null;
         let currentAttachment = null; // Para armazenar o anexo atual
         let currentAbortController = null; // Para cancelar requisições
+        
+        // Terminal integrado no chat
+        const TERMINAL_PREFIX = '$'; // Prefixo para comandos do terminal
+        const terminalHistory = []; // Histórico de comandos executados na sessão
         
         // DOM Elements
         const authModal = document.getElementById('authModal');
@@ -3676,6 +3695,227 @@
             scrollToBottom();
         }
         
+        // ========================================
+        // TERMINAL INTEGRADO NO CHAT
+        // ========================================
+        
+        // Verifica se a mensagem é um comando de terminal
+        function isTerminalCommand(text) {
+            return text.startsWith(TERMINAL_PREFIX) && text.length > 1;
+        }
+        
+        // Extrai o comando do texto (remove o prefixo $)
+        function extractCommand(text) {
+            return text.substring(1).trim();
+        }
+        
+        // Executa comando no terminal e retorna resultado
+        async function executeTerminalCommand(command) {
+            try {
+                const response = await fetch('/api/terminal/execute', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ command })
+                });
+                
+                const data = await response.json();
+                return {
+                    success: data.success,
+                    output: data.output,
+                    type: data.type || 'output',
+                    exitCode: data.exit_code
+                };
+            } catch (error) {
+                return {
+                    success: false,
+                    output: `Erro de conexão: ${error.message}`,
+                    type: 'error'
+                };
+            }
+        }
+        
+        // Cria HTML para exibir resultado do terminal no chat
+        function createTerminalResultHTML(command, result) {
+            const statusIcon = result.success ? '✓' : '✗';
+            const statusColor = result.success ? '#00ff88' : '#ff4444';
+            const outputClass = result.type === 'error' ? 'text-red-400' : (result.type === 'warning' ? 'text-yellow-400' : 'text-[#00d4ff]');
+            
+            return `
+                <div class="terminal-result my-3 rounded-lg overflow-hidden" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(0,212,255,0.2);">
+                    <div class="flex items-center gap-2 px-3 py-2" style="background: rgba(0,212,255,0.1); border-bottom: 1px solid rgba(0,212,255,0.1);">
+                        <i class="fas fa-terminal text-[#00d4ff] text-xs"></i>
+                        <span class="text-xs font-mono text-[#00d4ff]">Terminal</span>
+                        <span class="ml-auto text-xs" style="color: ${statusColor}">${statusIcon}</span>
+                    </div>
+                    <div class="p-3">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[#00ff88] text-xs">$</span>
+                            <code class="text-sm text-white font-mono">${escapeHtml(command)}</code>
+                        </div>
+                        <pre class="text-xs ${outputClass} font-mono whitespace-pre-wrap overflow-x-auto max-h-64 overflow-y-auto" style="background: transparent; border: none; padding: 0; margin: 0;">${escapeHtml(result.output)}</pre>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Escape HTML para evitar XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Processa comando do terminal e envia para IA analisar
+        async function processTerminalCommand(command) {
+            // Esconde welcome e mostra chat
+            sessionWelcome.classList.add('hidden');
+            messagesContainer.classList.remove('hidden');
+            
+            // Mostra mensagem do usuário com o comando
+            addMessage({ 
+                role: 'user', 
+                content: `\`$ ${command}\`` 
+            });
+            
+            // Mostra loading
+            typingIndicator.classList.remove('hidden');
+            sendBtn.classList.add('hidden');
+            scrollToBottom();
+            
+            // Executa o comando
+            const result = await executeTerminalCommand(command);
+            
+            // Adiciona ao histórico
+            terminalHistory.push({ command, result, timestamp: new Date() });
+            
+            // Esconde loading
+            typingIndicator.classList.add('hidden');
+            
+            // Cria mensagem com resultado do terminal
+            const terminalHTML = createTerminalResultHTML(command, result);
+            
+            // Agora envia para a IA analisar o resultado
+            const aiPrompt = `Executei o seguinte comando no terminal:
+
+\`\`\`bash
+$ ${command}
+\`\`\`
+
+**Resultado:**
+\`\`\`
+${result.output}
+\`\`\`
+
+${result.success ? 'O comando foi executado com sucesso.' : 'O comando falhou ou retornou erro.'}
+
+Analise este resultado e me ajude a:
+1. Entender o que significa
+2. Identificar possíveis vulnerabilidades ou informações úteis para pentest
+3. Sugerir próximos comandos ou passos`;
+
+            // Mostra o resultado do terminal primeiro
+            messagesContainer.insertAdjacentHTML('beforeend', `
+                <div class="flex gap-3 p-4 animate-slide-in">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 255, 136, 0.1)); border: 1px solid rgba(0, 212, 255, 0.3);">
+                        <i class="fas fa-terminal text-[#00d4ff] text-sm"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        ${terminalHTML}
+                    </div>
+                </div>
+            `);
+            scrollToBottom();
+            
+            // Agora envia para a IA analisar
+            typingIndicator.classList.remove('hidden');
+            currentAbortController = new AbortController();
+            
+            let streamingDiv = null;
+            
+            try {
+                const response = await fetch(`/api/chat/sessions/${currentSession.id}/messages/stream`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'text/event-stream',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ message: aiPrompt }),
+                    signal: currentAbortController.signal
+                });
+                
+                if (response.status === 429) {
+                    typingIndicator.classList.add('hidden');
+                    sendBtn.classList.remove('hidden');
+                    showLimitReachedModal();
+                    return;
+                }
+                
+                if (!response.ok) throw new Error('Streaming failed');
+                
+                typingIndicator.classList.add('hidden');
+                streamingDiv = document.createElement('div');
+                streamingDiv.id = 'streamingResponse';
+                streamingDiv.innerHTML = createMessageHTML({ role: 'assistant', content: '<span class="streaming-cursor">▊</span>' });
+                messagesContainer.appendChild(streamingDiv);
+                scrollToBottom();
+                
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let fullContent = '';
+                
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split('\n');
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.slice(6));
+                                if (data.content) {
+                                    fullContent += data.content;
+                                    const contentDiv = streamingDiv.querySelector('.message-content');
+                                    if (contentDiv) {
+                                        contentDiv.innerHTML = marked.parse(fullContent) + '<span class="streaming-cursor">▊</span>';
+                                    }
+                                    scrollToBottom();
+                                } else if (data.done) {
+                                    const contentDiv = streamingDiv.querySelector('.message-content');
+                                    if (contentDiv) {
+                                        contentDiv.innerHTML = marked.parse(fullContent);
+                                    }
+                                    streamingDiv.removeAttribute('id');
+                                    processCodeBlocks();
+                                } else if (data.error) {
+                                    throw new Error(data.error);
+                                }
+                            } catch (parseError) {}
+                        }
+                    }
+                }
+            } catch (error) {
+                if (error.name === 'AbortError') {
+                    if (streamingDiv) streamingDiv.remove();
+                    addMessage({ role: 'assistant', content: '⚠️ **Análise cancelada.**' });
+                } else {
+                    if (streamingDiv) streamingDiv.remove();
+                    addMessage({ role: 'assistant', content: '❌ **Erro ao analisar resultado.** Tente novamente.' });
+                }
+            } finally {
+                typingIndicator.classList.add('hidden');
+                sendBtn.classList.remove('hidden');
+                cancelBtn.classList.add('hidden');
+                currentAbortController = null;
+                messageInput.focus();
+            }
+        }
+        
         function scrollToBottom() {
             const container = document.getElementById('chatContainer');
             container.scrollTop = container.scrollHeight;
@@ -3688,6 +3928,15 @@
             const hasAttachment = currentAttachment !== null;
             
             if (!currentSession || (!hasText && !hasAttachment)) return;
+            
+            // Verifica se é um comando de terminal
+            const inputText = messageInput.value.trim();
+            if (isTerminalCommand(inputText) && !hasAttachment) {
+                const command = extractCommand(inputText);
+                messageInput.value = '';
+                await processTerminalCommand(command);
+                return;
+            }
             
             // Monta a mensagem com o anexo se houver
             let content = messageInput.value.trim();
