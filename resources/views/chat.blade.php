@@ -1556,7 +1556,6 @@
         <nav class="fixed top-3 sm:top-5 left-1/2 -translate-x-1/2 z-[1001] w-[95%] sm:w-[90%] max-w-[900px]">
             <div class="flex items-center justify-between px-4 sm:px-6 py-2.5 sm:py-3 rounded-full" style="background: rgba(10, 10, 15, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.15); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);">
                 <a href="/" class="flex items-center gap-2 no-underline">
-                    <img src="/logo.png" alt="DeepEyes" class="w-7 h-7 sm:w-8 sm:h-8 object-contain">
                     <span class="font-semibold text-base sm:text-lg" style="font-family: 'JetBrains Mono', monospace; background: linear-gradient(135deg, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DeepEyes</span>
                 </a>
                 <div class="hidden md:flex items-center gap-7">
@@ -2255,12 +2254,6 @@
             <div id="chatContainer" class="flex-1 overflow-y-auto p-6">
                 <!-- Welcome para Pagina Inicial (sem sessao) -->
                 <div id="homeWelcome" class="flex flex-col items-center justify-center text-center py-10">
-                    <!-- Logo com efeito glow -->
-                    <div class="relative mb-8">
-                        <div class="absolute inset-0 blur-3xl bg-gradient-to-r from-[#00FF88]/30 to-[#00D4FF]/30 rounded-full scale-150"></div>
-                        <img src="/logo.png" alt="DeepEyes" class="h-28 relative z-10 drop-shadow-2xl flicker">
-                    </div>
-                    
                     <!-- Título com gradient e pixel font -->
                     <h3 class="text-2xl font-bold mb-3 glitch-text" data-text="Bem-vindo ao DeepEyes" style="font-family: var(--font-pixel); background: linear-gradient(135deg, #fff, #00FF88, #00D4FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none;">
                         Bem-vindo ao DeepEyes
@@ -2336,12 +2329,6 @@
                 
                 <!-- Welcome para Sessao (sem mensagens ainda) -->
                 <div id="sessionWelcome" class="flex flex-col items-center justify-center h-full text-center hidden">
-                    <!-- Logo compacto -->
-                    <div class="relative mb-6">
-                        <div class="absolute inset-0 blur-2xl bg-gradient-to-r from-[#00FF88]/20 to-[#00D4FF]/20 rounded-full scale-150"></div>
-                        <img src="/logo.png" alt="DeepEyes" class="h-16 relative z-10">
-                    </div>
-                    
                     <h3 class="text-2xl font-bold text-white mb-2">Pronto para começar!</h3>
                     <p class="text-gray-400 max-w-md mb-6">
                         Faça sua primeira pergunta e eu vou te ajudar com técnicas de 
