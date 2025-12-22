@@ -4,9 +4,7 @@
   <img src="public/logo.png" alt="DeepEyes Logo" width="200">
 </p>
 
-Sistema profissional de IA especializada em **Pentest** e **Red Team**, construído com Laravel 11 e integração com DeepSeek API via OpenRouter.
-
-## 🚀 Demo
+Sistema profissional de IA especializada em **Pentest** e **Red Team**.
 
 **URL:** https://deepeyes.online
 
@@ -20,7 +18,7 @@ Sistema profissional de IA especializada em **Pentest** e **Red Team**, constru�
 - Botão de **copiar código** em blocos de código
 - Suporte a Markdown completo
 
-### � Scannear de Vulnerabilidades
+### 🔍 Scannear de Vulnerabilidades
 - Interface visual para análise de alvos
 - Integração com ferramentas de reconhecimento
 - Resultados formatados e exportáveis
@@ -136,10 +134,6 @@ php artisan db:seed
 php artisan serve
 ```
 
-## 🌐 Deploy em Produção
-
-Veja o guia completo em [DEPLOY_HOSTINGER.md](DEPLOY_HOSTINGER.md)
-
 ### Ferramentas necessárias no servidor (para Terminal):
 ```bash
 apt update && apt install -y whois dnsutils iputils-ping traceroute curl nmap
@@ -188,17 +182,6 @@ DEEPSEEK_MODEL=deepseek/deepseek-chat
 4. Push para a branch (`git push origin feature/nova-funcionalidade`)
 5. Abra um Pull Request
 
-## � Roadrmap
-
-### ✅ Implementado
-- [x] Chat com IA e streaming
-- [x] Sistema de autenticação
-- [x] Scanner de vulnerabilidades
-- [x] Terminal interativo com whitelist
-- [x] Rate limiting e logging
-- [x] Checklist OWASP
-- [x] Painel admin
-
 ### 🔜 Próximas Features
 - [ ] Multi-modelo (GPT-4, Claude)
 - [ ] Integração Stripe para pagamentos
@@ -215,7 +198,3 @@ Este projeto é privado e de uso restrito.
 **Zuckszinho** - Desenvolvido para profissionais de segurança.
 
 ---
-
-<p align="center">
-  <strong>🔴 DeepEyes - O olho que tudo vê 👁️</strong>
-</p>
