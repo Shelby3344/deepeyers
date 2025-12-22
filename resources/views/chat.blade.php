@@ -1569,76 +1569,75 @@
             </div>
         </nav>
         
-        <div class="relative z-10 w-full max-w-md mx-4 p-8 max-h-[90vh] overflow-y-auto" style="background: rgba(26, 26, 36, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 20px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(0, 212, 255, 0.1);">
+        <div class="relative z-10 w-full max-w-sm mx-4 p-6 max-h-[85vh] overflow-y-auto" style="background: rgba(26, 26, 36, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 16px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 212, 255, 0.1);">
             <!-- Top gradient line -->
             <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#00d4ff] to-transparent"></div>
             
-            <div class="text-center mb-8">
-                <div class="flex items-center justify-center gap-3 mb-4">
-                    <span class="text-3xl font-bold" style="font-family: 'JetBrains Mono', monospace; background: linear-gradient(135deg, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DeepEyes</span>
-                    <span class="text-[10px] px-2 py-1 bg-[#8b5cf6] rounded text-white font-semibold">BETA</span>
+            <div class="text-center mb-5">
+                <div class="flex items-center justify-center gap-2 mb-2">
+                    <span class="text-2xl font-bold" style="font-family: 'JetBrains Mono', monospace; background: linear-gradient(135deg, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DeepEyes</span>
                 </div>
-                <p class="text-[#a0a0b0] text-sm">Deep visibility into security.</p>
+                <p class="text-[#a0a0b0] text-xs">Deep visibility into security.</p>
             </div>
 
-            <div id="authTabs" class="flex gap-2 mb-6 p-1 rounded-xl" style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(0, 212, 255, 0.15);">
-                <button class="auth-tab active flex-1 py-3 px-4 font-semibold transition-all rounded-lg" data-tab="login">Login</button>
-                <button class="auth-tab flex-1 py-3 px-4 bg-transparent text-[#a0a0b0] hover:text-[#00d4ff] font-semibold transition-all rounded-lg" data-tab="register">Registrar</button>
+            <div id="authTabs" class="flex gap-1 mb-4 p-1 rounded-lg" style="background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(0, 212, 255, 0.15);">
+                <button class="auth-tab active flex-1 py-2 px-3 text-sm font-semibold transition-all rounded-md" data-tab="login">Login</button>
+                <button class="auth-tab flex-1 py-2 px-3 text-sm bg-transparent text-[#a0a0b0] hover:text-[#00d4ff] font-semibold transition-all rounded-md" data-tab="register">Registrar</button>
             </div>
 
-            <form id="loginForm" class="space-y-4">
+            <form id="loginForm" class="space-y-3">
                 <div>
-                    <label class="block text-xs font-medium text-[#00d4ff] mb-2" style="font-family: 'JetBrains Mono', monospace;">Email</label>
+                    <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Email</label>
                     <input type="email" name="email" required autocomplete="email"
-                        class="auth-input w-full px-4 py-3.5 rounded-xl focus:outline-none"
+                        class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
                         placeholder="user@example.com">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-[#00d4ff] mb-2" style="font-family: 'JetBrains Mono', monospace;">Senha</label>
+                    <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Senha</label>
                     <input type="password" name="password" required autocomplete="current-password"
-                        class="auth-input w-full px-4 py-3.5 rounded-xl focus:outline-none"
+                        class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
                         placeholder="••••••••">
                 </div>
-                <button type="submit" class="w-full py-4 font-semibold transition-all rounded-xl" style="background: linear-gradient(135deg, #00d4ff, #00ff88); color: #0a0a0f; box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);">
+                <button type="submit" class="w-full py-3 text-sm font-semibold transition-all rounded-lg" style="background: linear-gradient(135deg, #00d4ff, #00ff88); color: #0a0a0f; box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);">
                     Entrar no Lab
                 </button>
             </form>
 
-            <form id="registerForm" class="space-y-4 hidden">
+            <form id="registerForm" class="space-y-3 hidden">
                 <div>
-                    <label class="block text-xs font-medium text-[#00d4ff] mb-2" style="font-family: 'JetBrains Mono', monospace;">Nome</label>
+                    <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Nome</label>
                     <input type="text" name="name" required autocomplete="name"
-                        class="auth-input w-full px-4 py-3.5 rounded-xl focus:outline-none"
+                        class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
                         placeholder="Seu nome">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-[#00d4ff] mb-2" style="font-family: 'JetBrains Mono', monospace;">Email</label>
+                    <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Email</label>
                     <input type="email" name="email" required autocomplete="email"
-                        class="auth-input w-full px-4 py-3.5 rounded-xl focus:outline-none"
+                        class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
                         placeholder="user@example.com">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-[#00d4ff] mb-2" style="font-family: 'JetBrains Mono', monospace;">Senha</label>
+                    <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Senha</label>
                     <input type="password" name="password" required autocomplete="new-password"
-                        class="auth-input w-full px-4 py-3.5 rounded-xl focus:outline-none"
+                        class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
                         placeholder="••••••••">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-[#00d4ff] mb-2" style="font-family: 'JetBrains Mono', monospace;">Confirmar Senha</label>
+                    <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Confirmar Senha</label>
                     <input type="password" name="password_confirmation" required autocomplete="new-password"
-                        class="auth-input w-full px-4 py-3.5 rounded-xl focus:outline-none"
+                        class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
                         placeholder="••••••••">
                 </div>
-                <button type="submit" class="w-full py-4 font-semibold transition-all rounded-xl" style="background: linear-gradient(135deg, #00d4ff, #00ff88); color: #0a0a0f; box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);">
+                <button type="submit" class="w-full py-3 text-sm font-semibold transition-all rounded-lg" style="background: linear-gradient(135deg, #00d4ff, #00ff88); color: #0a0a0f; box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);">
                     Criar Conta
                 </button>
             </form>
 
-            <div id="authError" class="hidden mt-4 p-4 rounded-xl text-red-400 text-sm" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); font-family: 'JetBrains Mono', monospace;"></div>
+            <div id="authError" class="hidden mt-3 p-3 rounded-lg text-red-400 text-xs" style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); font-family: 'JetBrains Mono', monospace;"></div>
             
-            <p class="text-center text-[#a0a0b0] text-xs mt-6" style="font-family: 'JetBrains Mono', monospace;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline mr-1"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
-                 1.0
+            <p class="text-center text-[#a0a0b0] text-[10px] mt-4" style="font-family: 'JetBrains Mono', monospace;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline mr-1"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+                v1.0
             </p>
         </div>
     </div>
