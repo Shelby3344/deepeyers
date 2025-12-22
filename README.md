@@ -1,4 +1,4 @@
-#  DeepEyes - IA para Pentest & Red Team
+# DeepEyes - IA para Pentest & Red Team
 
 <p align="center">
   <img src="public/logo.png" alt="DeepEyes Logo" width="200">
@@ -8,7 +8,7 @@ Sistema profissional de IA especializada em **Pentest** e **Red Team**, constru�
 
 ## 🚀 Demo
 
-**URL:** http://3.134.81.123
+**URL:** https://deepeyes.online
 
 ## ✨ Funcionalidades
 
@@ -20,29 +20,56 @@ Sistema profissional de IA especializada em **Pentest** e **Red Team**, constru�
 - Botão de **copiar código** em blocos de código
 - Suporte a Markdown completo
 
+### � Scannear de Vulnerabilidades
+- Interface visual para análise de alvos
+- Integração com ferramentas de reconhecimento
+- Resultados formatados e exportáveis
+
+### 💻 Terminal Interativo
+- **Execução de comandos reais** no servidor
+- **Whitelist de segurança** - apenas comandos permitidos
+- **Rate limiting** - 10 comandos/minuto, 60 comandos/hora
+- **Logging completo** - todos os comandos são auditados
+- Comandos disponíveis:
+  - DNS/WHOIS: `whois`, `dig`, `nslookup`, `host`
+  - Rede: `ping`, `traceroute`, `curl`
+  - Scanner: `nmap`, `nikto`, `gobuster`, `wpscan`, `subfinder`
+- Histórico de comandos com navegação por setas
+- Exportação de sessão do terminal
+- Integração com IA para análise de resultados
+
+### ✅ Checklist de Pentest
+- OWASP Top 10 interativo
+- Tracking de progresso por categoria
+- Exportação de relatório
+
+### 📊 Relatórios
+- Geração de relatórios profissionais
+- Templates customizáveis
+- Exportação em múltiplos formatos
+
 ### 👥 Sistema de Usuários
 - Registro e login com autenticação segura
 - Upload de avatar personalizado
 - Perfil editável (nome, email, senha)
 - Sistema de planos com limites de requisições
 
-
 ### 🛡️ Painel Admin
 - **Dashboard** com estatísticas
 - **Gerenciamento de usuários**: criar, editar, banir, deletar
 - **Visualização de sessões**: ver conversas dos usuários
 - **Gerenciamento de planos**: editar preços e limites
-- Atribuir planos aos usuários
-- Preview de avatares
 
 ## 🔐 Segurança
 
+- **Autenticação obrigatória** em todas as ferramentas
 - **Prompt System protegido**: Nunca exposto ao frontend
-- **Rate limiting**: Por plano do usuário
+- **Rate limiting**: Por plano do usuário e por ferramenta
+- **Terminal com whitelist**: Apenas comandos seguros permitidos
+- **Logging de auditoria**: Todos os comandos do terminal são logados
 - **Content moderation**: Bloqueio de padrões maliciosos
 - **Prompt injection protection**: Detecção de tentativas de bypass
 - **User banning**: Sistema de banimento por abuso
-- **Audit logging**: Registro de atividades suspeitas
 
 ## 🏗️ Arquitetura
 
@@ -54,11 +81,13 @@ app/
 │   ├── Controllers/Api/       # Controllers da API
 │   │   ├── AuthController     # Login/Registro
 │   │   ├── ChatController     # Chat/Sessões
-│   │   └── AdminController    # Painel Admin
+│   │   ├── AdminController    # Painel Admin
+│   │   └── TerminalController # Terminal com whitelist
 │   └── Middleware/
-│       ├── EnsureUserIsAdmin  # Proteção admin
+│       ├── EnsureAuthenticated # Proteção de rotas
+│       ├── EnsureUserIsAdmin   # Proteção admin
 │       ├── EnsureUserNotBanned
-│       └── RateLimitAI        # Limite por plano
+│       └── RateLimitAI         # Limite por plano
 ├── Models/
 │   ├── User                   # Usuários
 │   ├── ChatSession            # Sessões de chat
@@ -76,6 +105,7 @@ app/
 - **IA:** DeepSeek via OpenRouter API
 - **Auth:** Laravel Sanctum
 - **Icons:** Font Awesome 6
+- **3D Effects:** Three.js (partículas na landing)
 
 ## 📦 Instalação Local
 
@@ -110,31 +140,17 @@ php artisan serve
 
 Veja o guia completo em [DEPLOY_HOSTINGER.md](DEPLOY_HOSTINGER.md)
 
-### Resumo:
+### Ferramentas necessárias no servidor (para Terminal):
 ```bash
-# No servidor Ubuntu
-apt install php8.2 php8.2-fpm nginx composer git
+apt update && apt install -y whois dnsutils iputils-ping traceroute curl nmap
+# Opcionais para pentest avançado:
+apt install -y nikto
+# gobuster, subfinder, wpscan - instalar via Go ou gems
+```
 
-# Clone e configure
-cd /var/www
-git clone https://github.com/Shelby3344/deepeyers.git deepeyes
-cd deepeyes
-composer install --no-dev --optimize-autoloader
-cp .env.example .env
-# Configure o .env com suas credenciais
-
-# Banco e migrações
-touch database/database.sqlite
-php artisan key:generate
-php artisan migrate --force
-php artisan db:seed --force
-php artisan storage:link
-
-# Permissões
-chown -R www-data:www-data .
-chmod -R 775 storage bootstrap/cache
-
-# Configure Nginx e reinicie
+### Atualização rápida:
+```bash
+cd /var/www/deepeyes && git pull origin main && php artisan view:clear && php artisan cache:clear
 ```
 
 ## 🔑 Configuração OpenRouter
@@ -149,21 +165,22 @@ DEEPSEEK_ENDPOINT=https://openrouter.ai/api/v1/chat/completions
 DEEPSEEK_MODEL=deepseek/deepseek-chat
 ```
 
-## 📱 Screenshots
+## 📱 Páginas do Sistema
 
-### Tela de Chat
-- Interface dark mode profissional
-- Sidebar com sessões organizadas
-- Streaming de respostas em tempo real
-- Blocos de código com botão de copiar
+| Página | Rota | Descrição |
+|--------|------|-----------|
+| Landing | `/` | Página inicial com apresentação |
+| Chat | `/chat` | Interface de chat com IA |
+| Scanner | `/scanner` | Scanner de vulnerabilidades |
+| Terminal | `/terminal` | Terminal interativo |
+| Checklist | `/checklist` | Checklist OWASP |
+| Reports | `/reports` | Geração de relatórios |
+| Docs | `/docs` | Documentação |
+| Profile | `/profile` | Perfil do usuário |
 
-### Painel Admin
-- Gerenciamento completo de usuários
-- Edição de planos inline
-- Visualização de todas as sessões
-- Estatísticas do sistema
+> ⚠️ Todas as páginas exceto `/` e `/docs` requerem autenticação.
 
-## 🤝 Contribuição
+## � CIontribuição
 
 1. Fork o projeto
 2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
@@ -171,54 +188,25 @@ DEEPSEEK_MODEL=deepseek/deepseek-chat
 4. Push para a branch (`git push origin feature/nova-funcionalidade`)
 5. Abra um Pull Request
 
-## � Roadmap / Futuras Implementações
+## � Roadrmap
 
-### 🛠️ Ferramentas de Pentest Integradas
-- [ ] **Templates de Prompts** - Biblioteca de prompts prontos para reconhecimento, exploração, relatórios
-- [ ] **Scanner Integrado** - Nmap/Nikto via interface (execução controlada no servidor)
-- [ ] **Gerador de Payloads** - Assistente para criar payloads personalizados
-- [ ] **Checklist Interativa** - OWASP Top 10, PTES, etc. com tracking de progresso
-- [ ] **Exportar Chat** - Download em PDF/Markdown com formatação profissional
+### ✅ Implementado
+- [x] Chat com IA e streaming
+- [x] Sistema de autenticação
+- [x] Scanner de vulnerabilidades
+- [x] Terminal interativo com whitelist
+- [x] Rate limiting e logging
+- [x] Checklist OWASP
+- [x] Painel admin
 
-### 🤖 IA Avançada
-- [ ] **Multi-Modelo** - Suporte a GPT-4, Claude, Gemini além do DeepSeek
-- [ ] **RAG com Documentação** - Upload de PDFs/docs para contexto especializado
-- [ ] **Agentes Autônomos** - IA que executa comandos e analisa resultados automaticamente
-- [ ] **Análise de Código** - Upload de código para análise de vulnerabilidades
-- [ ] **Modo Offline** - Modelo local (Ollama) para ambientes air-gapped
+### 🔜 Próximas Features
+- [ ] Multi-modelo (GPT-4, Claude)
+- [ ] Integração Stripe para pagamentos
+- [ ] 2FA/MFA
+- [ ] Workspaces de equipe
+- [ ] Relatórios PDF profissionais
 
-### 👥 Colaboração & Equipe
-- [ ] **Workspaces de Equipe** - Compartilhar sessões entre membros
-- [ ] **Comentários em Sessões** - Anotações e discussões inline
-- [ ] **Relatórios Colaborativos** - Gerar reports em equipe
-- [ ] **Roles & Permissões** - Níveis de acesso granulares
-
-### 💰 Monetização & Planos
-- [ ] **Integração Stripe/PagSeguro** - Pagamentos recorrentes
-- [ ] **Planos por Créditos** - Sistema de tokens/créditos para API
-- [ ] **Trial Automático** - Período de teste com onboarding
-- [ ] **Dashboard de Uso** - Métricas de consumo por usuário
-
-### 🎨 UX/UI
-- [ ] **Temas Customizáveis** - Light mode, cores personalizadas
-- [ ] **Atalhos de Teclado** - Navegação rápida (Ctrl+K, etc.)
-- [ ] **PWA Completo** - Instalável como app, notificações push
-- [ ] **Dashboard Pessoal** - Estatísticas, sessões favoritas, progresso
-
-### 🔒 Segurança Adicional
-- [ ] **2FA/MFA** - Autenticação em duas etapas (TOTP/SMS)
-- [ ] **Audit Log** - Registro completo de ações para compliance
-- [ ] **IP Whitelisting** - Restringir acesso por IP
-- [ ] **Session Management** - Visualizar e revogar sessões ativas
-
-### 📊 Analytics & Relatórios
-- [ ] **Dashboard Admin Avançado** - Gráficos de uso, receita, crescimento
-- [ ] **Relatórios de Pentest** - Templates profissionais para clientes
-- [ ] **Exportação de Dados** - GDPR compliance, export de dados do usuário
-
----
-
-## �📄 Licença
+## � LiceAnça
 
 Este projeto é privado e de uso restrito.
 
