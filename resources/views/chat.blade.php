@@ -2195,27 +2195,6 @@
         
         <!-- Main Content -->
         <main class="flex-1 flex flex-col min-h-0">
-            <!-- Top Navbar - Cyber Style -->
-            <nav class="px-4 py-3 border-b border-[rgba(0,255,136,0.15)] flex items-center justify-between flex-shrink-0" style="background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(20px);">
-                <div class="flex items-center gap-6">
-                    <a href="/" class="flex items-center gap-2 no-underline">
-                        <img src="/logo.png" alt="DeepEyes" class="w-7 h-7">
-                        <span class="font-semibold text-base hidden sm:block" style="font-family: 'JetBrains Mono', monospace; background: linear-gradient(135deg, #00d4ff, #00ff88); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">DeepEyes</span>
-                    </a>
-                    <div class="hidden md:flex items-center gap-5">
-                        <a href="/" class="text-[#a0a0b0] no-underline text-sm hover:text-[#00d4ff] transition-colors">Home</a>
-                        <a href="/docs" class="text-[#a0a0b0] no-underline text-sm hover:text-[#00d4ff] transition-colors">Docs</a>
-                        <a href="/scanner" class="text-[#a0a0b0] no-underline text-sm hover:text-[#00d4ff] transition-colors">Scanner</a>
-                        <a href="/chat" class="text-[#00ff88] no-underline text-sm font-medium">Chat</a>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <a href="/profile" class="text-[#a0a0b0] hover:text-[#00d4ff] transition-colors" title="Perfil">
-                        <i class="fas fa-user-circle text-lg"></i>
-                    </a>
-                </div>
-            </nav>
-            
             <!-- Beta Warning Banner - Cyber Style -->
             <div id="betaBanner" class="border-b border-[rgba(249,115,22,0.3)] px-4 py-2 lg:py-3 flex-shrink-0" style="background: linear-gradient(90deg, rgba(249,115,22,0.1), rgba(239,68,68,0.1), rgba(249,115,22,0.1));">
                 <div class="flex items-center justify-center gap-2 lg:gap-3 text-center flex-wrap">
