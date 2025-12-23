@@ -169,7 +169,7 @@
                     <li><a href="#checklist">✓ Checklist</a></li>
                     <li><a href="#scanner">🔍 Scanner</a></li>
                     <li><a href="#reports">📄 Reports</a></li>
-                    <li><a href="#terminal">⌨ Terminal</a></li>
+                    <li><a href="#terminal">⌨ Terminal no Chat</a></li>
                 </ul>
             </div>
             <div class="sidebar-group">
@@ -475,52 +475,87 @@ com bypass de AMSI e ofuscação básica."</div>
 
             <!-- Terminal -->
             <section class="section" id="terminal">
-                <h2>Terminal Interativo</h2>
-                <p>Terminal com comandos simulados para praticar e gerar comandos rapidamente.</p>
+                <h2>⌨ Terminal Integrado</h2>
+                <p>Execute comandos reais diretamente no chat e a IA analisa os resultados automaticamente para ajudar a identificar vulnerabilidades.</p>
                 
-                <h3>Como acessar</h3>
-                <p>Clique em <strong>TERMINAL</strong> na sidebar ou acesse: <a href="/terminal">/terminal</a></p>
+                <h3>Como usar no Chat</h3>
+                <p>No chat com a IA, digite <code>$</code> seguido do comando. A IA executará o comando no servidor e analisará o resultado.</p>
                 
+                <div class="code-block">$ whois exemplo.com
+$ nmap -sV exemplo.com
+$ dig exemplo.com
+$ help</div>
+
+                <div class="tip">
+                    <div class="tip-title">💡 Dica</div>
+                    <p>Digite <code>$ help</code> no chat para ver todos os comandos disponíveis sem enviar para a IA.</p>
+                </div>
+
                 <h3>Comandos disponíveis</h3>
                 <div class="table-wrapper">
                     <table>
                         <thead><tr><th>Comando</th><th>Descrição</th><th>Exemplo</th></tr></thead>
                         <tbody>
-                            <tr><td><code>help</code></td><td>Lista todos os comandos</td><td><code>help</code></td></tr>
-                            <tr><td><code>nmap</code></td><td>Simula scan de portas</td><td><code>nmap -sV 192.168.1.1</code></td></tr>
-                            <tr><td><code>whois</code></td><td>Consulta informações de domínio</td><td><code>whois exemplo.com</code></td></tr>
-                            <tr><td><code>dig</code></td><td>Consulta DNS</td><td><code>dig exemplo.com</code></td></tr>
-                            <tr><td><code>curl</code></td><td>Faz requisições HTTP</td><td><code>curl -I https://exemplo.com</code></td></tr>
-                            <tr><td><code>ping</code></td><td>Testa conectividade</td><td><code>ping 8.8.8.8</code></td></tr>
-                            <tr><td><code>traceroute</code></td><td>Traça rota até o destino</td><td><code>traceroute google.com</code></td></tr>
-                            <tr><td><code>nikto</code></td><td>Scanner de vulnerabilidades web</td><td><code>nikto -h exemplo.com</code></td></tr>
-                            <tr><td><code>sqlmap</code></td><td>Teste de SQL Injection</td><td><code>sqlmap -u "url?id=1"</code></td></tr>
-                            <tr><td><code>gobuster</code></td><td>Brute force de diretórios</td><td><code>gobuster dir -u url -w wordlist</code></td></tr>
-                            <tr><td><code>clear</code></td><td>Limpa o terminal</td><td><code>clear</code></td></tr>
-                            <tr><td><code>history</code></td><td>Mostra histórico de comandos</td><td><code>history</code></td></tr>
+                            <tr><td><code>whois</code></td><td>Consulta informações WHOIS de domínios</td><td><code>$ whois exemplo.com</code></td></tr>
+                            <tr><td><code>dig</code></td><td>Consulta DNS detalhada</td><td><code>$ dig exemplo.com</code></td></tr>
+                            <tr><td><code>nslookup</code></td><td>Consulta DNS simples</td><td><code>$ nslookup exemplo.com</code></td></tr>
+                            <tr><td><code>host</code></td><td>Resolução de DNS</td><td><code>$ host exemplo.com</code></td></tr>
+                            <tr><td><code>ping</code></td><td>Teste de conectividade (4 pacotes)</td><td><code>$ ping exemplo.com</code></td></tr>
+                            <tr><td><code>traceroute</code></td><td>Rastreamento de rota</td><td><code>$ traceroute exemplo.com</code></td></tr>
+                            <tr><td><code>curl</code></td><td>Requisições HTTP (GET apenas)</td><td><code>$ curl -I exemplo.com</code></td></tr>
+                            <tr><td><code>nmap</code></td><td>Scanner de portas</td><td><code>$ nmap -sV exemplo.com</code></td></tr>
+                            <tr><td><code>nikto</code></td><td>Scanner de vulnerabilidades web</td><td><code>$ nikto -h exemplo.com</code></td></tr>
+                            <tr><td><code>subfinder</code></td><td>Descoberta de subdomínios</td><td><code>$ subfinder -d exemplo.com</code></td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <h3>Atalhos de teclado</h3>
+                <h3>Como funciona</h3>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number"></div>
+                        <div class="step-content">
+                            <h4>Digite o comando</h4>
+                            <p>No chat, digite <code>$ comando alvo</code> (ex: <code>$ nmap -sV exemplo.com</code>)</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number"></div>
+                        <div class="step-content">
+                            <h4>Execução no servidor</h4>
+                            <p>O comando é executado no servidor com whitelist de segurança e rate limiting</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number"></div>
+                        <div class="step-content">
+                            <h4>Resultado no chat</h4>
+                            <p>O output do comando aparece formatado no chat</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number"></div>
+                        <div class="step-content">
+                            <h4>Análise da IA</h4>
+                            <p>A IA analisa automaticamente o resultado e sugere próximos passos para encontrar vulnerabilidades</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Segurança</h3>
                 <ul>
-                    <li><code>↑</code> / <code>↓</code> — Navegar pelo histórico de comandos</li>
-                    <li><code>Tab</code> — Autocompletar comando</li>
-                    <li><code>Ctrl+L</code> — Limpar terminal</li>
-                    <li><code>Ctrl+C</code> — Cancelar comando atual</li>
+                    <li><strong>Whitelist</strong> — Apenas comandos seguros são permitidos</li>
+                    <li><strong>Rate Limiting</strong> — 10 comandos/minuto, 60 comandos/hora</li>
+                    <li><strong>Logging</strong> — Todos os comandos são auditados</li>
+                    <li><strong>Timeout</strong> — Comandos têm limite de tempo para evitar travamentos</li>
                 </ul>
 
-                <div class="code-block">$ nmap -sV -sC -p- 192.168.1.1
-Starting Nmap scan...
-PORT     STATE SERVICE VERSION
-22/tcp   open  ssh     OpenSSH 8.2
-80/tcp   open  http    Apache 2.4.41
-443/tcp  open  https   nginx 1.18.0
-3306/tcp open  mysql   MySQL 8.0.23</div>
+                <h3>Terminal Standalone</h3>
+                <p>Você também pode acessar o terminal separadamente em: <a href="/terminal">/terminal</a></p>
 
-                <div class="tip">
-                    <div class="tip-title">💡 Dica</div>
-                    <p>O terminal é simulado para fins educacionais. Para executar comandos reais, use seu próprio terminal.</p>
+                <div class="warning">
+                    <div class="warning-title">⚠️ Importante</div>
+                    <p>Use o terminal apenas em alvos que você tem autorização para testar. O uso indevido é registrado e pode resultar em banimento.</p>
                 </div>
             </section>
 

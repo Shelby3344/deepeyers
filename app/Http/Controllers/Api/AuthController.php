@@ -74,15 +74,15 @@ class AuthController extends Controller
             'email.unique' => 'Este email já está cadastrado.',
         ]);
 
-        // Busca o plano Ghost para novos usuários
-        $ghostPlan = \App\Models\Plan::where('slug', 'ghost')->first();
+        // Busca o plano Free (básico) para novos usuários
+        $freePlan = \App\Models\Plan::where('slug', 'free')->first();
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => 'user',
-            'plan_id' => $ghostPlan?->id,
+            'plan_id' => $freePlan?->id,
         ]);
 
         // ✅ Token com abilities limitadas

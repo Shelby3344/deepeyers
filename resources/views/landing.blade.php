@@ -1427,6 +1427,228 @@
         }
 
         /* ========================================
+           PRICING SECTION
+           ======================================== */
+        .pricing-section {
+            padding: 100px 20px;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .pricing-card.popular {
+            border-color: var(--accent-cyan);
+            background: linear-gradient(180deg, rgba(0, 212, 255, 0.05) 0%, var(--bg-card) 100%);
+        }
+
+        .pricing-card.premium {
+            border-color: var(--accent-purple);
+            background: linear-gradient(180deg, rgba(139, 92, 246, 0.05) 0%, var(--bg-card) 100%);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+            color: var(--bg-primary);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .pricing-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green);
+            margin-bottom: 12px;
+            letter-spacing: 1px;
+        }
+
+        .pricing-badge.redteam {
+            background: rgba(249, 115, 22, 0.1);
+            color: #f97316;
+        }
+
+        .pricing-badge.fullattack {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--accent-purple);
+        }
+
+        .pricing-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .pricing-price {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .price-currency {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+        }
+
+        .price-value {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .price-period {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .pricing-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .pricing-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+        }
+
+        .feature-item.included {
+            color: var(--text-primary);
+        }
+
+        .feature-item.included i {
+            color: var(--accent-green);
+        }
+
+        .feature-item.excluded {
+            color: var(--text-secondary);
+            opacity: 0.5;
+        }
+
+        .feature-item.excluded i {
+            color: #ef4444;
+        }
+
+        .pricing-btn {
+            display: block;
+            width: 100%;
+            padding: 14px 24px;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-btn.basic {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .pricing-btn.basic:hover {
+            background: rgba(0, 255, 136, 0.2);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .pricing-btn.redteam {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
+            color: var(--bg-primary);
+        }
+
+        .pricing-btn.redteam:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+        }
+
+        .pricing-btn.fullattack {
+            background: linear-gradient(135deg, var(--accent-purple), #ec4899);
+            color: white;
+        }
+
+        .pricing-btn.fullattack:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .pricing-note {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .pricing-note i {
+            color: var(--accent-cyan);
+        }
+
+        @media (max-width: 900px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+
+            .pricing-card.popular {
+                order: -1;
+            }
+        }
+
+        /* ========================================
            FAQ
            ======================================== */
         .faq {
@@ -1791,6 +2013,7 @@
                     <div class="navbar-links" id="navLinks">
                         <a href="#como-funciona">Como Funciona</a>
                         <a href="#recursos">Recursos</a>
+                        <a href="#precos">Preços</a>
                         <a href="/docs">Docs</a>
                         <a href="#faq">FAQ</a>
                     </div>
@@ -2152,6 +2375,190 @@ subprocess.call(["/bin/sh","-i"])</code>
                                 Sem cartão de crédito • Acesso imediato
                             </p>
                         </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Pricing Section -->
+            <div class="fade-section">
+                <section id="precos" class="pricing-section">
+                    <div class="container">
+                        <div class="section-header">
+                            <span class="section-tag mono">// PLANOS</span>
+                            <h2 class="section-title">Escolha seu <span class="highlight">Plano</span></h2>
+                            <p class="section-description">Selecione o plano ideal para suas necessidades de segurança ofensiva</p>
+                        </div>
+
+                        <div class="pricing-grid">
+                            <!-- Plano Básico -->
+                            <div class="pricing-card">
+                                <div class="pricing-header">
+                                    <span class="pricing-badge">BÁSICO</span>
+                                    <h3 class="pricing-name">Pentest</h3>
+                                    <div class="pricing-price">
+                                        <span class="price-currency">R$</span>
+                                        <span class="price-value">0</span>
+                                        <span class="price-period">/mês</span>
+                                    </div>
+                                    <p class="pricing-description">Ideal para iniciantes e estudantes</p>
+                                </div>
+                                <div class="pricing-features">
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Perfil Pentest</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Chat com IA</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>10 requisições/dia</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>1 sessão de chat</span>
+                                    </div>
+                                    <div class="feature-item excluded">
+                                        <i class="fas fa-times"></i>
+                                        <span>Terminal Integrado</span>
+                                    </div>
+                                    <div class="feature-item excluded">
+                                        <i class="fas fa-times"></i>
+                                        <span>Scanner de Vulnerabilidades</span>
+                                    </div>
+                                    <div class="feature-item excluded">
+                                        <i class="fas fa-times"></i>
+                                        <span>Checklist OWASP</span>
+                                    </div>
+                                    <div class="feature-item excluded">
+                                        <i class="fas fa-times"></i>
+                                        <span>Geração de Relatórios</span>
+                                    </div>
+                                    <div class="feature-item excluded">
+                                        <i class="fas fa-times"></i>
+                                        <span>Perfil Red Team</span>
+                                    </div>
+                                    <div class="feature-item excluded">
+                                        <i class="fas fa-times"></i>
+                                        <span>Perfil Full Attack</span>
+                                    </div>
+                                </div>
+                                <a href="/chat" class="pricing-btn basic">Começar Grátis</a>
+                            </div>
+
+                            <!-- Plano Red Team -->
+                            <div class="pricing-card popular">
+                                <div class="popular-badge">MAIS POPULAR</div>
+                                <div class="pricing-header">
+                                    <span class="pricing-badge redteam">RED TEAM</span>
+                                    <h3 class="pricing-name">Red Team</h3>
+                                    <div class="pricing-price">
+                                        <span class="price-currency">R$</span>
+                                        <span class="price-value">49</span>
+                                        <span class="price-period">/mês</span>
+                                    </div>
+                                    <p class="pricing-description">Para profissionais de segurança</p>
+                                </div>
+                                <div class="pricing-features">
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Perfil Pentest + Red Team</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Chat com IA</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>200 requisições/dia</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Sessões ilimitadas</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Terminal Integrado</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Scanner de Vulnerabilidades</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Checklist OWASP</span>
+                                    </div>
+                                    <div class="feature-item excluded">
+                                        <i class="fas fa-times"></i>
+                                        <span>Geração de Relatórios</span>
+                                    </div>
+                                    <div class="feature-item excluded">
+                                        <i class="fas fa-times"></i>
+                                        <span>Perfil Full Attack</span>
+                                    </div>
+                                </div>
+                                <a href="/chat" class="pricing-btn redteam">Assinar Red Team</a>
+                            </div>
+
+                            <!-- Plano Full Attack -->
+                            <div class="pricing-card premium">
+                                <div class="pricing-header">
+                                    <span class="pricing-badge fullattack">FULL ATTACK</span>
+                                    <h3 class="pricing-name">Full Attack</h3>
+                                    <div class="pricing-price">
+                                        <span class="price-currency">R$</span>
+                                        <span class="price-value">99</span>
+                                        <span class="price-period">/mês</span>
+                                    </div>
+                                    <p class="pricing-description">Acesso completo sem restrições</p>
+                                </div>
+                                <div class="pricing-features">
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Todos os Perfis</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Chat com IA</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>500 requisições/dia</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Sessões ilimitadas</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Terminal Integrado</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Scanner de Vulnerabilidades</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Checklist OWASP</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Geração de Relatórios</span>
+                                    </div>
+                                    <div class="feature-item included">
+                                        <i class="fas fa-check"></i>
+                                        <span>Suporte Prioritário</span>
+                                    </div>
+                                </div>
+                                <a href="/chat" class="pricing-btn fullattack">Assinar Full Attack</a>
+                            </div>
+                        </div>
+
+                        <p class="pricing-note">
+                            <i class="fas fa-shield-check"></i>
+                            Pagamento seguro • Cancele quando quiser • Garantia de 7 dias
+                        </p>
                     </div>
                 </section>
             </div>
