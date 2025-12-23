@@ -1488,13 +1488,18 @@
             
             const userId = document.getElementById('editUserId').value;
             const roleValue = document.getElementById('editUserRole').value;
+            const planValue = document.getElementById('editUserPlan').value;
             
             const body = {
                 name: document.getElementById('editUserName').value,
                 email: document.getElementById('editUserEmail').value,
-                role: roleValue,
-                plan_id: document.getElementById('editUserPlan').value
+                role: roleValue
             };
+            
+            // Só envia plan_id se tiver valor válido
+            if (planValue && planValue !== '') {
+                body.plan_id = parseInt(planValue);
+            }
             
             const newPwd = document.getElementById('editUserPassword').value;
             if (newPwd) body.password = newPwd;

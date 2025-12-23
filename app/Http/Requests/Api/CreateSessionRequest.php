@@ -35,7 +35,7 @@ class CreateSessionRequest extends FormRequest
 
         return [
             'title' => ['sometimes', 'string', 'max:255'],
-            'target_domain' => ['required', 'string', 'max:255'],
+            'target_domain' => ['nullable', 'string', 'max:255'],
             'profile' => ['sometimes', 'string', 'in:' . implode(',', $allowedProfiles)],
         ];
     }
@@ -44,7 +44,6 @@ class CreateSessionRequest extends FormRequest
     {
         return [
             'title.max' => 'O título não pode exceder 255 caracteres.',
-            'target_domain.required' => 'O domínio do alvo é obrigatório.',
             'target_domain.max' => 'O domínio do alvo não pode exceder 255 caracteres.',
             'profile.in' => 'Perfil inválido selecionado. Faça upgrade do seu plano para acessar mais perfis.',
         ];
