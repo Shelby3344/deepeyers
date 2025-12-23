@@ -402,7 +402,7 @@
             </button>
             <!-- Logo -->
             <div class="p-4 border-b border-[rgba(255,255,255,0.08)]">
-                <a href="/" class="flex items-center gap-3 group">
+                <a href="/chat" class="flex items-center gap-3 group">
                     <div class="relative">
                         <div class="absolute inset-0 blur-lg bg-[#00FF88]/20 rounded-full scale-110 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                         <img src="/logo.png" alt="DeepEyes" class="h-10 w-10 relative z-10">
@@ -478,7 +478,7 @@
             
             <!-- Footer -->
             <div class="p-4 border-t border-[rgba(255,255,255,0.08)] space-y-2">
-                <a href="/" class="sidebar-link text-sm">
+                <a href="/chat" class="sidebar-link text-sm">
                     <i class="fas fa-arrow-left w-5"></i>
                     <span>Voltar ao Chat</span>
                 </a>
@@ -830,7 +830,13 @@
                 <div id="page-admin-sessions" class="page-content">
                     <div class="card p-6">
                         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
-                            <h3 class="text-lg font-semibold text-white">Todas as Sessões</h3>
+                            <div class="flex items-center gap-3">
+                                <h3 class="text-lg font-semibold text-white">Todas as Sessões</h3>
+                                <button id="deleteSelectedSessions" onclick="deleteSelectedSessions()" class="hidden px-3 py-1.5 bg-red-500/20 text-red-400 text-xs font-medium rounded-lg hover:bg-red-500/30 transition-colors">
+                                    <i class="fas fa-trash mr-1"></i>
+                                    Excluir Selecionadas (<span id="selectedSessionsCount">0</span>)
+                                </button>
+                            </div>
                             <div class="flex flex-col sm:flex-row gap-3">
                                 <!-- Filtro por Usuário -->
                                 <div class="relative">
@@ -851,6 +857,9 @@
                             <table class="data-table">
                                 <thead>
                                     <tr>
+                                        <th class="w-10">
+                                            <input type="checkbox" id="selectAllSessions" onchange="toggleAllSessions(this)" class="w-4 h-4 rounded border-gray-600 bg-slate-800 text-[#00FF88] focus:ring-[#00FF88] focus:ring-offset-0 cursor-pointer">
+                                        </th>
                                         <th>Título</th>
                                         <th>Usuário</th>
                                         <th>Perfil</th>
@@ -860,7 +869,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="sessionsTable">
-                                    <tr><td colspan="6" class="text-center text-gray-500">Carregando...</td></tr>
+                                    <tr><td colspan="7" class="text-center text-gray-500">Carregando...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1588,14 +1597,17 @@
         
         function renderSessionsTable(sessions) {
             document.getElementById('sessionsTable').innerHTML = sessions.map(s => `
-                <tr class="hover:bg-slate-800/30 transition-colors cursor-pointer" onclick="viewSession('${s.id}')">
-                    <td class="text-white">${s.title || 'Sem título'}</td>
-                    <td class="text-gray-400">${s.user?.name || '-'}</td>
-                    <td>
+                <tr class="hover:bg-slate-800/30 transition-colors">
+                    <td onclick="event.stopPropagation()">
+                        <input type="checkbox" class="session-checkbox w-4 h-4 rounded border-gray-600 bg-slate-800 text-[#00FF88] focus:ring-[#00FF88] focus:ring-offset-0 cursor-pointer" data-session-id="${s.id}" onchange="updateSessionSelection()">
+                    </td>
+                    <td class="text-white cursor-pointer" onclick="viewSession('${s.id}')">${s.title || 'Sem título'}</td>
+                    <td class="text-gray-400 cursor-pointer" onclick="viewSession('${s.id}')">${s.user?.name || '-'}</td>
+                    <td class="cursor-pointer" onclick="viewSession('${s.id}')">
                         <span class="px-2 py-1 rounded-md text-xs font-medium ${getProfileBadgeClass(s.profile)}">${s.profile}</span>
                     </td>
-                    <td class="text-gray-400">${s.message_count || 0}</td>
-                    <td class="text-gray-500 text-sm">${new Date(s.created_at).toLocaleDateString('pt-BR')}</td>
+                    <td class="text-gray-400 cursor-pointer" onclick="viewSession('${s.id}')">${s.message_count || 0}</td>
+                    <td class="text-gray-500 text-sm cursor-pointer" onclick="viewSession('${s.id}')">${new Date(s.created_at).toLocaleDateString('pt-BR')}</td>
                     <td class="flex gap-2">
                         <button onclick="event.stopPropagation(); viewSession('${s.id}')" class="text-gray-400 hover:text-cyan-400 transition-colors" title="Ver chat">
                             <i class="fas fa-eye"></i>
@@ -1605,7 +1617,12 @@
                         </button>
                     </td>
                 </tr>
-            `).join('') || '<tr><td colspan="6" class="text-center text-gray-500">Nenhuma sessão encontrada</td></tr>';
+            `).join('') || '<tr><td colspan="7" class="text-center text-gray-500">Nenhuma sessão encontrada</td></tr>';
+            
+            // Reset checkbox "selecionar todos"
+            const selectAll = document.getElementById('selectAllSessions');
+            if (selectAll) selectAll.checked = false;
+            updateSessionSelection();
         }
         
         function getProfileBadgeClass(profile) {
@@ -1738,6 +1755,57 @@
                 loadAllSessions();
             } catch (err) {
                 showNotification('Erro ao excluir', 'error');
+            }
+        }
+        
+        // Funções para seleção múltipla de sessões
+        function toggleAllSessions(checkbox) {
+            const checkboxes = document.querySelectorAll('.session-checkbox');
+            checkboxes.forEach(cb => cb.checked = checkbox.checked);
+            updateSessionSelection();
+        }
+        
+        function updateSessionSelection() {
+            const checkboxes = document.querySelectorAll('.session-checkbox:checked');
+            const count = checkboxes.length;
+            const deleteBtn = document.getElementById('deleteSelectedSessions');
+            const countSpan = document.getElementById('selectedSessionsCount');
+            
+            if (deleteBtn && countSpan) {
+                countSpan.textContent = count;
+                if (count > 0) {
+                    deleteBtn.classList.remove('hidden');
+                } else {
+                    deleteBtn.classList.add('hidden');
+                }
+            }
+            
+            // Atualiza estado do "selecionar todos"
+            const allCheckboxes = document.querySelectorAll('.session-checkbox');
+            const selectAll = document.getElementById('selectAllSessions');
+            if (selectAll && allCheckboxes.length > 0) {
+                selectAll.checked = checkboxes.length === allCheckboxes.length;
+                selectAll.indeterminate = checkboxes.length > 0 && checkboxes.length < allCheckboxes.length;
+            }
+        }
+        
+        async function deleteSelectedSessions() {
+            const checkboxes = document.querySelectorAll('.session-checkbox:checked');
+            const sessionIds = Array.from(checkboxes).map(cb => cb.dataset.sessionId);
+            
+            if (sessionIds.length === 0) return;
+            
+            if (!confirm(`Excluir ${sessionIds.length} sessão(ões) selecionada(s)?`)) return;
+            
+            try {
+                await api('/admin/sessions/delete-bulk', {
+                    method: 'POST',
+                    body: JSON.stringify({ session_ids: sessionIds })
+                });
+                showNotification(`${sessionIds.length} sessão(ões) excluída(s)!`);
+                loadAllSessions();
+            } catch (err) {
+                showNotification('Erro ao excluir sessões', 'error');
             }
         }
         

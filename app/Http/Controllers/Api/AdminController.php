@@ -264,6 +264,30 @@ class AdminController extends Controller
     }
 
     /**
+     * Exclui múltiplas sessões
+     */
+    public function deleteSessionsBulk(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'session_ids' => 'required|array|min:1',
+            'session_ids.*' => 'string',
+        ]);
+
+        $sessionIds = $validated['session_ids'];
+        
+        // Deleta mensagens das sessões
+        ChatMessage::whereIn('session_id', $sessionIds)->delete();
+        
+        // Deleta as sessões
+        $deleted = ChatSession::whereIn('id', $sessionIds)->delete();
+
+        return response()->json([
+            'message' => "{$deleted} sessão(ões) excluída(s) com sucesso",
+            'deleted_count' => $deleted,
+        ]);
+    }
+
+    /**
      * Visualiza uma sessão com todas as mensagens
      */
     public function viewSession(string $sessionId): JsonResponse

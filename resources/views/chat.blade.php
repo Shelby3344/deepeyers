@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" style="background: #0a0a0f;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,11 @@
     <title>DeepEyes - Deep visibility into security.</title>
     <link rel="icon" type="image/png" href="/logo.png">
     <link rel="apple-touch-icon" href="/logo.png">
-    <meta name="theme-color" content="#0B0F14">
+    <meta name="theme-color" content="#0a0a0f">
+    <style>
+        /* CRITICAL: Previne flash branco - carrega ANTES de tudo */
+        html, body { background: #0a0a0f !important; }
+    </style>
     <script>
         // Controla visibilidade baseado no token
         if (localStorage.getItem('token')) {
@@ -16,29 +20,24 @@
             document.documentElement.classList.add('no-token');
         }
     </script>
-    <style>
-        /* Previne flash na transição de páginas */
-        html { visibility: hidden; }
-        html.page-ready { visibility: visible; }
-    </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'de-bg': '#0B0F14',
-                        'de-bg-secondary': '#0F172A',
-                        'de-bg-tertiary': '#1E293B',
+                        'de-bg': '#0a0a0f',
+                        'de-bg-secondary': '#12121a',
+                        'de-bg-tertiary': '#1a1a24',
                         'de-neon': '#00FF88',
                         'de-cyan': '#00D4FF',
-                        'de-purple': '#A855F7',
+                        'de-purple': '#8b5cf6',
                         'de-red': '#EF4444',
                         'de-orange': '#F97316',
                     },
                     fontFamily: {
-                        'display': ['Space Grotesk', 'Inter', 'sans-serif'],
-                        'mono': ['JetBrains Mono', 'Fira Code', 'monospace'],
+                        'display': ['Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
                     },
                     animation: {
                         'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
@@ -54,33 +53,32 @@
     <link rel="stylesheet" href="/css/deepeyes.css">
     <link rel="stylesheet" href="/css/mobile.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Share+Tech+Mono&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
         
         /* ========================================
-           DEEPEYES CYBERPUNK PIXEL UI v3.0
+           DEEPEYES CLEAN UI - Matching Landing
            ======================================== */
         
         :root {
-            --neon-green: #00ff88;
-            --neon-cyan: #00d4ff;
-            --neon-purple: #bf00ff;
-            --neon-red: #ff0055;
-            --neon-orange: #ff6600;
-            --bg-dark: #0a0a0f;
-            --bg-secondary: #0d1117;
-            --font-pixel: 'Press Start 2P', monospace;
-            --font-terminal: 'VT323', monospace;
-            --font-mono: 'Share Tech Mono', 'JetBrains Mono', monospace;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a24;
+            --accent-green: #00ff88;
+            --accent-cyan: #00d4ff;
+            --accent-purple: #8b5cf6;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --border-color: rgba(0, 212, 255, 0.15);
         }
         
         html, body { 
             font-family: 'Inter', sans-serif;
-            background: #0a0a0f;
+            background: var(--bg-primary);
             overflow: hidden;
             height: 100%;
         }
         
-        code, pre { font-family: var(--font-mono); }
+        code, pre { font-family: 'JetBrains Mono', monospace; }
         
         /* Hide auth if logged, show if not */
         .has-token #authModal { display: none !important; }
@@ -88,10 +86,10 @@
         .no-token #app { display: none !important; }
         
         /* ========================================
-           CYBERPUNK BACKGROUND EFFECTS
+           CLEAN BACKGROUND - Like Landing
            ======================================== */
         
-        /* Animated gradient background */
+        /* Subtle gradient background */
         body::before {
             content: '';
             position: fixed;
@@ -102,18 +100,11 @@
             pointer-events: none;
             z-index: -2;
             background: 
-                radial-gradient(ellipse at 20% 20%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(191, 0, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 70%);
-            animation: bg-pulse 8s ease-in-out infinite;
+                radial-gradient(ellipse at 20% 20%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(0, 255, 136, 0.06) 0%, transparent 50%);
         }
         
-        @keyframes bg-pulse {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
-        }
-        
-        /* Pixel Grid Overlay */
+        /* Subtle Grid Overlay - Like Landing */
         body::after {
             content: '';
             position: fixed;
@@ -124,142 +115,61 @@
             pointer-events: none;
             z-index: 0;
             background-image: 
-                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
-            background-size: 4px 4px;
-            opacity: 0.4;
-        }
-        
-        /* CRT Scanlines */
-        .scanlines {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            z-index: 1;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 0, 0, 0.15) 2px,
-                rgba(0, 0, 0, 0.15) 4px
-            );
-            opacity: 0.3;
-        }
-        
-        /* Moving scan line */
-        .scanlines::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(180deg, transparent, rgba(0, 255, 136, 0.15), transparent);
-            animation: scan-move 4s linear infinite;
-        }
-        
-        @keyframes scan-move {
-            0% { top: -10%; }
-            100% { top: 110%; }
+                linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(ellipse 80% 50% at 50% 50%, black 40%, transparent 100%);
+            opacity: 0.5;
         }
         
         /* ========================================
-           SCROLLBAR - CYBER STYLE
+           SCROLLBAR - Clean Style Like Landing
            ======================================== */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
         ::-webkit-scrollbar-thumb { 
-            background: linear-gradient(180deg, var(--neon-green), var(--neon-cyan));
-            border-radius: 0;
+            background: linear-gradient(180deg, var(--accent-cyan), var(--accent-green));
+            border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover { 
-            background: var(--neon-green);
-            box-shadow: 0 0 10px var(--neon-green);
+            background: var(--accent-cyan);
         }
         
         /* ========================================
-           NEON GLOW EFFECTS
+           SUBTLE GLOW EFFECTS
            ======================================== */
         .glow-neon { 
-            box-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green), 0 0 20px var(--neon-green); 
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); 
         }
         .glow-cyan { 
-            box-shadow: 0 0 5px var(--neon-cyan), 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan); 
-        }
-        .glow-red { 
-            box-shadow: 0 0 5px var(--neon-red), 0 0 10px var(--neon-red), 0 0 20px var(--neon-red); 
-        }
-        .glow-purple { 
-            box-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple); 
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); 
         }
         
         /* Text Gradients */
         .text-gradient-neon {
-            background: linear-gradient(135deg, var(--neon-green), var(--neon-cyan));
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.5));
         }
         
         .text-gradient-attack {
-            background: linear-gradient(135deg, var(--neon-red), var(--neon-purple));
+            background: linear-gradient(135deg, #ef4444, var(--accent-purple));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
-        /* ========================================
-           GLITCH TEXT EFFECT
-           ======================================== */
-        .glitch-text {
-            position: relative;
-            animation: glitch-skew 2s infinite linear alternate-reverse;
-        }
-        
-        @keyframes glitch-skew {
-            0%, 95% { transform: skew(0deg); }
-            96% { transform: skew(2deg); }
-            97% { transform: skew(-1deg); }
             98% { transform: skew(1deg); }
             99% { transform: skew(-2deg); }
-            100% { transform: skew(0deg); }
-        }
         
         /* ========================================
-           SIDEBAR - HACKER TERMINAL STYLE
+           SIDEBAR - Clean Style Like Landing
            ======================================== */
         .de-sidebar {
-            background: linear-gradient(180deg, rgba(10, 10, 15, 0.98), rgba(13, 17, 23, 0.95));
-            border-right: 1px solid rgba(0, 255, 136, 0.2);
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
-        }
-        
-        /* Animated border glow */
-        .de-sidebar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(180deg, 
-                transparent, 
-                var(--neon-green) 20%, 
-                var(--neon-cyan) 50%, 
-                var(--neon-purple) 80%, 
-                transparent
-            );
-            animation: sidebar-glow 4s ease-in-out infinite;
-        }
-        
-        @keyframes sidebar-glow {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.8; }
         }
         
         /* Mobile Responsive Styles */
@@ -373,29 +283,30 @@
         }
         
         .sidebar-item {
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
             border-left: 3px solid transparent;
+            border-radius: 0 8px 8px 0;
         }
         
         .sidebar-item:hover {
-            background: rgba(0, 255, 136, 0.05);
-            border-left-color: rgba(0, 255, 136, 0.3);
+            background: rgba(0, 212, 255, 0.05);
+            border-left-color: rgba(0, 212, 255, 0.3);
         }
         
         .sidebar-item:hover .delete-session-btn { opacity: 1; }
         
         .sidebar-item.active {
-            background: linear-gradient(90deg, rgba(0, 255, 136, 0.1), transparent);
-            border-left-color: #00FF88;
+            background: rgba(0, 212, 255, 0.1);
+            border-left-color: var(--accent-cyan);
         }
         
         /* Chat Messages */
         .chat-container { height: calc(100vh - 200px); }
         
         .message-content pre {
-            background: #0B0F14;
-            border: 1px solid #1E293B;
-            border-radius: 10px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             padding: 16px;
             overflow-x: auto;
             margin: 8px 0;
@@ -403,8 +314,8 @@
         }
         
         .message-content code {
-            background: rgba(0, 255, 136, 0.1);
-            color: #00FF88;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-cyan);
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 0.875rem;
@@ -412,7 +323,7 @@
         
         .message-content pre code {
             background: none;
-            color: #00D4FF;
+            color: var(--accent-cyan);
             padding: 0;
         }
         
@@ -423,16 +334,16 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: #0B0F14;
-            border-radius: 10px 10px 0 0;
+            background: var(--bg-primary);
+            border-radius: 12px 12px 0 0;
             padding: 10px 14px;
-            border: 1px solid #1E293B;
+            border: 1px solid var(--border-color);
             border-bottom: none;
         }
         
         .code-block-lang {
             font-size: 11px;
-            color: #00FF88;
+            color: var(--accent-green);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -465,18 +376,18 @@
             border-top: none;
         }
         
-        /* Input Glow Effect */
+        /* Input Container - Clean Style */
         #inputContainer {
             transition: all 0.3s ease;
-            background: rgba(11, 15, 20, 0.9);
+            background: var(--bg-secondary);
             backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
         }
         
         #inputContainer:focus-within {
-            border-color: rgba(0, 255, 136, 0.4) !important;
-            box-shadow: 0 0 0 1px rgba(0, 255, 136, 0.2),
-                        0 0 30px rgba(0, 255, 136, 0.1),
-                        0 0 60px rgba(0, 212, 255, 0.05);
+            border-color: var(--accent-cyan) !important;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
         }
         
         #messageInput {
@@ -485,13 +396,12 @@
         
         #messageInput::-webkit-scrollbar { width: 4px; }
         #messageInput::-webkit-scrollbar-track { background: transparent; }
-        #messageInput::-webkit-scrollbar-thumb { background: #334155; border-radius: 2px; }
+        #messageInput::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 2px; }
         
         /* Streaming Cursor */
         .streaming-cursor {
             animation: blink 0.8s infinite;
-            color: #00FF88;
-            text-shadow: 0 0 10px #00FF88;
+            color: var(--accent-cyan);
         }
         
         @keyframes blink {
@@ -642,58 +552,52 @@
         }
         .animate-slide-in { animation: slide-in 0.3s ease-out forwards; }
         
-        /* Feature Cards */
+        /* Feature Cards - Clean Style */
         .feature-card {
-            --card-color: #00FF88;
+            --card-color: var(--accent-cyan);
             position: relative;
-            background: linear-gradient(135deg, rgba(11, 15, 20, 0.95), rgba(15, 23, 42, 0.9));
-            border: 1px solid rgba(0, 255, 136, 0.1);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
             border-radius: 16px;
             transition: all 0.3s ease;
             overflow: hidden;
         }
         
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 16px;
-            padding: 1px;
-            background: linear-gradient(135deg, var(--card-color), transparent 50%, var(--card-color));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s;
+        /* De-Card - Clean Style */
+        .de-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.2s ease;
         }
         
-        .feature-card:hover::before { opacity: 1; }
+        .de-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+        }
         
         .feature-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 40px -10px rgba(0, 255, 136, 0.2);
+            border-color: var(--card-color);
+            box-shadow: 0 10px 40px -10px rgba(0, 212, 255, 0.2);
         }
         
         .feature-card .card-icon {
             font-size: 1.75rem;
             color: var(--card-color);
-            filter: drop-shadow(0 0 10px currentColor);
             transition: all 0.3s;
         }
         
         .feature-card:hover .card-icon {
-            transform: scale(1.2);
-            filter: drop-shadow(0 0 20px currentColor);
+            transform: scale(1.1);
         }
         
         .card-red { --card-color: #EF4444; }
-        .card-purple { --card-color: #A855F7; }
-        .card-green { --card-color: #00FF88; }
-        .card-cyan { --card-color: #00D4FF; }
+        .card-purple { --card-color: var(--accent-purple); }
+        .card-green { --card-color: var(--accent-green); }
+        .card-cyan { --card-color: var(--accent-cyan); }
         .card-blue { --card-color: #3B82F6; }
         
-        /* Profile Dropdown */
+        /* Profile Dropdown - Clean Style */
         .profile-dropdown { position: relative; width: 100%; }
         
         .profile-selected {
@@ -702,9 +606,9 @@
             gap: 0.5rem;
             width: 100%;
             padding: 0.75rem 1rem;
-            background: rgba(11, 15, 20, 0.9);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             color: white;
             font-size: 0.875rem;
             cursor: pointer;
@@ -725,8 +629,8 @@
             right: 0;
             background: rgba(11, 15, 20, 0.98);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 255, 136, 0.2);
-            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             overflow: hidden;
             z-index: 50;
             opacity: 0;
@@ -746,7 +650,7 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.875rem 1rem;
-            color: #94A3B8;
+            color: var(--text-secondary);
             font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.2s;
@@ -754,78 +658,46 @@
         }
         
         .profile-option:hover { 
-            background: rgba(0, 255, 136, 0.05);
+            background: rgba(0, 212, 255, 0.05);
             color: white;
-            border-left-color: rgba(0, 255, 136, 0.3);
+            border-left-color: var(--accent-cyan);
         }
         .profile-option.selected { 
-            background: rgba(0, 255, 136, 0.1);
-            color: #00FF88;
-            border-left-color: #00FF88;
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--accent-cyan);
+            border-left-color: var(--accent-cyan);
         }
         .profile-option i { font-size: 1rem; width: 1.25rem; text-align: center; }
         
-        /* New Session Button */
+        /* New Session Button - Like Landing */
         .btn-wrapper { position: relative; display: inline-block; width: 100%; }
-        
-        .sparkle-btn {
-            cursor: pointer;
-            border: 1px solid rgba(0, 255, 136, 0.3);
-            border-radius: 12px;
-            position: relative;
-            transition: all 0.3s ease;
-            width: 100%;
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.05));
-            padding: 0;
-            overflow: hidden;
-        }
-        
-        .sparkle-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, #00FF88, #00D4FF);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .sparkle-btn:hover::before { opacity: 0.1; }
-        
-        .sparkle-btn .inner {
-            position: relative;
-            padding: 14px 24px;
-            font-size: 0.875rem;
-            display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             font-weight: 600;
-            letter-spacing: 0.5px;
-            color: #00FF88;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+            color: var(--bg-primary);
         }
         
         .sparkle-btn:hover {
-            border-color: #00FF88;
-            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
-            transform: translateY(-2px);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
         }
         
-        .sparkle-btn:hover .inner { color: #fff; }
+        .sparkle-btn:hover .inner { color: var(--bg-primary); }
         
         /* Attack Mode Selector */
         .attack-mode {
-            --mode-color: #00FF88;
+            --mode-color: var(--accent-green);
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 6px;
             padding: 12px 8px;
-            background: rgba(11, 15, 20, 0.9);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.25s;
+            transition: all 0.2s;
             position: relative;
             overflow: hidden;
         }
@@ -1688,7 +1560,7 @@
                         <span>Full Attack</span>
                     </div>
                 </div>
-                <p class="text-[9px] text-[#00FF88] mt-2 text-center" id="profileDescription" style="font-family: var(--font-mono);">[ACTIVE] Modo ofensivo autorizado</p>
+                <p class="text-[9px] text-[#00FF88] mt-2 text-center" id="profileDescription" style="font-family: var(--font-mono);">Modo ofensivo autorizado</p>
             </div>
             
             <!-- Toast de Plano Necessário -->
@@ -2541,16 +2413,7 @@
                         
                         <!-- Barra inferior com info - Cyber Style -->
                         <div class="px-4 py-2 border-t border-[rgba(0,255,136,0.1)] flex items-center justify-between text-xs" style="font-family: var(--font-mono); background: rgba(0,0,0,0.3);">
-                            <div class="flex items-center gap-4">
-                                <span class="flex items-center gap-1.5 text-[#00FF88]">
-                                    <i class="fas fa-shield-halved"></i>
-                                    <span class="opacity-70">AUTHORIZED</span>
-                                </span>
-                                <span class="flex items-center gap-1.5 text-[#EF4444]" id="currentProfileBadge">
-                                    <i class="fas fa-skull-crossbones"></i>
-                                    <span id="currentProfileText" class="opacity-70">PENTEST</span>
-                                </span>
-                            </div>
+                           
                             <span class="text-gray-600">
                                 <kbd class="px-1.5 py-0.5 bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.2)] text-[10px] text-[#00FF88]">Enter</kbd> enviar
                                 <span class="mx-1">•</span>
@@ -3056,9 +2919,9 @@
             
             // Atualiza descrição
             const descriptions = {
-                'pentest': '🎯 Reconhecimento, enumeração e testes de vulnerabilidade',
-                'redteam': '🔥 Exploits avançados, evasão e persistência',
-                'fullattack': '💀 Arsenal completo - sem restrições técnicas'
+                'pentest': 'Reconhecimento, enumeração e testes de vulnerabilidade',
+                'redteam': 'Exploits avançados, evasão e persistência',
+                'fullattack': 'Criação script para invasão complexas sem restrição'
             };
             document.getElementById('profileDescription').textContent = descriptions[mode];
             
@@ -3334,20 +3197,23 @@
             const currentProfileText = document.getElementById('currentProfileText');
             const currentProfileBadge = document.getElementById('currentProfileBadge');
             
-            if (currentSession && currentSession.target_domain) {
+            if (currentSession && currentSession.target_domain && sessionTargetDomain && sessionHeader) {
                 sessionTargetDomain.textContent = currentSession.target_domain;
                 sessionHeader.classList.remove('hidden');
                 sessionHeader.classList.add('flex');
-            } else {
+            } else if (sessionHeader) {
                 sessionHeader.classList.add('hidden');
                 sessionHeader.classList.remove('flex');
             }
             
             // Atualiza o perfil na barra inferior
-            if (currentSession && currentSession.profile) {
+            if (currentSession && currentSession.profile && currentProfileText) {
                 const pInfo = getProfileInfo(currentSession.profile);
                 currentProfileText.textContent = pInfo.name;
-                currentProfileBadge.querySelector('i').className = `fas ${pInfo.icon} ${pInfo.color}`;
+                if (currentProfileBadge) {
+                    const icon = currentProfileBadge.querySelector('i');
+                    if (icon) icon.className = `fas ${pInfo.icon} ${pInfo.color}`;
+                }
             }
         }
         
