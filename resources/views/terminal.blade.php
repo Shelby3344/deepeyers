@@ -451,18 +451,45 @@
         }
 
         function askAI() {
-            let context = 'Analise os resultados do terminal:\n\n';
+            // Coleta todos os comandos e outputs do terminal
+            let terminalContent = '';
             document.querySelectorAll('.terminal-line').forEach(line => {
                 if (line.classList.contains('command')) {
-                    context += `$ ${line.textContent}\n`;
-                } else if (line.textContent.trim()) {
-                    context += `${line.textContent}\n`;
+                    terminalContent += `$ ${line.textContent}\n`;
+                } else if (line.textContent.trim() && !line.classList.contains('info')) {
+                    terminalContent += `${line.textContent}\n`;
                 }
             });
-            context += '\n\nIdentifique vulnerabilidades e sugira próximos passos.';
             
-            localStorage.setItem('exploitPrompt', context);
-            window.location.href = '/chat';
+            if (!terminalContent.trim()) {
+                alert('Execute alguns comandos primeiro para a IA analisar.');
+                return;
+            }
+            
+            const prompt = `🔍 **ANÁLISE DE SEGURANÇA - Terminal DeepEyes**
+
+Analise os resultados dos comandos executados no terminal e identifique:
+
+1. **Vulnerabilidades encontradas** - Liste todas as possíveis falhas de segurança
+2. **Informações sensíveis expostas** - Dados que podem ser explorados
+3. **Próximos passos recomendados** - Comandos e técnicas para aprofundar a análise
+4. **Nível de risco** - Classifique a criticidade (Baixo/Médio/Alto/Crítico)
+
+**RESULTADOS DO TERMINAL:**
+\`\`\`
+${terminalContent}
+\`\`\`
+
+Forneça uma análise detalhada focada em pentest e red team.`;
+            
+            // Salva no localStorage para o chat processar
+            localStorage.setItem('terminalAnalysis', JSON.stringify({
+                prompt: prompt,
+                timestamp: new Date().toISOString()
+            }));
+            
+            // Redireciona para o chat
+            window.location.href = '/chat?analyze=terminal';
         }
 
         function updateHistoryList() {

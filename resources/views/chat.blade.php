@@ -3016,6 +3016,39 @@
             });
             
             await loadSessions();
+            
+            // Verifica se veio do terminal para análise
+            checkTerminalAnalysis();
+        }
+        
+        // Verifica se há análise do terminal pendente
+        async function checkTerminalAnalysis() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('analyze') === 'terminal') {
+                const analysisData = localStorage.getItem('terminalAnalysis');
+                if (analysisData) {
+                    try {
+                        const { prompt } = JSON.parse(analysisData);
+                        localStorage.removeItem('terminalAnalysis');
+                        
+                        // Limpa a URL
+                        window.history.replaceState({}, document.title, '/chat');
+                        
+                        // Cria nova sessão e envia a análise
+                        await createNewSession();
+                        
+                        // Aguarda a sessão ser criada
+                        setTimeout(() => {
+                            if (currentSession) {
+                                messageInput.value = prompt;
+                                messageForm.dispatchEvent(new Event('submit'));
+                            }
+                        }, 500);
+                    } catch (e) {
+                        console.error('Erro ao processar análise do terminal:', e);
+                    }
+                }
+            }
         }
         
         // Verifica se usuário tem acesso às Tools (plano não-free)
