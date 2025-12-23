@@ -157,11 +157,13 @@ class TerminalController extends Controller
         $ip = $request->ip();
         $fullCommand = trim($request->input('command'));
 
-        // Rate limiting
-        $rateLimitResponse = $this->checkRateLimit($userId);
-        if ($rateLimitResponse) {
-            $this->logCommand($userId, $fullCommand, $ip, false, 'Rate limited');
-            return $rateLimitResponse;
+        // Rate limiting (admin não tem limite)
+        if ($user->role !== 'admin') {
+            $rateLimitResponse = $this->checkRateLimit($userId);
+            if ($rateLimitResponse) {
+                $this->logCommand($userId, $fullCommand, $ip, false, 'Rate limited');
+                return $rateLimitResponse;
+            }
         }
         
         // Parse do comando

@@ -116,29 +116,45 @@ class AuthController extends Controller
         $validated = $request->validate([
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
+        ], [
+            'email.required' => 'O email é obrigatório.',
+            'email.email' => 'Email inválido.',
+            'password.required' => 'A senha é obrigatória.',
         ]);
 
         $user = User::where('email', $validated['email'])->first();
 
-        // ✅ Resposta genérica - não indica se email existe ou senha está errada
-        if (!$user || !Hash::check($validated['password'], $user->password)) {
-            // Delay anti-bruteforce para dificultar ataques
+        // Verifica se usuário existe
+        if (!$user) {
             usleep(random_int(100000, 300000));
             
-            // Log de tentativa falha
-            Log::channel('security')->warning('Login failed', [
+            Log::channel('security')->warning('Login failed - user not found', [
                 'email' => $validated['email'],
                 'ip' => $request->ip(),
                 'user_agent' => $request->userAgent(),
             ]);
             
             throw ValidationException::withMessages([
-                'credentials' => ['Authentication failed.'],
+                'email' => ['Usuário não encontrado.'],
+            ]);
+        }
+
+        // Verifica senha
+        if (!Hash::check($validated['password'], $user->password)) {
+            usleep(random_int(100000, 300000));
+            
+            Log::channel('security')->warning('Login failed - wrong password', [
+                'email' => $validated['email'],
+                'ip' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+            ]);
+            
+            throw ValidationException::withMessages([
+                'password' => ['Senha incorreta.'],
             ]);
         }
 
         if ($user->is_banned) {
-            // Mesma mensagem genérica para não revelar status do usuário
             usleep(random_int(100000, 300000));
             
             Log::channel('security')->warning('Banned user login attempt', [
@@ -147,7 +163,7 @@ class AuthController extends Controller
             ]);
             
             throw ValidationException::withMessages([
-                'credentials' => ['Authentication failed.'],
+                'email' => ['Sua conta foi suspensa. Entre em contato com o suporte.'],
             ]);
         }
 
