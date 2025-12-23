@@ -3699,6 +3699,22 @@
         // TERMINAL INTEGRADO NO CHAT
         // ========================================
         
+        // Lista de comandos disponíveis para o help
+        const terminalCommands = {
+            'whois': { desc: 'Consulta informações WHOIS de domínios', example: 'whois example.com' },
+            'dig': { desc: 'Consulta DNS detalhada', example: 'dig example.com' },
+            'nslookup': { desc: 'Consulta DNS simples', example: 'nslookup example.com' },
+            'host': { desc: 'Resolução de DNS', example: 'host example.com' },
+            'ping': { desc: 'Teste de conectividade (4 pacotes)', example: 'ping example.com' },
+            'traceroute': { desc: 'Rastreamento de rota', example: 'traceroute example.com' },
+            'curl': { desc: 'Requisições HTTP (GET apenas)', example: 'curl -I example.com' },
+            'nmap': { desc: 'Scanner de portas', example: 'nmap -sV example.com' },
+            'nikto': { desc: 'Scanner de vulnerabilidades web', example: 'nikto -h example.com' },
+            'gobuster': { desc: 'Fuzzing de diretórios', example: 'gobuster dir -u http://example.com -w wordlist.txt' },
+            'wpscan': { desc: 'Scanner WordPress', example: 'wpscan --url example.com' },
+            'subfinder': { desc: 'Descoberta de subdomínios', example: 'subfinder -d example.com' },
+        };
+        
         // Verifica se a mensagem é um comando de terminal
         function isTerminalCommand(text) {
             return text.startsWith(TERMINAL_PREFIX) && text.length > 1;
@@ -3707,6 +3723,61 @@
         // Extrai o comando do texto (remove o prefixo $)
         function extractCommand(text) {
             return text.substring(1).trim();
+        }
+        
+        // Verifica se é comando help
+        function isHelpCommand(command) {
+            const cmd = command.toLowerCase().trim();
+            return cmd === 'help' || cmd === '?' || cmd === 'commands' || cmd === 'ajuda';
+        }
+        
+        // Mostra help dos comandos (sem enviar para IA)
+        function showTerminalHelp() {
+            sessionWelcome.classList.add('hidden');
+            messagesContainer.classList.remove('hidden');
+            
+            addMessage({ role: 'user', content: '`$ help`' });
+            
+            let helpHTML = `
+                <div class="terminal-result my-3 rounded-lg overflow-hidden" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(0,212,255,0.2);">
+                    <div class="flex items-center gap-2 px-3 py-2" style="background: rgba(0,212,255,0.1); border-bottom: 1px solid rgba(0,212,255,0.1);">
+                        <i class="fas fa-terminal text-[#00d4ff] text-xs"></i>
+                        <span class="text-xs font-mono text-[#00d4ff]">Terminal - Comandos Disponíveis</span>
+                    </div>
+                    <div class="p-3 space-y-2">
+                        <p class="text-xs text-gray-400 mb-3">Digite <code class="text-[#00ff88]">$ comando alvo</code> para executar. A IA analisa o resultado automaticamente.</p>
+                        <div class="grid gap-1">
+            `;
+            
+            for (const [cmd, info] of Object.entries(terminalCommands)) {
+                helpHTML += `
+                    <div class="flex items-start gap-3 py-1.5 border-b border-[rgba(255,255,255,0.05)] last:border-0">
+                        <code class="text-[#00ff88] text-xs font-mono w-20 flex-shrink-0">${cmd}</code>
+                        <span class="text-gray-400 text-xs flex-1">${info.desc}</span>
+                    </div>
+                `;
+            }
+            
+            helpHTML += `
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-[rgba(255,255,255,0.1)]">
+                            <p class="text-[10px] text-gray-500"><i class="fas fa-info-circle text-[#00d4ff] mr-1"></i> Rate limit: 10 cmd/min, 60 cmd/hora</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            messagesContainer.insertAdjacentHTML('beforeend', `
+                <div class="flex gap-3 p-4 animate-slide-in">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 255, 136, 0.1)); border: 1px solid rgba(0, 212, 255, 0.3);">
+                        <i class="fas fa-terminal text-[#00d4ff] text-sm"></i>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        ${helpHTML}
+                    </div>
+                </div>
+            `);
+            scrollToBottom();
         }
         
         // Executa comando no terminal e retorna resultado
@@ -3934,6 +4005,13 @@ Analise este resultado e me ajude a:
             if (isTerminalCommand(inputText) && !hasAttachment) {
                 const command = extractCommand(inputText);
                 messageInput.value = '';
+                
+                // Se for help, mostra lista de comandos sem enviar para IA
+                if (isHelpCommand(command)) {
+                    showTerminalHelp();
+                    return;
+                }
+                
                 await processTerminalCommand(command);
                 return;
             }
