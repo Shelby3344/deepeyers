@@ -1255,6 +1255,26 @@
         }
         
         /* Template & Tools Styles - Cyber Terminal */
+        
+        /* Tools Disabled State */
+        .tool-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+            filter: grayscale(100%);
+        }
+        .tool-btn.disabled .tool-icon {
+            filter: grayscale(100%) !important;
+            color: #666 !important;
+        }
+        .tool-btn.disabled .tool-label {
+            color: #666 !important;
+        }
+        .tool-btn.disabled:hover {
+            border-color: rgba(100, 100, 100, 0.3) !important;
+            background: rgba(0, 0, 0, 0.3) !important;
+        }
+        
         .template-category {
             background: rgba(10, 10, 15, 0.7);
             border: 1px solid rgba(0, 255, 136, 0.15);
@@ -1614,22 +1634,22 @@
                     <i class="fas fa-toolbox text-[8px]"></i>
                     // TOOLS
                 </div>
-                <div class="grid grid-cols-3 gap-2">
-                    <a href="/checklist" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(249,115,22,0.15)] hover:border-[rgba(249,115,22,0.4)] hover:bg-[rgba(249,115,22,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-list-check text-[#F97316] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(249,115,22,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#F97316]" style="font-family: var(--font-mono);">CHECKLIST</span>
+                <div id="toolsGrid" class="grid grid-cols-3 gap-2">
+                    <a href="/checklist" id="tool-checklist" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(249,115,22,0.15)] hover:border-[rgba(249,115,22,0.4)] hover:bg-[rgba(249,115,22,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-list-check text-[#F97316] group-hover:scale-110 transition-transform tool-icon" style="filter: drop-shadow(0 0 5px rgba(249,115,22,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#F97316] tool-label" style="font-family: var(--font-mono);">CHECKLIST</span>
                     </a>
-                    <a href="/scanner" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,212,255,0.15)] hover:border-[rgba(0,212,255,0.4)] hover:bg-[rgba(0,212,255,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-crosshairs text-[#00D4FF] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(0,212,255,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#00D4FF]" style="font-family: var(--font-mono);">SCANNER</span>
+                    <a href="/scanner" id="tool-scanner" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,212,255,0.15)] hover:border-[rgba(0,212,255,0.4)] hover:bg-[rgba(0,212,255,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-crosshairs text-[#00D4FF] group-hover:scale-110 transition-transform tool-icon" style="filter: drop-shadow(0 0 5px rgba(0,212,255,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#00D4FF] tool-label" style="font-family: var(--font-mono);">SCANNER</span>
                     </a>
-                    <a href="/reports" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(168,85,247,0.15)] hover:border-[rgba(168,85,247,0.4)] hover:bg-[rgba(168,85,247,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-file-alt text-[#A855F7] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(168,85,247,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#A855F7]" style="font-family: var(--font-mono);">REPORTS</span>
+                    <a href="/reports" id="tool-reports" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(168,85,247,0.15)] hover:border-[rgba(168,85,247,0.4)] hover:bg-[rgba(168,85,247,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-file-alt text-[#A855F7] group-hover:scale-110 transition-transform tool-icon" style="filter: drop-shadow(0 0 5px rgba(168,85,247,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#A855F7] tool-label" style="font-family: var(--font-mono);">REPORTS</span>
                     </a>
-                    <a href="/terminal" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.4)] hover:bg-[rgba(0,255,136,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-terminal text-[#00FF88] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(0,255,136,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#00FF88]" style="font-family: var(--font-mono);">TERMINAL</span>
+                    <a href="/terminal" id="tool-terminal" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.4)] hover:bg-[rgba(0,255,136,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                        <i class="fas fa-terminal text-[#00FF88] group-hover:scale-110 transition-transform tool-icon" style="filter: drop-shadow(0 0 5px rgba(0,255,136,0.5));"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#00FF88] tool-label" style="font-family: var(--font-mono);">TERMINAL</span>
                     </a>
                     <button onclick="exportChat()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(236,72,153,0.15)] hover:border-[rgba(236,72,153,0.4)] hover:bg-[rgba(236,72,153,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
                         <i class="fas fa-download text-[#EC4899] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(236,72,153,0.5));"></i>
@@ -1649,6 +1669,22 @@
             
             <!-- User Info - Cyber Style -->
             <div class="p-4 border-t border-[rgba(0,255,136,0.15)]">
+                <!-- Plan Info -->
+                <div id="planInfo" class="mb-3 p-2 bg-[rgba(0,0,0,0.4)] border border-[rgba(0,212,255,0.2)]" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                    <div class="flex items-center justify-between mb-1">
+                        <span id="userPlanName" class="text-[10px] font-bold text-[#00D4FF] uppercase tracking-wider" style="font-family: var(--font-mono);">FREE</span>
+                        <button id="upgradeBtn" onclick="event.stopPropagation(); window.location.href='/#precos'" class="text-[8px] px-2 py-1 bg-gradient-to-r from-[#00D4FF] to-[#00FF88] text-black font-bold uppercase tracking-wider hover:opacity-80 transition-all" style="font-family: var(--font-mono);">
+                            <i class="fas fa-rocket mr-1"></i>UPGRADE
+                        </button>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="flex-1 h-1 bg-[rgba(0,0,0,0.5)] rounded-full overflow-hidden">
+                            <div id="requestsBar" class="h-full bg-gradient-to-r from-[#00D4FF] to-[#00FF88] transition-all" style="width: 0%"></div>
+                        </div>
+                        <span id="requestsCount" class="text-[9px] text-gray-400" style="font-family: var(--font-mono);">0/10</span>
+                    </div>
+                </div>
+                
                 <div id="userInfo" class="flex items-center gap-3 p-3 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.4)] transition-all cursor-pointer" onclick="window.location.href='/profile'" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
                     <a href="/profile" id="userAvatarLink" class="w-10 h-10 p-[2px] flex-shrink-0 border border-[rgba(0,255,136,0.4)]" style="background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,212,255,0.1)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
                         <div class="w-full h-full bg-[#0a0a0f] flex items-center justify-center overflow-hidden">
@@ -2955,6 +2991,12 @@
             // Atualiza os Attack Mode buttons baseado no plano do usuário
             updateAttackModeAccess();
             
+            // Atualiza acesso às Tools baseado no plano
+            updateToolsAccess();
+            
+            // Atualiza informações do plano na sidebar
+            updatePlanInfo();
+            
             // Legacy profile options (mantém compatibilidade)
             const allowedProfiles = {
                 'user': ['pentest'],
@@ -2974,6 +3016,83 @@
             });
             
             await loadSessions();
+        }
+        
+        // Verifica se usuário tem acesso às Tools (plano não-free)
+        function userHasToolsAccess() {
+            // Admin sempre tem acesso
+            if (currentUser?.role === 'admin') return true;
+            
+            // Verifica se tem plano e se não é o plano free
+            const planSlug = currentUser?.plan?.slug;
+            return planSlug && planSlug !== 'free';
+        }
+        
+        // Atualiza acesso às Tools baseado no plano
+        function updateToolsAccess() {
+            const hasAccess = userHasToolsAccess();
+            const toolBtns = document.querySelectorAll('.tool-btn[data-tool="true"]');
+            
+            toolBtns.forEach(btn => {
+                if (hasAccess) {
+                    btn.classList.remove('disabled');
+                    btn.removeAttribute('title');
+                } else {
+                    btn.classList.add('disabled');
+                    btn.setAttribute('title', '🔒 Disponível nos planos Red Team e Full Attack');
+                    // Remove href para não navegar
+                    btn.removeAttribute('href');
+                    btn.style.cursor = 'not-allowed';
+                }
+            });
+        }
+        
+        // Atualiza informações do plano na sidebar
+        function updatePlanInfo() {
+            const plan = currentUser?.plan;
+            const planNameEl = document.getElementById('userPlanName');
+            const requestsBarEl = document.getElementById('requestsBar');
+            const requestsCountEl = document.getElementById('requestsCount');
+            const upgradeBtnEl = document.getElementById('upgradeBtn');
+            
+            if (!planNameEl) return;
+            
+            // Nome do plano
+            const planName = plan?.name || 'Pentest';
+            const planSlug = plan?.slug || 'free';
+            planNameEl.textContent = planName.toUpperCase();
+            
+            // Cor do plano
+            const planColors = {
+                'free': '#00D4FF',
+                'redteam': '#F97316',
+                'fullattack': '#EF4444'
+            };
+            planNameEl.style.color = planColors[planSlug] || '#00D4FF';
+            
+            // Requisições
+            const requestsPerDay = plan?.requests_per_day || 10;
+            const usedToday = currentUser?.requests_today || 0;
+            const percentage = Math.min((usedToday / requestsPerDay) * 100, 100);
+            
+            requestsBarEl.style.width = percentage + '%';
+            requestsCountEl.textContent = `${usedToday}/${requestsPerDay}`;
+            
+            // Cor da barra baseada no uso
+            if (percentage >= 90) {
+                requestsBarEl.style.background = 'linear-gradient(to right, #EF4444, #DC2626)';
+            } else if (percentage >= 70) {
+                requestsBarEl.style.background = 'linear-gradient(to right, #F97316, #EA580C)';
+            } else {
+                requestsBarEl.style.background = 'linear-gradient(to right, #00D4FF, #00FF88)';
+            }
+            
+            // Esconde botão upgrade se já tem plano top
+            if (planSlug === 'fullattack' || currentUser?.role === 'admin') {
+                upgradeBtnEl.style.display = 'none';
+            } else {
+                upgradeBtnEl.style.display = 'block';
+            }
         }
         
         // Atualiza os botões de Attack Mode baseado no plano do usuário
@@ -3159,7 +3278,60 @@
             }
         }
         
-        newChatBtn.addEventListener('click', () => openDomainModal());
+        // Cria nova sessão diretamente sem pedir domínio
+        async function createNewSession() {
+            const title = `Nova Sessão - ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}`;
+            
+            try {
+                const data = await api('/chat/sessions', {
+                    method: 'POST',
+                    body: JSON.stringify({ title, target_domain: '', profile: profileSelector.value })
+                });
+                
+                currentSession = data.data;
+                currentSession.isNew = true; // Flag para atualizar título na primeira mensagem
+                sessions.unshift(data.data);
+                renderSessions();
+                showChat();
+            } catch (error) {
+                console.error('Failed to create session:', error);
+            }
+        }
+        
+        // Atualiza o título da sessão baseado na primeira mensagem
+        async function updateSessionTitle(firstMessage) {
+            if (!currentSession || !currentSession.isNew) return;
+            
+            // Pega os primeiros 50 caracteres da mensagem como título
+            let newTitle = firstMessage.substring(0, 50);
+            if (firstMessage.length > 50) newTitle += '...';
+            
+            // Adiciona data/hora
+            newTitle += ` - ${new Date().toLocaleDateString('pt-BR')} ${new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}`;
+            
+            try {
+                await api(`/chat/sessions/${currentSession.id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ title: newTitle })
+                });
+                
+                currentSession.title = newTitle;
+                currentSession.isNew = false;
+                
+                // Atualiza na lista de sessões
+                const sessionIndex = sessions.findIndex(s => s.id === currentSession.id);
+                if (sessionIndex !== -1) {
+                    sessions[sessionIndex].title = newTitle;
+                }
+                
+                renderSessions();
+                updateSessionHeader();
+            } catch (error) {
+                console.error('Failed to update session title:', error);
+            }
+        }
+        
+        newChatBtn.addEventListener('click', () => createNewSession());
         
         async function loadSession(sessionId) {
             try {
@@ -3927,6 +4099,11 @@ Analise este resultado e me ajude a:
             messagesContainer.classList.remove('hidden');
             
             addMessage({ role: 'user', content: displayContent, attachment: attachmentData });
+            
+            // Atualiza título da sessão se for a primeira mensagem
+            if (currentSession?.isNew && displayContent) {
+                updateSessionTitle(displayContent);
+            }
             
             // Mostra loading animado e botão de cancelar
             typingIndicator.classList.remove('hidden');

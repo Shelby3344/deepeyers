@@ -2498,7 +2498,7 @@ subprocess.call(["/bin/sh","-i"])</code>
                                         <span>Perfil Full Attack</span>
                                     </div>
                                 </div>
-                                <a href="/chat" class="pricing-btn redteam">Assinar Red Team</a>
+                                <a href="https://wa.me/5511940968290?text=Ol%C3%A1!%20Tenho%20interesse%20no%20plano%20RED%20TEAM%20(R%2449%2Fm%C3%AAs)%20do%20DeepEyes.%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20para%20assinar." target="_blank" class="pricing-btn redteam"><i class="fab fa-whatsapp mr-2"></i>Assinar Red Team</a>
                             </div>
 
                             <!-- Plano Full Attack -->
@@ -2551,7 +2551,7 @@ subprocess.call(["/bin/sh","-i"])</code>
                                         <span>Suporte Prioritário</span>
                                     </div>
                                 </div>
-                                <a href="/chat" class="pricing-btn fullattack">Assinar Full Attack</a>
+                                <a href="https://wa.me/5511940968290?text=Ol%C3%A1!%20Tenho%20interesse%20no%20plano%20FULL%20ATTACK%20(R%2499%2Fm%C3%AAs)%20do%20DeepEyes.%20Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20para%20assinar." target="_blank" class="pricing-btn fullattack"><i class="fab fa-whatsapp mr-2"></i>Assinar Full Attack</a>
                             </div>
                         </div>
 
