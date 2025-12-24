@@ -7,10 +7,14 @@ echo "🚀 Iniciando deploy do DeepEyes..."
 # Navegar para o diretório
 cd /var/www/deepeyes
 
-# Limpar alterações locais e atualizar
+# Atualizar código (sem reverter alterações locais do composer)
 echo "📥 Atualizando código..."
-git checkout -- .
+git stash
 git pull origin main
+git stash pop 2>/dev/null || true
+
+# Limpar cache do bootstrap antes de tudo
+rm -rf bootstrap/cache/*.php
 
 # Limpar caches do Laravel
 echo "🧹 Limpando caches..."
