@@ -4320,8 +4320,6 @@ Analise este resultado e me ajude a:
             } catch (streamError) {
                 // Verifica se foi cancelado pelo usuário
                 if (streamError.name === 'AbortError') {
-                    console.log('Requisição cancelada pelo usuário');
-                    
                     // Remove div de streaming se existir
                     if (streamingDiv) {
                         streamingDiv.remove();
@@ -4335,8 +4333,6 @@ Analise este resultado e me ajude a:
                         content: '⚠️ **Resposta cancelada.** Você pode enviar uma nova mensagem.' 
                     });
                 } else {
-                    console.log('Streaming failed:', streamError.message);
-                    
                     // Remove div de streaming se existir
                     if (streamingDiv) {
                         streamingDiv.remove();

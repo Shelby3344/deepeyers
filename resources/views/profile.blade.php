@@ -877,7 +877,7 @@
                 </div>
                 <div>
                     <label class="block text-sm text-gray-400 mb-2">Nova Senha (deixe vazio para não alterar)</label>
-                    <input type="password" id="editUserPassword" class="input-field" placeholder="••••••••">
+                    <input type="password" id="editUserPassword" class="input-field" placeholder="••••••••" autocomplete="new-password">
                 </div>
                 <div class="flex gap-3 pt-2">
                     <button type="button" onclick="closeEditUserModal()" class="btn-secondary flex-1">Cancelar</button>
@@ -978,15 +978,11 @@
             try {
                 const data = await api('/profile');
                 currentUser = data.user;
-                console.log('User loaded:', currentUser); // Debug
                 renderProfile(data);
                 
                 if (currentUser && currentUser.role === 'admin') {
-                    console.log('Admin detected, showing admin menu'); // Debug
                     document.getElementById('adminMenu').classList.remove('hidden');
                     loadAdminData();
-                } else {
-                    console.log('Not admin, role:', currentUser?.role); // Debug
                 }
             } catch (err) {
                 console.error('Erro ao carregar perfil:', err);
