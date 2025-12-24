@@ -18,6 +18,11 @@ Route::middleware([MinifyHtml::class])->group(function () {
         return view('docs');
     });
 
+    // Checklist público (compartilhado)
+    Route::get('/checklist/share/{token}', function ($token) {
+        return view('checklist-public', ['token' => $token]);
+    });
+
     // Rotas protegidas - requerem autenticação
     Route::middleware([EnsureAuthenticated::class])->group(function () {
         // Chat
