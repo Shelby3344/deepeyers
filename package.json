@@ -1,0 +1,12 @@
+{
+  "name": "deepeyes",
+  "version": "1.0.0",
+  "description": "DeepEyes Security AI Platform",
+  "scripts": {
+    "dev": "npx tailwindcss -i ./resources/css/app.css -o ./public/css/tailwind.css --watch",
+    "build": "npx tailwindcss -i ./resources/css/app.css -o ./public/css/tailwind.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}

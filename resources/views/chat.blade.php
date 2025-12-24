@@ -4,56 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>DeepEyes - Deep visibility into security.</title>
+    <title>DeepEyes - Security AI Platform</title>
     <link rel="icon" type="image/png" href="/logo.png">
     <link rel="apple-touch-icon" href="/logo.png">
     <meta name="theme-color" content="#0a0a0f">
+    
+    <!-- Preconnect para acelerar carregamento -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Fontes Google - carregamento otimizado -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap"></noscript>
+    
     <style>
-        /* CRITICAL: Previne flash branco - carrega ANTES de tudo */
+        /* CRITICAL: Previne flash branco */
         html, body { background: #0a0a0f !important; }
     </style>
     <script>
-        // Controla visibilidade baseado no token
         if (localStorage.getItem('token')) {
             document.documentElement.classList.add('has-token');
         } else {
             document.documentElement.classList.add('no-token');
         }
     </script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'de-bg': '#0a0a0f',
-                        'de-bg-secondary': '#12121a',
-                        'de-bg-tertiary': '#1a1a24',
-                        'de-neon': '#00FF88',
-                        'de-cyan': '#00D4FF',
-                        'de-purple': '#8b5cf6',
-                        'de-red': '#EF4444',
-                        'de-orange': '#F97316',
-                    },
-                    fontFamily: {
-                        'display': ['Inter', 'sans-serif'],
-                        'mono': ['JetBrains Mono', 'monospace'],
-                    },
-                    animation: {
-                        'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
-                        'scan': 'scan 8s linear infinite',
-                        'typing': 'typing 0.8s steps(3) infinite',
-                    }
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- Tailwind CSS compilado localmente (muito mais rápido que CDN) -->
+    <link rel="stylesheet" href="/css/tailwind.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="/css/deepeyes.css">
     <link rel="stylesheet" href="/css/mobile.css">
+    <link rel="preload" href="/fonts/upheavtt.ttf" as="font" type="font/ttf" crossorigin>
+    <!-- Font Awesome - carregamento assíncrono -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+        
+        @font-face {
+            font-family: 'Upheaval';
+            src: url('/fonts/upheavtt.ttf') format('truetype');
+            font-display: swap;
+            font-weight: normal;
+            font-style: normal;
+        }
         
         /* ========================================
            DEEPEYES CLEAN UI - Matching Landing
@@ -1553,10 +1546,10 @@
             </button>
             <!-- Logo - Cyber Style -->
             <div class="p-5 border-b border-[rgba(0,255,136,0.15)]">
-                <div>
-                    <h1 class="text-lg font-bold text-white tracking-tight" style="font-family: var(--font-pixel); font-size: 14px; text-shadow: 0 0 10px rgba(0,255,136,0.8), 0 0 20px rgba(0,255,136,0.4);">DeepEyes</h1>
-                    <p class="text-[10px] text-[#00FF88] uppercase tracking-[2px] mt-1" style="font-family: var(--font-mono);">// Deep visibility</p>
-                </div>
+                <a href="/" class="block">
+                    <h1 class="text-2xl font-normal text-white tracking-wide" style="font-family: 'Upheaval', sans-serif;">DeepEyes</h1>
+                    <p class="text-[10px] text-[#00D4FF] uppercase tracking-wider mt-1">Security AI Platform</p>
+                </a>
             </div>
             
             <!-- Attack Mode Selector - Cyber Terminal Style -->
@@ -1669,22 +1662,6 @@
             
             <!-- User Info - Cyber Style -->
             <div class="p-4 border-t border-[rgba(0,255,136,0.15)]">
-                <!-- Plan Info -->
-                <div id="planInfo" class="mb-3 p-2 bg-[rgba(0,0,0,0.4)] border border-[rgba(0,212,255,0.2)]" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                    <div class="flex items-center justify-between mb-1">
-                        <span id="userPlanName" class="text-[10px] font-bold text-[#00D4FF] uppercase tracking-wider" style="font-family: var(--font-mono);">FREE</span>
-                        <button id="upgradeBtn" onclick="event.stopPropagation(); window.location.href='/#precos'" class="text-[8px] px-2 py-1 bg-gradient-to-r from-[#00D4FF] to-[#00FF88] text-black font-bold uppercase tracking-wider hover:opacity-80 transition-all" style="font-family: var(--font-mono);">
-                            <i class="fas fa-rocket mr-1"></i>UPGRADE
-                        </button>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="flex-1 h-1 bg-[rgba(0,0,0,0.5)] rounded-full overflow-hidden">
-                            <div id="requestsBar" class="h-full bg-gradient-to-r from-[#00D4FF] to-[#00FF88] transition-all" style="width: 0%"></div>
-                        </div>
-                        <span id="requestsCount" class="text-[9px] text-gray-400" style="font-family: var(--font-mono);">0/10</span>
-                    </div>
-                </div>
-                
                 <div id="userInfo" class="flex items-center gap-3 p-3 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.4)] transition-all cursor-pointer" onclick="window.location.href='/profile'" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
                     <a href="/profile" id="userAvatarLink" class="w-10 h-10 p-[2px] flex-shrink-0 border border-[rgba(0,255,136,0.4)]" style="background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,212,255,0.1)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
                         <div class="w-full h-full bg-[#0a0a0f] flex items-center justify-center overflow-hidden">
@@ -1694,7 +1671,7 @@
                     </a>
                     <div class="flex-1 min-w-0">
                         <a href="/profile" id="userName" class="text-sm font-semibold text-[#00FF88] hover:text-white transition-colors block truncate" style="font-family: var(--font-mono);">NOT_LOGGED</a>
-                        <div id="userRole" class="text-[9px] text-gray-500 uppercase tracking-wider" style="font-family: var(--font-mono);">-</div>
+                        <div id="userPlanBadge" class="text-[9px] text-[#00D4FF] uppercase tracking-wider font-semibold" style="font-family: var(--font-mono);">FREE</div>
                     </div>
                     <button id="logoutBtn" class="text-gray-500 hover:text-red-400 transition-colors hidden" title="Sair" onclick="event.stopPropagation()">
                         <i class="fas fa-sign-out-alt"></i>
@@ -2285,44 +2262,6 @@
                         <span class="text-[#00FF88] font-semibold">Pentest</span> e 
                         <span class="text-[#00D4FF] font-semibold">Red Team</span>.
                     </p>
-                    
-                    <!-- Perfil Atual - Premium Card -->
-                    <div id="currentProfileCard" class="w-full max-w-md de-card p-5 mb-5">
-                        <div class="flex items-center gap-4 mb-3">
-                            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00FF88]/20 to-[#00D4FF]/10 flex items-center justify-center border border-[#00FF88]/30">
-                                <i id="welcomeProfileIcon" class="fas fa-skull-crossbones text-[#00FF88] text-xl"></i>
-                            </div>
-                            <div class="text-left flex-1">
-                                <p class="text-[10px] text-gray-500 uppercase tracking-widest font-medium">Modo Ativo</p>
-                                <h4 id="welcomeProfileName" class="text-sm font-bold text-white">DeepEyes - Ofensivo</h4>
-                            </div>
-                        </div>
-                        <p id="welcomeProfileDesc" class="text-xs text-gray-400 text-left mb-3 leading-relaxed">
-                            Modo ofensivo para pentest autorizado - comandos e payloads reais
-                        </p>
-                        <div id="welcomeProfileFeatures" class="grid grid-cols-4 gap-2 text-left mb-3">
-                            <div class="flex items-center gap-1.5 text-[10px] text-gray-400 bg-[rgba(0,255,136,0.05)] rounded-md px-2 py-1 border border-[rgba(0,255,136,0.1)]">
-                                <i class="fas fa-check text-[#00FF88] text-[8px]"></i>
-                                <span>SQLi</span>
-                            </div>
-                            <div class="flex items-center gap-1.5 text-[10px] text-gray-400 bg-[rgba(0,255,136,0.05)] rounded-md px-2 py-1 border border-[rgba(0,255,136,0.1)]">
-                                <i class="fas fa-check text-[#00FF88] text-[8px]"></i>
-                                <span>XSS</span>
-                            </div>
-                            <div class="flex items-center gap-1.5 text-[10px] text-gray-400 bg-[rgba(0,255,136,0.05)] rounded-md px-2 py-1 border border-[rgba(0,255,136,0.1)]">
-                                <i class="fas fa-check text-[#00FF88] text-[8px]"></i>
-                                <span>Shells</span>
-                            </div>
-                            <div class="flex items-center gap-1.5 text-[10px] text-gray-400 bg-[rgba(0,255,136,0.05)] rounded-md px-2 py-1 border border-[rgba(0,255,136,0.1)]">
-                                <i class="fas fa-check text-[#00FF88] text-[8px]"></i>
-                                <span>PrivEsc</span>
-                            </div>
-                        </div>
-                        <p id="welcomeProfileRestriction" class="text-[10px] text-gray-500 text-left border-t border-[rgba(255,255,255,0.05)] pt-3 flex items-center gap-2">
-                            <i class="fas fa-shield-check text-[#00D4FF]"></i>
-                            <span>IA com diretrizes de segurança - respostas técnicas para profissionais autorizados</span>
-                        </p>
-                    </div>
                     
                     <!-- Dica do Terminal Integrado -->
                     <div class="w-full max-w-md mb-4">
@@ -3035,7 +2974,7 @@
             authModal.classList.add('hidden');
             authModal.classList.remove('flex');
             document.getElementById('userName').textContent = currentUser?.name || 'Usuário';
-            document.getElementById('userRole').textContent = (currentUser?.role || 'user').toUpperCase();
+            document.getElementById('userPlanBadge').textContent = currentUser?.plan?.name || 'FREE';
             logoutBtn.classList.remove('hidden');
             messageInput.disabled = false;
             sendBtn.disabled = false;
@@ -3053,9 +2992,6 @@
             
             // Atualiza acesso às Tools baseado no plano
             updateToolsAccess();
-            
-            // Atualiza informações do plano na sidebar
-            updatePlanInfo();
             
             // Legacy profile options (mantém compatibilidade)
             const allowedProfiles = {
@@ -3164,54 +3100,6 @@
                 }
             } catch (error) {
                 console.error('Error loading dashboard stats:', error);
-            }
-        }
-        
-        // Atualiza informações do plano na sidebar
-        function updatePlanInfo() {
-            const plan = currentUser?.plan;
-            const planNameEl = document.getElementById('userPlanName');
-            const requestsBarEl = document.getElementById('requestsBar');
-            const requestsCountEl = document.getElementById('requestsCount');
-            const upgradeBtnEl = document.getElementById('upgradeBtn');
-            
-            if (!planNameEl) return;
-            
-            // Nome do plano
-            const planName = plan?.name || 'Pentest';
-            const planSlug = plan?.slug || 'free';
-            planNameEl.textContent = planName.toUpperCase();
-            
-            // Cor do plano
-            const planColors = {
-                'free': '#00D4FF',
-                'redteam': '#F97316',
-                'fullattack': '#EF4444'
-            };
-            planNameEl.style.color = planColors[planSlug] || '#00D4FF';
-            
-            // Requisições
-            const requestsPerDay = plan?.requests_per_day || 10;
-            const usedToday = currentUser?.requests_today || 0;
-            const percentage = Math.min((usedToday / requestsPerDay) * 100, 100);
-            
-            requestsBarEl.style.width = percentage + '%';
-            requestsCountEl.textContent = `${usedToday}/${requestsPerDay}`;
-            
-            // Cor da barra baseada no uso
-            if (percentage >= 90) {
-                requestsBarEl.style.background = 'linear-gradient(to right, #EF4444, #DC2626)';
-            } else if (percentage >= 70) {
-                requestsBarEl.style.background = 'linear-gradient(to right, #F97316, #EA580C)';
-            } else {
-                requestsBarEl.style.background = 'linear-gradient(to right, #00D4FF, #00FF88)';
-            }
-            
-            // Esconde botão upgrade se já tem plano top
-            if (planSlug === 'fullattack' || currentUser?.role === 'admin') {
-                upgradeBtnEl.style.display = 'none';
-            } else {
-                upgradeBtnEl.style.display = 'block';
             }
         }
         

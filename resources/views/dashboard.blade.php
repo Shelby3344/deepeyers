@@ -9,27 +9,22 @@
     <link rel="apple-touch-icon" href="/logo.png">
     <meta name="theme-color" content="#0a0a0f">
     <style>html, body { background: #0a0a0f !important; }</style>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'de-bg': '#0a0a0f',
-                        'de-bg-secondary': '#12121a',
-                        'de-bg-tertiary': '#1a1a24',
-                        'de-neon': '#00FF88',
-                        'de-cyan': '#00D4FF',
-                        'de-purple': '#8b5cf6',
-                        'de-red': '#EF4444',
-                        'de-orange': '#F97316',
-                    }
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Preconnect para acelerar carregamento -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Tailwind CSS compilado localmente -->
+    <link rel="stylesheet" href="/css/tailwind.css">
+    
+    <!-- Fontes Google - carregamento otimizado -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap"></noscript>
+    
+    <!-- Font Awesome - carregamento assíncrono -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
     <style>
         :root {
             --bg-primary: #0a0a0f;
