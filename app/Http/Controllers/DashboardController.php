@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\ChatSession;
-use App\Models\Checklist;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -38,19 +38,24 @@ class DashboardController extends Controller
         $totalMessages = DB::table('chat_messages')
             ->whereIn('session_id', ChatSession::where('user_id', $user->id)->pluck('id'))
             ->count();
-        $totalChecklists = Checklist::where('user_id', $user->id)->count();
+        
+        // Checklists - verifica se tabela existe
+        $totalChecklists = 0;
+        $recentChecklists = collect();
+        if (Schema::hasTable('checklists')) {
+            $totalChecklists = DB::table('checklists')->where('user_id', $user->id)->count();
+            $recentChecklists = DB::table('checklists')
+                ->where('user_id', $user->id)
+                ->orderBy('updated_at', 'desc')
+                ->limit(5)
+                ->get(['id', 'title', 'type', 'states', 'updated_at']);
+        }
         
         // Sessões recentes
         $recentSessions = ChatSession::where('user_id', $user->id)
             ->orderBy('updated_at', 'desc')
-            ->limit(5)
+            ->limit(6)
             ->get(['id', 'title', 'target_domain', 'profile', 'updated_at']);
-
-        // Checklists recentes
-        $recentChecklists = Checklist::where('user_id', $user->id)
-            ->orderBy('updated_at', 'desc')
-            ->limit(5)
-            ->get(['id', 'title', 'type', 'states', 'updated_at']);
 
         // Uso diário
         $dailyUsage = [
@@ -93,7 +98,7 @@ class DashboardController extends Controller
             'weekly_activity' => $activityData,
             'recent_sessions' => $recentSessions,
             'recent_checklists' => $recentChecklists->map(function ($checklist) {
-                $states = $checklist->states ?? [];
+                $states = json_decode($checklist->states ?? '[]', true);
                 $total = count($states);
                 $completed = collect($states)->filter(fn($s) => $s === true)->count();
                 return [
@@ -101,7 +106,7 @@ class DashboardController extends Controller
                     'title' => $checklist->title,
                     'type' => $checklist->type,
                     'progress' => $total > 0 ? round($completed / $total * 100) : 0,
-                    'updated_at' => $checklist->updated_at->diffForHumans(),
+                    'updated_at' => \Carbon\Carbon::parse($checklist->updated_at)->diffForHumans(),
                 ];
             }),
             'plan' => $user->plan ? [
