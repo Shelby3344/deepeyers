@@ -2263,8 +2263,8 @@
                         <span class="text-[#00D4FF] font-semibold">Red Team</span>.
                     </p>
                     
-                    <!-- Dica do Terminal Integrado -->
-                    <div class="w-full max-w-md mb-4">
+                    <!-- Dica do Terminal Integrado (apenas Full Attack) -->
+                    <div id="terminalTipCard" class="w-full max-w-md mb-4 hidden">
                         <div class="de-card p-3 border-[rgba(0,212,255,0.2)] bg-[rgba(0,212,255,0.03)]">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-lg bg-[rgba(0,212,255,0.1)] flex items-center justify-center border border-[rgba(0,212,255,0.2)]">
@@ -2285,7 +2285,7 @@
                             Experimente Perguntar
                         </h4>
                         <div class="grid grid-cols-1 gap-2">
-                            <button onclick="setExampleQuestion(this)" class="de-card p-3 text-left hover:border-[rgba(0,212,255,0.3)] transition-all group">
+                            <button id="terminalExampleBtn" onclick="setExampleQuestion(this)" class="de-card p-3 text-left hover:border-[rgba(0,212,255,0.3)] transition-all group hidden">
                                 <p class="text-xs text-gray-400 group-hover:text-white transition-colors flex items-center gap-2">
                                     <i class="fas fa-terminal text-[#00d4ff] text-[10px]"></i>
                                     $ nmap -sV deepeyes.online
@@ -2993,6 +2993,17 @@
             // Atualiza acesso às Tools baseado no plano
             updateToolsAccess();
             
+            // Mostra/esconde dica do terminal baseado no plano
+            const terminalTipCard = document.getElementById('terminalTipCard');
+            const terminalExampleBtn = document.getElementById('terminalExampleBtn');
+            if (userHasTerminalAccess()) {
+                if (terminalTipCard) terminalTipCard.classList.remove('hidden');
+                if (terminalExampleBtn) terminalExampleBtn.classList.remove('hidden');
+            } else {
+                if (terminalTipCard) terminalTipCard.classList.add('hidden');
+                if (terminalExampleBtn) terminalExampleBtn.classList.add('hidden');
+            }
+            
             // Legacy profile options (mantém compatibilidade)
             const allowedProfiles = {
                 'user': ['pentest'],
@@ -3057,17 +3068,48 @@
             return planSlug && planSlug !== 'free';
         }
         
+        // Verifica se usuário tem acesso ao Terminal (apenas Full Attack ou admin)
+        function userHasTerminalAccess() {
+            // Admin sempre tem acesso
+            if (currentUser?.role === 'admin') return true;
+            
+            // Apenas plano fullattack tem acesso ao terminal
+            const planSlug = currentUser?.plan?.slug;
+            return planSlug === 'fullattack';
+        }
+        
         // Atualiza acesso às Tools baseado no plano
         function updateToolsAccess() {
             const hasAccess = userHasToolsAccess();
+            const hasTerminalAccess = userHasTerminalAccess();
             const toolBtns = document.querySelectorAll('.tool-btn[data-tool="true"]');
             
             toolBtns.forEach(btn => {
-                if (hasAccess) {
+                const isTerminal = btn.id === 'tool-terminal';
+                
+                // Terminal tem regra especial - apenas Full Attack
+                if (isTerminal) {
+                    if (hasTerminalAccess) {
+                        btn.classList.remove('disabled');
+                        btn.removeAttribute('title');
+                        btn.setAttribute('href', '/terminal');
+                        btn.style.cursor = 'pointer';
+                    } else {
+                        btn.classList.add('disabled');
+                        btn.setAttribute('title', '🔒 Terminal disponível apenas no plano Full Attack');
+                        btn.removeAttribute('href');
+                        btn.style.cursor = 'not-allowed';
+                        btn.onclick = (e) => {
+                            e.preventDefault();
+                            showNotification('Terminal disponível apenas no plano Full Attack', 'warning');
+                        };
+                    }
+                } else if (hasAccess) {
                     btn.classList.remove('disabled');
                     btn.removeAttribute('title');
                 } else {
                     btn.classList.add('disabled');
+                    btn.setAttribute('title', '🔒 Disponível nos planos Red Team e Full Attack');
                     btn.setAttribute('title', '🔒 Disponível nos planos Red Team e Full Attack');
                     // Remove href para não navegar
                     btn.removeAttribute('href');
@@ -3887,6 +3929,16 @@
         
         // Processa comando do terminal e envia para IA analisar
         async function processTerminalCommand(command) {
+            // Verifica se usuário tem acesso ao terminal
+            if (!userHasTerminalAccess()) {
+                showNotification('Terminal disponível apenas no plano Full Attack', 'warning');
+                addMessage({
+                    role: 'assistant',
+                    content: `⚠️ **Terminal não disponível**\n\nO terminal integrado está disponível apenas no plano **Full Attack**.\n\nSeu plano atual: **${currentUser?.plan?.name || 'Pentest'}**\n\nFaça upgrade para ter acesso ao terminal e executar comandos diretamente no chat.`
+                });
+                return;
+            }
+            
             // Esconde welcome e mostra chat
             sessionWelcome.classList.add('hidden');
             messagesContainer.classList.remove('hidden');

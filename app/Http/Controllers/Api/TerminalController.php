@@ -157,6 +157,21 @@ class TerminalController extends Controller
         $ip = $request->ip();
         $fullCommand = trim($request->input('command'));
 
+        // Verificar se usuário tem acesso ao terminal (apenas Full Attack ou admin)
+        if ($user->role !== 'admin') {
+            $plan = $user->plan;
+            $planSlug = $plan ? $plan->slug : 'free';
+            
+            if ($planSlug !== 'fullattack') {
+                $this->logCommand($userId, $fullCommand, $ip, false, 'Plan not allowed');
+                return response()->json([
+                    'success' => false,
+                    'type' => 'error',
+                    'output' => "⚠️ Terminal disponível apenas no plano Full Attack.\n\nSeu plano atual: " . ($plan ? $plan->name : 'Pentest') . "\n\nFaça upgrade para ter acesso ao terminal integrado.",
+                ], 403);
+            }
+        }
+
         // Rate limiting (admin não tem limite)
         if ($user->role !== 'admin') {
             $rateLimitResponse = $this->checkRateLimit($userId);
@@ -166,10 +181,143 @@ class TerminalController extends Controller
             }
         }
         
+        // Verificar tamanho do comando (proteção contra comandos muito grandes)
+        if (strlen($fullCommand) > 500) {
+            $this->logCommand($userId, $fullCommand, $ip, false, 'Command too long');
+            return response()->json([
+                'success' => false,
+                'type' => 'error',
+                'output' => "⚠️ Comando muito longo.\n\nMáximo permitido: 500 caracteres\nSeu comando: " . strlen($fullCommand) . " caracteres",
+            ]);
+        }
+        
         // Parse do comando
         $parts = preg_split('/\s+/', $fullCommand, 2);
         $command = strtolower($parts[0]);
         $args = $parts[1] ?? '';
+        
+        // Verificar número de argumentos (proteção contra comandos complexos)
+        $argCount = substr_count($args, ' ') + (empty($args) ? 0 : 1);
+        if ($argCount > 20) {
+            $this->logCommand($userId, $fullCommand, $ip, false, 'Too many arguments');
+            return response()->json([
+                'success' => false,
+                'type' => 'error',
+                'output' => "⚠️ Muitos argumentos no comando.\n\nMáximo permitido: 20 argumentos\nSeu comando: {$argCount} argumentos",
+            ]);
+        }
+        
+        // Verificar se há múltiplos alvos (proteção contra scans massivos)
+        $targetCount = preg_match_all('/\b(?:\d{1,3}\.){3}\d{1,3}\b|\b[a-zA-Z0-9][-a-zA-Z0-9]*\.[a-zA-Z]{2,}\b/', $args);
+        if ($targetCount > 5) {
+            $this->logCommand($userId, $fullCommand, $ip, false, 'Too many targets');
+            return response()->json([
+                'success' => false,
+                'type' => 'error',
+                'output' => "⚠️ Muitos alvos no comando.\n\nMáximo permitido: 5 alvos por comando\nSeu comando: {$targetCount} alvos\n\nExecute comandos separados para cada alvo.",
+            ]);
+        }
+        
+        // Verificar ranges de IP (proteção contra scans de rede inteira)
+        if (preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\/\d{1,2}/', $args, $matches)) {
+            // Extrai o CIDR
+            preg_match('/\/(\d{1,2})$/', $matches[0], $cidr);
+            $cidrValue = (int) ($cidr[1] ?? 32);
+            
+            // Bloqueia ranges maiores que /24 (mais de 256 hosts)
+            if ($cidrValue < 24) {
+                $this->logCommand($userId, $fullCommand, $ip, false, 'IP range too large');
+                return response()->json([
+                    'success' => false,
+                    'type' => 'error',
+                    'output' => "⚠️ Range de IP muito grande.\n\nMáximo permitido: /24 (256 hosts)\nSeu range: /{$cidrValue}\n\nUse ranges menores para não sobrecarregar o servidor.",
+                ]);
+            }
+        }
+        
+        // Verificar port ranges muito grandes no nmap
+        if ($command === 'nmap' && preg_match('/-p\s*(\d+)-(\d+)/', $args, $portMatch)) {
+            $startPort = (int) $portMatch[1];
+            $endPort = (int) $portMatch[2];
+            $portRange = $endPort - $startPort;
+            
+            if ($portRange > 1000) {
+                $this->logCommand($userId, $fullCommand, $ip, false, 'Port range too large');
+                return response()->json([
+                    'success' => false,
+                    'type' => 'error',
+                    'output' => "⚠️ Range de portas muito grande.\n\nMáximo permitido: 1000 portas\nSeu range: {$portRange} portas ({$startPort}-{$endPort})\n\nUse -p 1-1000 ou portas específicas como -p 22,80,443,8080",
+                ]);
+            }
+        }
+        
+        // Bloquear scan de todas as portas (-p-)
+        if ($command === 'nmap' && preg_match('/-p-/', $args)) {
+            $this->logCommand($userId, $fullCommand, $ip, false, 'Full port scan blocked');
+            return response()->json([
+                'success' => false,
+                'type' => 'error',
+                'output' => "⚠️ Scan de todas as portas não permitido.\n\nO parâmetro -p- escaneia 65535 portas e sobrecarrega o servidor.\n\nUse ranges específicos como -p 1-1000 ou --top-ports 100",
+            ]);
+        }
+        
+        // Bloquear nmap com muitas threads
+        if ($command === 'nmap' && preg_match('/--min-rate\s*(\d+)/', $args, $rateMatch)) {
+            $rate = (int) $rateMatch[1];
+            if ($rate > 500) {
+                $this->logCommand($userId, $fullCommand, $ip, false, 'Nmap rate too high');
+                return response()->json([
+                    'success' => false,
+                    'type' => 'error',
+                    'output' => "⚠️ Taxa de scan muito alta.\n\nMáximo permitido: --min-rate 500\nSua taxa: {$rate}\n\nTaxas altas podem sobrecarregar o servidor e o alvo.",
+                ]);
+            }
+        }
+        
+        // Limitar threads do gobuster
+        if ($command === 'gobuster' && preg_match('/-t\s*(\d+)/', $args, $threadMatch)) {
+            $threads = (int) $threadMatch[1];
+            if ($threads > 20) {
+                $this->logCommand($userId, $fullCommand, $ip, false, 'Gobuster threads too high');
+                return response()->json([
+                    'success' => false,
+                    'type' => 'error',
+                    'output' => "⚠️ Muitas threads no gobuster.\n\nMáximo permitido: 20 threads (-t 20)\nSuas threads: {$threads}\n\nUse menos threads para não sobrecarregar.",
+                ]);
+            }
+        }
+        
+        // Bloquear wordlists muito grandes no gobuster
+        if ($command === 'gobuster' && preg_match('/-w\s*(\S+)/', $args, $wordlistMatch)) {
+            $wordlist = $wordlistMatch[1];
+            // Bloquear wordlists conhecidas por serem muito grandes
+            $blockedWordlists = ['rockyou', 'directory-list-2.3-big', 'directory-list-2.3-medium', 'all.txt', 'big.txt'];
+            foreach ($blockedWordlists as $blocked) {
+                if (stripos($wordlist, $blocked) !== false) {
+                    $this->logCommand($userId, $fullCommand, $ip, false, 'Large wordlist blocked');
+                    return response()->json([
+                        'success' => false,
+                        'type' => 'error',
+                        'output' => "⚠️ Wordlist muito grande bloqueada.\n\nWordlists grandes podem demorar horas e sobrecarregar o servidor.\n\nUse wordlists menores como:\n- /usr/share/wordlists/dirb/common.txt\n- /usr/share/wordlists/dirb/small.txt",
+                    ]);
+                }
+            }
+        }
+        
+        // Limitar nikto (sempre pesado)
+        if ($command === 'nikto') {
+            // Verificar se já tem um nikto rodando para este usuário
+            $niktoKey = "terminal_nikto:{$userId}";
+            if (Cache::has($niktoKey)) {
+                return response()->json([
+                    'success' => false,
+                    'type' => 'warning',
+                    'output' => "⚠️ Você já tem um scan nikto em andamento.\n\nAguarde o scan anterior terminar antes de iniciar outro.\nNikto pode demorar vários minutos.",
+                ]);
+            }
+            // Marca que nikto está rodando (expira em 5 minutos)
+            Cache::put($niktoKey, true, 300);
+        }
 
         // Verificar se comando está na whitelist
         if (!isset($this->allowedCommands[$command])) {
@@ -285,8 +433,24 @@ class TerminalController extends Controller
     /**
      * Lista comandos disponíveis
      */
-    public function commands(): JsonResponse
+    public function commands(Request $request): JsonResponse
     {
+        $user = $request->user();
+        
+        // Verificar se usuário tem acesso ao terminal (apenas Full Attack ou admin)
+        if ($user->role !== 'admin') {
+            $plan = $user->plan;
+            $planSlug = $plan ? $plan->slug : 'free';
+            
+            if ($planSlug !== 'fullattack') {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Terminal disponível apenas no plano Full Attack',
+                    'plan_required' => 'fullattack',
+                ], 403);
+            }
+        }
+        
         $commands = [];
         foreach ($this->allowedCommands as $cmd => $config) {
             $installed = $this->isToolInstalled($cmd);

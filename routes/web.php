@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\MinifyHtml;
 use App\Http\Middleware\EnsureAuthenticated;
+use App\Http\Middleware\CheckTerminalAccess;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([MinifyHtml::class])->group(function () {
@@ -49,10 +50,10 @@ Route::middleware([MinifyHtml::class])->group(function () {
             return view('reports');
         });
 
-        // Terminal Interativo
+        // Terminal Interativo - apenas Full Attack ou admin
         Route::get('/terminal', function () {
             return view('terminal');
-        });
+        })->middleware(CheckTerminalAccess::class);
 
         // Perfil do usuário
         Route::get('/profile', function () {
