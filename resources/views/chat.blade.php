@@ -2146,28 +2146,90 @@
             <!-- Chat Messages -->
             <div id="chatContainer" class="flex-1 overflow-y-auto p-6">
                 <!-- Welcome para Pagina Inicial (sem sessao) -->
-                <div id="homeWelcome" class="flex flex-col items-center justify-center text-center py-10">
+                <div id="homeWelcome" class="flex flex-col items-center justify-center text-center py-6 px-4">
                     <!-- Título com gradient e pixel font -->
-                    <h3 class="text-2xl font-bold mb-3 glitch-text" data-text="Bem-vindo ao DeepEyes" style="font-family: var(--font-pixel); background: linear-gradient(135deg, #fff, #00FF88, #00D4FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none;">
+                    <h3 class="text-2xl font-bold mb-2 glitch-text" data-text="Bem-vindo ao DeepEyes" style="font-family: var(--font-pixel); background: linear-gradient(135deg, #fff, #00FF88, #00D4FF); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: none;">
                         Bem-vindo ao DeepEyes
                     </h3>
-                    <p class="text-gray-400 max-w-md mb-10 leading-relaxed" style="font-family: var(--font-mono);">
+                    <p class="text-gray-400 max-w-md mb-6 leading-relaxed text-sm" style="font-family: var(--font-mono);">
                         Sua IA de <span class="text-[#00FF88] font-semibold text-shadow-neon">Segurança Ofensiva</span> para Pentest, Red Team e CTFs.
-<br><span class="text-gray-500 text-sm">// Novo no sistema? <a href="/docs" class="text-[#00D4FF] hover:text-[#00FF88] underline transition-colors">Consulte a documentação</a></span>
                     </p>
                     
+                    <!-- Dashboard Stats Cards -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 w-full max-w-3xl mb-6">
+                        <div class="de-card p-4 text-left">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-500 text-xs">Sessões</span>
+                                <i class="fas fa-comments text-[#00D4FF] opacity-50 text-sm"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-white" id="dashStatSessions">-</div>
+                        </div>
+                        <div class="de-card p-4 text-left">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-500 text-xs">Mensagens</span>
+                                <i class="fas fa-message text-[#8b5cf6] opacity-50 text-sm"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-white" id="dashStatMessages">-</div>
+                        </div>
+                        <div class="de-card p-4 text-left">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-500 text-xs">Checklists</span>
+                                <i class="fas fa-list-check text-[#00FF88] opacity-50 text-sm"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-white" id="dashStatChecklists">-</div>
+                        </div>
+                        <div class="de-card p-4 text-left">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-gray-500 text-xs">Uso Diário</span>
+                                <i class="fas fa-bolt text-[#F97316] opacity-50 text-sm"></i>
+                            </div>
+                            <div class="text-xl font-bold text-white"><span id="dashStatUsed">-</span><span class="text-sm text-gray-500">/<span id="dashStatLimit">-</span></span></div>
+                            <div class="w-full bg-gray-700/30 rounded-full h-1.5 mt-2">
+                                <div class="h-1.5 rounded-full bg-gradient-to-r from-[#00D4FF] to-[#8b5cf6]" id="dashUsageBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 w-full max-w-3xl mb-6">
+                        <a href="/terminal" class="de-card p-3 text-center hover:border-[#00FF88]/50 transition-all group">
+                            <i class="fas fa-terminal text-[#00FF88] text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs text-gray-400 block">Terminal</span>
+                        </a>
+                        <a href="/checklist" class="de-card p-3 text-center hover:border-[#8b5cf6]/50 transition-all group">
+                            <i class="fas fa-clipboard-check text-[#8b5cf6] text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs text-gray-400 block">Checklist</span>
+                        </a>
+                        <a href="/scanner" class="de-card p-3 text-center hover:border-[#F97316]/50 transition-all group">
+                            <i class="fas fa-radar text-[#F97316] text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs text-gray-400 block">Scanner</span>
+                        </a>
+                        <a href="/reports" class="de-card p-3 text-center hover:border-[#3B82F6]/50 transition-all group">
+                            <i class="fas fa-file-alt text-[#3B82F6] text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs text-gray-400 block">Relatórios</span>
+                        </a>
+                        <a href="/profile" class="de-card p-3 text-center hover:border-[#00D4FF]/50 transition-all group">
+                            <i class="fas fa-user-cog text-[#00D4FF] text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs text-gray-400 block">Perfil</span>
+                        </a>
+                        <a href="/docs" class="de-card p-3 text-center hover:border-gray-500/50 transition-all group">
+                            <i class="fas fa-book text-gray-400 text-lg mb-1 group-hover:scale-110 transition-transform"></i>
+                            <span class="text-xs text-gray-400 block">Docs</span>
+                        </a>
+                    </div>
+                    
                     <!-- Feature Cards - Cyberpunk Pixel Design -->
-                    <div class="grid grid-cols-2 gap-5 max-w-xl">
+                    <div class="grid grid-cols-2 gap-4 max-w-xl mb-6">
                         <!-- SQL Injection Card -->
                         <div class="blob-card blob-red group">
                             <div class="blob"></div>
                             <div class="card-bg"></div>
                             <div class="card-content">
-                                <div class="w-12 h-12 flex items-center justify-center mb-4 border border-[#EF4444]/40 group-hover:border-[#EF4444] transition-colors" style="background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.05)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                                    <i class="fas fa-database text-[#EF4444] text-xl group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 10px #EF4444);"></i>
+                                <div class="w-10 h-10 flex items-center justify-center mb-3 border border-[#EF4444]/40 group-hover:border-[#EF4444] transition-colors" style="background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.05)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                                    <i class="fas fa-database text-[#EF4444] text-lg group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 10px #EF4444);"></i>
                                 </div>
-                                <h4 class="font-bold mb-2 text-white text-base group-hover:text-[#EF4444] transition-colors" style="font-family: var(--font-mono);">SQL Injection</h4>
-                                <p class="text-xs text-gray-400" style="font-family: var(--font-mono);">Payloads, bypasses, técnicas avançadas</p>
+                                <h4 class="font-bold mb-1 text-white text-sm group-hover:text-[#EF4444] transition-colors" style="font-family: var(--font-mono);">SQL Injection</h4>
+                                <p class="text-xs text-gray-400" style="font-family: var(--font-mono);">Payloads, bypasses</p>
                             </div>
                         </div>
                         
@@ -2176,11 +2238,11 @@
                             <div class="blob"></div>
                             <div class="card-bg"></div>
                             <div class="card-content">
-                                <div class="w-12 h-12 flex items-center justify-center mb-4 border border-[#00FF88]/40 group-hover:border-[#00FF88] transition-colors" style="background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,255,136,0.05)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                                    <i class="fas fa-terminal text-[#00FF88] text-xl group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 10px #00FF88);"></i>
+                                <div class="w-10 h-10 flex items-center justify-center mb-3 border border-[#00FF88]/40 group-hover:border-[#00FF88] transition-colors" style="background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,255,136,0.05)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                                    <i class="fas fa-terminal text-[#00FF88] text-lg group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 10px #00FF88);"></i>
                                 </div>
-                                <h4 class="font-bold mb-2 text-white text-base group-hover:text-[#00FF88] transition-colors" style="font-family: var(--font-mono);">Reverse Shells</h4>
-                                <p class="text-xs text-gray-400" style="font-family: var(--font-mono);">One-liners, stagers, implants</p>
+                                <h4 class="font-bold mb-1 text-white text-sm group-hover:text-[#00FF88] transition-colors" style="font-family: var(--font-mono);">Reverse Shells</h4>
+                                <p class="text-xs text-gray-400" style="font-family: var(--font-mono);">One-liners, stagers</p>
                             </div>
                         </div>
                         
@@ -2189,33 +2251,33 @@
                             <div class="blob"></div>
                             <div class="card-bg"></div>
                             <div class="card-content">
-                                <div class="w-12 h-12 flex items-center justify-center mb-4 border border-[#F97316]/40 group-hover:border-[#F97316] transition-colors" style="background: linear-gradient(135deg, rgba(249,115,22,0.2), rgba(249,115,22,0.05)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                                    <i class="fas fa-user-secret text-[#F97316] text-xl group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 10px #F97316);"></i>
+                                <div class="w-10 h-10 flex items-center justify-center mb-3 border border-[#F97316]/40 group-hover:border-[#F97316] transition-colors" style="background: linear-gradient(135deg, rgba(249,115,22,0.2), rgba(249,115,22,0.05)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                                    <i class="fas fa-user-secret text-[#F97316] text-lg group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 10px #F97316);"></i>
                                 </div>
-                                <h4 class="font-bold mb-2 text-white text-base group-hover:text-[#F97316] transition-colors" style="font-family: var(--font-mono);">Privilege Escalation</h4>
-                                <p class="text-xs text-gray-400" style="font-family: var(--font-mono);">Linux, Windows, AD attacks</p>
+                                <h4 class="font-bold mb-1 text-white text-sm group-hover:text-[#F97316] transition-colors" style="font-family: var(--font-mono);">Privilege Escalation</h4>
+                                <p class="text-xs text-gray-400" style="font-family: var(--font-mono);">Linux, Windows, AD</p>
                             </div>
                         </div>
                         
-                        <!-- Invasão Card -->
+                        <!-- Evasion Card -->
                         <div class="blob-card blob-cyan group">
                             <div class="blob"></div>
                             <div class="card-bg"></div>
                             <div class="card-content">
-                                <div class="w-12 h-12 flex items-center justify-center mb-4 border border-[#00D4FF]/40 group-hover:border-[#00D4FF] transition-colors" style="background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(0,212,255,0.05)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                                    <i class="fas fa-mask text-[#00D4FF] text-xl group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 10px #00D4FF);"></i>
+                                <div class="w-10 h-10 flex items-center justify-center mb-3 border border-[#00D4FF]/40 group-hover:border-[#00D4FF] transition-colors" style="background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(0,212,255,0.05)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                                    <i class="fas fa-mask text-[#00D4FF] text-lg group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 10px #00D4FF);"></i>
                                 </div>
-                                <h4 class="font-bold mb-2 text-white text-base group-hover:text-[#00D4FF] transition-colors" style="font-family: var(--font-mono);">Evasion</h4>
-                                <p class="text-xs text-gray-400" style="font-family: var(--font-mono);">AMSI, EDR, WAF bypass</p>
+                                <h4 class="font-bold mb-1 text-white text-sm group-hover:text-[#00D4FF] transition-colors" style="font-family: var(--font-mono);">Evasion</h4>
+                                <p class="text-xs text-gray-400" style="font-family: var(--font-mono);">AMSI, EDR, WAF</p>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Warning Banner - Cyber Style -->
-                    <div class="mt-8 p-4 border border-[#EF4444]/40 max-w-lg" style="background: rgba(239,68,68,0.08); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
+                    <div class="p-3 border border-[#EF4444]/40 max-w-lg" style="background: rgba(239,68,68,0.08); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
                         <p class="text-xs text-[#EF4444] flex items-center justify-center gap-2" style="font-family: var(--font-mono);">
                             <i class="fas fa-radiation animate-pulse"></i>
-                            <span>[WARNING] Use apenas em ambientes autorizados. O operador é responsável pelo uso ético e legal.</span>
+                            <span>[WARNING] Use apenas em ambientes autorizados.</span>
                         </p>
                     </div>
                 </div>
@@ -2986,6 +3048,9 @@
             // Exibe a tela inicial (homeWelcome) ao fazer login
             hideChat();
             
+            // Carrega estatísticas do dashboard
+            loadDashboardStats();
+            
             updateUserAvatar();
             
             // Atualiza os Attack Mode buttons baseado no plano do usuário
@@ -3078,6 +3143,31 @@
                     btn.style.cursor = 'not-allowed';
                 }
             });
+        }
+        
+        // Carrega estatísticas do dashboard na tela inicial
+        async function loadDashboardStats() {
+            try {
+                const res = await api('/dashboard/stats');
+                if (res) {
+                    // Stats
+                    const sessionsEl = document.getElementById('dashStatSessions');
+                    const messagesEl = document.getElementById('dashStatMessages');
+                    const checklistsEl = document.getElementById('dashStatChecklists');
+                    const usedEl = document.getElementById('dashStatUsed');
+                    const limitEl = document.getElementById('dashStatLimit');
+                    const usageBarEl = document.getElementById('dashUsageBar');
+                    
+                    if (sessionsEl) sessionsEl.textContent = res.stats?.total_sessions || 0;
+                    if (messagesEl) messagesEl.textContent = res.stats?.total_messages || 0;
+                    if (checklistsEl) checklistsEl.textContent = res.stats?.total_checklists || 0;
+                    if (usedEl) usedEl.textContent = res.daily_usage?.used || 0;
+                    if (limitEl) limitEl.textContent = res.daily_usage?.limit || 0;
+                    if (usageBarEl) usageBarEl.style.width = `${res.daily_usage?.percentage || 0}%`;
+                }
+            } catch (error) {
+                console.error('Error loading dashboard stats:', error);
+            }
         }
         
         // Atualiza informações do plano na sidebar

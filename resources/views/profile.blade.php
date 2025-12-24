@@ -978,11 +978,15 @@
             try {
                 const data = await api('/profile');
                 currentUser = data.user;
+                console.log('User loaded:', currentUser); // Debug
                 renderProfile(data);
                 
                 if (currentUser && currentUser.role === 'admin') {
+                    console.log('Admin detected, showing admin menu'); // Debug
                     document.getElementById('adminMenu').classList.remove('hidden');
                     loadAdminData();
+                } else {
+                    console.log('Not admin, role:', currentUser?.role); // Debug
                 }
             } catch (err) {
                 console.error('Erro ao carregar perfil:', err);
