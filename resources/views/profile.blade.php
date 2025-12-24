@@ -627,9 +627,63 @@
                 
                 <!-- Admin Users -->
                 <div id="page-admin-users" class="page-content">
+                    <!-- Stats Cards em Tempo Real -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <div class="card p-4 border-l-4 border-cyan-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-400 uppercase tracking-wider">Total</p>
+                                    <p id="statTotalUsers" class="text-2xl font-bold text-white">0</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center">
+                                    <i class="fas fa-users text-cyan-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card p-4 border-l-4 border-green-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-400 uppercase tracking-wider">Online</p>
+                                    <p id="statOnlineUsers" class="text-2xl font-bold text-green-400">0</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-lg bg-green-500/20 flex items-center justify-center">
+                                    <i class="fas fa-circle text-green-400 text-xs animate-pulse"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card p-4 border-l-4 border-blue-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-400 uppercase tracking-wider">Ativos</p>
+                                    <p id="statActiveUsers" class="text-2xl font-bold text-white">0</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                                    <i class="fas fa-user-check text-blue-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card p-4 border-l-4 border-red-500">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-gray-400 uppercase tracking-wider">Banidos</p>
+                                    <p id="statBannedUsers" class="text-2xl font-bold text-red-400">0</p>
+                                </div>
+                                <div class="w-10 h-10 rounded-lg bg-red-500/20 flex items-center justify-center">
+                                    <i class="fas fa-ban text-red-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="card p-6">
                         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
-                            <h3 class="text-lg font-semibold text-white">Gerenciar Usuários</h3>
+                            <div class="flex items-center gap-3">
+                                <h3 class="text-lg font-semibold text-white">Gerenciar Usuários</h3>
+                                <span class="flex items-center gap-1.5 text-xs text-green-400 bg-green-500/10 px-2 py-1 rounded-full">
+                                    <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+                                    Tempo Real
+                                </span>
+                            </div>
                             <div class="flex items-center gap-3">
                                 <button id="deleteSelectedBtn" onclick="deleteSelectedUsers()" class="btn-danger hidden" style="padding: 8px 16px; font-size: 13px;">
                                     <i class="fas fa-trash mr-2"></i>Excluir Selecionados (<span id="selectedCount">0</span>)
@@ -1152,16 +1206,90 @@
             }
         }
         
-        async function loadUsers() {
+        // Intervalo para atualização em tempo real dos usuários
+        let usersRefreshInterval = null;
+        const USERS_REFRESH_RATE = 5000; // 5 segundos
+        
+        async function loadUsers(showLoading = true) {
             try {
+                // Mostra indicador de loading apenas na primeira vez
+                const table = document.getElementById('usersTable');
+                if (showLoading && table && !table.innerHTML.includes('user-checkbox')) {
+                    table.innerHTML = '<tr><td colspan="7" class="text-center py-8"><i class="fas fa-spinner fa-spin text-cyan-400 mr-2"></i>Carregando usuários...</td></tr>';
+                }
+                
                 const data = await api('/admin/users');
                 allUsers = data.data || [];
                 renderUsersTable(allUsers);
                 updateSelectedCount();
+                updateUsersStats(allUsers);
+                
+                // Inicia atualização em tempo real se ainda não iniciou
+                if (!usersRefreshInterval) {
+                    startUsersRealtime();
+                }
             } catch (err) {
                 console.error('Erro:', err);
             }
         }
+        
+        // Inicia atualização em tempo real
+        function startUsersRealtime() {
+            if (usersRefreshInterval) return;
+            
+            usersRefreshInterval = setInterval(async () => {
+                // Só atualiza se estiver na página de usuários
+                const usersPage = document.getElementById('page-admin-users');
+                if (usersPage && !usersPage.classList.contains('hidden')) {
+                    await loadUsers(false); // false = não mostra loading
+                }
+            }, USERS_REFRESH_RATE);
+        }
+        
+        // Para atualização em tempo real
+        function stopUsersRealtime() {
+            if (usersRefreshInterval) {
+                clearInterval(usersRefreshInterval);
+                usersRefreshInterval = null;
+            }
+        }
+        
+        // Atualiza estatísticas dos usuários
+        function updateUsersStats(users) {
+            const totalUsers = users.length;
+            const activeUsers = users.filter(u => !u.is_banned).length;
+            const bannedUsers = users.filter(u => u.is_banned).length;
+            const onlineUsers = users.filter(u => {
+                if (!u.last_login_at) return false;
+                const lastLogin = new Date(u.last_login_at);
+                const now = new Date();
+                const diffMinutes = (now - lastLogin) / (1000 * 60);
+                return diffMinutes < 15; // Considera online se logou nos últimos 15 min
+            }).length;
+            
+            // Atualiza contadores se existirem
+            const totalEl = document.getElementById('statTotalUsers');
+            const activeEl = document.getElementById('statActiveUsers');
+            const bannedEl = document.getElementById('statBannedUsers');
+            const onlineEl = document.getElementById('statOnlineUsers');
+            
+            if (totalEl) totalEl.textContent = totalUsers;
+            if (activeEl) activeEl.textContent = activeUsers;
+            if (bannedEl) bannedEl.textContent = bannedUsers;
+            if (onlineEl) onlineEl.textContent = onlineUsers;
+        }
+        
+        // Para o refresh quando sair da página de usuários
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopUsersRealtime();
+            } else {
+                const usersPage = document.getElementById('page-admin-users');
+                if (usersPage && !usersPage.classList.contains('hidden')) {
+                    startUsersRealtime();
+                }
+            }
+        });
         
         let selectedUserIds = new Set();
         
@@ -1225,9 +1353,39 @@
             }
         }
         
+        function isUserOnline(lastLoginAt) {
+            if (!lastLoginAt) return false;
+            const lastLogin = new Date(lastLoginAt);
+            const now = new Date();
+            const diffMinutes = (now - lastLogin) / (1000 * 60);
+            return diffMinutes < 15; // Online se logou nos últimos 15 min
+        }
+        
+        function getLastSeenText(lastLoginAt) {
+            if (!lastLoginAt) return 'Nunca';
+            const lastLogin = new Date(lastLoginAt);
+            const now = new Date();
+            const diffMinutes = Math.floor((now - lastLogin) / (1000 * 60));
+            
+            if (diffMinutes < 1) return 'Agora';
+            if (diffMinutes < 60) return `${diffMinutes}min atrás`;
+            
+            const diffHours = Math.floor(diffMinutes / 60);
+            if (diffHours < 24) return `${diffHours}h atrás`;
+            
+            const diffDays = Math.floor(diffHours / 24);
+            if (diffDays < 7) return `${diffDays}d atrás`;
+            
+            return lastLogin.toLocaleDateString('pt-BR');
+        }
+        
         function renderUsersTable(users) {
-            document.getElementById('usersTable').innerHTML = users.map(u => `
-                <tr>
+            document.getElementById('usersTable').innerHTML = users.map(u => {
+                const online = isUserOnline(u.last_login_at);
+                const lastSeen = getLastSeenText(u.last_login_at);
+                
+                return `
+                <tr class="${online ? 'bg-green-500/5' : ''}">
                     <td>
                         ${u.role !== 'admin' 
                             ? `<input type="checkbox" class="user-checkbox w-4 h-4 rounded cursor-pointer" value="${u.id}" data-role="${u.role}" onchange="toggleUserSelection(this)" ${selectedUserIds.has(u.id) ? 'checked' : ''}>`
@@ -1236,13 +1394,19 @@
                     </td>
                     <td>
                         <div class="flex items-center gap-3">
-                            ${u.avatar 
-                                ? `<img src="${u.avatar}" class="w-10 h-10 rounded-full object-cover cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all" onclick="showAvatarPreview('${u.avatar}', '${u.name}')" title="Clique para ampliar">`
-                                : '<div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center"><i class="fas fa-user text-gray-500"></i></div>'
-                            }
+                            <div class="relative">
+                                ${u.avatar 
+                                    ? `<img src="${u.avatar}" class="w-10 h-10 rounded-full object-cover cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all" onclick="showAvatarPreview('${u.avatar}', '${u.name}')" title="Clique para ampliar">`
+                                    : '<div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center"><i class="fas fa-user text-gray-500"></i></div>'
+                                }
+                                ${online ? '<span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-slate-900 rounded-full" title="Online"></span>' : ''}
+                            </div>
                             <div>
-                                <span class="text-white font-medium block">${u.name}</span>
-                                <span class="text-xs text-gray-500">${new Date(u.created_at).toLocaleDateString('pt-BR')}</span>
+                                <span class="text-white font-medium block flex items-center gap-2">
+                                    ${u.name}
+                                    ${online ? '<span class="text-[10px] text-green-400 font-normal">● online</span>' : ''}
+                                </span>
+                                <span class="text-xs text-gray-500">${online ? 'Ativo agora' : lastSeen}</span>
                             </div>
                         </div>
                     </td>
@@ -1264,7 +1428,7 @@
                         </div>
                     </td>
                 </tr>
-            `).join('') || '<tr><td colspan="7" class="text-center text-gray-500">Nenhum usuário</td></tr>';
+            `}).join('') || '<tr><td colspan="7" class="text-center text-gray-500">Nenhum usuário</td></tr>';
             
             // Adiciona event listeners para os botões de editar
             document.querySelectorAll('.edit-user-btn').forEach(btn => {
