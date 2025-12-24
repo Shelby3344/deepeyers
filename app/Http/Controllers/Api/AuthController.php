@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewLoginAlertEmail;
+use App\Mail\WelcomeEmail;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -98,6 +101,16 @@ class AuthController extends Controller
             'ip' => $request->ip(),
         ]);
 
+        // Envia email de boas-vindas
+        try {
+            Mail::to($user->email)->queue(new WelcomeEmail($user));
+        } catch (\Exception $e) {
+            Log::error('Failed to send welcome email', [
+                'user_id' => $user->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
         return response()->json([
             'message' => 'User registered successfully',
             'data' => [
@@ -184,10 +197,31 @@ class AuthController extends Controller
         ])->plainTextToken;
 
         // ✅ Atualiza informações de login
+        $previousIp = $user->last_login_ip;
+        $currentIp = $request->ip();
+        
         $user->update([
             'last_login_at' => now(),
-            'last_login_ip' => $request->ip(),
+            'last_login_ip' => $currentIp,
         ]);
+
+        // Envia alerta se for um novo IP
+        if ($previousIp && $previousIp !== $currentIp) {
+            try {
+                $location = $this->getLocationFromIp($currentIp);
+                Mail::to($user->email)->queue(new NewLoginAlertEmail(
+                    $user,
+                    $currentIp,
+                    $request->userAgent() ?? 'Unknown',
+                    $location
+                ));
+            } catch (\Exception $e) {
+                Log::error('Failed to send new login alert email', [
+                    'user_id' => $user->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
 
         // Log de login bem-sucedido
         Log::channel('security')->info('User login', [
@@ -276,5 +310,31 @@ class AuthController extends Controller
                 'allowed_profiles' => $user->plan->allowed_profiles ?? ['pentest'],
             ] : null,
         ];
+    }
+
+    /**
+     * Obtém localização aproximada do IP
+     */
+    private function getLocationFromIp(string $ip): string
+    {
+        try {
+            // IPs locais/privados
+            if (in_array($ip, ['127.0.0.1', '::1']) || str_starts_with($ip, '192.168.') || str_starts_with($ip, '10.')) {
+                return 'Rede Local';
+            }
+
+            // Usa API gratuita para geolocalização
+            $response = @file_get_contents("http://ip-api.com/json/{$ip}?fields=city,regionName,country");
+            if ($response) {
+                $data = json_decode($response, true);
+                if ($data && isset($data['city'])) {
+                    return "{$data['city']}, {$data['regionName']}, {$data['country']}";
+                }
+            }
+        } catch (\Exception $e) {
+            Log::warning('Failed to get IP location', ['ip' => $ip, 'error' => $e->getMessage()]);
+        }
+
+        return 'Localização desconhecida';
     }
 }

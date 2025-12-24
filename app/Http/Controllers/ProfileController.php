@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Mail\PasswordChangedEmail;
 use App\Models\Plan;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -109,6 +112,20 @@ class ProfileController extends Controller
                 ], 422);
             }
             $user->password = bcrypt($validated['new_password']);
+            
+            // Envia email de alerta de alteração de senha
+            try {
+                Mail::to($user->email)->queue(new PasswordChangedEmail(
+                    $user,
+                    $request->ip() ?? 'Unknown',
+                    $request->userAgent() ?? 'Unknown'
+                ));
+            } catch (\Exception $e) {
+                Log::error('Failed to send password changed email', [
+                    'user_id' => $user->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
         }
 
         $user->save();
