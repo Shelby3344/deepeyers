@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\MinifyHtml;
 use App\Http\Middleware\EnsureAuthenticated;
@@ -25,6 +26,9 @@ Route::middleware([MinifyHtml::class])->group(function () {
 
     // Rotas protegidas - requerem autenticação
     Route::middleware([EnsureAuthenticated::class])->group(function () {
+        // Dashboard
+        Route::get('/dashboard', [DashboardController::class, 'index']);
+
         // Chat
         Route::get('/chat', function () {
             return view('chat');

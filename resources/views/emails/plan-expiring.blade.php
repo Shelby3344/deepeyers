@@ -14,7 +14,7 @@
                     <tr>
                         <td style="padding: 40px 40px 20px; text-align: center; border-bottom: 1px solid rgba(245, 158, 11, 0.2);">
                             <h1 style="margin: 0; font-size: 32px; font-weight: 700; background: linear-gradient(135deg, #8b5cf6, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                                🛡️ DeepEyes
+                                 DeepEyes
                             </h1>
                         </td>
                     </tr>

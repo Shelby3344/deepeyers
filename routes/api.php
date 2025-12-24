@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\TerminalController;
 use App\Http\Controllers\Api\ChecklistController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Plan;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,9 @@ Route::middleware(['auth:sanctum', 'ensure.not.banned'])->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('api.profile.update');
     Route::post('/profile/avatar', [ProfileController::class, 'uploadAvatar'])->name('api.profile.avatar.upload');
     Route::delete('/profile/avatar', [ProfileController::class, 'deleteAvatar'])->name('api.profile.avatar.delete');
+
+    // Dashboard
+    Route::get('/dashboard/stats', [DashboardController::class, 'stats'])->name('api.dashboard.stats');
 
     // Terminal - comandos de pentest
     Route::prefix('terminal')->group(function () {
