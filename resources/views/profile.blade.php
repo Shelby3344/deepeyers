@@ -1020,59 +1020,77 @@
             document.getElementById('inputName').value = user.name;
             document.getElementById('inputEmail').value = user.email;
             
-            document.getElementById('statDailyReqs').textContent = usage.daily_requests;
-            document.getElementById('statDailyLimit').textContent = usage.daily_limit === -1 ? '∞' : usage.daily_limit;
-            document.getElementById('statRemaining').textContent = usage.remaining === 9999 ? '∞' : usage.remaining;
-            document.getElementById('usagePlanName').textContent = plan.name;
+            // Elementos de uso (podem não existir se a seção foi removida)
+            const statDailyReqs = document.getElementById('statDailyReqs');
+            const statDailyLimit = document.getElementById('statDailyLimit');
+            const statRemaining = document.getElementById('statRemaining');
+            const usagePlanName = document.getElementById('usagePlanName');
+            const usageLimitText = document.getElementById('usageLimitText');
+            const remainingStatus = document.getElementById('remainingStatus');
+            const usageBar = document.getElementById('usageBar');
+            const freeUserWarning = document.getElementById('freeUserWarning');
+            const planFeatures = document.getElementById('planFeatures');
+            
+            if (statDailyReqs) statDailyReqs.textContent = usage.daily_requests;
+            if (statDailyLimit) statDailyLimit.textContent = usage.daily_limit === -1 ? '∞' : usage.daily_limit;
+            if (statRemaining) statRemaining.textContent = usage.remaining === 9999 ? '∞' : usage.remaining;
+            if (usagePlanName) usagePlanName.textContent = plan.name;
             
             // Texto de limite
-            if (usage.daily_limit === -1) {
-                document.getElementById('usageLimitText').textContent = 'Requisições ilimitadas';
-            } else {
+            if (usageLimitText && usage.daily_limit !== -1) {
                 const remaining = usage.remaining;
                 if (remaining <= 0) {
-                    document.getElementById('usageLimitText').innerHTML = '<span class="text-red-400">Limite atingido! Tente amanhã.</span>';
-                    document.getElementById('remainingStatus').innerHTML = '<i class="fas fa-times-circle"></i> Limite atingido';
-                    document.getElementById('remainingStatus').className = 'text-xs text-red-400 mt-3 flex items-center gap-1';
+                    usageLimitText.innerHTML = '<span class="text-red-400">Limite atingido! Tente amanhã.</span>';
+                    if (remainingStatus) {
+                        remainingStatus.innerHTML = '<i class="fas fa-times-circle"></i> Limite atingido';
+                        remainingStatus.className = 'text-xs text-red-400 mt-3 flex items-center gap-1';
+                    }
                 } else if (remaining <= 2) {
-                    document.getElementById('usageLimitText').textContent = `Apenas ${remaining} requisição(s) restante(s)!`;
-                    document.getElementById('usageLimitText').classList.add('text-yellow-400');
-                    document.getElementById('remainingStatus').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Poucos créditos';
-                    document.getElementById('remainingStatus').className = 'text-xs text-yellow-400 mt-3 flex items-center gap-1';
+                    usageLimitText.textContent = `Apenas ${remaining} requisição(s) restante(s)!`;
+                    usageLimitText.classList.add('text-yellow-400');
+                    if (remainingStatus) {
+                        remainingStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Poucos créditos';
+                        remainingStatus.className = 'text-xs text-yellow-400 mt-3 flex items-center gap-1';
+                    }
                 } else {
-                    document.getElementById('usageLimitText').textContent = `Restam ${remaining} requisições`;
+                    usageLimitText.textContent = `Restam ${remaining} requisições`;
                 }
+            } else if (usageLimitText) {
+                usageLimitText.textContent = 'Requisições ilimitadas';
             }
             
             // Barra de progresso
-            if (usage.daily_limit > 0) {
-                const percent = Math.min((usage.daily_requests / usage.daily_limit) * 100, 100);
-                document.getElementById('usageBar').style.width = `${percent}%`;
-                
-                // Mudar cor se estiver quase no limite
-                if (percent >= 80) {
-                    document.getElementById('usageBar').className = 'h-full bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-500';
-                } else if (percent >= 50) {
-                    document.getElementById('usageBar').className = 'h-full bg-gradient-to-r from-yellow-500 to-orange-500 transition-all duration-500';
+            if (usageBar) {
+                if (usage.daily_limit > 0) {
+                    const percent = Math.min((usage.daily_requests / usage.daily_limit) * 100, 100);
+                    usageBar.style.width = `${percent}%`;
+                    
+                    if (percent >= 80) {
+                        usageBar.className = 'h-full bg-gradient-to-r from-red-500 to-orange-500 transition-all duration-500';
+                    } else if (percent >= 50) {
+                        usageBar.className = 'h-full bg-gradient-to-r from-yellow-500 to-orange-500 transition-all duration-500';
+                    }
+                } else if (usage.daily_limit === -1) {
+                    usageBar.style.width = '100%';
+                    usageBar.className = 'h-full bg-gradient-to-r from-purple-500 to-indigo-500 transition-all duration-500';
                 }
-            } else if (usage.daily_limit === -1) {
-                document.getElementById('usageBar').style.width = '100%';
-                document.getElementById('usageBar').className = 'h-full bg-gradient-to-r from-purple-500 to-indigo-500 transition-all duration-500';
             }
             
             // Mostrar aviso para usuários gratuitos
-            if (plan.slug === 'free' || plan.price === 'Grátis') {
-                document.getElementById('freeUserWarning').classList.remove('hidden');
+            if (freeUserWarning && (plan.slug === 'free' || plan.price === 'Grátis')) {
+                freeUserWarning.classList.remove('hidden');
             }
             
             // Features do plano
-            const features = plan.features || [];
-            document.getElementById('planFeatures').innerHTML = features.map(f => `
-                <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
-                    <i class="fas fa-check-circle text-[#00FF88]"></i>
-                    <span class="text-gray-300">${f}</span>
-                </div>
-            `).join('');
+            if (planFeatures) {
+                const features = plan.features || [];
+                planFeatures.innerHTML = features.map(f => `
+                    <div class="flex items-center gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700/50">
+                        <i class="fas fa-check-circle text-[#00FF88]"></i>
+                        <span class="text-gray-300">${f}</span>
+                    </div>
+                `).join('');
+            }
         }
         
         function getRoleName(role) {
