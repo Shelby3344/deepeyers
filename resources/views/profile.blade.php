@@ -436,14 +436,6 @@
                     <i class="fas fa-user w-5"></i>
                     <span>Meu Perfil</span>
                 </a>
-                <a href="#" class="sidebar-link" data-page="security">
-                    <i class="fas fa-shield-halved w-5"></i>
-                    <span>Segurança</span>
-                </a>
-                <a href="#" class="sidebar-link" data-page="usage">
-                    <i class="fas fa-chart-bar w-5"></i>
-                    <span>Uso & Limites</span>
-                </a>
                 
                 <!-- Admin Menu -->
                 <div id="adminMenu" class="hidden">
@@ -569,150 +561,6 @@
                                 </button>
                             </div>
                         </form>
-                    </div>
-                </div>
-                
-                <!-- Security Page -->
-                <div id="page-security" class="page-content">
-                    <div class="card p-6">
-                        <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                            <i class="fas fa-key text-yellow-400"></i>
-                            Alterar Senha
-                        </h3>
-                        <form id="passwordForm" class="space-y-4 max-w-md">
-                            <div>
-                                <label class="block text-sm text-gray-400 mb-2">Senha Atual</label>
-                                <input type="password" id="inputCurrentPassword" class="input-field" placeholder="••••••••">
-                            </div>
-                            <div>
-                                <label class="block text-sm text-gray-400 mb-2">Nova Senha</label>
-                                <input type="password" id="inputNewPassword" class="input-field" placeholder="••••••••">
-                            </div>
-                            <div>
-                                <label class="block text-sm text-gray-400 mb-2">Confirmar Nova Senha</label>
-                                <input type="password" id="inputConfirmPassword" class="input-field" placeholder="••••••••">
-                            </div>
-                            <button type="submit" class="btn-primary">
-                                <i class="fas fa-lock mr-2"></i>Alterar Senha
-                            </button>
-                        </form>
-                    </div>
-                    
-                    <div class="card p-6 mt-6">
-                        <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                            <i class="fas fa-key text-purple-400"></i>
-                            Tokens de API
-                        </h3>
-                        <p class="text-gray-400 text-sm mb-4">Gerencie seus tokens de acesso à API.</p>
-                        <button class="btn-secondary" onclick="showNotification('Funcionalidade em desenvolvimento', 'error')">
-                            <i class="fas fa-plus mr-2"></i>Gerar Novo Token
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Usage Page -->
-                <div id="page-usage" class="page-content">
-                    <!-- Header com info do plano -->
-                    <div class="card p-6 mb-6">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 flex items-center justify-center border border-purple-500/30">
-                                    <i class="fas fa-gem text-2xl text-purple-400"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm text-gray-500">Plano Atual</p>
-                                    <h2 id="usagePlanName" class="text-xl font-bold text-white">-</h2>
-                                </div>
-                            </div>
-                            <div id="planBadge" class="px-4 py-2 rounded-xl bg-purple-500/20 border border-purple-500/30">
-                                <span id="planStatus" class="text-purple-400 font-semibold">Ativo</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Cards de uso -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-                        <!-- Requisições Hoje -->
-                        <div class="stat-card">
-                            <div class="flex items-center gap-3 mb-3">
-                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00FF88]/20 to-[#00D4FF]/20 flex items-center justify-center border border-[#00FF88]/30">
-                                    <i class="fas fa-bolt text-xl text-[#00FF88]"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 uppercase tracking-wider">Requisições Hoje</p>
-                                    <p class="text-2xl font-bold text-white">
-                                        <span id="statDailyReqs">0</span>
-                                        <span class="text-gray-500 text-lg">/</span>
-                                        <span id="statDailyLimit" class="text-gray-400 text-lg">5</span>
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="h-2 bg-slate-700/50 rounded-full overflow-hidden">
-                                <div id="usageBar" class="h-full bg-gradient-to-r from-[#00FF88] to-[#00D4FF] transition-all duration-500" style="width: 0%"></div>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-2 flex items-center gap-2">
-                                <i class="fas fa-info-circle"></i>
-                                <span id="usageLimitText">Restam 5 requisições</span>
-                            </p>
-                        </div>
-                        
-                        <!-- Requisições Restantes -->
-                        <div class="stat-card">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center border border-cyan-500/30">
-                                    <i class="fas fa-battery-three-quarters text-xl text-cyan-400"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 uppercase tracking-wider">Restantes</p>
-                                    <p class="text-2xl font-bold text-white" id="statRemaining">5</p>
-                                </div>
-                            </div>
-                            <p id="remainingStatus" class="text-xs text-green-400 mt-3 flex items-center gap-1">
-                                <i class="fas fa-check-circle"></i>
-                                Créditos disponíveis
-                            </p>
-                        </div>
-                        
-                        <!-- Sessões Criadas -->
-                        <div class="stat-card">
-                            <div class="flex items-center gap-3">
-                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center border border-orange-500/30">
-                                    <i class="fas fa-comments text-xl text-orange-400"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs text-gray-500 uppercase tracking-wider">Sessões</p>
-                                    <p class="text-2xl font-bold text-white" id="statTotalSessions">0</p>
-                                </div>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-3">Total de sessões criadas</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Aviso para usuários do plano gratuito -->
-                    <div id="freeUserWarning" class="hidden mb-6">
-                        <div class="card p-5 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/30">
-                            <div class="flex items-start gap-4">
-                                <div class="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-crown text-yellow-400"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="font-semibold text-yellow-400 mb-1">Faça upgrade para mais requisições!</h4>
-                                    <p class="text-sm text-gray-400">Com o plano Pro, você tem <strong class="text-white">100 requisições/dia</strong> e acesso a modos avançados de ataque.</p>
-                                </div>
-                                <button class="px-4 py-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg font-semibold hover:opacity-90 transition-opacity text-sm">
-                                    <i class="fas fa-rocket mr-2"></i>Upgrade
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Features do plano -->
-                    <div class="card p-6">
-                        <h3 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                            <i class="fas fa-list-check text-[#00FF88]"></i>
-                            Recursos do Plano
-                        </h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3" id="planFeatures"></div>
                     </div>
                 </div>
                 
@@ -1250,8 +1098,6 @@
             
             const titles = {
                 'profile': 'Meu Perfil',
-                'security': 'Segurança',
-                'usage': 'Uso & Limites',
                 'admin-dashboard': 'Dashboard Admin',
                 'admin-users': 'Gerenciar Usuários',
                 'admin-sessions': 'Sessões',

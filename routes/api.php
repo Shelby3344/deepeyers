@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ChatController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\TerminalController;
+use App\Http\Controllers\Api\ChecklistController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Plan;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,9 @@ Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('api.auth.register');
     Route::post('/login', [AuthController::class, 'login'])->name('api.auth.login');
 });
+
+// Public checklist view (no auth required)
+Route::get('/checklists/public/{token}', [ChecklistController::class, 'showPublic'])->name('api.checklists.public');
 
 // Protected routes
 Route::middleware(['auth:sanctum', 'ensure.not.banned'])->group(function () {
@@ -44,6 +48,17 @@ Route::middleware(['auth:sanctum', 'ensure.not.banned'])->group(function () {
     Route::prefix('terminal')->group(function () {
         Route::post('/execute', [TerminalController::class, 'execute'])->name('api.terminal.execute');
         Route::get('/commands', [TerminalController::class, 'commands'])->name('api.terminal.commands');
+    });
+
+    // Checklists
+    Route::prefix('checklists')->group(function () {
+        Route::get('/', [ChecklistController::class, 'index'])->name('api.checklists.index');
+        Route::post('/', [ChecklistController::class, 'store'])->name('api.checklists.store');
+        Route::get('/{id}', [ChecklistController::class, 'show'])->name('api.checklists.show');
+        Route::put('/{id}', [ChecklistController::class, 'update'])->name('api.checklists.update');
+        Route::delete('/{id}', [ChecklistController::class, 'destroy'])->name('api.checklists.destroy');
+        Route::post('/{id}/share', [ChecklistController::class, 'share'])->name('api.checklists.share');
+        Route::delete('/{id}/share', [ChecklistController::class, 'unshare'])->name('api.checklists.unshare');
     });
 
     // Plans
