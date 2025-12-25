@@ -54,6 +54,9 @@ Route::middleware(['auth:sanctum', 'ensure.not.banned'])->group(function () {
         Route::get('/commands', [TerminalController::class, 'commands'])->name('api.terminal.commands');
     });
 
+    // Scanner de vulnerabilidades
+    Route::post('/scanner/scan', [\App\Http\Controllers\Api\ScannerController::class, 'scan'])->name('api.scanner.scan');
+
     // Checklists
     Route::prefix('checklists')->group(function () {
         Route::get('/', [ChecklistController::class, 'index'])->name('api.checklists.index');

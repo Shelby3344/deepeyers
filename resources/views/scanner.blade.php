@@ -172,23 +172,23 @@
                 <label class="option-card selected" onclick="toggleOption(this)">
                     <input type="checkbox" name="scan" value="ssl" checked>
                     <div class="option-title"><span class="check"></span> SSL/TLS</div>
-                    <div class="option-desc">Verifica certificado e configuração</div>
+                    <div class="option-desc">Verifica certificado e validade</div>
                 </label>
                 <label class="option-card selected" onclick="toggleOption(this)">
-                    <input type="checkbox" name="scan" value="ports" checked>
-                    <div class="option-title"><span class="check"></span> Port Scan</div>
-                    <div class="option-desc">Portas comuns (top 20)</div>
+                    <input type="checkbox" name="scan" value="dns" checked>
+                    <div class="option-title"><span class="check"></span> DNS Records</div>
+                    <div class="option-desc">Analisa registros DNS, SPF, DMARC</div>
                 </label>
-                <label class="option-card" onclick="toggleOption(this)">
-                    <input type="checkbox" name="scan" value="tech">
+                <label class="option-card selected" onclick="toggleOption(this)">
+                    <input type="checkbox" name="scan" value="tech" checked>
                     <div class="option-title"><span class="check"></span> Tech Detection</div>
-                    <div class="option-desc">Identifica tecnologias usadas</div>
+                    <div class="option-desc">Identifica tecnologias e frameworks</div>
                 </label>
             </div>
 
             <button class="scan-btn" id="scanBtn" onclick="startScan()">
                 <span class="spinner"></span>
-                <span class="btn-text">Iniciar Scan</span>
+                <span class="btn-text">🔍 Iniciar Scan Real</span>
             </button>
         </div>
 
@@ -220,6 +220,7 @@
     <script>
         let scanResults = [];
         let targetUrl = '';
+        const token = localStorage.getItem('token');
 
         function toggleOption(card) {
             card.classList.toggle('selected');
@@ -227,7 +228,7 @@
 
         async function startScan() {
             const target = document.getElementById('targetInput').value.trim();
-            if (!target) { alert('Digite uma URL ou IP'); return; }
+            if (!target) { alert('Digite uma URL ou domínio'); return; }
             
             targetUrl = target;
             const options = Array.from(document.querySelectorAll('.option-card.selected input')).map(i => i.value);
@@ -243,171 +244,84 @@
             results.classList.remove('visible');
             scanResults = [];
 
-            const steps = [];
-            if (options.includes('headers')) steps.push({ name: 'Analisando headers...', fn: scanHeaders });
-            if (options.includes('ssl')) steps.push({ name: 'Verificando SSL/TLS...', fn: scanSSL });
-            if (options.includes('ports')) steps.push({ name: 'Escaneando portas...', fn: scanPorts });
-            if (options.includes('tech')) steps.push({ name: 'Detectando tecnologias...', fn: scanTech });
+            document.getElementById('progressStatus').textContent = 'Iniciando scan...';
 
-            for (const step of steps) {
-                document.getElementById('progressStatus').textContent = step.name;
-                await step.fn(target);
-                await sleep(800);
+            try {
+                const response = await fetch('/api/scanner/scan', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        target: target,
+                        options: options
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Erro ao executar scan');
+                }
+
+                if (data.success && data.data) {
+                    // Converte findings da API para o formato do frontend
+                    scanResults = data.data.findings.map(f => ({
+                        title: f.title,
+                        severity: f.severity,
+                        category: f.type === 'header' ? 'Headers' : 
+                                  f.type === 'ssl' ? 'SSL/TLS' : 
+                                  f.type === 'dns' ? 'DNS' : 
+                                  f.type === 'tech' ? 'Tecnologias' : 'Geral',
+                        description: f.description,
+                        details: `Tipo: ${f.type}\nAlvo: ${target}`,
+                        recommendation: f.recommendation || 'N/A'
+                    }));
+
+                    document.getElementById('progressStatus').textContent = 'Scan concluído!';
+                    await sleep(500);
+                    renderResults();
+                } else {
+                    throw new Error(data.error || 'Erro desconhecido');
+                }
+
+            } catch (error) {
+                alert('Erro: ' + error.message);
+                document.getElementById('progressStatus').textContent = 'Erro no scan';
+            } finally {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+                setTimeout(() => {
+                    progress.classList.remove('visible');
+                }, 1000);
             }
-
-            document.getElementById('progressStatus').textContent = 'Concluído!';
-            await sleep(500);
-
-            btn.classList.remove('loading');
-            btn.disabled = false;
-            progress.classList.remove('visible');
-            
-            renderResults();
         }
 
         function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-        async function scanHeaders(target) {
-            // Simulated header analysis
-            const missingHeaders = [
-                { header: 'Strict-Transport-Security', severity: 'high', desc: 'HSTS não configurado. Permite downgrade para HTTP.', rec: 'Adicione: Strict-Transport-Security: max-age=31536000; includeSubDomains' },
-                { header: 'Content-Security-Policy', severity: 'medium', desc: 'CSP não configurado. Vulnerável a XSS.', rec: 'Configure uma política CSP restritiva' },
-                { header: 'X-Frame-Options', severity: 'medium', desc: 'Clickjacking possível.', rec: 'Adicione: X-Frame-Options: DENY' },
-                { header: 'X-Content-Type-Options', severity: 'low', desc: 'MIME sniffing não bloqueado.', rec: 'Adicione: X-Content-Type-Options: nosniff' },
-            ];
-
-            // Randomly select some findings
-            const findings = missingHeaders.filter(() => Math.random() > 0.3);
-            findings.forEach(f => {
-                scanResults.push({
-                    title: `Header ausente: ${f.header}`,
-                    severity: f.severity,
-                    category: 'Headers',
-                    description: f.desc,
-                    details: `Header: ${f.header}\nStatus: Não encontrado`,
-                    recommendation: f.rec
-                });
-            });
-
-            if (findings.length === 0) {
-                scanResults.push({
-                    title: 'Security Headers OK',
-                    severity: 'info',
-                    category: 'Headers',
-                    description: 'Todos os headers de segurança principais estão configurados.',
-                    details: 'HSTS, CSP, X-Frame-Options, X-Content-Type-Options presentes',
-                    recommendation: 'Continue monitorando e atualizando as políticas.'
-                });
-            }
-        }
-
-        async function scanSSL(target) {
-            const issues = [
-                { title: 'TLS 1.0/1.1 Habilitado', severity: 'high', desc: 'Protocolos antigos e inseguros ainda aceitos.', rec: 'Desabilite TLS 1.0 e 1.1, use apenas TLS 1.2+' },
-                { title: 'Certificado expira em breve', severity: 'medium', desc: 'Certificado SSL expira em menos de 30 dias.', rec: 'Renove o certificado antes da expiração' },
-                { title: 'Cipher suites fracas', severity: 'medium', desc: 'Algumas cipher suites inseguras estão habilitadas.', rec: 'Configure apenas cipher suites modernas (AEAD)' },
-            ];
-
-            const findings = issues.filter(() => Math.random() > 0.5);
-            findings.forEach(f => {
-                scanResults.push({
-                    ...f,
-                    category: 'SSL/TLS',
-                    details: `Alvo: ${target}\nProtocolo: TLS\nStatus: Vulnerável`,
-                    recommendation: f.rec
-                });
-            });
-
-            if (findings.length === 0) {
-                scanResults.push({
-                    title: 'SSL/TLS Configuração Segura',
-                    severity: 'info',
-                    category: 'SSL/TLS',
-                    description: 'Certificado válido e configuração TLS adequada.',
-                    details: `Alvo: ${target}\nTLS 1.2/1.3: Habilitado\nCertificado: Válido`,
-                    recommendation: 'Mantenha o certificado atualizado.'
-                });
-            }
-        }
-
-        async function scanPorts(target) {
-            const commonPorts = [
-                { port: 21, service: 'FTP', risk: 'high' },
-                { port: 22, service: 'SSH', risk: 'info' },
-                { port: 23, service: 'Telnet', risk: 'critical' },
-                { port: 80, service: 'HTTP', risk: 'info' },
-                { port: 443, service: 'HTTPS', risk: 'info' },
-                { port: 3306, service: 'MySQL', risk: 'high' },
-                { port: 3389, service: 'RDP', risk: 'high' },
-                { port: 5432, service: 'PostgreSQL', risk: 'high' },
-                { port: 6379, service: 'Redis', risk: 'critical' },
-                { port: 27017, service: 'MongoDB', risk: 'critical' },
-            ];
-
-            const openPorts = commonPorts.filter(() => Math.random() > 0.7);
-            
-            openPorts.forEach(p => {
-                const severity = p.risk === 'critical' ? 'critical' : p.risk === 'high' ? 'high' : 'info';
-                scanResults.push({
-                    title: `Porta ${p.port} aberta (${p.service})`,
-                    severity: severity,
-                    category: 'Portas',
-                    description: p.risk === 'info' ? `Serviço ${p.service} detectado.` : `Serviço ${p.service} exposto publicamente. Risco de acesso não autorizado.`,
-                    details: `Porta: ${p.port}\nServiço: ${p.service}\nEstado: Aberta`,
-                    recommendation: p.risk === 'info' ? 'Verifique se o serviço está atualizado.' : `Restrinja acesso à porta ${p.port} via firewall. Use VPN ou whitelist de IPs.`
-                });
-            });
-
-            if (openPorts.length === 0) {
-                scanResults.push({
-                    title: 'Nenhuma porta crítica exposta',
-                    severity: 'info',
-                    category: 'Portas',
-                    description: 'Scan de portas comuns não encontrou serviços críticos expostos.',
-                    details: 'Portas escaneadas: 21, 22, 23, 80, 443, 3306, 3389, 5432, 6379, 27017',
-                    recommendation: 'Continue monitorando e mantenha o firewall configurado.'
-                });
-            }
-        }
-
-        async function scanTech(target) {
-            const techs = [
-                { name: 'nginx', version: '1.18.0', severity: 'info' },
-                { name: 'PHP', version: '7.4', severity: 'medium', desc: 'Versão PHP desatualizada' },
-                { name: 'WordPress', version: '5.8', severity: 'medium', desc: 'CMS pode ter plugins vulneráveis' },
-                { name: 'jQuery', version: '2.1.4', severity: 'high', desc: 'jQuery antigo com vulnerabilidades conhecidas' },
-                { name: 'Apache', version: '2.4.41', severity: 'info' },
-            ];
-
-            const detected = techs.filter(() => Math.random() > 0.5);
-            detected.forEach(t => {
-                scanResults.push({
-                    title: `${t.name} ${t.version} detectado`,
-                    severity: t.severity,
-                    category: 'Tecnologias',
-                    description: t.desc || `Tecnologia ${t.name} identificada no alvo.`,
-                    details: `Tecnologia: ${t.name}\nVersão: ${t.version}`,
-                    recommendation: t.severity !== 'info' ? `Atualize ${t.name} para a versão mais recente.` : 'Mantenha atualizado.'
-                });
-            });
-        }
 
         function renderResults() {
             const body = document.getElementById('resultsBody');
             const card = document.getElementById('resultsCard');
             
-            let critical = 0, high = 0, medium = 0, low = 0;
+            let critical = 0, high = 0, medium = 0, low = 0, info = 0;
             scanResults.forEach(r => {
                 if (r.severity === 'critical') critical++;
                 else if (r.severity === 'high') high++;
                 else if (r.severity === 'medium') medium++;
                 else if (r.severity === 'low') low++;
+                else info++;
             });
 
             document.getElementById('criticalCount').textContent = critical;
             document.getElementById('highCount').textContent = high;
             document.getElementById('mediumCount').textContent = medium;
-            document.getElementById('lowCount').textContent = low;
+            document.getElementById('lowCount').textContent = low + info;
+
+            // Ordena por severidade
+            const severityOrder = { critical: 0, high: 1, medium: 2, low: 3, info: 4 };
+            scanResults.sort((a, b) => (severityOrder[a.severity] || 5) - (severityOrder[b.severity] || 5));
 
             body.innerHTML = scanResults.map((r, i) => `
                 <div class="finding" onclick="toggleFinding(this)">
@@ -424,10 +338,12 @@
                             <span class="label">Categoria:</span> <span class="value">${r.category}</span><br>
                             <span class="label">Detalhes:</span><br><span class="value">${r.details.replace(/\n/g, '<br>')}</span>
                         </div>
+                        ${r.recommendation && r.recommendation !== 'N/A' && r.recommendation !== '' ? `
                         <div class="finding-recommendation">
                             <div class="finding-recommendation-title">💡 Recomendação</div>
                             <div class="finding-recommendation-text">${r.recommendation}</div>
                         </div>
+                        ` : ''}
                     </div>
                 </div>
             `).join('');
@@ -440,13 +356,26 @@
         }
 
         function copyResults() {
-            let text = `Scan de Segurança - ${targetUrl}\n${'='.repeat(50)}\n\n`;
+            let text = `Scan de Segurança - ${targetUrl}\n${'='.repeat(50)}\n`;
+            text += `Data: ${new Date().toLocaleString('pt-BR')}\n\n`;
+            
+            const critical = scanResults.filter(r => r.severity === 'critical').length;
+            const high = scanResults.filter(r => r.severity === 'high').length;
+            const medium = scanResults.filter(r => r.severity === 'medium').length;
+            const low = scanResults.filter(r => r.severity === 'low' || r.severity === 'info').length;
+            
+            text += `RESUMO: ${critical} Crítico | ${high} Alto | ${medium} Médio | ${low} Baixo/Info\n\n`;
+            
             scanResults.forEach(r => {
                 text += `[${r.severity.toUpperCase()}] ${r.title}\n`;
                 text += `Categoria: ${r.category}\n`;
                 text += `${r.description}\n`;
-                text += `Recomendação: ${r.recommendation}\n\n`;
+                if (r.recommendation && r.recommendation !== 'N/A') {
+                    text += `Recomendação: ${r.recommendation}\n`;
+                }
+                text += `\n`;
             });
+            
             navigator.clipboard.writeText(text);
             alert('Resultados copiados!');
         }
@@ -459,7 +388,8 @@
                     critical: scanResults.filter(r => r.severity === 'critical').length,
                     high: scanResults.filter(r => r.severity === 'high').length,
                     medium: scanResults.filter(r => r.severity === 'medium').length,
-                    low: scanResults.filter(r => r.severity === 'low').length
+                    low: scanResults.filter(r => r.severity === 'low').length,
+                    info: scanResults.filter(r => r.severity === 'info').length
                 },
                 findings: scanResults
             };
