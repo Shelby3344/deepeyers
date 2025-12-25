@@ -188,7 +188,7 @@
 
             <button class="scan-btn" id="scanBtn" onclick="startScan()">
                 <span class="spinner"></span>
-                <span class="btn-text">🔍 Iniciar Scan Real</span>
+                <span class="btn-text">Iniciar Scan</span>
             </button>
         </div>
 
@@ -200,11 +200,38 @@
 
         <div class="results-card" id="resultsCard">
             <div class="results-header">
-                <span class="results-title">📊 Resultados do Scan</span>
+                <span class="results-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="9" y1="9" x2="15" y2="15"/>
+                        <line x1="15" y1="9" x2="9" y2="15"/>
+                    </svg>
+                    Resultados do Scan
+                </span>
                 <div class="results-actions">
-                    <button class="results-btn" onclick="copyResults()">📋 Copiar</button>
-                    <button class="results-btn" onclick="exportResults()">📥 Exportar</button>
-                    <button class="results-btn" onclick="analyzeWithAI()">🤖 Analisar com IA</button>
+                    <button class="results-btn" onclick="copyResults()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                        </svg>
+                        Copiar
+                    </button>
+                    <button class="results-btn" onclick="exportResults()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7,10 12,15 17,10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Exportar
+                    </button>
+                    <button class="results-btn" onclick="analyzeWithAI()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                        </svg>
+                        Analisar com IA
+                    </button>
                 </div>
             </div>
             <div class="results-summary">

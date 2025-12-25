@@ -9,12 +9,12 @@
     <link rel="apple-touch-icon" href="/logo.png">
     <meta name="theme-color" content="#0a0a0f">
     
-    <!-- Preconnect para acelerar carregamento -->
+    <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     
-    <!-- Fontes Google - carregamento otimizado -->
+    <!-- Fontes Google  -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap"></noscript>
     
@@ -29,7 +29,7 @@
             document.documentElement.classList.add('no-token');
         }
     </script>
-    <!-- Tailwind CSS compilado localmente (muito mais rápido que CDN) -->
+    <!-- Tailwind CSS compilado localmente-->
     <link rel="stylesheet" href="/css/tailwind.css">
     <script defer src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="/css/deepeyes.css">
@@ -49,7 +49,7 @@
         }
         
         /* ========================================
-           DEEPEYES CLEAN UI - Matching Landing
+           DEEPEYES 
            ======================================== */
         
         :root {
