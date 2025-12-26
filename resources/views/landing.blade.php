@@ -2532,7 +2532,7 @@ subprocess.call(["/bin/sh","-i"])</code>
                                 Vagas limitadas no BETA
                             </div>
                             <h2 class="cta-title">
-                                Pronto para elevar seu <span class="highlight fuzzy-text" data-text="pentest">pentest</span>?
+                                Pronto para elevar seu <span class="highlight fuzzy-text" data-text="pentest">pentest</span>
                             </h2>
                             <p class="cta-subtitle">
                                 Junte-se a centenas de profissionais que já usam o DeepEyes para testes de segurança ofensiva em ambientes controlados.
