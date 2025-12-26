@@ -410,8 +410,8 @@
 
         .hero-title .hero-welcome {
             font-size: 1.8rem;
-            font-weight: 400;
-            color: var(--text-secondary);
+            font-weight: 500;
+            color: #ffffff;
         }
 
         .hero-title .highlight {
@@ -459,7 +459,7 @@
         .hero-title .subtitle {
             font-size: 1.3rem;
             font-weight: 400;
-            color: var(--text-secondary);
+            color: #ffffff;
             margin-top: 5px;
         }
 
