@@ -724,54 +724,73 @@
             line-height: 1.6;
         }
 
-        .nr-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
+        /* Card Swap Effect */
+        .card-swap-wrapper {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin-bottom: 50px;
+            perspective: 1000px;
         }
 
-        .nr-card {
-            padding: 28px 20px;
-            background: var(--bg-card);
+        .card-swap-container {
+            position: relative;
+            width: 320px;
+            height: 280px;
+            transform-style: preserve-3d;
+        }
+
+        .swap-card {
+            position: absolute;
+            width: 320px;
+            height: 280px;
+            padding: 30px 25px;
+            background: linear-gradient(135deg, var(--bg-card), rgba(26, 26, 36, 0.95));
             border: 1px solid var(--border-color);
-            border-radius: 16px;
+            border-radius: 20px;
             text-align: center;
-            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            will-change: transform;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transition: box-shadow 0.3s ease;
         }
 
-        .nr-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-4px);
+        .swap-card:hover {
+            box-shadow: 0 25px 50px rgba(0, 212, 255, 0.15);
         }
 
-        .nr-icon {
-            width: 56px;
-            height: 56px;
+        .swap-card .nr-icon {
+            width: 64px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 212, 255, 0.1);
-            border-radius: 14px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 255, 136, 0.1));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 16px;
             color: var(--accent-cyan);
-            margin: 0 auto 16px;
+            margin: 0 auto 20px;
         }
 
-        .nr-icon svg {
-            filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.5));
+        .swap-card .nr-icon svg {
+            filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.6));
         }
 
-        .nr-card h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 8px;
+        .swap-card h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 12px;
             color: var(--text-primary);
         }
 
-        .nr-card p {
-            font-size: 0.85rem;
+        .swap-card p {
+            font-size: 0.95rem;
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
         .nr-terminal {
@@ -808,9 +827,28 @@
             margin-top: 8px;
         }
 
-        @media (max-width: 900px) {
-            .nr-grid {
-                grid-template-columns: repeat(2, 1fr);
+        @media (max-width: 768px) {
+            .card-swap-wrapper {
+                height: 350px;
+            }
+            
+            .card-swap-container {
+                width: 280px;
+                height: 250px;
+            }
+            
+            .swap-card {
+                width: 280px;
+                height: 250px;
+                padding: 25px 20px;
+            }
+            
+            .swap-card h3 {
+                font-size: 1.1rem;
+            }
+            
+            .swap-card p {
+                font-size: 0.85rem;
             }
         }
 
@@ -828,20 +866,32 @@
                 margin-bottom: 30px;
             }
             
-            .nr-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
+            .card-swap-wrapper {
+                height: 320px;
             }
             
-            .nr-card {
+            .card-swap-container {
+                width: 260px;
+                height: 230px;
+            }
+            
+            .swap-card {
+                width: 260px;
+                height: 230px;
                 padding: 20px 15px;
             }
             
-            .nr-card h3 {
-                font-size: 0.95rem;
+            .swap-card .nr-icon {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 15px;
             }
             
-            .nr-card p {
+            .swap-card h3 {
+                font-size: 1rem;
+            }
+            
+            .swap-card p {
                 font-size: 0.8rem;
             }
         }
@@ -2262,34 +2312,36 @@
                                 Sem censura, sem bloqueios, sem limitações.
                             </p>
 
-                            <div class="nr-grid">
-                                <div class="nr-card">
-                                    <div class="nr-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+                            <div class="card-swap-wrapper">
+                                <div class="card-swap-container" id="cardSwap">
+                                    <div class="swap-card" data-index="0">
+                                        <div class="nr-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
+                                        </div>
+                                        <h3>Zero Censura</h3>
+                                        <p>Acesso completo a todas as técnicas e payloads sem filtros.</p>
                                     </div>
-                                    <h3>Zero Censura</h3>
-                                    <p>Acesso completo a todas as técnicas e payloads sem filtros.</p>
-                                </div>
-                                <div class="nr-card">
-                                    <div class="nr-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                                    <div class="swap-card" data-index="1">
+                                        <div class="nr-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                                        </div>
+                                        <h3>Sem Bloqueios</h3>
+                                        <p>A IA responde qualquer pergunta sobre segurança ofensiva.</p>
                                     </div>
-                                    <h3>Sem Bloqueios</h3>
-                                    <p>A IA responde qualquer pergunta sobre segurança ofensiva.</p>
-                                </div>
-                                <div class="nr-card">
-                                    <div class="nr-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                                    <div class="swap-card" data-index="2">
+                                        <div class="nr-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
+                                        </div>
+                                        <h3>IA Especializada</h3>
+                                        <p>Treinada para operações de Red Team e Pentest.</p>
                                     </div>
-                                    <h3>IA Especializada</h3>
-                                    <p>Treinada para operações de Red Team e Pentest.</p>
-                                </div>
-                                <div class="nr-card">
-                                    <div class="nr-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+                                    <div class="swap-card" data-index="3">
+                                        <div class="nr-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+                                        </div>
+                                        <h3>Arsenal Completo</h3>
+                                        <p>Exploits, bypasses e evasões disponíveis sem limites.</p>
                                     </div>
-                                    <h3>Arsenal Completo</h3>
-                                    <p>Exploits, bypasses e evasões disponíveis sem limites.</p>
                                 </div>
                             </div>
                         </div>
@@ -3290,6 +3342,107 @@ subprocess.call(["/bin/sh","-i"])</code>
                     });
                 }, 250);
             });
+        })();
+    </script>
+
+    <!-- Card Swap Effect -->
+    <script>
+        (function() {
+            const container = document.getElementById('cardSwap');
+            if (!container) return;
+
+            const cards = Array.from(container.querySelectorAll('.swap-card'));
+            if (cards.length < 2) return;
+
+            const config = {
+                cardDistance: 50,
+                verticalDistance: 40,
+                delay: 3000,
+                skewAmount: 4
+            };
+
+            let order = cards.map((_, i) => i);
+            let isAnimating = false;
+
+            // Position cards initially
+            function positionCards() {
+                cards.forEach((card, i) => {
+                    const slot = order.indexOf(i);
+                    const x = slot * config.cardDistance;
+                    const y = -slot * config.verticalDistance;
+                    const z = -slot * config.cardDistance * 1.2;
+                    const zIndex = cards.length - slot;
+                    
+                    card.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) skewY(${config.skewAmount}deg)`;
+                    card.style.zIndex = zIndex;
+                    card.style.left = '50%';
+                    card.style.top = '50%';
+                });
+            }
+
+            // Animate card swap
+            function swapCards() {
+                if (isAnimating) return;
+                isAnimating = true;
+
+                const frontIndex = order[0];
+                const frontCard = cards[frontIndex];
+                
+                // Animate front card dropping
+                frontCard.style.transition = 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease';
+                frontCard.style.transform = `translate(-50%, -50%) translate3d(0, 400px, 0) skewY(0deg)`;
+                frontCard.style.opacity = '0';
+
+                // After drop, move other cards forward
+                setTimeout(() => {
+                    // Update order
+                    order = [...order.slice(1), frontIndex];
+                    
+                    // Animate remaining cards
+                    cards.forEach((card, i) => {
+                        if (i === frontIndex) return;
+                        const slot = order.indexOf(i);
+                        const x = slot * config.cardDistance;
+                        const y = -slot * config.verticalDistance;
+                        const z = -slot * config.cardDistance * 1.2;
+                        const zIndex = cards.length - slot;
+                        
+                        card.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                        card.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) skewY(${config.skewAmount}deg)`;
+                        card.style.zIndex = zIndex;
+                    });
+                }, 400);
+
+                // Bring front card to back
+                setTimeout(() => {
+                    const slot = order.indexOf(frontIndex);
+                    const x = slot * config.cardDistance;
+                    const y = -slot * config.verticalDistance;
+                    const z = -slot * config.cardDistance * 1.2;
+                    const zIndex = cards.length - slot;
+                    
+                    frontCard.style.transition = 'none';
+                    frontCard.style.transform = `translate(-50%, -50%) translate3d(${x + 100}px, ${y - 200}px, ${z}px) skewY(${config.skewAmount}deg)`;
+                    frontCard.style.zIndex = zIndex;
+                    frontCard.style.opacity = '1';
+                    
+                    // Animate to final position
+                    setTimeout(() => {
+                        frontCard.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                        frontCard.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) skewY(${config.skewAmount}deg)`;
+                        
+                        setTimeout(() => {
+                            isAnimating = false;
+                        }, 600);
+                    }, 50);
+                }, 800);
+            }
+
+            // Initialize
+            positionCards();
+            
+            // Start auto-swap
+            setInterval(swapCards, config.delay);
         })();
     </script>
 </body>
