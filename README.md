@@ -17,16 +17,31 @@ Sistema profissional de IA especializada em **Pentest** e **Red Team**.
 - Formatação de código com syntax highlighting
 - Botão de **copiar código** em blocos de código
 - Suporte a Markdown completo
+- **Terminal integrado** - Execute comandos diretamente no chat (plano Full Attack)
 
-### 🔍 Scannear de Vulnerabilidades
-- Interface visual para análise de alvos
-- Integração com ferramentas de reconhecimento
-- Resultados formatados e exportáveis
+### 🔍 Scanner de Vulnerabilidades (Real)
+- **Análise de Headers HTTP** - HSTS, CSP, X-Frame-Options, X-Content-Type-Options, etc.
+- **Verificação SSL/TLS** - Certificado, validade, emissor, dias restantes
+- **Análise DNS** - Registros A, AAAA, MX, NS, SPF, DMARC
+- **Detecção de Tecnologias** - WordPress, Laravel, React, Vue, jQuery, Bootstrap, etc.
+- Rate limiting: 10 scans por hora
 
 ### 💻 Terminal Interativo
 - **Execução de comandos reais** no servidor
+- **Disponível apenas para plano Full Attack** ou Admin
 - **Whitelist de segurança** - apenas comandos permitidos
 - **Rate limiting** - 10 comandos/minuto, 60 comandos/hora
+- **Proteção contra sobrecarga**:
+  - Máximo 500 caracteres por comando
+  - Máximo 20 argumentos
+  - Máximo 5 alvos por comando
+  - Range de IP máximo /24 (256 hosts)
+  - Range de portas máximo 1000
+  - Bloqueio de `-p-` (scan completo de portas)
+  - Limite de `--min-rate 500` no nmap
+  - Limite de 20 threads no gobuster
+  - Bloqueio de wordlists grandes (rockyou, big.txt)
+  - Apenas 1 nikto por vez por usuário
 - **Logging completo** - todos os comandos são auditados
 - Comandos disponíveis:
   - DNS/WHOIS: `whois`, `dig`, `nslookup`, `host`
@@ -55,8 +70,19 @@ Sistema profissional de IA especializada em **Pentest** e **Red Team**.
 ### 🛡️ Painel Admin
 - **Dashboard** com estatísticas
 - **Gerenciamento de usuários**: criar, editar, banir, deletar
+- **Usuários em tempo real**: atualização automática a cada 5 segundos
+- **Indicador de online**: bolinha verde para usuários ativos
+- **Estatísticas ao vivo**: Total, Online, Ativos, Banidos
 - **Visualização de sessões**: ver conversas dos usuários
 - **Gerenciamento de planos**: editar preços e limites
+
+## 💰 Planos
+
+| Plano | Recursos |
+|-------|----------|
+| **Pentest** (Free) | Chat com IA, Scanner, Checklist |
+| **Red Team** | Tudo do Pentest + Relatórios avançados |
+| **Full Attack** | Tudo + **Terminal Integrado** |
 
 ## 🔐 Segurança
 
@@ -64,6 +90,7 @@ Sistema profissional de IA especializada em **Pentest** e **Red Team**.
 - **Prompt System protegido**: Nunca exposto ao frontend
 - **Rate limiting**: Por plano do usuário e por ferramenta
 - **Terminal com whitelist**: Apenas comandos seguros permitidos
+- **Proteção contra comandos grandes**: Limites de caracteres, argumentos e alvos
 - **Logging de auditoria**: Todos os comandos do terminal são logados
 - **Content moderation**: Bloqueio de padrões maliciosos
 - **Prompt injection protection**: Detecção de tentativas de bypass
@@ -80,11 +107,13 @@ app/
 │   │   ├── AuthController     # Login/Registro
 │   │   ├── ChatController     # Chat/Sessões
 │   │   ├── AdminController    # Painel Admin
-│   │   └── TerminalController # Terminal com whitelist
+│   │   ├── TerminalController # Terminal com whitelist
+│   │   └── ScannerController  # Scanner real
 │   └── Middleware/
 │       ├── EnsureAuthenticated # Proteção de rotas
 │       ├── EnsureUserIsAdmin   # Proteção admin
 │       ├── EnsureUserNotBanned
+│       ├── CheckTerminalAccess # Acesso ao terminal por plano
 │       └── RateLimitAI         # Limite por plano
 ├── Models/
 │   ├── User                   # Usuários
@@ -98,12 +127,20 @@ app/
 ## 🛠️ Tecnologias
 
 - **Backend:** Laravel 11, PHP 8.2+
-- **Database:** SQLite (ou MySQL)
-- **Frontend:** Blade, TailwindCSS, Alpine.js
+- **Database:** SQLite (ou MySQL/Supabase)
+- **Frontend:** Blade, TailwindCSS (compilado localmente), Alpine.js
 - **IA:** DeepSeek via OpenRouter API
 - **Auth:** Laravel Sanctum
 - **Icons:** Font Awesome 6
 - **3D Effects:** Three.js (partículas na landing)
+
+## ⚡ Otimizações de Performance
+
+- **Tailwind CSS compilado localmente** (~50KB vs ~3MB do CDN)
+- **Fontes Google com carregamento assíncrono**
+- **Font Awesome com carregamento assíncrono**
+- **Preconnect para CDNs externos**
+- **Cache do Laravel otimizado**
 
 ## 📦 Instalação Local
 
@@ -114,6 +151,10 @@ cd deepeyers
 
 # Instale dependências
 composer install
+npm install
+
+# Compile o Tailwind CSS
+npm run build
 
 # Configure ambiente
 cp .env.example .env
@@ -142,9 +183,15 @@ apt install -y nikto
 # gobuster, subfinder, wpscan - instalar via Go ou gems
 ```
 
-### Atualização rápida:
+### Deploy rápido:
 ```bash
-cd /var/www/deepeyes && git pull origin main && php artisan view:clear && php artisan cache:clear
+bash deploy.sh
+```
+
+### Atualização manual:
+```bash
+cd /var/www/deepeyes && git pull origin main && php artisan cache:clear && php artisan view:clear
+chown -R www-data:www-data storage bootstrap/cache && chmod -R 775 storage bootstrap/cache
 ```
 
 ## 🔑 Configuração OpenRouter
@@ -165,16 +212,16 @@ DEEPSEEK_MODEL=deepseek/deepseek-chat
 |--------|------|-----------|
 | Landing | `/` | Página inicial com apresentação |
 | Chat | `/chat` | Interface de chat com IA |
-| Scanner | `/scanner` | Scanner de vulnerabilidades |
-| Terminal | `/terminal` | Terminal interativo |
+| Scanner | `/scanner` | Scanner de vulnerabilidades (real) |
+| Terminal | `/terminal` | Terminal interativo (Full Attack) |
 | Checklist | `/checklist` | Checklist OWASP |
 | Reports | `/reports` | Geração de relatórios |
 | Docs | `/docs` | Documentação |
-| Profile | `/profile` | Perfil do usuário |
+| Profile | `/profile` | Perfil do usuário + Admin |
 
 > ⚠️ Todas as páginas exceto `/` e `/docs` requerem autenticação.
 
-## � CIontribuição
+## 🤝 Contribuição
 
 1. Fork o projeto
 2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
@@ -183,22 +230,28 @@ DEEPSEEK_MODEL=deepseek/deepseek-chat
 5. Abra um Pull Request
 
 ### 🔜 Próximas Features
-- [ ] **Terminal Integrado no Chat** - Execute comandos diretamente na conversa com a IA, que analisa os resultados em tempo real e sugere próximos passos para descobrir vulnerabilidades
 - [ ] Multi-modelo (GPT-4, Claude)
 - [ ] Integração Stripe para pagamentos
 - [ ] 2FA/MFA
 - [ ] Workspaces de equipe
 - [ ] Relatórios PDF profissionais
+- [ ] Port Scan no Scanner
 
 ### ✅ Implementado Recentemente
+- [x] **Scanner Real** - Headers, SSL, DNS, Tecnologias (não mais fictício)
+- [x] **Terminal restrito por plano** - Apenas Full Attack ou Admin
+- [x] **Proteção contra comandos grandes** - Limites de caracteres, argumentos, alvos
+- [x] **Usuários em tempo real no Admin** - Atualização a cada 5 segundos
+- [x] **Indicador de online** - Bolinha verde para usuários ativos
+- [x] **Tailwind CSS compilado** - Performance otimizada (~50KB)
+- [x] Terminal integrado no Chat
 - [x] Seleção múltipla e exclusão em massa de usuários no admin
-- [x] Validação de email (apenas provedores confiáveis: Gmail, Outlook, Yahoo, etc)
-- [x] Validação de senha forte (maiúscula, minúscula, número, caractere especial)
+- [x] Validação de email (apenas provedores confiáveis)
+- [x] Validação de senha forte
 - [x] Terminal interativo com whitelist de comandos
 - [x] Rate limiting e logging de comandos
-- [x] Sistema de autenticação em todas as ferramentas
 
-## � LiceAnça
+## 📄 Licença
 
 Este projeto é privado e de uso restrito.
 

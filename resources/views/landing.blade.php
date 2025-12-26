@@ -426,6 +426,23 @@
             background-clip: text;
         }
 
+        /* Ghost Cursor Effect */
+        .ghost-text-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .ghost-cursor-canvas {
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 140%;
+            height: 200%;
+            pointer-events: none;
+            z-index: 10;
+            mix-blend-mode: screen;
+        }
+
         .hero-title .subtitle {
             font-size: 2rem;
             font-weight: 400;
@@ -2034,7 +2051,7 @@
                     <div class="hero-content">
                         
                         <h1 class="hero-title">
-                            Bem-vindo ao <span class="highlight">DeepEyes</span>
+                            Bem-vindo ao <span class="highlight ghost-text-container" id="deepeyes-ghost">DeepEyes<canvas class="ghost-cursor-canvas" id="ghost-canvas"></canvas></span>
                             <br>
                             <span class="subtitle">sua IA de segurança ofensiva</span>
                         </h1>
@@ -2992,6 +3009,302 @@ subprocess.call(["/bin/sh","-i"])</code>
                 renderer.render(scene, camera);
             }
             animate();
+        })();
+    </script>
+
+    <!-- Ghost Cursor Effect for DeepEyes text -->
+    <script>
+        (function() {
+            const container = document.getElementById('deepeyes-ghost');
+            const canvas = document.getElementById('ghost-canvas');
+            if (!container || !canvas) return;
+
+            const gl = canvas.getContext('webgl', { 
+                alpha: true, 
+                premultipliedAlpha: false,
+                antialias: true 
+            });
+            if (!gl) return;
+
+            // Configuration
+            const config = {
+                color: [0.694, 0.620, 0.937], // #B19EEF
+                brightness: 1.2,
+                trailLength: 50,
+                inertia: 0.5,
+                grainIntensity: 0.05,
+                fadeDelayMs: 1000,
+                fadeDurationMs: 1500
+            };
+
+            // Shaders
+            const vertexShaderSource = `
+                attribute vec2 a_position;
+                varying vec2 v_uv;
+                void main() {
+                    v_uv = a_position * 0.5 + 0.5;
+                    gl_Position = vec4(a_position, 0.0, 1.0);
+                }
+            `;
+
+            const fragmentShaderSource = `
+                precision mediump float;
+                uniform float u_time;
+                uniform vec2 u_resolution;
+                uniform vec2 u_mouse;
+                uniform vec2 u_prevMouse[50];
+                uniform float u_opacity;
+                uniform vec3 u_baseColor;
+                uniform float u_brightness;
+                varying vec2 v_uv;
+
+                float hash(vec2 p) { 
+                    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); 
+                }
+
+                float noise(vec2 p) {
+                    vec2 i = floor(p), f = fract(p);
+                    f *= f * (3.0 - 2.0 * f);
+                    return mix(
+                        mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), f.x),
+                        mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), 
+                        f.y
+                    );
+                }
+
+                float fbm(vec2 p) {
+                    float v = 0.0;
+                    float a = 0.5;
+                    mat2 m = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
+                    for(int i = 0; i < 5; i++) {
+                        v += a * noise(p);
+                        p = m * p * 2.0;
+                        a *= 0.5;
+                    }
+                    return v;
+                }
+
+                vec4 blob(vec2 p, vec2 mousePos, float intensity, float activity) {
+                    vec2 q = vec2(
+                        fbm(p + u_time * 0.1), 
+                        fbm(p + vec2(5.2, 1.3) + u_time * 0.1)
+                    );
+                    vec2 r = vec2(
+                        fbm(p + q * 1.5 + u_time * 0.15), 
+                        fbm(p + q * 1.5 + vec2(8.3, 2.8) + u_time * 0.15)
+                    );
+                    float smoke = fbm(p + r * 0.8);
+                    float radius = 0.8;
+                    float distFactor = 1.0 - smoothstep(0.0, radius * activity, length(p - mousePos));
+                    float alpha = pow(smoke, 2.5) * distFactor;
+                    vec3 c1 = mix(u_baseColor, vec3(1.0), 0.15);
+                    vec3 c2 = mix(u_baseColor, vec3(0.8, 0.9, 1.0), 0.25);
+                    vec3 color = mix(c1, c2, sin(u_time * 0.5) * 0.5 + 0.5);
+                    return vec4(color * alpha * intensity, alpha * intensity);
+                }
+
+                void main() {
+                    vec2 uv = (gl_FragCoord.xy / u_resolution.xy * 2.0 - 1.0) * vec2(u_resolution.x / u_resolution.y, 1.0);
+                    vec2 mouse = (u_mouse * 2.0 - 1.0) * vec2(u_resolution.x / u_resolution.y, 1.0);
+                    
+                    vec3 colorAcc = vec3(0.0);
+                    float alphaAcc = 0.0;
+                    
+                    vec4 b = blob(uv, mouse, 1.0, u_opacity);
+                    colorAcc += b.rgb;
+                    alphaAcc += b.a;
+                    
+                    for (int i = 0; i < 50; i++) {
+                        vec2 pm = (u_prevMouse[i] * 2.0 - 1.0) * vec2(u_resolution.x / u_resolution.y, 1.0);
+                        float t = 1.0 - float(i) / 50.0;
+                        t = pow(t, 2.0);
+                        if (t > 0.01) {
+                            vec4 bt = blob(uv, pm, t * 0.8, u_opacity);
+                            colorAcc += bt.rgb;
+                            alphaAcc += bt.a;
+                        }
+                    }
+                    
+                    colorAcc *= u_brightness;
+                    float outAlpha = clamp(alphaAcc * u_opacity, 0.0, 1.0);
+                    gl_FragColor = vec4(colorAcc, outAlpha);
+                }
+            `;
+
+            function createShader(gl, type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+                    gl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
+            }
+
+            function createProgram(gl, vertexShader, fragmentShader) {
+                const program = gl.createProgram();
+                gl.attachShader(program, vertexShader);
+                gl.attachShader(program, fragmentShader);
+                gl.linkProgram(program);
+                if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                    console.error('Program link error:', gl.getProgramInfoLog(program));
+                    return null;
+                }
+                return program;
+            }
+
+            const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+            const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+            if (!vertexShader || !fragmentShader) return;
+
+            const program = createProgram(gl, vertexShader, fragmentShader);
+            if (!program) return;
+
+            // Create geometry
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+                -1, -1, 1, -1, -1, 1,
+                -1, 1, 1, -1, 1, 1
+            ]), gl.STATIC_DRAW);
+
+            const positionLocation = gl.getAttribLocation(program, 'a_position');
+            
+            // Get uniform locations
+            const uniforms = {
+                time: gl.getUniformLocation(program, 'u_time'),
+                resolution: gl.getUniformLocation(program, 'u_resolution'),
+                mouse: gl.getUniformLocation(program, 'u_mouse'),
+                prevMouse: [],
+                opacity: gl.getUniformLocation(program, 'u_opacity'),
+                baseColor: gl.getUniformLocation(program, 'u_baseColor'),
+                brightness: gl.getUniformLocation(program, 'u_brightness')
+            };
+
+            for (let i = 0; i < config.trailLength; i++) {
+                uniforms.prevMouse.push(gl.getUniformLocation(program, `u_prevMouse[${i}]`));
+            }
+
+            // State
+            let currentMouse = { x: 0.5, y: 0.5 };
+            let velocity = { x: 0, y: 0 };
+            let trailBuffer = Array.from({ length: config.trailLength }, () => ({ x: 0.5, y: 0.5 }));
+            let headIndex = 0;
+            let fadeOpacity = 0;
+            let lastMoveTime = 0;
+            let pointerActive = false;
+            let running = false;
+            let animationId = null;
+
+            function resize() {
+                const rect = container.getBoundingClientRect();
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                canvas.width = rect.width * 1.4 * dpr;
+                canvas.height = rect.height * 2 * dpr;
+                canvas.style.width = (rect.width * 1.4) + 'px';
+                canvas.style.height = (rect.height * 2) + 'px';
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            }
+
+            function animate(time) {
+                const t = time * 0.001;
+
+                if (pointerActive) {
+                    velocity.x = currentMouse.x - trailBuffer[headIndex].x;
+                    velocity.y = currentMouse.y - trailBuffer[headIndex].y;
+                    fadeOpacity = 1.0;
+                } else {
+                    velocity.x *= config.inertia;
+                    velocity.y *= config.inertia;
+                    
+                    const dt = performance.now() - lastMoveTime;
+                    if (dt > config.fadeDelayMs) {
+                        const k = Math.min(1, (dt - config.fadeDelayMs) / config.fadeDurationMs);
+                        fadeOpacity = Math.max(0, 1 - k);
+                    }
+                }
+
+                // Update trail
+                headIndex = (headIndex + 1) % config.trailLength;
+                if (pointerActive) {
+                    trailBuffer[headIndex] = { x: currentMouse.x, y: currentMouse.y };
+                } else {
+                    const prev = trailBuffer[(headIndex - 1 + config.trailLength) % config.trailLength];
+                    trailBuffer[headIndex] = { 
+                        x: prev.x + velocity.x, 
+                        y: prev.y + velocity.y 
+                    };
+                }
+
+                // Render
+                gl.clearColor(0, 0, 0, 0);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                gl.enable(gl.BLEND);
+                gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+                gl.useProgram(program);
+                gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+                gl.enableVertexAttribArray(positionLocation);
+                gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+                gl.uniform1f(uniforms.time, t);
+                gl.uniform2f(uniforms.resolution, canvas.width, canvas.height);
+                gl.uniform2f(uniforms.mouse, trailBuffer[headIndex].x, trailBuffer[headIndex].y);
+                gl.uniform1f(uniforms.opacity, fadeOpacity);
+                gl.uniform3f(uniforms.baseColor, config.color[0], config.color[1], config.color[2]);
+                gl.uniform1f(uniforms.brightness, config.brightness);
+
+                for (let i = 0; i < config.trailLength; i++) {
+                    const idx = (headIndex - i + config.trailLength) % config.trailLength;
+                    gl.uniform2f(uniforms.prevMouse[i], trailBuffer[idx].x, trailBuffer[idx].y);
+                }
+
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+                if (!pointerActive && fadeOpacity <= 0.001) {
+                    running = false;
+                    animationId = null;
+                    return;
+                }
+
+                animationId = requestAnimationFrame(animate);
+            }
+
+            function ensureLoop() {
+                if (!running) {
+                    running = true;
+                    animationId = requestAnimationFrame(animate);
+                }
+            }
+
+            function onPointerMove(e) {
+                const rect = container.getBoundingClientRect();
+                currentMouse.x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                currentMouse.y = Math.max(0, Math.min(1, 1 - (e.clientY - rect.top) / rect.height));
+                pointerActive = true;
+                lastMoveTime = performance.now();
+                ensureLoop();
+            }
+
+            function onPointerEnter() {
+                pointerActive = true;
+                ensureLoop();
+            }
+
+            function onPointerLeave() {
+                pointerActive = false;
+                lastMoveTime = performance.now();
+                ensureLoop();
+            }
+
+            container.addEventListener('pointermove', onPointerMove, { passive: true });
+            container.addEventListener('pointerenter', onPointerEnter, { passive: true });
+            container.addEventListener('pointerleave', onPointerLeave, { passive: true });
+
+            window.addEventListener('resize', resize);
+            resize();
         })();
     </script>
 </body>
