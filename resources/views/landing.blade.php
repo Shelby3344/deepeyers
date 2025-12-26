@@ -10,7 +10,6 @@
     <meta name="theme-color" content="#0a0a0f">
     <meta name="description" content="DeepEyes - Plataforma de IA especializada em segurança ofensiva. Pentest, Red Team e simulações APT em ambiente controlado.">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -90,20 +89,6 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-        }
-
-        /* Pixel Snow Container */
-        #pixel-snow {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #pixel-snow canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
         }
 
         /* ========================================
@@ -415,8 +400,18 @@
         .hero-title {
             font-size: 3.5rem;
             font-weight: 700;
-            line-height: 1.2;
+            line-height: 1.4;
             margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .hero-title .hero-welcome {
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--text-secondary);
         }
 
         .hero-title .highlight {
@@ -424,29 +419,48 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 900;
+            letter-spacing: -2px;
         }
 
-        /* Ghost Cursor Effect */
-        .ghost-text-container {
+        /* Fuzzy Text Effect */
+        .fuzzy-text {
             position: relative;
             display: inline-block;
+            min-height: 1.2em;
         }
 
-        .ghost-cursor-canvas {
+        .fuzzy-text canvas {
             position: absolute;
-            top: -50%;
-            left: -20%;
-            width: 140%;
-            height: 200%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: auto;
+        }
+
+        .fuzzy-text.active {
+            color: transparent !important;
+            -webkit-text-fill-color: transparent !important;
+            background: transparent !important;
+        }
+
+        /* Ghost Cursor Global Effect */
+        #ghost-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            z-index: 10;
-            mix-blend-mode: screen;
+            z-index: 0;
         }
 
         .hero-title .subtitle {
-            font-size: 2rem;
+            font-size: 1.3rem;
             font-weight: 400;
             color: var(--text-secondary);
+            margin-top: 5px;
         }
 
         .hero-description {
@@ -581,24 +595,84 @@
             51%, 100% { opacity: 0; }
         }
 
+        @media (max-width: 1024px) {
+            .hero-title .highlight {
+                font-size: clamp(2.5rem, 8vw, 5rem);
+            }
+        }
+
         @media (max-width: 768px) {
+            .hero {
+                min-height: auto;
+                padding: 100px 15px 50px;
+            }
+            
+            .hero-content {
+                padding: 0 10px;
+            }
+            
             .hero-title {
-                font-size: 2rem;
+                gap: 10px;
+            }
+            
+            .hero-title .hero-welcome {
+                font-size: 1.2rem;
+            }
+            
+            .hero-title .highlight {
+                font-size: clamp(2rem, 12vw, 3.5rem);
+                letter-spacing: -1px;
             }
             
             .hero-title .subtitle {
-                font-size: 1.2rem;
+                font-size: 1rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+                padding: 0 10px;
+                margin-bottom: 30px;
             }
             
             .hero-actions {
                 flex-direction: column;
                 align-items: center;
+                gap: 12px;
+                width: 100%;
             }
             
             .btn-primary, .btn-secondary {
                 width: 100%;
                 max-width: 280px;
                 justify-content: center;
+                padding: 14px 24px;
+            }
+            
+            .hero-terminal {
+                max-width: 100%;
+                margin: 0 10px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero {
+                padding: 90px 10px 40px;
+            }
+            
+            .hero-title .hero-welcome {
+                font-size: 1rem;
+            }
+            
+            .hero-title .highlight {
+                font-size: clamp(1.8rem, 14vw, 2.5rem);
+            }
+            
+            .hero-title .subtitle {
+                font-size: 0.9rem;
+            }
+            
+            .hero-description {
+                font-size: 0.9rem;
             }
         }
 
@@ -741,12 +815,34 @@
         }
 
         @media (max-width: 500px) {
+            .no-restrictions {
+                padding: 60px 15px;
+            }
+            
             .nr-title {
-                font-size: 1.8rem;
+                font-size: 1.5rem;
+            }
+            
+            .nr-subtitle {
+                font-size: 0.95rem;
+                margin-bottom: 30px;
             }
             
             .nr-grid {
                 grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            
+            .nr-card {
+                padding: 20px 15px;
+            }
+            
+            .nr-card h3 {
+                font-size: 0.95rem;
+            }
+            
+            .nr-card p {
+                font-size: 0.8rem;
             }
         }
 
@@ -755,7 +851,6 @@
            ======================================== */
         .how-it-works {
             padding: 100px 20px;
-            background: rgba(10, 10, 15, 0.8);
             backdrop-filter: blur(10px);
         }
 
@@ -1213,7 +1308,6 @@
            ======================================== */
         .disclaimer {
             padding: 60px 20px;
-            background: rgba(10, 10, 15, 0.8);
             backdrop-filter: blur(10px);
         }
 
@@ -1441,6 +1535,10 @@
                 flex-direction: column;
                 align-items: center;
             }
+            
+            .cta-title .fuzzy-text canvas {
+                transform: translate(-50%, -50%) scale(0.8);
+            }
         }
 
         /* ========================================
@@ -1448,7 +1546,6 @@
            ======================================== */
         .pricing-section {
             padding: 100px 20px;
-            background: rgba(10, 10, 15, 0.8);
             backdrop-filter: blur(10px);
         }
 
@@ -1664,13 +1761,35 @@
                 order: -1;
             }
         }
+        
+        @media (max-width: 500px) {
+            .pricing {
+                padding: 60px 15px;
+            }
+            
+            .pricing-grid {
+                max-width: 100%;
+                gap: 20px;
+            }
+            
+            .pricing-card {
+                padding: 25px 20px;
+            }
+            
+            .pricing-price {
+                font-size: 2rem;
+            }
+            
+            .pricing-features li {
+                font-size: 0.85rem;
+            }
+        }
 
         /* ========================================
            FAQ
            ======================================== */
         .faq {
             padding: 100px 20px;
-            background: rgba(10, 10, 15, 0.8);
             backdrop-filter: blur(10px);
         }
 
@@ -1766,60 +1885,6 @@
         .logo-item:hover {
             opacity: 1;
             color: var(--accent-cyan);
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-        }
-
-        .testimonial-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 28px;
-            transition: all 0.3s ease;
-        }
-
-        .testimonial-card:hover {
-            border-color: var(--accent-cyan);
-            transform: translateY(-4px);
-        }
-
-        .testimonial-text {
-            color: var(--text-primary);
-            font-size: 1rem;
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .author-avatar {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-green));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: var(--bg-primary);
-        }
-
-        .author-name {
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .author-role {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
         }
 
         /* ========================================
@@ -2009,13 +2074,107 @@
                 justify-content: center;
             }
         }
+        
+        /* ========================================
+           GLOBAL MOBILE FIXES
+           ======================================== */
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .section-header {
+                margin-bottom: 40px;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .section-subtitle,
+            .section-description {
+                font-size: 0.9rem;
+            }
+            
+            /* CTA Section */
+            .cta {
+                padding: 60px 15px;
+            }
+            
+            .cta-title {
+                font-size: 1.5rem;
+            }
+            
+            .cta-subtitle {
+                font-size: 0.9rem;
+            }
+            
+            /* How it works */
+            .how-it-works {
+                padding: 60px 15px;
+            }
+            
+            .modes-grid {
+                gap: 15px;
+            }
+            
+            .mode-card {
+                padding: 20px;
+            }
+            
+            .mode-title {
+                font-size: 1.1rem;
+            }
+            
+            .mode-description {
+                font-size: 0.85rem;
+            }
+            
+            /* Features */
+            .features {
+                padding: 60px 15px;
+            }
+            
+            .features-grid {
+                gap: 15px;
+            }
+            
+            .feature-card {
+                padding: 20px;
+            }
+            
+            /* FAQ */
+            .faq {
+                padding: 60px 15px;
+            }
+            
+            .faq-item {
+                padding: 15px;
+            }
+            
+            .faq-question {
+                font-size: 0.95rem;
+            }
+            
+            .faq-answer {
+                font-size: 0.85rem;
+            }
+            
+            /* Footer */
+            .footer {
+                padding: 40px 15px 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app">
+        <!-- Ghost Background Effect -->
+        <canvas id="ghost-background"></canvas>
+        
         <!-- Global Background with Pixel Snow -->
         <div class="global-background">
-            <div id="pixel-snow"></div>
+            <!-- Pixel snow removido - usando apenas ghost background -->
         </div>
         
         <div class="content-wrapper">
@@ -2051,8 +2210,8 @@
                     <div class="hero-content">
                         
                         <h1 class="hero-title">
-                            Bem-vindo ao <span class="highlight ghost-text-container" id="deepeyes-ghost">DeepEyes<canvas class="ghost-cursor-canvas" id="ghost-canvas"></canvas></span>
-                            <br>
+                            <span class="hero-welcome">Bem-vindo ao</span>
+                            <span class="highlight fuzzy-text" data-text="DeepEyes">DeepEyes</span>
                             <span class="subtitle">sua IA de segurança ofensiva</span>
                         </h1>
                         
@@ -2095,7 +2254,7 @@
                     <div class="container">
                         <div class="nr-content">
                             <h2 class="nr-title">
-                                IA <span class="highlight">100% Sem Restrições</span>
+                                IA <span class="highlight fuzzy-text" data-text="100% Sem Restrições">100% Sem Restrições</span>
                             </h2>
                             
                             <p class="nr-subtitle">
@@ -2373,7 +2532,7 @@ subprocess.call(["/bin/sh","-i"])</code>
                                 Vagas limitadas no BETA
                             </div>
                             <h2 class="cta-title">
-                                Pronto para elevar seu <span class="highlight">pentest</span>?
+                                Pronto para elevar seu <span class="highlight fuzzy-text" data-text="pentest">pentest</span>?
                             </h2>
                             <p class="cta-subtitle">
                                 Junte-se a centenas de profissionais que já usam o DeepEyes para testes de segurança ofensiva em ambientes controlados.
@@ -2402,7 +2561,7 @@ subprocess.call(["/bin/sh","-i"])</code>
                     <div class="container">
                         <div class="section-header">
                             <span class="section-tag mono">// PLANOS</span>
-                            <h2 class="section-title">Escolha seu <span class="highlight">Plano</span></h2>
+                            <h2 class="section-title">Escolha seu <span class="highlight fuzzy-text" data-text="Plano">Plano</span></h2>
                             <p class="section-description">Selecione o plano ideal para suas necessidades de segurança ofensiva</p>
                         </div>
 
@@ -2654,39 +2813,6 @@ subprocess.call(["/bin/sh","-i"])</code>
                             <div class="logo-item mono">RedTeam Labs</div>
                             <div class="logo-item mono">SecForce</div>
                         </div>
-
-                        <div class="testimonials-grid">
-                            <div class="testimonial-card">
-                                <p class="testimonial-text">"DeepEyes mudou completamente nossa abordagem de pentest. A IA identifica vetores que levaríamos dias para encontrar."</p>
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">C</div>
-                                    <div>
-                                        <p class="author-name">Carlos M.</p>
-                                        <p class="author-role mono">Red Team Lead @ CyberSec Corp</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="testimonial-card">
-                                <p class="testimonial-text">"Simulações APT realistas em minutos. Essencial para qualquer equipe de segurança ofensiva."</p>
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">A</div>
-                                    <div>
-                                        <p class="author-name">Ana R.</p>
-                                        <p class="author-role mono">Security Researcher</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="testimonial-card">
-                                <p class="testimonial-text">"A melhor ferramenta de automação de pentest que já usei. O modo Full Attack é impressionante."</p>
-                                <div class="testimonial-author">
-                                    <div class="author-avatar">P</div>
-                                    <div>
-                                        <p class="author-name">Pedro S.</p>
-                                        <p class="author-role mono">Pentester Sênior</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </section>
             </div>
@@ -2828,243 +2954,45 @@ subprocess.call(["/bin/sh","-i"])</code>
 
         window.addEventListener('scroll', handleScrollFade);
         window.addEventListener('load', handleScrollFade);
-
-        // Pixel Snow Effect with Three.js
-        (function initPixelSnow() {
-            const container = document.getElementById('pixel-snow');
-            if (!container || typeof THREE === 'undefined') return;
-
-            const vertexShader = `
-                void main() {
-                    gl_Position = vec4(position, 1.0);
-                }
-            `;
-
-            const fragmentShader = `
-                precision highp float;
-
-                uniform float uTime;
-                uniform vec2 uResolution;
-                uniform float uFlakeSize;
-                uniform float uMinFlakeSize;
-                uniform float uPixelResolution;
-                uniform float uSpeed;
-                uniform float uDepthFade;
-                uniform float uFarPlane;
-                uniform vec3 uColor;
-                uniform float uBrightness;
-                uniform float uGamma;
-                uniform float uDensity;
-                uniform float uVariant;
-                uniform float uDirection;
-
-                #define M1 1597334677U
-                #define M2 3812015801U
-                #define M3 3299493293U
-                #define F0 (1.0/float(0xffffffffU))
-                #define hash(n) n*(n^(n>>15))
-                #define coord3(p) (uvec3(p).x*M1^uvec3(p).y*M2^uvec3(p).z*M3)
-
-                vec3 hash3(uint n) {
-                    return vec3(hash(n) * uvec3(0x1U, 0x1ffU, 0x3ffffU)) * F0;
-                }
-
-                float snowflakeDist(vec2 p) {
-                    float r = length(p);
-                    float a = atan(p.y, p.x);
-                    float PI = 3.14159265;
-                    a = abs(mod(a + PI / 6.0, PI / 3.0) - PI / 6.0);
-                    vec2 q = r * vec2(cos(a), sin(a));
-                    float dMain = abs(q.y);
-                    dMain = max(dMain, max(-q.x, q.x - 1.0));
-                    vec2 b1s = vec2(0.4, 0.0);
-                    vec2 b1d = vec2(0.574, 0.819);
-                    float b1t = clamp(dot(q - b1s, b1d), 0.0, 0.4);
-                    float dB1 = length(q - b1s - b1t * b1d);
-                    vec2 b2s = vec2(0.7, 0.0);
-                    float b2t = clamp(dot(q - b2s, b1d), 0.0, 0.25);
-                    float dB2 = length(q - b2s - b2t * b1d);
-                    return min(dMain, min(dB1, dB2)) * 10.0;
-                }
-
-                void main() {
-                    float pixelSize = max(1.0, floor(0.5 + uResolution.x / uPixelResolution));
-                    vec2 fragCoord = floor(gl_FragCoord.xy / pixelSize);
-                    vec2 res = uResolution / pixelSize;
-
-                    vec3 ray = normalize(vec3((fragCoord - res * 0.5) / res.x, 1.0));
-
-                    vec3 camK = normalize(vec3(1.0, 1.0, 1.0));
-                    vec3 camI = normalize(vec3(1.0, 0.0, -1.0));
-                    vec3 camJ = cross(camK, camI);
-                    ray = ray.x * camI + ray.y * camJ + ray.z * camK;
-
-                    float windX = cos(uDirection) * 0.4;
-                    float windY = sin(uDirection) * 0.4;
-                    vec3 camPos = (windX * camI + windY * camJ + 0.1 * camK) * uTime * uSpeed;
-                    vec3 pos = camPos;
-
-                    vec3 strides = 1.0 / max(abs(ray), vec3(0.001));
-                    vec3 phase = fract(pos) * strides;
-                    phase = mix(strides - phase, phase, step(ray, vec3(0.0)));
-
-                    float t = 0.0;
-                    for (int i = 0; i < 256; i++) {
-                        if (t >= uFarPlane) break;
-                        vec3 fpos = floor(pos);
-                        float cellHash = hash3(coord3(fpos)).x;
-
-                        if (cellHash < uDensity) {
-                            vec3 h = hash3(coord3(fpos));
-                            vec3 flakePos = 0.5 - 0.5 * cos(
-                                4.0 * sin(fpos.yzx * 0.073) +
-                                4.0 * sin(fpos.zxy * 0.27) +
-                                2.0 * h +
-                                uTime * uSpeed * 0.1 * vec3(7.0, 8.0, 5.0)
-                            );
-                            flakePos = flakePos * 0.8 + 0.1 + fpos;
-
-                            float toIntersection = dot(flakePos - pos, camK) / dot(ray, camK);
-                            if (toIntersection > 0.0) {
-                                vec3 testPos = pos + ray * toIntersection - flakePos;
-                                vec2 testUV = abs(vec2(dot(testPos, camI), dot(testPos, camJ)));
-                                float depth = dot(flakePos - camPos, camK);
-                                float flakeSize = max(uFlakeSize, uMinFlakeSize * depth * 0.5 / res.x);
-                                float dist;
-                                if (uVariant < 0.5) dist = max(testUV.x, testUV.y);
-                                else if (uVariant < 1.5) dist = length(testUV);
-                                else dist = snowflakeDist(vec2(dot(testPos, camI), dot(testPos, camJ)) / flakeSize) * flakeSize;
-
-                                if (dist < flakeSize) {
-                                    float intensity = exp2(-(t + toIntersection) / uDepthFade) *
-                                                     min(1.0, pow(uFlakeSize / flakeSize, 2.0)) * uBrightness;
-                                    gl_FragColor = vec4(uColor * pow(vec3(intensity), vec3(uGamma)), 1.0);
-                                    return;
-                                }
-                            }
-                        }
-
-                        float nextStep = min(min(phase.x, phase.y), phase.z);
-                        vec3 sel = step(phase, vec3(nextStep));
-                        phase = phase - nextStep + strides * sel;
-                        t += nextStep;
-                        pos = mix(pos + ray * nextStep, floor(pos + ray * nextStep + 0.5), sel);
-                    }
-
-                    gl_FragColor = vec4(0.0);
-                }
-            `;
-
-            const scene = new THREE.Scene();
-            const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-            const renderer = new THREE.WebGLRenderer({
-                antialias: false,
-                alpha: true,
-                premultipliedAlpha: false,
-                powerPreference: 'high-performance'
-            });
-
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.setSize(container.offsetWidth, container.offsetHeight);
-            renderer.setClearColor(0x000000, 0);
-            container.appendChild(renderer.domElement);
-
-            const color = new THREE.Color('#ffffff');
-            const material = new THREE.ShaderMaterial({
-                vertexShader,
-                fragmentShader,
-                uniforms: {
-                    uTime: { value: 0 },
-                    uResolution: { value: new THREE.Vector2(container.offsetWidth, container.offsetHeight) },
-                    uFlakeSize: { value: 0.008 },
-                    uMinFlakeSize: { value: 0.8 },
-                    uPixelResolution: { value: 400 },
-                    uSpeed: { value: 0.8 },
-                    uDepthFade: { value: 12 },
-                    uFarPlane: { value: 30 },
-                    uColor: { value: new THREE.Vector3(color.r, color.g, color.b) },
-                    uBrightness: { value: 0.9 },
-                    uGamma: { value: 0.5 },
-                    uDensity: { value: 0.2 },
-                    uVariant: { value: 1.0 },
-                    uDirection: { value: (125 * Math.PI) / 180 }
-                },
-                transparent: true
-            });
-
-            const geometry = new THREE.PlaneGeometry(2, 2);
-            scene.add(new THREE.Mesh(geometry, material));
-
-            function handleResize() {
-                const w = container.offsetWidth, h = container.offsetHeight;
-                renderer.setSize(w, h);
-                material.uniforms.uResolution.value.set(w, h);
-            }
-            window.addEventListener('resize', handleResize);
-
-            const startTime = performance.now();
-            function animate() {
-                requestAnimationFrame(animate);
-                material.uniforms.uTime.value = (performance.now() - startTime) * 0.001;
-                renderer.render(scene, camera);
-            }
-            animate();
-        })();
     </script>
 
-    <!-- Ghost Cursor Effect for DeepEyes text -->
+    <!-- Ghost Background Effect - Animated Smoke/Fog -->
+    <!-- Ghost Background Effect - Animated Smoke/Fog -->
     <script>
         (function() {
-            const container = document.getElementById('deepeyes-ghost');
-            const canvas = document.getElementById('ghost-canvas');
-            if (!container || !canvas) return;
+            const canvas = document.getElementById('ghost-background');
+            if (!canvas) return;
 
             const gl = canvas.getContext('webgl', { 
-                alpha: true, 
+                alpha: false, 
                 premultipliedAlpha: false,
-                antialias: true 
+                antialias: false,
+                powerPreference: 'high-performance'
             });
             if (!gl) return;
 
-            // Configuration
-            const config = {
-                color: [0.694, 0.620, 0.937], // #B19EEF
-                brightness: 1.2,
-                trailLength: 50,
-                inertia: 0.5,
-                grainIntensity: 0.05,
-                fadeDelayMs: 1000,
-                fadeDurationMs: 1500
-            };
-
-            // Shaders
             const vertexShaderSource = `
                 attribute vec2 a_position;
-                varying vec2 v_uv;
                 void main() {
-                    v_uv = a_position * 0.5 + 0.5;
                     gl_Position = vec4(a_position, 0.0, 1.0);
                 }
             `;
 
             const fragmentShaderSource = `
-                precision mediump float;
+                precision highp float;
                 uniform float u_time;
                 uniform vec2 u_resolution;
                 uniform vec2 u_mouse;
-                uniform vec2 u_prevMouse[50];
-                uniform float u_opacity;
-                uniform vec3 u_baseColor;
-                uniform float u_brightness;
-                varying vec2 v_uv;
 
+                // Noise functions
                 float hash(vec2 p) { 
                     return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); 
                 }
 
                 float noise(vec2 p) {
-                    vec2 i = floor(p), f = fract(p);
-                    f *= f * (3.0 - 2.0 * f);
+                    vec2 i = floor(p);
+                    vec2 f = fract(p);
+                    f = f * f * (3.0 - 2.0 * f);
                     return mix(
                         mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), f.x),
                         mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), 
@@ -3076,7 +3004,7 @@ subprocess.call(["/bin/sh","-i"])</code>
                     float v = 0.0;
                     float a = 0.5;
                     mat2 m = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
-                    for(int i = 0; i < 5; i++) {
+                    for(int i = 0; i < 6; i++) {
                         v += a * noise(p);
                         p = m * p * 2.0;
                         a *= 0.5;
@@ -3084,50 +3012,66 @@ subprocess.call(["/bin/sh","-i"])</code>
                     return v;
                 }
 
-                vec4 blob(vec2 p, vec2 mousePos, float intensity, float activity) {
-                    vec2 q = vec2(
-                        fbm(p + u_time * 0.1), 
-                        fbm(p + vec2(5.2, 1.3) + u_time * 0.1)
-                    );
-                    vec2 r = vec2(
-                        fbm(p + q * 1.5 + u_time * 0.15), 
-                        fbm(p + q * 1.5 + vec2(8.3, 2.8) + u_time * 0.15)
-                    );
-                    float smoke = fbm(p + r * 0.8);
-                    float radius = 0.8;
-                    float distFactor = 1.0 - smoothstep(0.0, radius * activity, length(p - mousePos));
-                    float alpha = pow(smoke, 2.5) * distFactor;
-                    vec3 c1 = mix(u_baseColor, vec3(1.0), 0.15);
-                    vec3 c2 = mix(u_baseColor, vec3(0.8, 0.9, 1.0), 0.25);
-                    vec3 color = mix(c1, c2, sin(u_time * 0.5) * 0.5 + 0.5);
-                    return vec4(color * alpha * intensity, alpha * intensity);
-                }
-
                 void main() {
-                    vec2 uv = (gl_FragCoord.xy / u_resolution.xy * 2.0 - 1.0) * vec2(u_resolution.x / u_resolution.y, 1.0);
-                    vec2 mouse = (u_mouse * 2.0 - 1.0) * vec2(u_resolution.x / u_resolution.y, 1.0);
+                    vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+                    vec2 p = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / min(u_resolution.x, u_resolution.y);
                     
-                    vec3 colorAcc = vec3(0.0);
-                    float alphaAcc = 0.0;
+                    float t = u_time * 0.15;
                     
-                    vec4 b = blob(uv, mouse, 1.0, u_opacity);
-                    colorAcc += b.rgb;
-                    alphaAcc += b.a;
+                    // Multiple layers of animated smoke/fog
+                    vec2 q = vec2(
+                        fbm(p + t * 0.3),
+                        fbm(p + vec2(5.2, 1.3) + t * 0.2)
+                    );
                     
-                    for (int i = 0; i < 50; i++) {
-                        vec2 pm = (u_prevMouse[i] * 2.0 - 1.0) * vec2(u_resolution.x / u_resolution.y, 1.0);
-                        float t = 1.0 - float(i) / 50.0;
-                        t = pow(t, 2.0);
-                        if (t > 0.01) {
-                            vec4 bt = blob(uv, pm, t * 0.8, u_opacity);
-                            colorAcc += bt.rgb;
-                            alphaAcc += bt.a;
-                        }
-                    }
+                    vec2 r = vec2(
+                        fbm(p + q * 1.5 + vec2(1.7, 9.2) + t * 0.25),
+                        fbm(p + q * 1.5 + vec2(8.3, 2.8) + t * 0.35)
+                    );
                     
-                    colorAcc *= u_brightness;
-                    float outAlpha = clamp(alphaAcc * u_opacity, 0.0, 1.0);
-                    gl_FragColor = vec4(colorAcc, outAlpha);
+                    vec2 s = vec2(
+                        fbm(p + r * 2.0 + vec2(3.1, 4.7) + t * 0.1),
+                        fbm(p + r * 2.0 + vec2(6.5, 1.2) + t * 0.15)
+                    );
+                    
+                    float f = fbm(p + s * 1.5);
+                    
+                    // Mouse interaction - subtle glow near cursor
+                    vec2 mousePos = u_mouse * 2.0 - 1.0;
+                    mousePos.x *= u_resolution.x / u_resolution.y;
+                    float mouseDist = length(p - mousePos);
+                    float mouseGlow = smoothstep(0.8, 0.0, mouseDist) * 0.3;
+                    
+                    // Color palette - dark purple/cyan theme
+                    vec3 bgColor = vec3(0.039, 0.039, 0.059); // #0a0a0f
+                    vec3 color1 = vec3(0.694, 0.620, 0.937);  // #B19EEF purple
+                    vec3 color2 = vec3(0.0, 0.831, 1.0);      // #00d4ff cyan
+                    vec3 color3 = vec3(0.0, 1.0, 0.533);      // #00ff88 green
+                    
+                    // Mix colors based on noise
+                    vec3 col = bgColor;
+                    
+                    // Add subtle fog layers
+                    float fog1 = smoothstep(0.3, 0.8, f) * 0.15;
+                    float fog2 = smoothstep(0.4, 0.9, fbm(p * 2.0 + t * 0.2)) * 0.1;
+                    float fog3 = smoothstep(0.5, 1.0, fbm(p * 0.5 - t * 0.1)) * 0.08;
+                    
+                    col += color1 * fog1;
+                    col += color2 * fog2;
+                    col += color3 * fog3 * 0.5;
+                    
+                    // Add mouse glow
+                    col += mix(color1, color2, sin(u_time * 0.5) * 0.5 + 0.5) * mouseGlow;
+                    
+                    // Vignette effect
+                    float vignette = 1.0 - smoothstep(0.5, 1.5, length(p * 0.7));
+                    col *= vignette * 0.8 + 0.2;
+                    
+                    // Add subtle grain
+                    float grain = (hash(uv * u_time * 100.0) - 0.5) * 0.03;
+                    col += grain;
+                    
+                    gl_FragColor = vec4(col, 1.0);
                 }
             `;
 
@@ -3136,33 +3080,32 @@ subprocess.call(["/bin/sh","-i"])</code>
                 gl.shaderSource(shader, source);
                 gl.compileShader(shader);
                 if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-                    console.error('Shader compile error:', gl.getShaderInfoLog(shader));
+                    console.error('Shader error:', gl.getShaderInfoLog(shader));
                     gl.deleteShader(shader);
                     return null;
                 }
                 return shader;
             }
 
-            function createProgram(gl, vertexShader, fragmentShader) {
+            function createProgram(gl, vs, fs) {
                 const program = gl.createProgram();
-                gl.attachShader(program, vertexShader);
-                gl.attachShader(program, fragmentShader);
+                gl.attachShader(program, vs);
+                gl.attachShader(program, fs);
                 gl.linkProgram(program);
                 if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-                    console.error('Program link error:', gl.getProgramInfoLog(program));
+                    console.error('Program error:', gl.getProgramInfoLog(program));
                     return null;
                 }
                 return program;
             }
 
-            const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-            const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-            if (!vertexShader || !fragmentShader) return;
+            const vs = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+            const fs = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+            if (!vs || !fs) return;
 
-            const program = createProgram(gl, vertexShader, fragmentShader);
+            const program = createProgram(gl, vs, fs);
             if (!program) return;
 
-            // Create geometry
             const positionBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
@@ -3171,140 +3114,182 @@ subprocess.call(["/bin/sh","-i"])</code>
             ]), gl.STATIC_DRAW);
 
             const positionLocation = gl.getAttribLocation(program, 'a_position');
-            
-            // Get uniform locations
-            const uniforms = {
-                time: gl.getUniformLocation(program, 'u_time'),
-                resolution: gl.getUniformLocation(program, 'u_resolution'),
-                mouse: gl.getUniformLocation(program, 'u_mouse'),
-                prevMouse: [],
-                opacity: gl.getUniformLocation(program, 'u_opacity'),
-                baseColor: gl.getUniformLocation(program, 'u_baseColor'),
-                brightness: gl.getUniformLocation(program, 'u_brightness')
-            };
+            const timeLocation = gl.getUniformLocation(program, 'u_time');
+            const resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+            const mouseLocation = gl.getUniformLocation(program, 'u_mouse');
 
-            for (let i = 0; i < config.trailLength; i++) {
-                uniforms.prevMouse.push(gl.getUniformLocation(program, `u_prevMouse[${i}]`));
-            }
-
-            // State
-            let currentMouse = { x: 0.5, y: 0.5 };
-            let velocity = { x: 0, y: 0 };
-            let trailBuffer = Array.from({ length: config.trailLength }, () => ({ x: 0.5, y: 0.5 }));
-            let headIndex = 0;
-            let fadeOpacity = 0;
-            let lastMoveTime = 0;
-            let pointerActive = false;
-            let running = false;
-            let animationId = null;
+            let mouse = { x: 0.5, y: 0.5 };
+            let targetMouse = { x: 0.5, y: 0.5 };
 
             function resize() {
-                const rect = container.getBoundingClientRect();
-                const dpr = Math.min(window.devicePixelRatio || 1, 2);
-                canvas.width = rect.width * 1.4 * dpr;
-                canvas.height = rect.height * 2 * dpr;
-                canvas.style.width = (rect.width * 1.4) + 'px';
-                canvas.style.height = (rect.height * 2) + 'px';
+                const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+                canvas.width = window.innerWidth * dpr;
+                canvas.height = window.innerHeight * dpr;
+                canvas.style.width = window.innerWidth + 'px';
+                canvas.style.height = window.innerHeight + 'px';
                 gl.viewport(0, 0, canvas.width, canvas.height);
             }
 
             function animate(time) {
                 const t = time * 0.001;
 
-                if (pointerActive) {
-                    velocity.x = currentMouse.x - trailBuffer[headIndex].x;
-                    velocity.y = currentMouse.y - trailBuffer[headIndex].y;
-                    fadeOpacity = 1.0;
-                } else {
-                    velocity.x *= config.inertia;
-                    velocity.y *= config.inertia;
-                    
-                    const dt = performance.now() - lastMoveTime;
-                    if (dt > config.fadeDelayMs) {
-                        const k = Math.min(1, (dt - config.fadeDelayMs) / config.fadeDurationMs);
-                        fadeOpacity = Math.max(0, 1 - k);
-                    }
-                }
-
-                // Update trail
-                headIndex = (headIndex + 1) % config.trailLength;
-                if (pointerActive) {
-                    trailBuffer[headIndex] = { x: currentMouse.x, y: currentMouse.y };
-                } else {
-                    const prev = trailBuffer[(headIndex - 1 + config.trailLength) % config.trailLength];
-                    trailBuffer[headIndex] = { 
-                        x: prev.x + velocity.x, 
-                        y: prev.y + velocity.y 
-                    };
-                }
-
-                // Render
-                gl.clearColor(0, 0, 0, 0);
-                gl.clear(gl.COLOR_BUFFER_BIT);
-                gl.enable(gl.BLEND);
-                gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+                // Smooth mouse movement
+                mouse.x += (targetMouse.x - mouse.x) * 0.05;
+                mouse.y += (targetMouse.y - mouse.y) * 0.05;
 
                 gl.useProgram(program);
                 gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
                 gl.enableVertexAttribArray(positionLocation);
                 gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
 
-                gl.uniform1f(uniforms.time, t);
-                gl.uniform2f(uniforms.resolution, canvas.width, canvas.height);
-                gl.uniform2f(uniforms.mouse, trailBuffer[headIndex].x, trailBuffer[headIndex].y);
-                gl.uniform1f(uniforms.opacity, fadeOpacity);
-                gl.uniform3f(uniforms.baseColor, config.color[0], config.color[1], config.color[2]);
-                gl.uniform1f(uniforms.brightness, config.brightness);
-
-                for (let i = 0; i < config.trailLength; i++) {
-                    const idx = (headIndex - i + config.trailLength) % config.trailLength;
-                    gl.uniform2f(uniforms.prevMouse[i], trailBuffer[idx].x, trailBuffer[idx].y);
-                }
+                gl.uniform1f(timeLocation, t);
+                gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+                gl.uniform2f(mouseLocation, mouse.x, mouse.y);
 
                 gl.drawArrays(gl.TRIANGLES, 0, 6);
 
-                if (!pointerActive && fadeOpacity <= 0.001) {
-                    running = false;
-                    animationId = null;
-                    return;
-                }
-
-                animationId = requestAnimationFrame(animate);
+                requestAnimationFrame(animate);
             }
 
-            function ensureLoop() {
-                if (!running) {
-                    running = true;
-                    animationId = requestAnimationFrame(animate);
-                }
-            }
-
-            function onPointerMove(e) {
-                const rect = container.getBoundingClientRect();
-                currentMouse.x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-                currentMouse.y = Math.max(0, Math.min(1, 1 - (e.clientY - rect.top) / rect.height));
-                pointerActive = true;
-                lastMoveTime = performance.now();
-                ensureLoop();
-            }
-
-            function onPointerEnter() {
-                pointerActive = true;
-                ensureLoop();
-            }
-
-            function onPointerLeave() {
-                pointerActive = false;
-                lastMoveTime = performance.now();
-                ensureLoop();
-            }
-
-            container.addEventListener('pointermove', onPointerMove, { passive: true });
-            container.addEventListener('pointerenter', onPointerEnter, { passive: true });
-            container.addEventListener('pointerleave', onPointerLeave, { passive: true });
+            document.addEventListener('mousemove', (e) => {
+                targetMouse.x = e.clientX / window.innerWidth;
+                targetMouse.y = 1.0 - (e.clientY / window.innerHeight);
+            }, { passive: true });
 
             window.addEventListener('resize', resize);
             resize();
+            requestAnimationFrame(animate);
+        })();
+    </script>
+
+    <!-- Fuzzy Text Effect -->
+    <script>
+        (function() {
+            const fuzzyElements = document.querySelectorAll('.fuzzy-text');
+            if (!fuzzyElements.length) return;
+
+            function initFuzzyText(element) {
+                // Remove existing canvas if any
+                const existingCanvas = element.querySelector('canvas');
+                if (existingCanvas) existingCanvas.remove();
+                element.classList.remove('active');
+
+                const text = element.dataset.text || element.textContent.trim();
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                if (!ctx) return;
+
+                // Get computed styles
+                const computedStyle = window.getComputedStyle(element);
+                const fontSize = computedStyle.fontSize;
+                const fontWeight = computedStyle.fontWeight;
+                const fontFamily = computedStyle.fontFamily;
+                
+                // Create gradient colors
+                const gradientColors = ['#00d4ff', '#00ff88']; // cyan to green
+                
+                // Setup offscreen canvas for text measurement
+                const offscreen = document.createElement('canvas');
+                const offCtx = offscreen.getContext('2d');
+                if (!offCtx) return;
+
+                offCtx.font = `${fontWeight} ${fontSize} ${fontFamily}`;
+                offCtx.textBaseline = 'alphabetic';
+                
+                const metrics = offCtx.measureText(text);
+                const numericFontSize = parseFloat(fontSize);
+                
+                const actualLeft = metrics.actualBoundingBoxLeft || 0;
+                const actualRight = metrics.actualBoundingBoxRight || metrics.width;
+                const actualAscent = metrics.actualBoundingBoxAscent || numericFontSize * 0.8;
+                const actualDescent = metrics.actualBoundingBoxDescent || numericFontSize * 0.2;
+                
+                const textWidth = Math.ceil(actualLeft + actualRight);
+                const textHeight = Math.ceil(actualAscent + actualDescent);
+                
+                const horizontalMargin = Math.max(40, numericFontSize * 0.5);
+                const verticalMargin = Math.max(15, numericFontSize * 0.2);
+                
+                offscreen.width = textWidth + 20;
+                offscreen.height = textHeight + 10;
+                
+                // Draw text with gradient on offscreen canvas
+                offCtx.font = `${fontWeight} ${fontSize} ${fontFamily}`;
+                offCtx.textBaseline = 'alphabetic';
+                
+                // Create gradient
+                const gradient = offCtx.createLinearGradient(0, 0, textWidth, 0);
+                gradient.addColorStop(0, gradientColors[0]);
+                gradient.addColorStop(1, gradientColors[1]);
+                offCtx.fillStyle = gradient;
+                offCtx.fillText(text, 10, actualAscent + 5);
+                
+                // Setup main canvas
+                canvas.width = textWidth + horizontalMargin * 2;
+                canvas.height = textHeight + verticalMargin * 2;
+                canvas.style.width = canvas.width + 'px';
+                canvas.style.height = canvas.height + 'px';
+                
+                // Insert canvas
+                element.appendChild(canvas);
+                element.classList.add('active');
+                
+                // Animation state
+                let isHovering = false;
+                const baseIntensity = 0.12;
+                const hoverIntensity = 0.35;
+                const fuzzRange = Math.max(20, numericFontSize * 0.4);
+                let animationId;
+                
+                function animate() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    const intensity = isHovering ? hoverIntensity : baseIntensity;
+                    
+                    // Draw each row with random horizontal offset
+                    for (let j = 0; j < offscreen.height; j++) {
+                        const dx = Math.floor(intensity * (Math.random() - 0.5) * fuzzRange);
+                        ctx.drawImage(
+                            offscreen, 
+                            0, j, offscreen.width, 1,
+                            horizontalMargin + dx, verticalMargin + j, offscreen.width, 1
+                        );
+                    }
+                    
+                    animationId = requestAnimationFrame(animate);
+                }
+                
+                // Mouse events
+                canvas.addEventListener('mouseenter', () => { isHovering = true; });
+                canvas.addEventListener('mouseleave', () => { isHovering = false; });
+                
+                // Touch events
+                canvas.addEventListener('touchstart', () => { isHovering = true; }, { passive: true });
+                canvas.addEventListener('touchend', () => { isHovering = false; }, { passive: true });
+                
+                // Start animation
+                animate();
+                
+                // Store cleanup function
+                element._fuzzyCleanup = () => {
+                    cancelAnimationFrame(animationId);
+                };
+            }
+
+            // Initialize all fuzzy text elements
+            fuzzyElements.forEach(initFuzzyText);
+
+            // Reinitialize on resize (debounced)
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    fuzzyElements.forEach(el => {
+                        if (el._fuzzyCleanup) el._fuzzyCleanup();
+                        initFuzzyText(el);
+                    });
+                }, 250);
+            });
         })();
     </script>
 </body>
