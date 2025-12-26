@@ -10,6 +10,7 @@
     <meta name="theme-color" content="#0a0a0f">
     <meta name="description" content="DeepEyes - Plataforma de IA especializada em segurança ofensiva. Pentest, Red Team e simulações APT em ambiente controlado.">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -728,69 +729,86 @@
         .card-swap-wrapper {
             position: relative;
             width: 100%;
-            height: 400px;
+            height: 500px;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 50px;
-            perspective: 1000px;
         }
 
         .card-swap-container {
-            position: relative;
-            width: 320px;
-            height: 280px;
-            transform-style: preserve-3d;
+            position: absolute;
+            bottom: 0;
+            right: 50%;
+            transform: translate(50%, 10%);
+            transform-origin: center center;
+            perspective: 900px;
+            overflow: visible;
+            width: 380px;
+            height: 320px;
         }
 
         .swap-card {
             position: absolute;
-            width: 320px;
-            height: 280px;
-            padding: 30px 25px;
-            background: linear-gradient(135deg, var(--bg-card), rgba(26, 26, 36, 0.95));
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
+            top: 50%;
+            left: 50%;
+            width: 380px;
+            height: 320px;
+            padding: 35px 30px;
+            background: linear-gradient(145deg, #1a1a24 0%, #0d0d12 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
             text-align: center;
             transform-style: preserve-3d;
-            backface-visibility: hidden;
             will-change: transform;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            transition: box-shadow 0.3s ease;
-        }
-
-        .swap-card:hover {
-            box-shadow: 0 25px 50px rgba(0, 212, 255, 0.15);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
         }
 
         .swap-card .nr-icon {
-            width: 64px;
-            height: 64px;
+            width: 70px;
+            height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 255, 136, 0.1));
             border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 16px;
+            border-radius: 18px;
             color: var(--accent-cyan);
-            margin: 0 auto 20px;
+            margin: 0 auto 24px;
         }
 
         .swap-card .nr-icon svg {
-            filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.6));
+            filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.7));
         }
 
         .swap-card h3 {
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--text-primary);
+            margin-bottom: 16px;
+            color: #ffffff;
         }
 
         .swap-card p {
-            font-size: 0.95rem;
+            font-size: 1rem;
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 768px) {
+            .card-swap-container {
+                transform: scale(0.75) translate(65%, 15%);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-swap-wrapper {
+                height: 400px;
+            }
+            .card-swap-container {
+                transform: scale(0.6) translate(80%, 20%);
+            }
         }
 
         .nr-terminal {
@@ -827,31 +845,6 @@
             margin-top: 8px;
         }
 
-        @media (max-width: 768px) {
-            .card-swap-wrapper {
-                height: 350px;
-            }
-            
-            .card-swap-container {
-                width: 280px;
-                height: 250px;
-            }
-            
-            .swap-card {
-                width: 280px;
-                height: 250px;
-                padding: 25px 20px;
-            }
-            
-            .swap-card h3 {
-                font-size: 1.1rem;
-            }
-            
-            .swap-card p {
-                font-size: 0.85rem;
-            }
-        }
-
         @media (max-width: 500px) {
             .no-restrictions {
                 padding: 60px 15px;
@@ -864,35 +857,6 @@
             .nr-subtitle {
                 font-size: 0.95rem;
                 margin-bottom: 30px;
-            }
-            
-            .card-swap-wrapper {
-                height: 320px;
-            }
-            
-            .card-swap-container {
-                width: 260px;
-                height: 230px;
-            }
-            
-            .swap-card {
-                width: 260px;
-                height: 230px;
-                padding: 20px 15px;
-            }
-            
-            .swap-card .nr-icon {
-                width: 50px;
-                height: 50px;
-                margin-bottom: 15px;
-            }
-            
-            .swap-card h3 {
-                font-size: 1rem;
-            }
-            
-            .swap-card p {
-                font-size: 0.8rem;
             }
         }
 
@@ -3345,104 +3309,120 @@ subprocess.call(["/bin/sh","-i"])</code>
         })();
     </script>
 
-    <!-- Card Swap Effect -->
+    <!-- Card Swap Effect with GSAP -->
     <script>
         (function() {
+            if (typeof gsap === 'undefined') return;
+            
             const container = document.getElementById('cardSwap');
             if (!container) return;
 
             const cards = Array.from(container.querySelectorAll('.swap-card'));
             if (cards.length < 2) return;
 
+            // Configuration
             const config = {
-                cardDistance: 50,
-                verticalDistance: 40,
-                delay: 3000,
-                skewAmount: 4
+                cardDistance: 60,
+                verticalDistance: 70,
+                delay: 5000,
+                skewAmount: 6,
+                ease: 'elastic.out(0.6, 0.9)',
+                durDrop: 2,
+                durMove: 2,
+                durReturn: 2,
+                promoteOverlap: 0.9,
+                returnDelay: 0.05
             };
 
             let order = cards.map((_, i) => i);
-            let isAnimating = false;
 
-            // Position cards initially
-            function positionCards() {
-                cards.forEach((card, i) => {
-                    const slot = order.indexOf(i);
-                    const x = slot * config.cardDistance;
-                    const y = -slot * config.verticalDistance;
-                    const z = -slot * config.cardDistance * 1.2;
-                    const zIndex = cards.length - slot;
-                    
-                    card.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) skewY(${config.skewAmount}deg)`;
-                    card.style.zIndex = zIndex;
-                    card.style.left = '50%';
-                    card.style.top = '50%';
+            // Calculate slot position
+            function makeSlot(i) {
+                return {
+                    x: i * config.cardDistance,
+                    y: -i * config.verticalDistance,
+                    z: -i * config.cardDistance * 1.5,
+                    zIndex: cards.length - i
+                };
+            }
+
+            // Place card immediately
+            function placeNow(card, slot) {
+                gsap.set(card, {
+                    x: slot.x,
+                    y: slot.y,
+                    z: slot.z,
+                    xPercent: -50,
+                    yPercent: -50,
+                    skewY: config.skewAmount,
+                    transformOrigin: 'center center',
+                    zIndex: slot.zIndex,
+                    force3D: true
                 });
             }
 
-            // Animate card swap
-            function swapCards() {
-                if (isAnimating) return;
-                isAnimating = true;
+            // Initialize card positions
+            cards.forEach((card, i) => {
+                placeNow(card, makeSlot(i));
+            });
 
-                const frontIndex = order[0];
-                const frontCard = cards[frontIndex];
-                
-                // Animate front card dropping
-                frontCard.style.transition = 'transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease';
-                frontCard.style.transform = `translate(-50%, -50%) translate3d(0, 400px, 0) skewY(0deg)`;
-                frontCard.style.opacity = '0';
+            // Swap animation
+            function swap() {
+                if (order.length < 2) return;
 
-                // After drop, move other cards forward
-                setTimeout(() => {
-                    // Update order
-                    order = [...order.slice(1), frontIndex];
-                    
-                    // Animate remaining cards
-                    cards.forEach((card, i) => {
-                        if (i === frontIndex) return;
-                        const slot = order.indexOf(i);
-                        const x = slot * config.cardDistance;
-                        const y = -slot * config.verticalDistance;
-                        const z = -slot * config.cardDistance * 1.2;
-                        const zIndex = cards.length - slot;
-                        
-                        card.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                        card.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) skewY(${config.skewAmount}deg)`;
-                        card.style.zIndex = zIndex;
-                    });
-                }, 400);
+                const [front, ...rest] = order;
+                const frontCard = cards[front];
 
-                // Bring front card to back
-                setTimeout(() => {
-                    const slot = order.indexOf(frontIndex);
-                    const x = slot * config.cardDistance;
-                    const y = -slot * config.verticalDistance;
-                    const z = -slot * config.cardDistance * 1.2;
-                    const zIndex = cards.length - slot;
+                const tl = gsap.timeline();
+
+                // Drop front card
+                tl.to(frontCard, {
+                    y: '+=500',
+                    duration: config.durDrop,
+                    ease: config.ease
+                });
+
+                // Promote other cards
+                tl.addLabel('promote', `-=${config.durDrop * config.promoteOverlap}`);
+
+                rest.forEach((idx, i) => {
+                    const card = cards[idx];
+                    const slot = makeSlot(i);
                     
-                    frontCard.style.transition = 'none';
-                    frontCard.style.transform = `translate(-50%, -50%) translate3d(${x + 100}px, ${y - 200}px, ${z}px) skewY(${config.skewAmount}deg)`;
-                    frontCard.style.zIndex = zIndex;
-                    frontCard.style.opacity = '1';
-                    
-                    // Animate to final position
-                    setTimeout(() => {
-                        frontCard.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                        frontCard.style.transform = `translate(-50%, -50%) translate3d(${x}px, ${y}px, ${z}px) skewY(${config.skewAmount}deg)`;
-                        
-                        setTimeout(() => {
-                            isAnimating = false;
-                        }, 600);
-                    }, 50);
-                }, 800);
+                    tl.set(card, { zIndex: slot.zIndex }, 'promote');
+                    tl.to(card, {
+                        x: slot.x,
+                        y: slot.y,
+                        z: slot.z,
+                        duration: config.durMove,
+                        ease: config.ease
+                    }, `promote+=${i * 0.15}`);
+                });
+
+                // Return front card to back
+                const backSlot = makeSlot(cards.length - 1);
+                tl.addLabel('return', `promote+=${config.durMove * config.returnDelay}`);
+
+                tl.call(() => {
+                    gsap.set(frontCard, { zIndex: backSlot.zIndex });
+                }, undefined, 'return');
+
+                tl.to(frontCard, {
+                    x: backSlot.x,
+                    y: backSlot.y,
+                    z: backSlot.z,
+                    duration: config.durReturn,
+                    ease: config.ease
+                }, 'return');
+
+                tl.call(() => {
+                    order = [...rest, front];
+                });
             }
 
-            // Initialize
-            positionCards();
-            
-            // Start auto-swap
-            setInterval(swapCards, config.delay);
+            // Start first swap and interval
+            swap();
+            setInterval(swap, config.delay);
         })();
     </script>
 </body>
