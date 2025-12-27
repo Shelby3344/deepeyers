@@ -1429,8 +1429,6 @@
     </style>
 </head>
 <body class="min-h-screen text-gray-100">
-    <!-- CRT Scanlines Effect -->
-    <div class="scanlines"></div>
     
     <!-- Auth Modal - Outside #app for proper visibility control -->
     <div id="authModal" class="fixed inset-0 z-50 items-center justify-center hidden overflow-hidden" style="background: radial-gradient(ellipse at center, #12121a 0%, #0a0a0f 100%);">
@@ -1609,16 +1607,9 @@
                 </div>
             </div>
             
-            <!-- New Session Button - Cyber Style -->
+            <!-- New Session Button - Neon Style -->
             <div class="p-4">
-                <div class="btn-wrapper">
-                    <button id="newChatBtn" class="sparkle-btn cyber-btn">
-                        <div class="inner">
-                            <i class="fas fa-plus"></i>
-                            <span>NOVA SESSÃO</span>
-                        </div>
-                    </button>
-                </div>
+                <button id="newChatBtn" class="neon-btn">NOVA SESSÃO</button>
             </div>
             
             <!-- Tools Menu - Cyber Grid -->

