@@ -9,7 +9,19 @@
     <link rel="apple-touch-icon" href="/logo.png">
     <meta name="theme-color" content="#0a0a0f">
     <meta name="description" content="DeepEyes - Inteligência Artificial para Pentest, Red Team e simulações APT em ambiente controlado.">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Preconnect para recursos externos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- Critical CSS inline -->
+    <style>:root{--bg-primary:#0a0a0f;--bg-secondary:#12121a;--accent-cyan:#00d4ff;--accent-green:#00ff88}*{box-sizing:border-box;margin:0;padding:0}html,body{background:#0a0a0f;color:#fff;font-family:Inter,-apple-system,sans-serif}</style>
+    
+    <!-- Fontes carregadas de forma assíncrona -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap"></noscript>
+    
     <style>
         * {
             margin: 0;
@@ -3564,5 +3576,9 @@ subprocess.call(["/bin/sh","-i"])</code>
             });
         })();
     </script>
+    
+    <!-- Font Awesome carregado de forma assíncrona -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 </body>
 </html>
