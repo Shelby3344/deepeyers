@@ -1661,11 +1661,9 @@
             <!-- User Info - Cyber Style -->
             <div class="p-4 border-t border-[rgba(0,255,136,0.15)]">
                 <div id="userInfo" class="flex items-center gap-3 p-3 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.4)] transition-all cursor-pointer" onclick="window.location.href='/profile'" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                    <a href="/profile" id="userAvatarLink" class="w-10 h-10 p-[2px] flex-shrink-0 border border-[rgba(0,255,136,0.4)]" style="background: linear-gradient(135deg, rgba(0,255,136,0.2), rgba(0,212,255,0.1)); clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <div class="w-full h-full bg-[#0a0a0f] flex items-center justify-center overflow-hidden">
-                            <i id="userAvatarIcon" class="fas fa-user text-[#00FF88]"></i>
-                            <img id="userAvatarImg" src="" alt="Avatar" class="w-full h-full object-cover hidden">
-                        </div>
+                    <a href="/profile" id="userAvatarLink" class="w-10 h-10 rounded-full overflow-hidden border-2 border-[#00FF88]/40 flex-shrink-0">
+                        <i id="userAvatarIcon" class="fas fa-user text-[#00FF88] w-full h-full flex items-center justify-center bg-[#1a1a24]"></i>
+                        <img id="userAvatarImg" src="" alt="Avatar" class="w-full h-full object-cover hidden">
                     </a>
                     <div class="flex-1 min-w-0">
                         <a href="/profile" id="userName" class="text-sm font-semibold text-[#00FF88] hover:text-white transition-colors block truncate" style="font-family: var(--font-mono);">NOT_LOGGED</a>
@@ -2194,40 +2192,40 @@
                     </div>
                     
                     <!-- Feature Cards -->
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 w-full mb-6">
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full mb-6">
                         <!-- SQL Injection -->
-                        <div class="de-card p-4 group hover:border-[#EF4444]/50 transition-all cursor-pointer" onclick="setExampleQuestion(this)" data-question="Como fazer SQL injection bypass em login?">
-                            <div class="w-10 h-10 rounded-lg bg-[#EF4444]/10 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <div class="bg-[#1a1a24] border border-[#2a2a3a] rounded-xl p-4 hover:border-[#EF4444]/50 transition-all cursor-pointer" onclick="setExampleQuestion(this)" data-question="Como fazer SQL injection bypass em login?">
+                            <div class="w-10 h-10 rounded-lg bg-[#EF4444]/10 flex items-center justify-center mb-3">
                                 <i class="fas fa-database text-[#EF4444]"></i>
                             </div>
-                            <h4 class="font-semibold text-white text-sm mb-1 group-hover:text-[#EF4444] transition-colors">SQL Injection</h4>
+                            <h4 class="font-semibold text-white text-sm mb-1">SQL Injection</h4>
                             <p class="text-[11px] text-gray-500">Payloads, bypasses, técnicas</p>
                         </div>
                         
                         <!-- Reverse Shells -->
-                        <div class="de-card p-4 group hover:border-[#00FF88]/50 transition-all cursor-pointer" onclick="setExampleQuestion(this)" data-question="Gere um reverse shell em Python para Linux">
-                            <div class="w-10 h-10 rounded-lg bg-[#00FF88]/10 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <div class="bg-[#1a1a24] border border-[#2a2a3a] rounded-xl p-4 hover:border-[#00FF88]/50 transition-all cursor-pointer" onclick="setExampleQuestion(this)" data-question="Gere um reverse shell em Python para Linux">
+                            <div class="w-10 h-10 rounded-lg bg-[#00FF88]/10 flex items-center justify-center mb-3">
                                 <i class="fas fa-terminal text-[#00FF88]"></i>
                             </div>
-                            <h4 class="font-semibold text-white text-sm mb-1 group-hover:text-[#00FF88] transition-colors">Reverse Shells</h4>
+                            <h4 class="font-semibold text-white text-sm mb-1">Reverse Shells</h4>
                             <p class="text-[11px] text-gray-500">One-liners, stagers, implants</p>
                         </div>
                         
                         <!-- Privilege Escalation -->
-                        <div class="de-card p-4 group hover:border-[#F97316]/50 transition-all cursor-pointer" onclick="setExampleQuestion(this)" data-question="Técnicas de privilege escalation em Linux">
-                            <div class="w-10 h-10 rounded-lg bg-[#F97316]/10 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <div class="bg-[#1a1a24] border border-[#2a2a3a] rounded-xl p-4 hover:border-[#F97316]/50 transition-all cursor-pointer" onclick="setExampleQuestion(this)" data-question="Técnicas de privilege escalation em Linux">
+                            <div class="w-10 h-10 rounded-lg bg-[#F97316]/10 flex items-center justify-center mb-3">
                                 <i class="fas fa-user-secret text-[#F97316]"></i>
                             </div>
-                            <h4 class="font-semibold text-white text-sm mb-1 group-hover:text-[#F97316] transition-colors">PrivEsc</h4>
+                            <h4 class="font-semibold text-white text-sm mb-1">PrivEsc</h4>
                             <p class="text-[11px] text-gray-500">Linux, Windows, AD attacks</p>
                         </div>
                         
                         <!-- Evasion -->
-                        <div class="de-card p-4 group hover:border-[#00D4FF]/50 transition-all cursor-pointer" onclick="setExampleQuestion(this)" data-question="Como fazer bypass de AMSI no PowerShell?">
-                            <div class="w-10 h-10 rounded-lg bg-[#00D4FF]/10 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <div class="bg-[#1a1a24] border border-[#2a2a3a] rounded-xl p-4 hover:border-[#00D4FF]/50 transition-all cursor-pointer" onclick="setExampleQuestion(this)" data-question="Como fazer bypass de AMSI no PowerShell?">
+                            <div class="w-10 h-10 rounded-lg bg-[#00D4FF]/10 flex items-center justify-center mb-3">
                                 <i class="fas fa-mask text-[#00D4FF]"></i>
                             </div>
-                            <h4 class="font-semibold text-white text-sm mb-1 group-hover:text-[#00D4FF] transition-colors">Evasion</h4>
+                            <h4 class="font-semibold text-white text-sm mb-1">Evasion</h4>
                             <p class="text-[11px] text-gray-500">AMSI, EDR, WAF bypass</p>
                         </div>
                     </div>
