@@ -1692,11 +1692,6 @@
                         <i class="fas fa-file-lines text-[#A855F7] group-hover:scale-110 transition-transform tool-icon"></i>
                         <span class="text-[8px] text-gray-400 group-hover:text-[#A855F7] tool-label" style="font-family: var(--font-mono);">WORDLIST</span>
                     </button>
-                    <!-- Payloads Library -->
-                    <button onclick="openTool('payloads')" id="tool-payloads" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(236,72,153,0.15)] hover:border-[rgba(236,72,153,0.4)] hover:bg-[rgba(236,72,153,0.08)] transition-all group rounded-lg">
-                        <i class="fas fa-bomb text-[#EC4899] group-hover:scale-110 transition-transform tool-icon"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#EC4899] tool-label" style="font-family: var(--font-mono);">PAYLOADS</span>
-                    </button>
                 </div>
             </div>
             
@@ -2064,61 +2059,6 @@
                 </div>
                 <div class="p-4 border-t border-[rgba(0,255,136,0.1)]">
                     <button onclick="closeRevshellModal()" class="w-full bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Fechar</button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Payload Generator Modal -->
-        <div id="payloadModal" class="fixed inset-0 z-50 hidden items-center justify-center">
-            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closePayloadModal()"></div>
-            <div class="relative z-10 w-full max-w-lg mx-4 bg-[#0B0F14] rounded-2xl border border-[rgba(239,68,68,0.3)] shadow-2xl max-h-[85vh] flex flex-col">
-                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#EF4444] to-transparent"></div>
-                <div class="p-6 border-b border-[rgba(239,68,68,0.1)]">
-                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-[rgba(239,68,68,0.1)] border border-[rgba(239,68,68,0.3)] flex items-center justify-center">
-                            <i class="fas fa-bug text-[#EF4444]"></i>
-                        </div>
-                        Gerador de Payloads
-                    </h3>
-                </div>
-                <div class="flex-1 overflow-y-auto p-6">
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Tipo de Payload</label>
-                            <select id="payloadType" class="w-full bg-[#0B0F14] border border-[rgba(239,68,68,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#EF4444]">
-                                <option value="reverse_shell">Reverse Shell</option>
-                                <option value="web_shell">Web Shell</option>
-                                <option value="sqli">SQL Injection</option>
-                                <option value="xss">XSS</option>
-                                <option value="xxe">XXE</option>
-                                <option value="ssti">SSTI</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Linguagem/Plataforma</label>
-                            <select id="payloadLang" class="w-full bg-[#0B0F14] border border-[rgba(239,68,68,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#EF4444]">
-                                <option value="bash">Bash</option>
-                                <option value="python">Python</option>
-                                <option value="php">PHP</option>
-                                <option value="powershell">PowerShell</option>
-                                <option value="nc">Netcat</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">IP do Atacante</label>
-                            <input type="text" id="payloadIP" placeholder="10.10.14.1" class="w-full bg-[#0B0F14] border border-[rgba(239,68,68,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#EF4444] font-mono">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Porta</label>
-                            <input type="text" id="payloadPort" placeholder="4444" class="w-full bg-[#0B0F14] border border-[rgba(239,68,68,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#EF4444] font-mono">
-                        </div>
-                    </div>
-                </div>
-                <div class="p-4 border-t border-[rgba(239,68,68,0.1)] flex gap-3">
-                    <button onclick="closePayloadModal()" class="flex-1 bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Cancelar</button>
-                    <button onclick="generatePayload()" class="flex-1 bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:opacity-90 text-white rounded-xl py-3 font-bold transition-all">
-                        <i class="fas fa-wand-magic-sparkles mr-2"></i>Gerar
-                    </button>
                 </div>
             </div>
         </div>
@@ -4729,51 +4669,6 @@ Analise este resultado e me ajude a:
             }
         }
         
-        // Payload Generator Modal
-        function openPayloadModal() {
-            const modal = document.getElementById('payloadModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-        
-        function closePayloadModal() {
-            const modal = document.getElementById('payloadModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-        
-        function generatePayload() {
-            const type = document.getElementById('payloadType').value;
-            const lang = document.getElementById('payloadLang').value;
-            const ip = document.getElementById('payloadIP').value || 'ATTACKER_IP';
-            const port = document.getElementById('payloadPort').value || '4444';
-            
-            let prompt = `Gere um payload de ${type} em ${lang}`;
-            
-            if (type === 'reverse_shell') {
-                prompt = `Gere múltiplos payloads de reverse shell em ${lang} para conectar em ${ip}:${port}. Inclua variações para bypass de filtros, versões one-liner e com encoding.`;
-            } else if (type === 'web_shell') {
-                prompt = `Gere web shells em ${lang} com funcionalidades de: execução de comandos, upload de arquivos, e versões ofuscadas para bypass de WAF.`;
-            } else if (type === 'sqli') {
-                prompt = `Gere payloads de SQL Injection avançados: union-based, blind boolean, blind time-based, bypass de WAF comuns, e técnicas de exfiltração.`;
-            } else if (type === 'xss') {
-                prompt = `Gere payloads XSS avançados: bypass de filtros, polyglots, DOM-based, e payloads para exfiltração de cookies/dados.`;
-            } else if (type === 'xxe') {
-                prompt = `Gere payloads XXE para: leitura de arquivos, SSRF, exfiltração out-of-band, e bypass de parsers comuns.`;
-            } else if (type === 'ssti') {
-                prompt = `Gere payloads SSTI para os principais template engines (Jinja2, Twig, Freemarker, Velocity). Inclua detecção e RCE.`;
-            }
-            
-            if (messageInput) {
-                messageInput.value = prompt;
-                messageInput.style.height = 'auto';
-                messageInput.style.height = Math.min(messageInput.scrollHeight, 150) + 'px';
-                closePayloadModal();
-                messageInput.focus();
-                showNotification('Prompt de payload gerado!', 'success');
-            }
-        }
-        
         // Checklist Modal
         function openChecklistModal() {
             const modal = document.getElementById('checklistModal');
@@ -5007,9 +4902,6 @@ Analise este resultado e me ajude a:
                     break;
                 case 'wordlist':
                     openWordlistModal();
-                    break;
-                case 'payloads':
-                    openPayloadModal();
                     break;
                 default:
                     showNotification('Ferramenta não encontrada', 'error');
