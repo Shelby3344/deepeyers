@@ -3987,6 +3987,8 @@
             'gobuster': { desc: 'Fuzzing de diretórios', example: 'gobuster dir -u http://example.com -w wordlist.txt' },
             'wpscan': { desc: 'Scanner WordPress', example: 'wpscan --url example.com' },
             'subfinder': { desc: 'Descoberta de subdomínios', example: 'subfinder -d example.com' },
+            'sqlmap': { desc: 'SQL Injection automático', example: 'sqlmap -u "http://example.com/page?id=1" --dbs' },
+            'python3': { desc: 'Executar scripts Python', example: 'python3 -c "print(\'Hello\')"' },
         };
         
         // Verifica se a mensagem é um comando de terminal

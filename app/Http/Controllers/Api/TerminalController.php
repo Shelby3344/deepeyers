@@ -46,6 +46,11 @@ class TerminalController extends Controller
         'wpscan' => ['timeout' => 300, 'args_required' => true, 'description' => 'Scanner WordPress'],
         'subfinder' => ['timeout' => 120, 'args_required' => true, 'description' => 'Descoberta de subdomínios'],
         'httpx' => ['timeout' => 60, 'args_required' => true, 'description' => 'Probe HTTP'],
+        'sqlmap' => ['timeout' => 300, 'args_required' => true, 'blocked_args' => ['--os-shell', '--os-pwn', '--os-cmd', '--file-write', '--file-read', '--file-dest', '>', '>>', '|'], 'description' => 'SQL Injection automático'],
+        
+        // Python (scripts do usuário)
+        'python3' => ['timeout' => 120, 'args_required' => true, 'blocked_args' => ['import os', 'import subprocess', 'import sys', 'eval(', 'exec(', '__import__', 'open(', 'file('], 'description' => 'Executar scripts Python'],
+        'python' => ['timeout' => 120, 'args_required' => true, 'blocked_args' => ['import os', 'import subprocess', 'import sys', 'eval(', 'exec(', '__import__', 'open(', 'file('], 'description' => 'Executar scripts Python'],
         
         // Utilitários seguros
         'echo' => ['timeout' => 5, 'args_required' => false, 'description' => 'Exibe texto'],
