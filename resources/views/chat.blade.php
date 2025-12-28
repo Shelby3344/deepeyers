@@ -1684,7 +1684,7 @@
                     </button>
                     <!-- Reverse Shell Generator -->
                     <button onclick="openTool('revshell')" id="tool-revshell" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.4)] hover:bg-[rgba(0,255,136,0.08)] transition-all group rounded-lg">
-                        <i class="fas fa-terminal text-[#00FF88] group-hover:scale-110 transition-transform tool-icon"></i>
+                        <i class="fas fa-skull-crossbones text-[#00FF88] group-hover:scale-110 transition-transform tool-icon"></i>
                         <span class="text-[8px] text-gray-400 group-hover:text-[#00FF88] tool-label" style="font-family: var(--font-mono);">REVSHELL</span>
                     </button>
                     <!-- Wordlist Generator -->
