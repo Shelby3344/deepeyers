@@ -24,6 +24,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // ✅ Middleware global de segurança - executa em TODAS as requisições
         $middleware->prepend(\App\Http\Middleware\SecurityShield::class);
         
+        // ✅ Minificação HTML em produção
+        $middleware->append(\App\Http\Middleware\MinifyHtml::class);
+        
         // ✅ Middleware para setar usuário Sanctum na request (API stateless com Bearer token)
         $middleware->api(append: [
             \App\Http\Middleware\SetSanctumUser::class,
@@ -41,6 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'block.sensitive' => \App\Http\Middleware\BlockSensitivePaths::class,
             'rate.limit' => \App\Http\Middleware\RateLimitRequests::class,
             'auth.web' => \App\Http\Middleware\EnsureAuthenticated::class,
+            'minify' => \App\Http\Middleware\MinifyHtml::class,
         ]);
         
         // ✅ Middleware de detecção de anomalias para rotas autenticadas

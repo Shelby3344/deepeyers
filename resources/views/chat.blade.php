@@ -2782,6 +2782,9 @@
             authError.classList.remove('hidden');
         }
         
+        // Avatar padrão para usuários sem foto
+        const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?name=User&background=1a1a24&color=00d4ff&size=128&bold=true';
+        
         async function updateUserAvatar() {
             try {
                 const data = await api('/profile');
@@ -2794,18 +2797,23 @@
                     avatarImg.classList.remove('hidden');
                     if (avatarIcon) avatarIcon.classList.add('hidden');
                 } else {
-                    userAvatarUrl = null;
-                    avatarImg.classList.add('hidden');
-                    if (avatarIcon) avatarIcon.classList.remove('hidden');
+                    // Usa avatar padrão com iniciais do nome
+                    const userName = data.user?.name || 'User';
+                    const initials = userName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                    userAvatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=1a1a24&color=00d4ff&size=128&bold=true`;
+                    avatarImg.src = userAvatarUrl;
+                    avatarImg.classList.remove('hidden');
+                    if (avatarIcon) avatarIcon.classList.add('hidden');
                 }
             } catch (error) {
                 console.error('Erro ao carregar avatar:', error);
-                // Mostra ícone padrão em caso de erro
+                // Mostra avatar padrão em caso de erro
                 const avatarImg = document.getElementById('userAvatarImg');
                 const avatarIcon = document.getElementById('userAvatarIcon');
-                avatarImg.classList.add('hidden');
-                if (avatarIcon) avatarIcon.classList.remove('hidden');
-                userAvatarUrl = null;
+                avatarImg.src = DEFAULT_AVATAR;
+                avatarImg.classList.remove('hidden');
+                if (avatarIcon) avatarIcon.classList.add('hidden');
+                userAvatarUrl = DEFAULT_AVATAR;
             }
         }
         
@@ -3674,9 +3682,7 @@
             const content = displayText ? marked.parse(displayText) : '';
             
             if (isUser) {
-                const avatarHtml = userAvatarUrl 
-                    ? `<img src="${userAvatarUrl}" alt="User" class="w-full h-full object-cover rounded-lg">`
-                    : `<i class="fas fa-user text-gray-400"></i>`;
+                const avatarHtml = `<img src="${userAvatarUrl || DEFAULT_AVATAR}" alt="User" class="w-full h-full object-cover rounded-lg">`;
                 
                 // Renderiza card de anexo se houver
                 let attachmentHtml = '';

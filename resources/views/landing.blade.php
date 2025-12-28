@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="/logo.png">
     <link rel="apple-touch-icon" href="/logo.png">
     <meta name="theme-color" content="#0a0a0f">
-    <meta name="description" content="DeepEyes - Plataforma de IA especializada em segurança ofensiva. Pentest, Red Team e simulações APT em ambiente controlado.">
+    <meta name="description" content="DeepEyes - Inteligência Artificial para Pentest, Red Team e simulações APT em ambiente controlado.">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -1938,8 +1938,27 @@
            ======================================== */
         .footer {
             padding: 80px 20px 40px;
-            background: linear-gradient(180deg, var(--bg-primary) 0%, rgba(18, 18, 26, 0.95) 100%);
+            background: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
+            position: relative;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%);
+            z-index: 10;
+        }
+        
+        .footer-cover {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: var(--bg-secondary);
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        html, body {
+            background: var(--bg-secondary);
         }
 
         .footer-grid {
@@ -2261,15 +2280,54 @@
                             <span class="subtitle">sua IA de segurança ofensiva</span>
                         </h1>
                         
-                        <p class="hero-description">
-                            Pentest. Red Team. Simulações APT. Tudo em um laboratório controlado.
+                        <p class="hero-description" span style="color: white;">
+                            Pentest. <span style="color: red;">Red Team</span>. Simulações APT. Tudo em um laboratório controlado.
                         </p>
                         
                         <div class="hero-actions">
                             <a href="/chat" class="btn-primary">
                                 <span class="btn-glow"></span>
-                                › Entrar no Laboratório
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-icon"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3" class="eye-pupil"/></svg>
+                                 Entrar no Laboratório
                             </a>
+
+<style>
+.eye-icon {
+    transition: all 0.3s ease;
+}
+
+.eye-pupil {
+    animation: eyeBlink 3s 1;
+    transform-origin: center;
+}
+
+@keyframes eyeBlink {
+    0%, 90%, 100% { 
+        transform: scaleY(1);
+        opacity: 1;
+    }
+    95% { 
+        transform: scaleY(0.1);
+        opacity: 0.3;
+    }
+}
+
+.btn-primary:hover .eye-pupil,
+.btn-primary:active .eye-pupil {
+    animation: eyeBlinkFast 0.5s 1;
+}
+
+@keyframes eyeBlinkFast {
+    0%, 70%, 100% { 
+        transform: scaleY(1);
+        opacity: 1;
+    }
+    85% { 
+        transform: scaleY(0.1);
+        opacity: 0.2;
+    }
+}
+</style>
                             <a href="/docs" class="btn-secondary mono">
                                 Ver Documentação
                             </a>
@@ -2484,7 +2542,7 @@
                                 </div>
                                 
                                 <div class="demo-message ai">
-                                    <div class="demo-avatar ai">🤖</div>
+<img src="/logo.png" alt="DeepEyes AI" class="demo-avatar ai" style="width: 36px; height: 36px; object-fit: contain; border-radius: 10px;">
                                     <div class="demo-bubble">
                                         <pre>Existem várias técnicas para bypass de autenticação. As mais comuns são:
 
@@ -2517,7 +2575,7 @@ Qual técnica você gostaria que eu detalhasse?</pre>
                                 </div>
                                 
                                 <div class="demo-message ai">
-                                    <div class="demo-avatar ai">🤖</div>
+<img src="/logo.png" alt="DeepEyes AI" class="demo-avatar ai" style="width: 36px; height: 36px; object-fit: contain; border-radius: 10px;">
                                     <div class="demo-bubble">
                                         <pre>Aqui está um reverse shell em Python:</pre>
                                         <div class="code-block">
@@ -2773,6 +2831,28 @@ subprocess.call(["/bin/sh","-i"])</code>
                             </div>
                         </div>
 
+                        <style>
+                        .pricing-card.premium {
+                            border-color: #ef4444;
+                            background: linear-gradient(180deg, rgba(239, 68, 68, 0.05) 0%, var(--bg-card) 100%);
+                        }
+
+                        .pricing-badge.fullattack {
+                            background: rgba(239, 68, 68, 0.1);
+                            color: #ef4444;
+                        }
+
+                        .pricing-btn.fullattack {
+                            background: linear-gradient(135deg, #ef4444, #dc2626);
+                            color: white;
+                        }
+
+                        .pricing-btn.fullattack:hover {
+                            transform: scale(1.02);
+                            box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+                        }
+                        </style>
+
                         <p class="pricing-note">
                             <i class="fas fa-shield-check"></i>
                             Pagamento seguro • Cancele quando quiser • Garantia de 7 dias
@@ -2787,9 +2867,9 @@ subprocess.call(["/bin/sh","-i"])</code>
                     <div class="container">
                         <div class="section-header">
                             <span class="section-tag mono">// FAQ</span>
-                            <h2 class="section-title">Perguntas Frequentes</h2>
+                            <h2 class="section-title">Perguntas <span class="highlight fuzzy-text" data-text="Frequentes">Frequentes</span></h2>
+                            <p class="section-subtitle">Tire suas dúvidas sobre a plataforma DeepEyes</p>
                         </div>
-
                         <div class="faq-list">
                             <div class="faq-item" onclick="toggleFaq(this)">
                                 <div class="faq-question">
@@ -2836,10 +2916,159 @@ subprocess.call(["/bin/sh","-i"])</code>
                                     <p>SQL Injection, XSS, CSRF, Reverse Shells, Privilege Escalation (Windows/Linux), Bypass de EDR/AMSI/WAF, Password Attacks, Lateral Movement, Persistence, Exfiltration, e integração com frameworks C2 como Cobalt Strike e Metasploit.</p>
                                 </div>
                             </div>
+                            <div class="faq-item" onclick="toggleFaq(this)">
+                                <div class="faq-question">
+                                    <span>Como funciona o plano gratuito?</span>
+                                    <span class="faq-icon">+</span>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>O plano gratuito oferece acesso ao perfil Pentest com 10 requisições por dia e 1 sessão de chat. É ideal para conhecer a plataforma e realizar testes básicos de segurança.</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </section>
-            </div>
+
+                        <style>
+                        .faq-item {
+                            background: linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+                            backdrop-filter: blur(20px);
+                            border: 1px solid rgba(0, 212, 255, 0.15);
+                            border-radius: 16px;
+                            margin-bottom: 16px;
+                            overflow: hidden;
+                            cursor: pointer;
+                            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                            position: relative;
+                        }
+
+                        .faq-item::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            height: 1px;
+                            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
+                            opacity: 0;
+                            transition: opacity 0.3s ease;
+                        }
+
+                        .faq-item:hover {
+                            background: linear-gradient(rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+                            border-color: rgba(0, 212, 255, 0.3);
+                            transform: translateY(-2px);
+                            box-shadow: 
+                                0 10px 40px rgba(0, 0, 0, 0.3),
+                                0 0 30px rgba(0, 212, 255, 0.1),
+                                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                        }
+
+                        .faq-item:hover::before {
+                            opacity: 1;
+                        }
+
+                        .faq-item.open {
+                            background: linear-gradient(rgba(0, 212, 255, 0.08), rgba(0, 255, 136, 0.04));
+                            border-color: rgba(0, 212, 255, 0.4);
+                            box-shadow: 
+                                0 15px 50px rgba(0, 0, 0, 0.4),
+                                0 0 40px rgba(0, 212, 255, 0.15),
+                                inset 0 1px 0 rgba(255, 255, 255, 0.15);
+                        }
+
+                        .faq-item.open::before {
+                            opacity: 1;
+                            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.6), transparent);
+                        }
+
+                        .faq-question {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            padding: 24px 28px;
+                            font-weight: 600;
+                            font-size: 1rem;
+                            position: relative;
+                        }
+
+                        .faq-question::after {
+                            content: '';
+                            position: absolute;
+                            bottom: 0;
+                            left: 28px;
+                            right: 28px;
+                            height: 1px;
+                            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+                            opacity: 0;
+                            transition: opacity 0.3s ease;
+                        }
+
+                        .faq-item.open .faq-question::after {
+                            opacity: 1;
+                        }
+
+                        .faq-icon {
+                            font-size: 1.5rem;
+                            color: var(--accent-cyan);
+                            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+                            font-weight: 300;
+                        }
+
+                        .faq-item.open .faq-icon {
+                            transform: rotate(45deg);
+                            color: var(--accent-green);
+                            text-shadow: 0 0 15px rgba(0, 255, 136, 0.7);
+                        }
+
+                        .faq-answer {
+                            max-height: 0;
+                            overflow: hidden;
+                            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                            background: rgba(0, 0, 0, 0.2);
+                        }
+
+                        .faq-item.open .faq-answer {
+                            max-height: 300px;
+                            padding: 0 28px 24px;
+                        }
+
+                        .faq-answer p {
+                            color: var(--text-secondary);
+                            font-size: 0.95rem;
+                            line-height: 1.7;
+                            margin: 0;
+                            padding-top: 16px;
+                            opacity: 0;
+                            transform: translateY(10px);
+                            transition: all 0.3s ease 0.1s;
+                        }
+
+                        .faq-item.open .faq-answer p {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+
+                        @media (max-width: 768px) {
+                            .faq-question {
+                                padding: 20px 20px;
+                                font-size: 0.95rem;
+                            }
+
+                            .faq-question::after {
+                                left: 20px;
+                                right: 20px;
+                            }
+
+                            .faq-item.open .faq-answer {
+                                padding: 0 20px 20px;
+                            }
+
+                            .faq-answer p {
+                                font-size: 0.9rem;
+                                padding-top: 12px;
+                            }
+                        }
+                        </style>
 
             <!-- Social Proof Section -->
             <div class="fade-section">
@@ -2925,6 +3154,7 @@ subprocess.call(["/bin/sh","-i"])</code>
                     </div>
                 </div>
             </footer>
+            <div class="footer-cover"></div>
         </div>
     </div>
 

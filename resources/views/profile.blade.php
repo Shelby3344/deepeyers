@@ -1033,17 +1033,26 @@
             }
         }
         
+        // Avatar padrão para usuários sem foto
+        function getDefaultAvatar(name) {
+            const initials = (name || 'User').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=1a1a24&color=00d4ff&size=128&bold=true`;
+        }
+        
         function renderProfile(data) {
             const { user, plan, usage } = data;
             
             document.getElementById('sidebarUserName').textContent = user.name;
             document.getElementById('sidebarUserRole').textContent = getRoleName(user.role);
             
-            if (user.avatar) {
-                document.getElementById('sidebarAvatarIcon').style.display = 'none';
-                document.getElementById('sidebarAvatarImg').src = user.avatar;
-                document.getElementById('sidebarAvatarImg').style.display = 'block';
-            }
+            // Avatar na sidebar
+            const sidebarAvatarIcon = document.getElementById('sidebarAvatarIcon');
+            const sidebarAvatarImg = document.getElementById('sidebarAvatarImg');
+            const avatarUrl = user.avatar || getDefaultAvatar(user.name);
+            
+            sidebarAvatarIcon.style.display = 'none';
+            sidebarAvatarImg.src = avatarUrl;
+            sidebarAvatarImg.style.display = 'block';
             
             document.getElementById('profileName').textContent = user.name;
             document.getElementById('profileEmail').textContent = user.email;
@@ -1051,11 +1060,13 @@
             document.getElementById('profileRole').textContent = getRoleName(user.role);
             document.getElementById('profileRole').className = `badge badge-${user.role}`;
             
-            if (user.avatar) {
-                document.getElementById('avatarIcon').style.display = 'none';
-                document.getElementById('avatarImage').src = user.avatar;
-                document.getElementById('avatarImage').style.display = 'block';
-            }
+            // Avatar no perfil principal
+            const avatarIcon = document.getElementById('avatarIcon');
+            const avatarImage = document.getElementById('avatarImage');
+            
+            avatarIcon.style.display = 'none';
+            avatarImage.src = avatarUrl;
+            avatarImage.style.display = 'block';
             
             document.getElementById('inputName').value = user.name;
             document.getElementById('inputEmail').value = user.email;
@@ -1397,10 +1408,7 @@
                     <td>
                         <div class="flex items-center gap-3">
                             <div class="relative">
-                                ${u.avatar 
-                                    ? `<img src="${u.avatar}" class="w-10 h-10 rounded-full object-cover cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all" onclick="showAvatarPreview('${u.avatar}', '${u.name}')" title="Clique para ampliar">`
-                                    : '<div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center"><i class="fas fa-user text-gray-500"></i></div>'
-                                }
+                                <img src="${u.avatar || getDefaultAvatar(u.name)}" class="w-10 h-10 rounded-full object-cover cursor-pointer hover:ring-2 hover:ring-purple-500 transition-all" onclick="showAvatarPreview('${u.avatar || getDefaultAvatar(u.name)}', '${u.name}')" title="Clique para ampliar">
                                 ${online ? '<span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-slate-900 rounded-full" title="Online"></span>' : ''}
                             </div>
                             <div>

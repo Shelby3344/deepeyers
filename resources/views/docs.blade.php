@@ -367,7 +367,7 @@ com bypass de AMSI e ofuscação básica."</div>
 
             <!-- Scanner -->
             <section class="section" id="scanner">
-                <h2>🔍 Scanner de Vulnerabilidades</h2>
+                <h2>Scanner de Vulnerabilidades</h2>
                 <p>Scanner automatizado que analisa alvos em busca de vulnerabilidades comuns.</p>
                 
                 <h3>Como acessar</h3>
@@ -428,7 +428,7 @@ com bypass de AMSI e ofuscação básica."</div>
 
             <!-- Reports -->
             <section class="section" id="reports">
-                <h2>📄 Gerador de Relatórios</h2>
+                <h2>Gerador de Relatórios</h2>
                 <p>Crie relatórios profissionais de pentest com template estruturado.</p>
                 
                 <h3>Como acessar</h3>
@@ -449,9 +449,9 @@ com bypass de AMSI e ofuscação básica."</div>
                     <table>
                         <thead><tr><th>Formato</th><th>Uso recomendado</th></tr></thead>
                         <tbody>
-                            <tr><td>📝 Markdown</td><td>Edição posterior, versionamento Git</td></tr>
-                            <tr><td>🌐 HTML</td><td>Visualização no navegador, compartilhamento</td></tr>
-                            <tr><td>📄 PDF</td><td>Entrega formal ao cliente</td></tr>
+                            <tr><td>Markdown</td><td>Edição posterior, versionamento Git</td></tr>
+                            <tr><td>HTML</td><td>Visualização no navegador, compartilhamento</td></tr>
+                            <tr><td>PDF</td><td>Entrega formal ao cliente</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -475,7 +475,7 @@ com bypass de AMSI e ofuscação básica."</div>
 
             <!-- Terminal -->
             <section class="section" id="terminal">
-                <h2>⌨ Terminal Integrado</h2>
+                <h2>Terminal Integrado</h2>
                 <p>Execute comandos reais diretamente no chat e a IA analisa os resultados automaticamente para ajudar a identificar vulnerabilidades.</p>
                 
                 <h3>Como usar no Chat</h3>
@@ -695,7 +695,7 @@ $ help</div>
 
             <!-- Boas Práticas -->
             <section class="section" id="boas-praticas">
-                <h2>✅ Boas Práticas</h2>
+                <h2>Boas Práticas</h2>
                 <p>Recomendações para usar o DeepEyes de forma ética e eficiente.</p>
 
                 <h3>Ética e Legalidade</h3>
