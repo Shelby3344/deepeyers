@@ -4087,9 +4087,28 @@ Analise este resultado e me ajude a:
             }
         }
         
-        function scrollToBottom() {
+        // Controle de scroll - não interrompe se usuário estiver lendo acima
+        let userScrolledUp = false;
+        
+        function scrollToBottom(force = false) {
             const container = document.getElementById('chatContainer');
-            container.scrollTop = container.scrollHeight;
+            
+            // Se forçado ou usuário não scrollou para cima, faz scroll
+            if (force || !userScrolledUp) {
+                container.scrollTop = container.scrollHeight;
+            }
+        }
+        
+        // Detecta quando usuário scrolla manualmente
+        document.getElementById('chatContainer').addEventListener('scroll', function() {
+            const container = this;
+            const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+            userScrolledUp = !isNearBottom;
+        });
+        
+        // Reset quando nova mensagem é enviada
+        function resetScrollState() {
+            userScrolledUp = false;
         }
         
         messageForm.addEventListener('submit', async (e) => {
@@ -4160,6 +4179,8 @@ Analise este resultado e me ajude a:
             sessionWelcome.classList.add('hidden');
             messagesContainer.classList.remove('hidden');
             
+            // Reset scroll state quando usuário envia mensagem
+            resetScrollState();
             addMessage({ role: 'user', content: displayContent, attachment: attachmentData });
             
             // Atualiza título da sessão se for a primeira mensagem
