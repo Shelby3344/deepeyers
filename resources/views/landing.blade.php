@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>DeepEyes - IA de Segurança Ofensiva</title>
+    <title>DeepEyes - Inteligência Artificial hacker sem restrição</title>
     <link rel="icon" type="image/png" href="/logo.png">
     <link rel="apple-touch-icon" href="/logo.png">
     <meta name="theme-color" content="#0a0a0f">
