@@ -27,7 +27,7 @@ class AdminController extends Controller
         $cacheKey = "admin_users_page_{$page}_per_{$perPage}";
         
         $users = Cache::remember($cacheKey, 60, function () use ($perPage) {
-            return User::select(['id', 'name', 'email', 'role', 'avatar', 'is_banned', 'plan_id', 'created_at'])
+            return User::select(['id', 'name', 'email', 'phone', 'role', 'avatar', 'is_banned', 'plan_id', 'created_at', 'last_login_at'])
                 ->with(['plan:id,name'])
                 ->orderByDesc('created_at')
                 ->paginate($perPage);
@@ -39,6 +39,7 @@ class AdminController extends Controller
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
+                    'phone' => $user->phone,
                     'role' => $user->role,
                     'avatar' => $user->avatar_url,
                     'is_banned' => (bool) $user->is_banned,
@@ -47,6 +48,7 @@ class AdminController extends Controller
                         'name' => $user->plan->name,
                     ] : null,
                     'created_at' => $user->created_at,
+                    'last_login_at' => $user->last_login_at,
                 ];
             }),
             'meta' => [

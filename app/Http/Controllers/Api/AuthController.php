@@ -58,6 +58,13 @@ class AuthController extends Controller
                     }
                 },
             ],
+            'phone' => [
+                'required',
+                'string',
+                'min:10',
+                'max:20',
+                'regex:/^[\d\s\-\(\)\+]+$/',
+            ],
             'password' => [
                 'required', 
                 'string', 
@@ -75,6 +82,9 @@ class AuthController extends Controller
             'password.confirmed' => 'As senhas não conferem.',
             'email.email' => 'Email inválido ou domínio não existe.',
             'email.unique' => 'Este email já está cadastrado.',
+            'phone.required' => 'O celular é obrigatório.',
+            'phone.min' => 'Celular inválido.',
+            'phone.regex' => 'Formato de celular inválido.',
         ]);
 
         // Busca o plano Free (básico) para novos usuários
@@ -83,6 +93,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
+            'phone' => preg_replace('/[^\d]/', '', $validated['phone']), // Salva só números
             'password' => Hash::make($validated['password']),
             'role' => 'user',
             'plan_id' => $freePlan?->id,

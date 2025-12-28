@@ -703,6 +703,7 @@
                                         </th>
                                         <th>Usuário</th>
                                         <th>Email</th>
+                                        <th>Celular</th>
                                         <th>Role</th>
                                         <th>Plano</th>
                                         <th>Criado em</th>
@@ -711,7 +712,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="usersTable">
-                                    <tr><td colspan="8" class="text-center text-gray-500">Carregando...</td></tr>
+                                    <tr><td colspan="9" class="text-center text-gray-500">Carregando...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1037,6 +1038,18 @@
         function getDefaultAvatar(name) {
             const initials = (name || 'User').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
             return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=1a1a24&color=00d4ff&size=128&bold=true`;
+        }
+        
+        // Formata número de celular
+        function formatPhone(phone) {
+            if (!phone) return '-';
+            const cleaned = phone.replace(/\D/g, '');
+            if (cleaned.length === 11) {
+                return `(${cleaned.slice(0,2)}) ${cleaned.slice(2,7)}-${cleaned.slice(7)}`;
+            } else if (cleaned.length === 10) {
+                return `(${cleaned.slice(0,2)}) ${cleaned.slice(2,6)}-${cleaned.slice(6)}`;
+            }
+            return phone;
         }
         
         function renderProfile(data) {
@@ -1396,6 +1409,7 @@
                 const online = isUserOnline(u.last_login_at);
                 const lastSeen = getLastSeenText(u.last_login_at);
                 const createdAt = u.created_at ? new Date(u.created_at).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
+                const phone = u.phone ? formatPhone(u.phone) : '-';
                 
                 return `
                 <tr class="${online ? 'bg-green-500/5' : ''}">
@@ -1421,6 +1435,7 @@
                         </div>
                     </td>
                     <td class="text-gray-400">${u.email}</td>
+                    <td class="text-gray-400">${phone}</td>
                     <td><span class="badge badge-${u.role}">${getRoleName(u.role)}</span></td>
                     <td class="text-gray-400">${u.plan?.name || '-'}</td>
                     <td class="text-gray-400 text-sm">${createdAt}</td>
@@ -1439,7 +1454,7 @@
                         </div>
                     </td>
                 </tr>
-            `}).join('') || '<tr><td colspan="8" class="text-center text-gray-500">Nenhum usuário</td></tr>';
+            `}).join('') || '<tr><td colspan="9" class="text-center text-gray-500">Nenhum usuário</td></tr>';
             
             // Adiciona event listeners para os botões de editar
             document.querySelectorAll('.edit-user-btn').forEach(btn => {
