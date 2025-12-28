@@ -2127,66 +2127,54 @@
                     </div>
                     
                     <!-- Stats Grid -->
-                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 w-full mb-6">
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full mb-6">
                         <!-- Sessões -->
-                        <div class="de-card p-4 relative overflow-hidden group hover:border-[#00D4FF]/50 transition-all">
-                            <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#00D4FF]/10 to-transparent rounded-bl-full"></div>
-                            <div class="relative">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <div class="w-7 h-7 rounded-lg bg-[#00D4FF]/10 flex items-center justify-center">
-                                        <i class="fas fa-comments text-[#00D4FF] text-xs"></i>
-                                    </div>
-                                    <span class="text-gray-500 text-[10px] uppercase tracking-wider">Sessões</span>
+                        <div class="bg-[#1a1a24] border border-[#2a2a3a] rounded-xl p-4 hover:border-[#00D4FF]/30 transition-all">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-[#00D4FF]/10 flex items-center justify-center">
+                                    <i class="fas fa-comments text-[#00D4FF]"></i>
                                 </div>
-                                <div class="text-2xl font-bold text-white" id="dashStatSessions">0</div>
+                                <span class="text-gray-400 text-xs uppercase tracking-wider">Sessões</span>
                             </div>
+                            <div class="text-3xl font-bold text-white" id="dashStatSessions">0</div>
                         </div>
                         
                         <!-- Mensagens -->
-                        <div class="de-card p-4 relative overflow-hidden group hover:border-[#8b5cf6]/50 transition-all">
-                            <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#8b5cf6]/10 to-transparent rounded-bl-full"></div>
-                            <div class="relative">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <div class="w-7 h-7 rounded-lg bg-[#8b5cf6]/10 flex items-center justify-center">
-                                        <i class="fas fa-robot text-[#8b5cf6] text-xs"></i>
-                                    </div>
-                                    <span class="text-gray-500 text-[10px] uppercase tracking-wider">Mensagens</span>
+                        <div class="bg-[#1a1a24] border border-[#2a2a3a] rounded-xl p-4 hover:border-[#8b5cf6]/30 transition-all">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-[#8b5cf6]/10 flex items-center justify-center">
+                                    <i class="fas fa-robot text-[#8b5cf6]"></i>
                                 </div>
-                                <div class="text-2xl font-bold text-white" id="dashStatMessages">0</div>
+                                <span class="text-gray-400 text-xs uppercase tracking-wider">Mensagens</span>
                             </div>
+                            <div class="text-3xl font-bold text-white" id="dashStatMessages">0</div>
                         </div>
                         
                         <!-- Checklists -->
-                        <div class="de-card p-4 relative overflow-hidden group hover:border-[#00FF88]/50 transition-all">
-                            <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#00FF88]/10 to-transparent rounded-bl-full"></div>
-                            <div class="relative">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <div class="w-7 h-7 rounded-lg bg-[#00FF88]/10 flex items-center justify-center">
-                                        <i class="fas fa-clipboard-check text-[#00FF88] text-xs"></i>
-                                    </div>
-                                    <span class="text-gray-500 text-[10px] uppercase tracking-wider">Checklists</span>
+                        <div class="bg-[#1a1a24] border border-[#2a2a3a] rounded-xl p-4 hover:border-[#00FF88]/30 transition-all">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-[#00FF88]/10 flex items-center justify-center">
+                                    <i class="fas fa-clipboard-check text-[#00FF88]"></i>
                                 </div>
-                                <div class="text-2xl font-bold text-white" id="dashStatChecklists">0</div>
+                                <span class="text-gray-400 text-xs uppercase tracking-wider">Checklists</span>
                             </div>
+                            <div class="text-3xl font-bold text-white" id="dashStatChecklists">0</div>
                         </div>
                         
                         <!-- Uso Diário -->
-                        <div class="de-card p-4 relative overflow-hidden group hover:border-[#F97316]/50 transition-all">
-                            <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-[#F97316]/10 to-transparent rounded-bl-full"></div>
-                            <div class="relative">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <div class="w-7 h-7 rounded-lg bg-[#F97316]/10 flex items-center justify-center">
-                                        <i class="fas fa-bolt text-[#F97316] text-xs"></i>
-                                    </div>
-                                    <span class="text-gray-500 text-[10px] uppercase tracking-wider">Uso Hoje</span>
+                        <div class="bg-[#1a1a24] border border-[#2a2a3a] rounded-xl p-4 hover:border-[#F97316]/30 transition-all">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 rounded-lg bg-[#F97316]/10 flex items-center justify-center">
+                                    <i class="fas fa-bolt text-[#F97316]"></i>
                                 </div>
-                                <div class="flex items-baseline gap-1">
-                                    <span class="text-2xl font-bold text-white" id="dashStatUsed">0</span>
-                                    <span class="text-gray-500 text-sm">/ <span id="dashStatLimit">0</span></span>
-                                </div>
-                                <div class="w-full bg-gray-700/50 rounded-full h-1.5 mt-2">
-                                    <div class="h-1.5 rounded-full bg-gradient-to-r from-[#F97316] to-[#EF4444] transition-all duration-500" id="dashUsageBar" style="width: 0%"></div>
-                                </div>
+                                <span class="text-gray-400 text-xs uppercase tracking-wider">Uso Hoje</span>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-3xl font-bold text-white" id="dashStatUsed">0</span>
+                                <span class="text-gray-500">/ <span id="dashStatLimit">0</span></span>
+                            </div>
+                            <div class="w-full bg-[#2a2a3a] rounded-full h-1.5 mt-3">
+                                <div class="h-1.5 rounded-full bg-gradient-to-r from-[#F97316] to-[#EF4444] transition-all duration-500" id="dashUsageBar" style="width: 0%"></div>
                             </div>
                         </div>
                     </div>
