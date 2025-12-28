@@ -1510,7 +1510,7 @@
                     <input type="tel" name="phone" required autocomplete="tel"
                         class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
                         placeholder="(11) 99999-9999"
-                        oninput="this.value = this.value.replace(/\D/g, '').replace(/^(\d{2})(\d)/g, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2').substring(0, 15)">
+                        oninput="this.value = this.value.replace(/\D/g, '').replace(/^(\d{2})(\d)/g, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2').substring(0, 16)">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Senha</label>
