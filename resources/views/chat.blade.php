@@ -2503,6 +2503,41 @@
         const imagePreviewContainer = document.getElementById('imagePreviewContainer');
         const imagePreview = document.getElementById('imagePreview');
         
+        // Paste de imagem (Ctrl+V ou Print Screen)
+        document.addEventListener('paste', async (e) => {
+            const items = e.clipboardData?.items;
+            if (!items) return;
+            
+            for (const item of items) {
+                if (item.type.startsWith('image/')) {
+                    e.preventDefault();
+                    const file = item.getAsFile();
+                    if (!file) continue;
+                    
+                    const maxSize = 10 * 1024 * 1024; // 10MB
+                    if (file.size > maxSize) {
+                        showNotification('Imagem muito grande. Máximo: 10MB', 'error');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        currentAttachment = {
+                            type: 'image',
+                            name: 'screenshot.png',
+                            size: file.size,
+                            content: event.target.result
+                        };
+                        showAttachmentPreview(file, true, event.target.result);
+                        showNotification('Imagem colada! Envie sua mensagem.', 'success');
+                        messageInput.focus();
+                    };
+                    reader.readAsDataURL(file);
+                    break;
+                }
+            }
+        });
+        
         fileInput.addEventListener('change', async (e) => {
             const file = e.target.files[0];
             if (!file) return;
