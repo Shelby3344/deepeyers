@@ -48,6 +48,25 @@
             font-style: normal;
         }
         
+        /* Fuzzy Text Effect */
+        .fuzzy-text {
+            position: relative;
+            display: inline-block;
+            min-height: 1.2em;
+        }
+        .fuzzy-text canvas {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: auto;
+        }
+        .fuzzy-text.active {
+            color: transparent !important;
+            -webkit-text-fill-color: transparent !important;
+            background: transparent !important;
+        }
+        
         /* ========================================
            DEEPEYES 
            ======================================== */
@@ -1553,7 +1572,7 @@
             <!-- Logo - Cyber Style -->
             <div class="p-5 border-b border-[rgba(0,255,136,0.15)]">
                 <a href="/" class="block">
-                    <h1 class="text-2xl font-normal text-white tracking-wide" style="font-family: 'Upheaval', sans-serif;">DeepEyes</h1>
+                    <h1 class="text-2xl font-normal text-white tracking-wide fuzzy-text" data-text="DEEPEYES" style="font-family: 'Upheaval', sans-serif;">DEEPEYES</h1>
                     <p class="text-[10px] text-[#00D4FF] uppercase tracking-wider mt-1">Security AI Platform</p>
                 </a>
             </div>
@@ -5130,6 +5149,107 @@ Analise este resultado e me ajude a:
         
         // Mostra página quando estiver pronta (evita flash)
         document.documentElement.classList.add('page-ready');
+        
+        // Fuzzy Text Effect
+        (function() {
+            const fuzzyElements = document.querySelectorAll('.fuzzy-text');
+            if (!fuzzyElements.length) return;
+
+            function initFuzzyText(element) {
+                const existingCanvas = element.querySelector('canvas');
+                if (existingCanvas) existingCanvas.remove();
+                element.classList.remove('active');
+
+                const text = element.dataset.text || element.textContent.trim();
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                if (!ctx) return;
+
+                const computedStyle = window.getComputedStyle(element);
+                const fontSize = computedStyle.fontSize;
+                const fontWeight = computedStyle.fontWeight;
+                const fontFamily = computedStyle.fontFamily;
+                const gradientColors = ['#00d4ff', '#00ff88'];
+                
+                const offscreen = document.createElement('canvas');
+                const offCtx = offscreen.getContext('2d');
+                if (!offCtx) return;
+
+                offCtx.font = `${fontWeight} ${fontSize} ${fontFamily}`;
+                offCtx.textBaseline = 'alphabetic';
+                
+                const metrics = offCtx.measureText(text);
+                const numericFontSize = parseFloat(fontSize);
+                
+                const actualLeft = metrics.actualBoundingBoxLeft || 0;
+                const actualRight = metrics.actualBoundingBoxRight || metrics.width;
+                const actualAscent = metrics.actualBoundingBoxAscent || numericFontSize * 0.8;
+                const actualDescent = metrics.actualBoundingBoxDescent || numericFontSize * 0.2;
+                
+                const textWidth = Math.ceil(actualLeft + actualRight);
+                const textHeight = Math.ceil(actualAscent + actualDescent);
+                
+                const horizontalMargin = Math.max(40, numericFontSize * 0.5);
+                const verticalMargin = Math.max(15, numericFontSize * 0.2);
+                
+                offscreen.width = textWidth + 20;
+                offscreen.height = textHeight + 10;
+                
+                offCtx.font = `${fontWeight} ${fontSize} ${fontFamily}`;
+                offCtx.textBaseline = 'alphabetic';
+                
+                const gradient = offCtx.createLinearGradient(0, 0, textWidth, 0);
+                gradient.addColorStop(0, gradientColors[0]);
+                gradient.addColorStop(1, gradientColors[1]);
+                offCtx.fillStyle = gradient;
+                offCtx.fillText(text, 10, actualAscent + 5);
+                
+                canvas.width = textWidth + horizontalMargin * 2;
+                canvas.height = textHeight + verticalMargin * 2;
+                canvas.style.width = canvas.width + 'px';
+                canvas.style.height = canvas.height + 'px';
+                
+                element.appendChild(canvas);
+                element.classList.add('active');
+                
+                let isHovering = false;
+                const baseIntensity = 0.12;
+                const hoverIntensity = 0.35;
+                const fuzzRange = Math.max(20, numericFontSize * 0.4);
+                let animationId;
+                
+                function animate() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    const intensity = isHovering ? hoverIntensity : baseIntensity;
+                    for (let j = 0; j < offscreen.height; j++) {
+                        const dx = Math.floor(intensity * (Math.random() - 0.5) * fuzzRange);
+                        ctx.drawImage(offscreen, 0, j, offscreen.width, 1, horizontalMargin + dx, verticalMargin + j, offscreen.width, 1);
+                    }
+                    animationId = requestAnimationFrame(animate);
+                }
+                
+                canvas.addEventListener('mouseenter', () => { isHovering = true; });
+                canvas.addEventListener('mouseleave', () => { isHovering = false; });
+                canvas.addEventListener('touchstart', () => { isHovering = true; }, { passive: true });
+                canvas.addEventListener('touchend', () => { isHovering = false; }, { passive: true });
+                
+                animate();
+                element._fuzzyCleanup = () => { cancelAnimationFrame(animationId); };
+            }
+
+            fuzzyElements.forEach(initFuzzyText);
+
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    fuzzyElements.forEach(el => {
+                        if (el._fuzzyCleanup) el._fuzzyCleanup();
+                        initFuzzyText(el);
+                    });
+                }, 250);
+            });
+        })();
     </script>
 </body>
 </html>
