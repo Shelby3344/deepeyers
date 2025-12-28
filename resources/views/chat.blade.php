@@ -1616,8 +1616,48 @@
             
             <!-- New Session Button - Neon Style -->
             <div class="p-4">
-                <button id="newChatBtn" class="neon-btn">NOVA SESSÃO</button>
+                <button id="newChatBtn" class="new-session-btn">
+                    <i class="fas fa-plus mr-2"></i>NOVA SESSÃO
+                </button>
             </div>
+            
+            <style>
+                .new-session-btn {
+                    --green: #1BFD9C;
+                    width: 100%;
+                    font-size: 14px;
+                    padding: 0.8em 1.5em;
+                    letter-spacing: 0.1em;
+                    position: relative;
+                    font-family: 'JetBrains Mono', monospace;
+                    font-weight: 600;
+                    border-radius: 0.6em;
+                    overflow: hidden;
+                    transition: all 0.3s;
+                    border: 2px solid var(--green);
+                    background: linear-gradient(to right, rgba(27, 253, 156, 0.1) 1%, transparent 40%, transparent 60%, rgba(27, 253, 156, 0.1) 100%);
+                    color: var(--green);
+                    box-shadow: inset 0 0 10px rgba(27, 253, 156, 0.4), 0 0 9px 3px rgba(27, 253, 156, 0.1);
+                    cursor: pointer;
+                }
+                .new-session-btn:hover {
+                    color: #82ffc9;
+                    box-shadow: inset 0 0 10px rgba(27, 253, 156, 0.6), 0 0 9px 3px rgba(27, 253, 156, 0.2);
+                }
+                .new-session-btn:before {
+                    content: "";
+                    position: absolute;
+                    left: -4em;
+                    width: 4em;
+                    height: 100%;
+                    top: 0;
+                    transition: transform .4s ease-in-out;
+                    background: linear-gradient(to right, transparent 1%, rgba(27, 253, 156, 0.1) 40%, rgba(27, 253, 156, 0.1) 60%, transparent 100%);
+                }
+                .new-session-btn:hover:before {
+                    transform: translateX(20em);
+                }
+            </style>
             
             <!-- Tools Menu - Cyber Grid -->
             <div class="px-4 pb-2">
