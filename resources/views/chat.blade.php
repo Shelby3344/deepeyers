@@ -1457,7 +1457,7 @@
             </div>
         </nav>
         
-        <div class="relative z-10 w-full max-w-sm mx-4 p-6 max-h-[85vh] overflow-y-auto" style="background: rgba(26, 26, 36, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 16px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 212, 255, 0.1);">
+        <div class="relative z-10 w-full max-w-sm lg:max-w-2xl mx-4 p-6 max-h-[85vh] overflow-y-auto" style="background: rgba(26, 26, 36, 0.95); backdrop-filter: blur(20px); border: 1px solid rgba(0, 212, 255, 0.2); border-radius: 16px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 212, 255, 0.1);">
             <!-- Top gradient line -->
             <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#00d4ff] to-transparent"></div>
             
@@ -1491,39 +1491,40 @@
                 </button>
             </form>
 
-            <form id="registerForm" class="space-y-3 hidden">
-                <div>
-                    <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Nome</label>
-                    <input type="text" name="name" required autocomplete="name"
-                        class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
-                        placeholder="Seu nome">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Email</label>
-                    <input type="email" name="email" required autocomplete="email"
-                        class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
-                        placeholder="user@gmail.com">
-                    <p class="text-[10px] text-[#a0a0b0] mt-1">Gmail, Outlook, Yahoo, iCloud, etc.</p>
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Celular</label>
-                    <input type="tel" name="phone" required autocomplete="tel"
-                        class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
-                        placeholder="(11) 99999-9999"
-                        oninput="this.value = this.value.replace(/\D/g, '').replace(/^(\d{2})(\d)/g, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2').substring(0, 16)">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Senha</label>
-                    <input type="password" name="password" required autocomplete="new-password" minlength="8"
-                        class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
-                        placeholder="••••••••">
-                    <p class="text-[10px] text-[#a0a0b0] mt-1">Mín. 8 chars: Aa, 123, @#$</p>
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Confirmar Senha</label>
-                    <input type="password" name="password_confirmation" required autocomplete="new-password"
-                        class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
-                        placeholder="••••••••">
+            <form id="registerForm" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Nome</label>
+                        <input type="text" name="name" required autocomplete="name"
+                            class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
+                            placeholder="Seu nome">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Email</label>
+                        <input type="email" name="email" required autocomplete="email"
+                            class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
+                            placeholder="user@gmail.com">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Celular</label>
+                        <input type="tel" name="phone" required autocomplete="tel"
+                            class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
+                            placeholder="(11) 99999-9999"
+                            oninput="this.value = this.value.replace(/\D/g, '').replace(/^(\d{2})(\d)/g, '($1) $2').replace(/(\d{5})(\d)/, '$1-$2').substring(0, 16)">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Senha</label>
+                        <input type="password" name="password" required autocomplete="new-password" minlength="8"
+                            class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
+                            placeholder="••••••••">
+                        <p class="text-[10px] text-[#a0a0b0] mt-1">Mín. 8 chars: Aa, 123, @#$</p>
+                    </div>
+                    <div class="lg:col-span-2">
+                        <label class="block text-xs font-medium text-[#00d4ff] mb-1.5" style="font-family: 'JetBrains Mono', monospace;">Confirmar Senha</label>
+                        <input type="password" name="password_confirmation" required autocomplete="new-password"
+                            class="auth-input w-full px-3 py-2.5 text-sm rounded-lg focus:outline-none"
+                            placeholder="••••••••">
+                    </div>
                 </div>
                 <button type="submit" class="w-full py-3 text-sm font-semibold transition-all rounded-lg" style="background: linear-gradient(135deg, #00d4ff, #00ff88); color: #0a0a0f; box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);">
                     Criar Conta
