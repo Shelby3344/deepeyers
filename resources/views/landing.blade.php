@@ -551,7 +551,6 @@
             border-radius: 12px;
             overflow: hidden;
             text-align: left;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
 
         .terminal-header {
