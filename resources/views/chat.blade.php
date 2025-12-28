@@ -1692,6 +1692,11 @@
                         <i class="fas fa-file-lines text-[#A855F7] group-hover:scale-110 transition-transform tool-icon"></i>
                         <span class="text-[8px] text-gray-400 group-hover:text-[#A855F7] tool-label" style="font-family: var(--font-mono);">WORDLIST</span>
                     </button>
+                    <!-- Terminal -->
+                    <a href="/terminal" id="tool-terminal" data-tool="true" class="tool-btn flex flex-col items-center gap-1 p-2 bg-[rgba(0,0,0,0.3)] border border-[rgba(234,179,8,0.15)] hover:border-[rgba(234,179,8,0.4)] hover:bg-[rgba(234,179,8,0.08)] transition-all group no-underline rounded-lg">
+                        <i class="fas fa-terminal text-[#EAB308] group-hover:scale-110 transition-transform tool-icon"></i>
+                        <span class="text-[8px] text-gray-400 group-hover:text-[#EAB308] tool-label" style="font-family: var(--font-mono);">TERMINAL</span>
+                    </a>
                 </div>
             </div>
             
@@ -2043,7 +2048,7 @@
                             </select>
                         </div>
                         <button onclick="generateRevshell()" class="w-full bg-gradient-to-r from-[#00FF88] to-[#00D4FF] hover:opacity-90 text-[#0a0a0f] rounded-xl py-3 font-bold transition-all">
-                            <i class="fas fa-wand-magic-sparkles mr-2"></i>Gerar Reverse Shell
+                            </i>Gerar Reverse Shell
                         </button>
                         <div class="hidden" id="revshellOutputContainer">
                             <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Comando Gerado</label>
