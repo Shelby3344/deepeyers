@@ -2280,6 +2280,112 @@
             </div>
         </div>
         
+        <!-- Add to Checklist Modal -->
+        <div id="addToChecklistModal" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeAddToChecklistModal()"></div>
+            <div class="relative z-10 w-full max-w-lg mx-4 bg-[#0B0F14] rounded-2xl border border-[rgba(249,115,22,0.3)] shadow-2xl max-h-[85vh] flex flex-col">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#F97316] to-transparent"></div>
+                <div class="p-6 border-b border-[rgba(249,115,22,0.1)]">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-[rgba(249,115,22,0.1)] border border-[rgba(249,115,22,0.3)] flex items-center justify-center">
+                            <i class="fas fa-list-check text-[#F97316]"></i>
+                        </div>
+                        Adicionar ao Checklist
+                    </h3>
+                </div>
+                <div class="flex-1 overflow-y-auto p-6">
+                    <div class="space-y-4">
+                        <!-- Selecionar Checklist -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Selecionar Checklist</label>
+                            <select id="checklistSelect" class="w-full bg-[#0B0F14] border border-[rgba(249,115,22,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#F97316]">
+                                <option value="">Carregando...</option>
+                            </select>
+                            <button onclick="createNewChecklistFromChat()" class="mt-2 text-sm text-[#F97316] hover:text-[#FB923C] transition-colors">
+                                <i class="fas fa-plus mr-1"></i> Criar novo checklist
+                            </button>
+                        </div>
+                        
+                        <!-- Tipo de Vulnerabilidade -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Tipo de Vulnerabilidade</label>
+                            <select id="vulnTypeSelect" class="w-full bg-[#0B0F14] border border-[rgba(249,115,22,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#F97316]">
+                                <option value="web">🌐 Web Application</option>
+                                <option value="api">🔌 API</option>
+                                <option value="network">🖧 Network</option>
+                                <option value="ad">🏢 Active Directory</option>
+                                <option value="mobile">📱 Mobile</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Título da Vulnerabilidade -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Título</label>
+                            <input type="text" id="vulnTitle" placeholder="Ex: SQL Injection no login" class="w-full bg-[#0B0F14] border border-[rgba(249,115,22,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#F97316]">
+                        </div>
+                        
+                        <!-- Status -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Status</label>
+                            <div class="flex gap-2">
+                                <button type="button" onclick="setVulnStatus('vuln')" id="statusVuln" class="flex-1 py-2 rounded-xl border border-[#EF4444]/30 text-[#EF4444] hover:bg-[#EF4444]/10 transition-all">
+                                    <i class="fas fa-bug mr-1"></i> Vulnerável
+                                </button>
+                                <button type="button" onclick="setVulnStatus('tested')" id="statusTested" class="flex-1 py-2 rounded-xl border border-[#00D4FF]/30 text-[#00D4FF] hover:bg-[#00D4FF]/10 transition-all">
+                                    <i class="fas fa-vial mr-1"></i> Testado
+                                </button>
+                                <button type="button" onclick="setVulnStatus('ok')" id="statusOk" class="flex-1 py-2 rounded-xl border border-[#00FF88]/30 text-[#00FF88] hover:bg-[#00FF88]/10 transition-all">
+                                    <i class="fas fa-check mr-1"></i> OK
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Notas/Evidências -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Notas / Evidências</label>
+                            <textarea id="vulnNotes" rows="4" placeholder="Detalhes da vulnerabilidade, payloads usados, evidências..." class="w-full bg-[#0B0F14] border border-[rgba(249,115,22,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#F97316] font-mono text-sm resize-none"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-4 border-t border-[rgba(249,115,22,0.1)] flex gap-3">
+                    <button onclick="closeAddToChecklistModal()" class="flex-1 bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Cancelar</button>
+                    <button onclick="saveToChecklist()" class="flex-1 bg-gradient-to-r from-[#F97316] to-[#EA580C] hover:opacity-90 text-white rounded-xl py-3 font-bold transition-all">
+                        <i class="fas fa-save mr-2"></i>Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Create Checklist from Chat Modal -->
+        <div id="createChecklistChatModal" class="fixed inset-0 z-[60] hidden items-center justify-center">
+            <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeCreateChecklistChatModal()"></div>
+            <div class="relative z-10 w-full max-w-md mx-4 bg-[#0B0F14] rounded-2xl border border-[rgba(0,255,136,0.3)] shadow-2xl">
+                <div class="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-[#00FF88] to-transparent"></div>
+                <div class="p-6 border-b border-[rgba(0,255,136,0.1)]">
+                    <h3 class="text-xl font-bold text-white flex items-center gap-3">
+                        <i class="fas fa-plus-circle text-[#00FF88]"></i>
+                        Novo Checklist
+                    </h3>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Título</label>
+                        <input type="text" id="newChecklistTitle" placeholder="Ex: Pentest ACME Corp" class="w-full bg-[#0B0F14] border border-[rgba(0,255,136,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00FF88]">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Domínio/Alvo</label>
+                        <input type="text" id="newChecklistDomain" placeholder="Ex: acme.com" class="w-full bg-[#0B0F14] border border-[rgba(0,255,136,0.2)] rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00FF88]">
+                    </div>
+                </div>
+                <div class="p-4 border-t border-[rgba(0,255,136,0.1)] flex gap-3">
+                    <button onclick="closeCreateChecklistChatModal()" class="flex-1 bg-[#1E293B] hover:bg-[#334155] text-gray-300 rounded-xl py-3 font-medium transition-all border border-[#334155]">Cancelar</button>
+                    <button onclick="createChecklistFromChat()" class="flex-1 bg-gradient-to-r from-[#00FF88] to-[#00D4FF] text-[#0a0a0f] rounded-xl py-3 font-bold transition-all">
+                        <i class="fas fa-check mr-2"></i>Criar
+                    </button>
+                </div>
+            </div>
+        </div>
+        
         <!-- Main Content -->
         <main class="flex-1 flex flex-col min-h-0">
             <!-- Beta Warning Banner - Cyber Style -->
@@ -3951,13 +4057,27 @@
                     </div>
                 `;
             } else {
+                // Gera um ID único para a mensagem
+                const msgId = 'msg_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                
                 return `
-                    <div class="flex items-start gap-4">
+                    <div class="flex items-start gap-4" data-msg-id="${msgId}">
                         <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[rgba(0,255,136,0.2)] to-[rgba(0,212,255,0.1)] flex items-center justify-center flex-shrink-0 p-1 border border-[rgba(0,255,136,0.3)]">
                             <img src="/logo.png" alt="DeepEyes" class="w-8 h-8 object-contain">
                         </div>
-                        <div class="de-card rounded-2xl rounded-tl-none px-6 py-4 max-w-3xl">
+                        <div class="de-card rounded-2xl rounded-tl-none px-6 py-4 max-w-3xl flex-1">
                             <div class="message-content prose prose-invert max-w-none">${content}</div>
+                            <div class="message-actions flex items-center gap-2 mt-3 pt-3 border-t border-[rgba(255,255,255,0.05)]">
+                                <button onclick="copyMessageContent(this)" class="text-gray-500 hover:text-[#00FF88] transition-colors p-1 text-xs" title="Copiar">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                                <button onclick="openAddToChecklistModal(this.closest('[data-msg-id]').querySelector('.message-content').innerText)" class="text-gray-500 hover:text-[#F97316] transition-colors p-1 text-xs" title="Adicionar ao Checklist">
+                                    <i class="fas fa-list-check"></i>
+                                </button>
+                                <button onclick="analyzeWithAI(this.closest('[data-msg-id]').querySelector('.message-content').innerText)" class="text-gray-500 hover:text-[#00D4FF] transition-colors p-1 text-xs" title="Continuar análise">
+                                    <i class="fas fa-search-plus"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -5252,6 +5372,239 @@ Analise este resultado e me ajude a:
                 }, 250);
             });
         })();
+        
+        // ========================================
+        // CHECKLIST INTEGRATION
+        // ========================================
+        
+        let userChecklists = [];
+        let selectedVulnStatus = 'vuln';
+        let pendingVulnContent = '';
+        
+        // Carregar checklists do usuário
+        async function loadUserChecklists() {
+            try {
+                const data = await api('/checklists');
+                userChecklists = data.data || [];
+                updateChecklistSelect();
+            } catch (e) {
+                console.error('Erro ao carregar checklists:', e);
+            }
+        }
+        
+        function updateChecklistSelect() {
+            const select = document.getElementById('checklistSelect');
+            if (!select) return;
+            
+            if (userChecklists.length === 0) {
+                select.innerHTML = '<option value="">Nenhum checklist - Crie um novo</option>';
+            } else {
+                select.innerHTML = userChecklists.map(c => 
+                    `<option value="${c.id}">${c.title} (${c.type.toUpperCase()})</option>`
+                ).join('');
+            }
+        }
+        
+        function openAddToChecklistModal(content = '') {
+            pendingVulnContent = content;
+            loadUserChecklists();
+            
+            // Preenche as notas com o conteúdo da mensagem
+            const notesField = document.getElementById('vulnNotes');
+            if (notesField && content) {
+                notesField.value = content;
+            }
+            
+            // Reset status
+            setVulnStatus('vuln');
+            
+            const modal = document.getElementById('addToChecklistModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function closeAddToChecklistModal() {
+            const modal = document.getElementById('addToChecklistModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            pendingVulnContent = '';
+        }
+        
+        function setVulnStatus(status) {
+            selectedVulnStatus = status;
+            
+            // Reset all buttons
+            ['statusVuln', 'statusTested', 'statusOk'].forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) {
+                    btn.classList.remove('bg-[#EF4444]/20', 'bg-[#00D4FF]/20', 'bg-[#00FF88]/20');
+                }
+            });
+            
+            // Highlight selected
+            const selectedBtn = document.getElementById('status' + status.charAt(0).toUpperCase() + status.slice(1));
+            if (selectedBtn) {
+                const colors = { vuln: '#EF4444', tested: '#00D4FF', ok: '#00FF88' };
+                selectedBtn.classList.add(`bg-[${colors[status]}]/20`);
+            }
+        }
+        
+        function createNewChecklistFromChat() {
+            const modal = document.getElementById('createChecklistChatModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // Preenche com domínio da sessão atual se disponível
+            if (currentSession?.target_domain) {
+                document.getElementById('newChecklistDomain').value = currentSession.target_domain;
+            }
+        }
+        
+        function closeCreateChecklistChatModal() {
+            const modal = document.getElementById('createChecklistChatModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        
+        async function createChecklistFromChat() {
+            const title = document.getElementById('newChecklistTitle').value.trim();
+            const domain = document.getElementById('newChecklistDomain').value.trim();
+            
+            if (!title) {
+                showNotification('Digite um título para o checklist', 'error');
+                return;
+            }
+            
+            try {
+                const data = await api('/checklists', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        title: title,
+                        target_domain: domain,
+                        type: document.getElementById('vulnTypeSelect')?.value || 'web'
+                    })
+                });
+                
+                userChecklists.push(data.data);
+                updateChecklistSelect();
+                
+                // Seleciona o novo checklist
+                document.getElementById('checklistSelect').value = data.data.id;
+                
+                closeCreateChecklistChatModal();
+                showNotification('Checklist criado!', 'success');
+            } catch (e) {
+                showNotification('Erro ao criar checklist', 'error');
+            }
+        }
+        
+        async function saveToChecklist() {
+            const checklistId = document.getElementById('checklistSelect').value;
+            const vulnType = document.getElementById('vulnTypeSelect').value;
+            const title = document.getElementById('vulnTitle').value.trim();
+            const notes = document.getElementById('vulnNotes').value.trim();
+            
+            if (!checklistId) {
+                showNotification('Selecione ou crie um checklist', 'error');
+                return;
+            }
+            
+            if (!title) {
+                showNotification('Digite um título para a vulnerabilidade', 'error');
+                return;
+            }
+            
+            try {
+                // Busca o checklist atual
+                const checklistData = await api(`/checklists/${checklistId}`);
+                const checklist = checklistData.data;
+                
+                // Gera um ID único para o item
+                const itemId = 'custom_' + Date.now();
+                
+                // Atualiza states e notes
+                const states = checklist.states || {};
+                const notesObj = checklist.notes || {};
+                
+                states[itemId] = selectedVulnStatus;
+                if (notes) {
+                    notesObj[itemId] = notes;
+                }
+                
+                // Adiciona item customizado ao metadata
+                const metadata = checklist.metadata || {};
+                const customItems = metadata.custom_items || [];
+                customItems.push({
+                    id: itemId,
+                    title: title,
+                    desc: `Adicionado via Chat - ${new Date().toLocaleDateString('pt-BR')}`,
+                    type: vulnType,
+                    created_at: new Date().toISOString()
+                });
+                metadata.custom_items = customItems;
+                
+                // Salva
+                await api(`/checklists/${checklistId}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({
+                        states: states,
+                        notes: notesObj,
+                        type: vulnType,
+                        metadata: metadata
+                    })
+                });
+                
+                closeAddToChecklistModal();
+                showNotification('Vulnerabilidade adicionada ao checklist!', 'success');
+                
+                // Limpa campos
+                document.getElementById('vulnTitle').value = '';
+                document.getElementById('vulnNotes').value = '';
+                
+            } catch (e) {
+                console.error('Erro ao salvar:', e);
+                showNotification('Erro ao salvar no checklist', 'error');
+            }
+        }
+        
+        // Função para adicionar botão de checklist nas mensagens da IA
+        function addChecklistButton(messageElement, content) {
+            const actionsDiv = messageElement.querySelector('.message-actions');
+            if (!actionsDiv) return;
+            
+            const btn = document.createElement('button');
+            btn.className = 'text-gray-500 hover:text-[#F97316] transition-colors p-1';
+            btn.title = 'Adicionar ao Checklist';
+            btn.innerHTML = '<i class="fas fa-list-check"></i>';
+            btn.onclick = () => openAddToChecklistModal(content);
+            
+            actionsDiv.appendChild(btn);
+        }
+        
+        // Copiar conteúdo da mensagem
+        function copyMessageContent(btn) {
+            const msgDiv = btn.closest('[data-msg-id]');
+            if (!msgDiv) return;
+            
+            const content = msgDiv.querySelector('.message-content')?.innerText || '';
+            navigator.clipboard.writeText(content).then(() => {
+                showNotification('Copiado!', 'success');
+            });
+        }
+        
+        // Continuar análise com IA
+        function analyzeWithAI(content) {
+            if (!content) return;
+            
+            // Pega os primeiros 500 caracteres para contexto
+            const context = content.substring(0, 500);
+            const prompt = `Baseado na análise anterior:\n\n"${context}..."\n\nContinue a análise. Quais são os próximos passos? Sugira comandos específicos para explorar mais.`;
+            
+            messageInput.value = prompt;
+            messageInput.focus();
+            messageInput.style.height = 'auto';
+            messageInput.style.height = Math.min(messageInput.scrollHeight, 150) + 'px';
+        }
     </script>
 </body>
 </html>
